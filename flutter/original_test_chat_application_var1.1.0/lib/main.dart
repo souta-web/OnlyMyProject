@@ -32,26 +32,28 @@ class _ChatScreenState extends State<ChatScreen> {
   final dbHelper = DatabaseHelper.instance;
 
   // メッセージの送信処理
-  void _sendMessage() {
+  void _sendMessage(int id) {
     if (_textEditingController.text.isNotEmpty) {
       setState(() {
         //ChatMessageクラスを呼び出すときにテキストと、送り主を引数で渡す
         // 送信されたテキストを画面右側に表示する
-        _messages.add(ChatMessage(
-          text: _textEditingController.text,
-          isSentByUser: true,
-        ));
-        // 返信メッセージを画面左側に表示する
-        _messages.add(ChatMessage(
-          text: 'チャットを受信しました。',
-          isSentByUser: false,
-        ));
         if(_textEditingController.text.substring(0,4) == "todo"){
           _messages.add(SystemMessageInChat(
             text: _textEditingController.text,
+            isChecked: false,
+            id:id,
+          ));
+        }else{
+          _messages.add(ChatMessage(
+            text: _textEditingController.text,
+            isSentByUser: true,
+          ));
+          // 返信メッセージを画面左側に表示する
+          _messages.add(ChatMessage(
+            text: 'チャットを受信しました。',
+            isSentByUser: false,
           ));
         }
-
         //テキストボックスclear
         _textEditingController.clear();
       });
@@ -63,18 +65,23 @@ class _ChatScreenState extends State<ChatScreen> {
     Database? db = await DatabaseHelper.instance.database;//データベース取得
     final List<Map<String, dynamic>>? allmessage = await db?.query(
       'my_table',
-      columns: ['message'], // 取得したいカラムのリスト
+      columns: ['message','todostate','id'], // 取得したいカラムのリスト
     );
 
     if (allmessage != null){
       for (final row in allmessage){
         final value1 = row['message'];
+        final value2 = row['todostate'];
+        final value3 = row['id'];
+
         setState(() {
           //ChatMessageクラスを呼び出すときにテキストと、送り主を引数で渡す
           // 送信されたテキストを画面右側に表示する
-          if(value1.substring(0,4) == "todo"){
+          if((value1.substring(0,4) == "todo") && (value1.length > 0)){
             _messages.add(SystemMessageInChat(
               text: value1.toString(),
+              isChecked: value2,
+              id: value3,
             ));
           }else{
             _messages.add(ChatMessage(
@@ -98,9 +105,11 @@ class _ChatScreenState extends State<ChatScreen> {
       DatabaseHelper.columnSender : "true",
       DatabaseHelper.columnMessage : _textEditingController.text.toString(), //送信テキスト
       DatabaseHelper.columnTime : DateTime.now().toString(),
+      DatabaseHelper.columnTodostate: "false"
     };
     final id = await dbHelper.insert(row);
     //print(_textEditingController.text);//デバッグ用
+    _sendMessage(id);
     print('登録しました。id: $id');
   }
 
@@ -113,7 +122,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   // 更新ボタンクリック
   void _update() async {
-     Map<String, dynamic> row = {
+    Map<String, dynamic> row = {
       DatabaseHelper.columnId   : 1,
       DatabaseHelper.columnName : '鈴木　一郎',
       DatabaseHelper.columnAge  : 48
@@ -128,6 +137,8 @@ class _ChatScreenState extends State<ChatScreen> {
     final rowsDeleted = await dbHelper.delete(id!);
     print('削除しました。 $rowsDeleted ID: $id');
   }
+
+
 
   @override
 
@@ -185,7 +196,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   icon: Icon(Icons.send),
                   onPressed:() {
                     _insert();
-                    _sendMessage();
+                    
                   } 
                 ),
               ],
@@ -233,10 +244,12 @@ class ChatMessage extends StatelessWidget {
 class SystemMessageInChat extends StatelessWidget {
   // チャットメッセージのテキスト
   final String text;
-  // 送信者がユーザー自身かどうかのフラグ
-
+  // チェックボックスの状態
+  bool isChecked;
+  // チャットのid
+  final int id;
   //クラスを呼び出すときに引数を必要とする(辻)
-  SystemMessageInChat({required this.text});
+  SystemMessageInChat({required this.text,required this.isChecked,required this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -249,15 +262,50 @@ class SystemMessageInChat extends StatelessWidget {
         width: MediaQuery.of(context).size.width, // 横幅をアプリ画面の横幅と同じにする
         decoration: BoxDecoration(
           // 送信者に応じてメッセージの背景色を設定する
-          color: const Color.fromARGB(90, 224, 224, 224),
+          color: Color.fromARGB(255, 9, 255, 0),
           // 角丸のボーダーを適用する
           borderRadius: BorderRadius.circular(20.0),
         ),
-        child: Text(
-          text,
-          style: TextStyle(fontSize: 16.0),
-        ),
+        child: Row(
+          children: [
+            Checkbox(
+              value: isChecked, // チェックボックスの状態
+              onChanged: (value) {
+                // チェックボックスの状態が変更された時の処理
+                _checkboxstatechange(id);
+                isChecked = !isChecked;
+              },
+            ),
+            Text(
+              text,
+              style: TextStyle(fontSize: 16.0),
+            ),
+          ]
+        )
       ),
     );
+  }
+
+    // todoのチェックボックスがチェックされたときの挙動
+  void _checkboxstatechange(int id) async {
+    // DatabaseHelper クラスのインスタンス取得
+    final dbHelper = DatabaseHelper.instance;
+    Database? db = await DatabaseHelper.instance.database;//データベース取得
+    List<Map>? results = await db?.query('my_table', 
+      where: "todostate=?",
+      whereArgs: [id]);
+    if (results == "true") {
+      Map<String, dynamic> row = {
+        DatabaseHelper.columnTodostate:'false'
+      };
+      final rowsAffected = await dbHelper.update(row);
+      print('更新しました。 ID：$rowsAffected ');
+    }else{
+      Map<String, dynamic> row = {
+        DatabaseHelper.columnTodostate:'true'
+      };
+      final rowsAffected = await dbHelper.update(row);
+      print('更新しました。 ID：$rowsAffected ');
+    }
   }
 }

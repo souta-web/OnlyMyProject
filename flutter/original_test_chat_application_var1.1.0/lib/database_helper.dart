@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 
 class DatabaseHelper {
 
-  static final _databaseName = "MyDatabase.db"; // DB名
+  static final _databaseName = "MyDatabase5.db"; // DB名
   static final _databaseVersion = 1; // スキーマのバージョン指定
 
   static final table = 'my_table'; // テーブル名
@@ -18,6 +18,7 @@ class DatabaseHelper {
   static final columnSender = 'sender'; // 送信者情報(true=ユーザー:fasle=Bot)
   static final columnMessage = 'message'; // チャットのテキスト
   static final columnTime = 'time'; //送信時間
+  static final columnTodostate = 'todostate'; //todoの状態
 
   // DatabaseHelper クラスを定義
   DatabaseHelper._privateConstructor();
@@ -74,7 +75,8 @@ class DatabaseHelper {
             $columnAge INTEGER NOT NULL,
             $columnSender TEXT,
             $columnMessage TEXT,
-            $columnTime TEXT
+            $columnTime TEXT,
+            $columnTodostate TEXT
           )
           ''');
   }
