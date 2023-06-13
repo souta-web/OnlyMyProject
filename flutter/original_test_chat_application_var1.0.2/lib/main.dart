@@ -5,7 +5,6 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'database_helper.dart';
 
-
 void main() {
   runApp(MyApp());
 }
@@ -47,6 +46,7 @@ class _ChatScreenState extends State<ChatScreen> {
           text: 'チャットを受信しました。',
           isSentByUser: false,
         ));
+        //テキストボックス
         _textEditingController.clear();
       });
     }
@@ -59,8 +59,6 @@ class _ChatScreenState extends State<ChatScreen> {
       'my_table',
       columns: ['message'], // 取得したいカラムのリスト
     );
-
-    allmessage?.forEach(print);
 
     if (allmessage != null){
       for (final row in allmessage){
@@ -81,6 +79,7 @@ class _ChatScreenState extends State<ChatScreen> {
   // -ボタンクリック
   void _insert() async {
     // row to insert
+    //データベースに登録
     Map<String, dynamic> row = {
       DatabaseHelper.columnName : '山田　太郎',
       DatabaseHelper.columnAge  : 35,
@@ -133,15 +132,15 @@ class _ChatScreenState extends State<ChatScreen> {
         actions: [
           IconButton(
             icon: Icon(Icons.close),
-            onPressed: () => {_delete()},
+            onPressed: () => {_delete()},//×ボタン
           ),
           IconButton(
             icon: Icon(Icons.emoji_objects),
-            onPressed: () => {_query()},
+            onPressed: () => {_query()},//電球ボタン
           ),
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: () => {_insert()},
+            onPressed: () => {_insert()},//使わない
           ),
         ],
       ),
@@ -184,7 +183,6 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
     );
   }
-
 }
 
 class ChatMessage extends StatelessWidget {

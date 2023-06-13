@@ -74,7 +74,7 @@ class DatabaseHelper {
             $columnAge INTEGER NOT NULL,
             $columnSender TEXT,
             $columnMessage TEXT,
-            $columnTime TEXT,
+            $columnTime TEXT
           )
           ''');
   }
