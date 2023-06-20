@@ -6,15 +6,13 @@ import 'package:path_provider/path_provider.dart';
 
 class DatabaseHelper {
 
-  static final _databaseName = "MyDatabase5.db"; // DB名
-  static final _databaseVersion = 1; // スキーマのバージョン指定
+  static final _databaseName = "MyDatabase.db"; // DB名
+  static final _databaseVersion = 2; // スキーマのバージョン指定(テーブルを初期化したら1にする。)
 
   static final table = 'my_table'; // テーブル名
 
   //カラム名とは項目名の事(辻)
   static final columnId = '_id'; // カラム名：ID
-  static final columnName = 'name'; // カラム名:Name
-  static final columnAge = 'age'; // カラム名：age
   static final columnSender = 'sender'; // 送信者情報(true=ユーザー:fasle=Bot)
   static final columnMessage = 'message'; // チャットのテキスト
   static final columnTime = 'time'; //送信時間
@@ -68,11 +66,11 @@ class DatabaseHelper {
   // スキーマーのバージョンはテーブル変更時にバージョンを上げる（テーブル・カラム追加・変更・削除など）
   Future _onCreate(Database db, int version) async {
     //それぞれのidの型を指定する必要がある($id 型)の形で指定
+    //１つ下の行はテーブルを再生成するときに使用する
+    //await db.execute('DROP TABLE IF EXISTS my_table');
     await db.execute('''
           CREATE TABLE $table (
             $columnId INTEGER PRIMARY KEY,
-            $columnName TEXT NOT NULL,
-            $columnAge INTEGER NOT NULL,
             $columnSender TEXT,
             $columnMessage TEXT,
             $columnTime TEXT,

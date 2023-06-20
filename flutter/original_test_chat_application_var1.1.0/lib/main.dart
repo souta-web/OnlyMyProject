@@ -37,7 +37,7 @@ class _ChatScreenState extends State<ChatScreen> {
       setState(() {
         //ChatMessageクラスを呼び出すときにテキストと、送り主を引数で渡す
         // 送信されたテキストを画面右側に表示する
-        if(_textEditingController.text.substring(0,4) == "todo"){
+        if(_textEditingController.text.substring(0,4) == "todo" && _textEditingController.text.length > 3){
           _messages.add(SystemMessageInChat(
             text: _textEditingController.text,
             isChecked: false,
@@ -65,27 +65,27 @@ class _ChatScreenState extends State<ChatScreen> {
     Database? db = await DatabaseHelper.instance.database;//データベース取得
     final List<Map<String, dynamic>>? allmessage = await db?.query(
       'my_table',
-      columns: ['message','todostate','id'], // 取得したいカラムのリスト
+      columns: ['id','message','todostate',], // 取得したいカラムのリスト
     );
 
     if (allmessage != null){
       for (final row in allmessage){
-        final value1 = row['message'];
-        final value2 = row['todostate'];
-        final value3 = row['id'];
+        final value1 = row['id'];
+        final value2 = row['message'];
+        final value3 = row['todostate'];
 
         setState(() {
           //ChatMessageクラスを呼び出すときにテキストと、送り主を引数で渡す
           // 送信されたテキストを画面右側に表示する
           if((value1.substring(0,4) == "todo") && (value1.length > 0)){
             _messages.add(SystemMessageInChat(
-              text: value1.toString(),
-              isChecked: value2,
-              id: value3,
+              id: value1,
+              text: value2.toString(),
+              isChecked: value3,
             ));
           }else{
             _messages.add(ChatMessage(
-              text: value1.toString(),
+              text: value2.toString(),
               isSentByUser: true,
             ));
           }
@@ -100,12 +100,10 @@ class _ChatScreenState extends State<ChatScreen> {
     // row to insert
     //データベースに登録
     Map<String, dynamic> row = {
-      DatabaseHelper.columnName : '山田　太郎',
-      DatabaseHelper.columnAge  : 35,
       DatabaseHelper.columnSender : "true",
       DatabaseHelper.columnMessage : _textEditingController.text.toString(), //送信テキスト
       DatabaseHelper.columnTime : DateTime.now().toString(),
-      DatabaseHelper.columnTodostate: "false"
+      DatabaseHelper.columnTodostate: "false",
     };
     final id = await dbHelper.insert(row);
     //print(_textEditingController.text);//デバッグ用
@@ -124,8 +122,6 @@ class _ChatScreenState extends State<ChatScreen> {
   void _update() async {
     Map<String, dynamic> row = {
       DatabaseHelper.columnId   : 1,
-      DatabaseHelper.columnName : '鈴木　一郎',
-      DatabaseHelper.columnAge  : 48
     };
     final rowsAffected = await dbHelper.update(row);
     print('更新しました。 ID：$rowsAffected ');
