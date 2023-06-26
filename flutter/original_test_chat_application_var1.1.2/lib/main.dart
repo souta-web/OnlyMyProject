@@ -106,7 +106,6 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  // -ボタンクリック
   //送信ボタン
   void _insert() async {
     // row to insert
@@ -325,6 +324,7 @@ class _TodoMessage extends State<TodoMessage> {
 
     // todoのチェックボックスがチェックされたときの挙動
   void _toggleCheckbox(int id,_checked) async {
+    //boolをデータベースに登録するとint型の0と1に変換される
     Database? db = await dbHelper.database;//データベース取得
     await db?.update(
       'my_table',
