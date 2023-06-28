@@ -141,24 +141,31 @@ class _ChatScreenState extends State<ChatScreen> {
     );
     final List<Map<String, dynamic>>? action_table_message = await db?.query(
       'action_table',
-      columns: ['_action_id','action_name','action_state','action_Start'], // 取得したいカラムのリスト
+      columns: ['_action_id','action_name','action_state','action_Start','action_End'], // 取得したいカラムのリスト
     );
+
+    var action_index = 0;//todoの数をカウントするための変数
 
     if (chat_table_message != null){
       for (final row in chat_table_message){
         final chat_table_message = row['chat_message'];
         final chat_table_todo = row['chat_todo'];
-        final chat_table_todofinish = row['chat_todofinish'];
         final chat_table_id = row['_chat_id'];
         setState(() {
           //ChatMessageクラスを呼び出すときにテキストと、送り主を引数で渡す
           // 送信されたテキストを画面右側に表示する
           if (chat_table_todo == "1"){//todoのとき
+            final action_table_id = action_table_message?[action_index]['_action_id'];
+            final action_table_name = action_table_message?[action_index]['action_name'];
+            final action_table_state = action_table_message?[action_index]['action_state'];
+            final action_table_start = action_table_message?[action_index]['action_start'];
+            final action_table_end = action_table_message?[action_index]['action_end'];
             _messages.add(TodoMessage(
-              text: chat_table_message,
-              isChecked: chat_table_todofinish,
-              id:chat_table_id,
+              text: action_table_name,
+              isChecked: action_table_state,
+              id:action_table_id,
             ));
+            action_index += 1;
             print("todo");
           }else{//通常チャットの時
             _messages.add(ChatMessage(

@@ -3,7 +3,7 @@ import 'actioneditpage.dart';
 
 class ActionDetailPage extends StatelessWidget {
   final Map<String, dynamic>? action_table_alldata_detailpage;
-
+  //選択されているレコードの全てのデータを引数としてもらう
   const ActionDetailPage({required this.action_table_alldata_detailpage});
 
   final double field1FontSize= 30.0;
@@ -130,9 +130,15 @@ class ActionDetailPage extends StatelessWidget {
   }
 
   void _MoveActionEditPageProcess(BuildContext context){
-    Navigator.push(
+    //Navigator.push(
+    //  context,
+    //  MaterialPageRoute(builder: (context) => ActionEditPage(action_table_alldata_editpage:action_table_alldata_detailpage)),
+    //);
+
+    Navigator.pushNamed(
       context,
-      MaterialPageRoute(builder: (context) => ActionEditPage(action_table_alldata_editpage:action_table_alldata_detailpage)),
+      '/actionEditPage',
+      arguments:{'choice_record':action_table_alldata_detailpage}//main.dartのonGenerateRouteに引数として渡す,型はMap<String, dynamic>
     );
   }
 }

@@ -166,10 +166,9 @@ class DatabaseHelper {
   }
 
   //　更新処理
-   Future<int> update_action_table(Map<String, dynamic> row) async {
+   Future<int> update_action_table(Map<String, dynamic> row,int _id) async {
     Database? db = await instance.database;
-    int id = row[columnChatId];
-    return await db!.update(action_table, row, where: '$columnActionId = ?', whereArgs: [id]);
+    return await db!.update(action_table, row, where: '$columnActionId = ?', whereArgs: [_id]);
   }
 
   //　削除処理

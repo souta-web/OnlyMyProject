@@ -72,6 +72,7 @@ class ActionListPage extends StatelessWidget {
     return action_table_name;
   }
 
+  //ページ移動するための関数。idを引数としてもらう
   void _MoveActionDetailPageProcess(int action_id,BuildContext context) async {
     Database? db = await DatabaseHelper.instance.database;//データベース取得
     final List<Map<String, dynamic>>? result = await db?.query(
@@ -79,10 +80,10 @@ class ActionListPage extends StatelessWidget {
       where: '_action_id = ?', // 条件式
       whereArgs: [action_id], // 条件の値
     );
-    print(result);
-    Navigator.push(
+    Navigator.pushNamed(
       context,
-      MaterialPageRoute(builder: (context) => ActionDetailPage(action_table_alldata_detailpage:result?[0])),
+      '/actionDetailPage',
+      arguments:{'choice_record':result?[0]}//main.dartのonGenerateRouteに引数として渡す,型はMap<String, dynamic>
     );
     
   }

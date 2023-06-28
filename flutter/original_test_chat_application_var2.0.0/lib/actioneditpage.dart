@@ -1,6 +1,10 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'database_helper.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:flutter/services.dart';
+import 'actiondetailpage.dart';
 
 class ActionEditPage extends StatefulWidget {
   final Map<String, dynamic>? action_table_alldata_editpage;
@@ -24,10 +28,26 @@ class _ActionEditPage extends State<ActionEditPage> {
   final TextEditingController _textEditingController_notes = TextEditingController();
 
   @override
+
+  void initState() {
+    super.initState();
+    // 初期化の処理をここに記述する
+    _textEditingController_title.text = _getColumnData('action_name');
+    _textEditingController_score.text = _getColumnData('action_score').toString();
+    _textEditingController_notes.text = _getColumnData('action_notes');
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        //leading: IconButton(
+          //icon: Icon(Icons.arrow_back),
+          //onPressed: () {
+            //_moveActionDetailPageProcess(context);
+          //},
+        //),
         title: Text('アクション編集'),
+        //automaticallyImplyLeading: false,
         actions: [
           IconButton(
             icon: Icon(Icons.grading),
@@ -98,8 +118,11 @@ class _ActionEditPage extends State<ActionEditPage> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: TextField(
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  controller: _textEditingController_score,
                   decoration: InputDecoration(
-                  hintText: _getColumnData('action_score'),
+                  hintText: _getColumnData('action_score').toString(),
                   ),
                   maxLines: null,
                 ),
@@ -109,6 +132,7 @@ class _ActionEditPage extends State<ActionEditPage> {
             Padding(
               padding: const EdgeInsets.all(0.0),
               child: TextField(
+                controller: _textEditingController_notes,
                 decoration: InputDecoration(
                   hintText: _getColumnData('action_notes'),
                 ),
@@ -148,22 +172,34 @@ class _ActionEditPage extends State<ActionEditPage> {
     );
   }
 
-  String _getColumnData(column_key){
+  dynamic _getColumnData(column_key){
     if (widget.action_table_alldata_editpage?[column_key] != null) {
-      return widget.action_table_alldata_editpage?[column_key].toString() ?? "エラーが発生しました。";
+      return widget.action_table_alldata_editpage?[column_key];//String?型を返すことがある
     }
-    return 'データがありません';
+    return '';
   }
 
   void _updateActionTable() async {
     // DatabaseHelper クラスのインスタンス取得
     final dbHelper = DatabaseHelper.instance;
     Map<String, dynamic> row = {
-      DatabaseHelper.columnActionName   : _textEditingController_title.toString(),
-      DatabaseHelper.columnActionScore  : int.parse(_textEditingController_score.toString()),
-      DatabaseHelper.columnActionNotes  : _textEditingController_notes.toString(),
+      DatabaseHelper.columnActionName   : _textEditingController_title.text.toString(),
+      DatabaseHelper.columnActionScore  : int.parse(_textEditingController_score.text),
+      DatabaseHelper.columnActionNotes  : _textEditingController_notes.text.toString(),
     };
-    final rowsAffected = await dbHelper.update_action_table(row);
+    final rowsAffected = await dbHelper.update_action_table(row,_getColumnData('_action_id'));
     print('更新しました。 ID：$rowsAffected ');
+  }
+
+  void _moveActionDetailPageProcess(BuildContext context) async {
+    Database? db = await DatabaseHelper.instance.database;//データベース取得
+    final int _id = widget.action_table_alldata_editpage?['_action_id'];
+    final List<Map<String, dynamic>>? result = await db?.query(
+      'action_table', // テーブル名
+      where: '_action_id = ?', // 条件式
+      whereArgs: [_id], // 条件の値
+    );
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ActionDetailPage(action_table_alldata_detailpage:result?[0])));
+
   }
 }
