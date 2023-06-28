@@ -7,6 +7,8 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'database_helper.dart';
 import 'chatpage.dart';
+import 'actionlistpage.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -32,7 +34,7 @@ class _MyAppHome extends State<MyAppHome> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    Page1(),
+    ActionListPage(),
     NavigationChatPage(),
     Page3(),
   ];
@@ -103,20 +105,6 @@ class _NavigationChatPage extends State<NavigationChatPage> {
           );
         },
       ),
-    );
-  }
-}
-
-class Page1 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: 10,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text('Item $index'),
-        );
-      },
     );
   }
 }
