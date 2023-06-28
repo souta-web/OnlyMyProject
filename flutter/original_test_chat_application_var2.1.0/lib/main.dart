@@ -18,6 +18,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   @override
+
   Widget build(BuildContext context) {
     return MaterialApp(
       initialRoute: '/',
@@ -59,7 +60,7 @@ class _MyAppHome extends State<MyAppHome> {
   final List<Widget> _pages = [
     ActionListPage(),
     NavigationChatPage(),
-    Page3(),
+    OptionPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -132,13 +133,51 @@ class _NavigationChatPage extends State<NavigationChatPage> {
   }
 }
 
-class Page3 extends StatelessWidget {
+class OptionPage extends StatefulWidget {
+  @override
+  _OptionPage createState() => _OptionPage();
+}
+
+class _OptionPage extends State<OptionPage> {
+  final List<bool> switchValues = [false]; // ダミーデータ
+  final List<String> switchTexts = ['ダークモードをオンにする'];
+  late bool isDarkMode;
+
+  ThemeData getTheme() {
+    return isDarkMode ? ThemeData.dark() : ThemeData.light();
+  }
+
+  void toggleDarkMode(bool value) {
+    setState(() {
+      isDarkMode = value;
+    });
+  }
+
+  void initstate(){
+    super.initState();
+    isDarkMode = switchValues[0];
+  }
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.green,
-      child: Center(
-        child: Text('Page 3'),
+    return Material(
+      child: ListView.builder(
+        itemCount: switchValues.length,
+        itemBuilder: (BuildContext context, int index) {
+          return ListTile(
+            title: Text(switchTexts[index]),
+            trailing: Switch(
+              value: switchValues[index],
+              onChanged: (value) {
+                // スイッチの値が変更されたときの処理
+                // リストの対応する位置の値を更新する
+                setState(() {
+                  switchValues[index] = value;
+                  toggleDarkMode(value);
+                });
+              },
+            ),
+          );
+        },
       ),
     );
   }
