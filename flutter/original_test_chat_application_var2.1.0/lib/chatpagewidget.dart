@@ -76,6 +76,7 @@ class _TodoMessage extends State<TodoMessage> {
       child: GestureDetector(
         onLongPress: () {
         // 長押しされたときの処理を実行
+        _MoveActionDetailPageProcess(widget.id,context);
         print("長押しされてるよ");
         },
         child: Container(
@@ -160,5 +161,19 @@ class _TodoMessage extends State<TodoMessage> {
     String result = "0";
 
     return result ;
+  }
+
+  void _MoveActionDetailPageProcess(int action_id,BuildContext context) async {
+    Database? db = await DatabaseHelper.instance.database;//データベース取得
+    final List<Map<String, dynamic>>? result = await db?.query(
+      'action_table', // テーブル名
+      where: '_action_id = ?', // 条件式
+      whereArgs: [action_id], // 条件の値
+    );
+    Navigator.pushNamed(
+      context,
+      '/actionEditPage',
+      arguments:{'choice_record':result?[0]}//main.dartのonGenerateRouteに引数として渡す,型はMap<String, dynamic>
+    );
   }
 }
