@@ -27,6 +27,8 @@ class _ActionEditPage extends State<ActionEditPage> {
   final TextEditingController _textEditingController_score = TextEditingController();
   final TextEditingController _textEditingController_notes = TextEditingController();
 
+  List<Map<String, dynamic>> AllTextFieldHistry = []; //テキストフィールドの変更を保持するためのリスト宣言 
+
   @override
 
   void initState() {
@@ -143,6 +145,7 @@ class _ActionEditPage extends State<ActionEditPage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: const Color.fromARGB(255, 255, 255, 0),
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -152,6 +155,15 @@ class _ActionEditPage extends State<ActionEditPage> {
             icon: Icon(Icons.settings),
             label: 'Settings',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.undo),
+            label: 'undo',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.redo),
+            label: 'redo',
+          ),
+        
         ],
         // バーが選択されたときの処理を追加する場合は、onTapプロパティに関数を設定します
         onTap: (int index) {

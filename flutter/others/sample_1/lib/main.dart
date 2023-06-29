@@ -1,63 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-// テーマ変更用の状態クラス
-class MyTheme extends ChangeNotifier {
-  ThemeData current = ThemeData.light();
-  bool _isDark = false;
-
-  toggle() {
-    _isDark = !_isDark;
-    current = _isDark ? ThemeData.dark() : ThemeData.light();
-    notifyListeners();
-  }
+void main() {
+  runApp(MyApp());
 }
 
-void main() => runApp(MyApp());
-
-// MyApp ウイジェット
 class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => MyTheme(),
-      child: Consumer<MyTheme>(
-        builder: (context, theme, _) {
-          return MaterialApp(
-            theme: theme.current,
-            home: MyHomePage(title: 'Example'),
-          );
-        },
-      ),
-    );
-  }
-}
-
-// MyHomePage ウイジェット
-class MyHomePage extends StatelessWidget {
-  MyHomePage({required this.title});
-
-  final String title;
+  final List<Widget> _pages = [
+    Container(color: Colors.red),
+    Container(color: Colors.green),
+    Container(color: Colors.blue),
+  ];
+  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('テーマ切替テスト'),
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('BottomNavigationBarの色変更'),
+        ),
+        body: _pages[_currentIndex],
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          backgroundColor: const Color.fromARGB(255, 255, 255, 0), // バーの背景色を設定
+          onTap: (index) {
+            // タップしたアイテムのインデックスを設定
+            _currentIndex = index;
+          },
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              label: 'Search',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
+            ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed:  () {
-          Provider.of<MyTheme>(context, listen: false).toggle();
-        },
-        child: Icon(Icons.autorenew),
       ),
     );
   }
