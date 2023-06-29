@@ -82,15 +82,15 @@ class _MyAppHome extends State<MyAppHome> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Page 1',
+            label: 'TodoList',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
-            label: 'Page 2',
+            label: 'Chat',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            label: 'Page 3',
+            label: 'Settings',
           ),
         ],
       ),
@@ -105,7 +105,7 @@ class NavigationChatPage extends StatefulWidget {
 
 class _NavigationChatPage extends State<NavigationChatPage> {
   var chatscreen = ChatScreen();
-  List<String> items = ['Item 1', 'Item 2', 'Item 3'];
+  List<String> items = ['チャット１', 'チャット２', 'チャット３'];
 
   @override
   Widget build(BuildContext context) {
