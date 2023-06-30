@@ -5,42 +5,25 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  final List<Widget> _pages = [
-    Container(color: Colors.red),
-    Container(color: Colors.green),
-    Container(color: Colors.blue),
-  ];
-  int _currentIndex = 0;
+  final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    
+    _controller.addListener(() {
+      final text = _controller.text;
+      print('TextEditingControllerの値が変更されました: $text');
+    });
+
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('BottomNavigationBarの色変更'),
+          title: Text('TextEditingControllerの変更検知'),
         ),
-        body: _pages[_currentIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          backgroundColor: const Color.fromARGB(255, 255, 255, 0), // バーの背景色を設定
-          onTap: (index) {
-            // タップしたアイテムのインデックスを設定
-            _currentIndex = index;
-          },
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Search',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
-            ),
-          ],
+        body: Center(
+          child: TextField(
+            controller: _controller,
+          ),
         ),
       ),
     );

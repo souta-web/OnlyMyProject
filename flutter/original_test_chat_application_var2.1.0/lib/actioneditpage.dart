@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'database_helper.dart';
 import 'package:sqflite/sqflite.dart';
@@ -28,6 +26,9 @@ class _ActionEditPage extends State<ActionEditPage> {
   final TextEditingController _textEditingController_notes = TextEditingController();
 
   List<Map<String, dynamic>> AllTextFieldHistry = []; //テキストフィールドの変更を保持するためのリスト宣言 
+  int _textfield_chenge_index = -1;
+
+  //int _selectedIndex = 0; //ボトムナビゲーションバーの管理用
 
   @override
 
@@ -40,6 +41,27 @@ class _ActionEditPage extends State<ActionEditPage> {
   }
 
   Widget build(BuildContext context) {
+    _textEditingController_title.addListener((){//テキストフィールドの値を検知したら実行される
+      _textfield_chenge_index += 1;
+      final text = _textEditingController_title.text;
+      final Map<String, dynamic> _textfield_inf = {'text':text,'fieldname':'_textEditingController_title'};
+      AllTextFieldHistry.add(_textfield_inf);
+    });
+
+    _textEditingController_score.addListener((){//テキストフィールドの値を検知したら実行される
+      _textfield_chenge_index += 1;
+      final text = _textEditingController_score.text;
+      final Map<String, dynamic> _textfield_inf = {'text':text,'fieldname':'_textEditingController_score'};
+      AllTextFieldHistry.add(_textfield_inf);
+    });
+
+    _textEditingController_notes.addListener((){//テキストフィールドの値を検知したら実行される
+      _textfield_chenge_index += 1;
+      final text = _textEditingController_notes.text;
+      final Map<String, dynamic> _textfield_inf = {'text':text,'fieldname':'_textEditingController_notes'};
+      AllTextFieldHistry.add(_textfield_inf);
+    });
+
     return Scaffold(
       appBar: AppBar(
         //leading: IconButton(
@@ -145,7 +167,9 @@ class _ActionEditPage extends State<ActionEditPage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color.fromARGB(255, 255, 255, 0),
+        backgroundColor: const Color.fromARGB(255, 0, 0, 255),
+        type: BottomNavigationBarType.fixed,
+        onTap: _onButtonPressed,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -163,13 +187,10 @@ class _ActionEditPage extends State<ActionEditPage> {
             icon: Icon(Icons.redo),
             label: 'redo',
           ),
+          
         
         ],
         // バーが選択されたときの処理を追加する場合は、onTapプロパティに関数を設定します
-        onTap: (int index) {
-          // バーが選択されたときの処理を記述します
-          // indexパラメータを使用して選択されたアイテムを識別できます
-        },
       ),
     );
   }
@@ -212,6 +233,25 @@ class _ActionEditPage extends State<ActionEditPage> {
       whereArgs: [_id], // 条件の値
     );
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ActionDetailPage(action_table_alldata_detailpage:result?[0])));
+  }
 
+  void _onButtonPressed(int index) {
+    // ボタンが押されたときに実行する処理を記述する
+    if(index == 2) {
+      _textfield_chenge_index -= 1;
+      print("undo");
+      if (AllTextFieldHistry[_textfield_chenge_index]['fieldname'] == '_textEditingController_title'){
+        _textEditingController_title.text = AllTextFieldHistry[_textfield_chenge_index]['text'].toString();
+        print(_textfield_chenge_index.toString() + ":" + AllTextFieldHistry[40]['text']);
+      }else if(AllTextFieldHistry[_textfield_chenge_index]['fieldname'] == '_textEditingController_score'){
+        _textEditingController_score.text = AllTextFieldHistry[_textfield_chenge_index]['text'];
+      }else if(AllTextFieldHistry[_textfield_chenge_index]['fieldname'] == '_textEditingController_notes'){
+        _textEditingController_notes.text = AllTextFieldHistry[_textfield_chenge_index]['text'].toString();
+      }
+      
+      
+    }else if (index == 3){
+      print("redo");
+    }
   }
 }

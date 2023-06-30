@@ -6,11 +6,13 @@ import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'database_helper.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'chatpage.dart';
 import 'actionlistpage.dart';
 import 'actiondetailpage.dart';
 import 'actioneditpage.dart';
 
+enum ThemeModeValue { light, dark }//ダークモード実装用
 
 void main() {
   runApp(MyApp());
@@ -44,6 +46,14 @@ class MyApp extends StatelessWidget {
         return null;
       },
     );
+  }
+}
+
+class ThemeModeCubit extends Cubit<ThemeMode> {//ダークモード実装用
+  ThemeModeCubit() : super(ThemeMode.light);
+
+  void toggleThemeMode(ThemeModeValue mode) {
+    emit(mode == ThemeModeValue.light ? ThemeMode.light : ThemeMode.dark);
   }
 }
 
