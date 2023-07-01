@@ -39,9 +39,9 @@ class ActionListPage extends StatelessWidget {
                   },
                   child:Column(// 各アイテムのウィジェットを返す
                     children: [
-                      SizedBox(height: 5),
+                      SizedBox(height: 1),
                       _ListCard(item,data?.length),
-                      SizedBox(height: 5),
+                      SizedBox(height: 1),
                     ],
                   ),
                 );
@@ -52,14 +52,19 @@ class ActionListPage extends StatelessWidget {
     );
   }
 
-  Widget _ListCard(String item,int? _index) {
-  // YourListItemWidgetのビルドロジックを実装する
+  Widget _ListCard(String item,int? _index) {//画面に表示するtodoたちのデザイン
   // itemを使用してウィジェットを作成し、それを返す
   print(_index.toString());
   return Container(
     height: 50,
+    width: double.infinity,
     color: Colors.amber[600],
-    child: Center(child: Text(item.toString())), 
+    child: Text(
+      item.toString(),
+      style: TextStyle(
+        fontSize: 20, // フォントサイズを指定
+      ),
+    ), 
   );
 }
 

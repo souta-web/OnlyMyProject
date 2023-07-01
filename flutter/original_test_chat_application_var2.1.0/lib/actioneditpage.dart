@@ -25,8 +25,8 @@ class _ActionEditPage extends State<ActionEditPage> {
   final TextEditingController _textEditingController_score = TextEditingController();
   final TextEditingController _textEditingController_notes = TextEditingController();
 
-  List<Map<String, dynamic>> AllTextFieldHistry = []; //テキストフィールドの変更を保持するためのリスト宣言 
-  int _textfield_chenge_index = -1;
+  List<Map<String, dynamic>> undo_stack = []; //テキストフィールドの変更を保持するためのリスト宣言 
+  List<Map<String, dynamic>> redo_stack = [];
 
   //int _selectedIndex = 0; //ボトムナビゲーションバーの管理用
 
@@ -41,26 +41,23 @@ class _ActionEditPage extends State<ActionEditPage> {
   }
 
   Widget build(BuildContext context) {
-    _textEditingController_title.addListener((){//テキストフィールドの値を検知したら実行される
-      _textfield_chenge_index += 1;
+    void _textEditingController_title_Changed(){//テキストフィールドの値を検知したら実行される
       final text = _textEditingController_title.text;
       final Map<String, dynamic> _textfield_inf = {'text':text,'fieldname':'_textEditingController_title'};
-      AllTextFieldHistry.add(_textfield_inf);
-    });
+      undo_stack.add(_textfield_inf);
+    };
 
-    _textEditingController_score.addListener((){//テキストフィールドの値を検知したら実行される
-      _textfield_chenge_index += 1;
+    void _textEditingController_score_Changed(){//テキストフィールドの値を検知したら実行される
       final text = _textEditingController_score.text;
       final Map<String, dynamic> _textfield_inf = {'text':text,'fieldname':'_textEditingController_score'};
-      AllTextFieldHistry.add(_textfield_inf);
-    });
+      undo_stack.add(_textfield_inf);
+    };
 
-    _textEditingController_notes.addListener((){//テキストフィールドの値を検知したら実行される
-      _textfield_chenge_index += 1;
+    void _textEditingController_notes_Changed(){//テキストフィールドの値を検知したら実行される
       final text = _textEditingController_notes.text;
       final Map<String, dynamic> _textfield_inf = {'text':text,'fieldname':'_textEditingController_notes'};
-      AllTextFieldHistry.add(_textfield_inf);
-    });
+      undo_stack.add(_textfield_inf);
+    };
 
     return Scaffold(
       appBar: AppBar(
@@ -94,6 +91,10 @@ class _ActionEditPage extends State<ActionEditPage> {
                   decoration: InputDecoration(
                     hintText: _getColumnData('action_name'),
                   ),
+                  onChanged: (value){
+                    _textEditingController_title_Changed();
+                    print("onChanged");
+                  },
                   maxLines: null,
                 ),
               ),
@@ -148,7 +149,10 @@ class _ActionEditPage extends State<ActionEditPage> {
                   decoration: InputDecoration(
                   hintText: _getColumnData('action_score').toString(),
                   ),
-                  maxLines: null,
+                  onChanged: (value){
+                    _textEditingController_score_Changed();
+                    print("onChanged");
+                  },
                 ),
               ),
             ),
@@ -161,6 +165,10 @@ class _ActionEditPage extends State<ActionEditPage> {
                   hintText: _getColumnData('action_notes'),
                 ),
                 maxLines: null,
+                onChanged: (value){
+                    _textEditingController_notes_Changed();
+                    print("onChanged");
+                  },
               ),
             ),
           ],
@@ -238,20 +246,37 @@ class _ActionEditPage extends State<ActionEditPage> {
   void _onButtonPressed(int index) {
     // ボタンが押されたときに実行する処理を記述する
     if(index == 2) {
-      _textfield_chenge_index -= 1;
-      print("undo");
-      if (AllTextFieldHistry[_textfield_chenge_index]['fieldname'] == '_textEditingController_title'){
-        _textEditingController_title.text = AllTextFieldHistry[_textfield_chenge_index]['text'].toString();
-        print(_textfield_chenge_index.toString() + ":" + AllTextFieldHistry[40]['text']);
-      }else if(AllTextFieldHistry[_textfield_chenge_index]['fieldname'] == '_textEditingController_score'){
-        _textEditingController_score.text = AllTextFieldHistry[_textfield_chenge_index]['text'];
-      }else if(AllTextFieldHistry[_textfield_chenge_index]['fieldname'] == '_textEditingController_notes'){
-        _textEditingController_notes.text = AllTextFieldHistry[_textfield_chenge_index]['text'].toString();
+      if(undo_stack.isNotEmpty) {
+        if (undo_stack.last['fieldname'].toString() == '_textEditingController_title'){
+          _textEditingController_title.text = undo_stack.last['text'];
+          redo_stack.add(undo_stack.last);
+          undo_stack.removeLast();
+        } else if(undo_stack.last['fieldname'].toString() == '_textEditingController_score'){
+          _textEditingController_score.text = undo_stack.last['text'];
+          redo_stack.add(undo_stack.last);
+          undo_stack.removeLast();
+        } else if(undo_stack.last['fieldname'].toString() == '_textEditingController_notes'){
+          _textEditingController_notes.text = undo_stack.last['text'];
+          redo_stack.add(undo_stack.last);
+          undo_stack.removeLast();
+        }
       }
-      
-      
     }else if (index == 3){
-      print("redo");
+      if(redo_stack.isNotEmpty) {
+        if (redo_stack[0]['fieldname'].toString() == '_textEditingController_title'){
+          _textEditingController_title.text = redo_stack[0]['text'];
+          undo_stack.add(undo_stack.last['text']);
+          redo_stack.removeAt(0);
+        } else if (redo_stack[0]['fieldname'].toString() == '_textEditingController_score'){
+          _textEditingController_score.text = redo_stack[0]['text'];
+          undo_stack.add(undo_stack.last['text']);
+          redo_stack.removeAt(0);
+        } else if (redo_stack[0]['fieldname'].toString() == '_textEditingController_notes'){
+          _textEditingController_notes.text = redo_stack[0]['text'];
+          undo_stack.add(undo_stack.last['text']);
+          redo_stack.removeAt(0);
+        }
+      }
     }
   }
 }

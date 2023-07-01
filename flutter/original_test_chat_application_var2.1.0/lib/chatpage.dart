@@ -5,6 +5,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'database_helper.dart';
 import 'chatpagewidget.dart';
+import 'package:file_picker/file_picker.dart';
 
 
 class ChatScreen extends StatefulWidget {
@@ -74,7 +75,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     IconButton(
                       icon: Icon(Icons.add),
                       onPressed: () {
-                        // TODO: [+]ボタンが押された時の処理
+                        _addButtonPressed();
                       },
                     ),
                   ],
@@ -91,7 +92,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 IconButton(
                   icon: Icon(Icons.send),
                   onPressed:() {
-                    _insert_chat_table();//データベースに対する送信処理
+                    _sendButtonPressed();
                   } 
                 ),
               ],
@@ -199,8 +200,30 @@ class _ChatScreenState extends State<ChatScreen> {
     if (_isTodo){
       _insert_action_table(id);
     }
+  }
 
-    _sendMessage(id,_isTodo);//画面処理
+  void _sendButtonPressed(){//画面処理
+
+  }
+
+  void _addButtonPressed() async {
+    final result = await FilePicker.platform.pickFiles();//選択されたファイルを取得する
+    if (result != null) {
+      // ファイルが選択された場合の処理
+      // 選択されたファイルにアクセスするための情報は`result`オブジェクトに含まれます
+      // 例えば、`result.files.single.path`でファイルのパスにアクセスできます
+      final path = result.files.single.path;
+      if (path != null) {
+        final file = File(path);
+        // ファイルにアクセスして適切な処理を行います
+      }
+    } else {
+      // キャンセルされた場合の処理
+    }
+  }
+
+  _sendButtonPressed() {
+
   }
 
   // 照会ボタンクリック

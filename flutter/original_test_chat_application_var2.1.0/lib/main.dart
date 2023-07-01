@@ -12,8 +12,6 @@ import 'actionlistpage.dart';
 import 'actiondetailpage.dart';
 import 'actioneditpage.dart';
 
-enum ThemeModeValue { light, dark }//ダークモード実装用
-
 void main() {
   runApp(MyApp());
 }
@@ -46,14 +44,6 @@ class MyApp extends StatelessWidget {
         return null;
       },
     );
-  }
-}
-
-class ThemeModeCubit extends Cubit<ThemeMode> {//ダークモード実装用
-  ThemeModeCubit() : super(ThemeMode.light);
-
-  void toggleThemeMode(ThemeModeValue mode) {
-    emit(mode == ThemeModeValue.light ? ThemeMode.light : ThemeMode.dark);
   }
 }
 
