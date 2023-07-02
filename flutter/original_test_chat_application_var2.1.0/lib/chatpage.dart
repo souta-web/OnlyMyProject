@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
+import 'dart:io' as io;
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'database_helper.dart';
 import 'chatpagewidget.dart';
 import 'package:file_picker/file_picker.dart';
-
+import 'dart:typed_data';
 
 class ChatScreen extends StatefulWidget {
   @override
@@ -20,6 +20,9 @@ class _ChatScreenState extends State<ChatScreen> {
   final List<dynamic> _messages = [];
   // DatabaseHelper クラスのインスタンス取得
   final dbHelper = DatabaseHelper.instance;
+
+  late var _file_path; //ユーザーがファイルを送信するときにここにそのディレクトリが入る
+  late Uint8List? _file_data = null;
 
   bool _isTodo = false;//テキスト入力の左のやつ
 
@@ -92,7 +95,9 @@ class _ChatScreenState extends State<ChatScreen> {
                 IconButton(
                   icon: Icon(Icons.send),
                   onPressed:() {
-                    _sendButtonPressed();
+                    if (_textEditingController.text != "") {
+                      _insert_chat_table();//データベースに対する送信処理
+                    }
                   } 
                 ),
               ],
@@ -115,6 +120,7 @@ class _ChatScreenState extends State<ChatScreen> {
             text: _textEditingController.text,
             isChecked: 0,
             id:_id,
+            media:_nullCheckMedia(_file_data),
           ));
         }else{
           _messages.add(ChatMessage(
@@ -142,7 +148,7 @@ class _ChatScreenState extends State<ChatScreen> {
     );
     final List<Map<String, dynamic>>? action_table_message = await db?.query(
       'action_table',
-      columns: ['_action_id','action_name','action_state','action_Start','action_End'], // 取得したいカラムのリスト
+      columns: ['_action_id','action_name','action_state','action_Start','action_End','action_media'], // 取得したいカラムのリスト
     );
 
     var action_index = 0;//todoの数をカウントするための変数
@@ -161,10 +167,12 @@ class _ChatScreenState extends State<ChatScreen> {
             final action_table_state = action_table_message?[action_index]['action_state'];
             final action_table_start = action_table_message?[action_index]['action_start'];
             final action_table_end = action_table_message?[action_index]['action_end'];
+            final action_table_media = _nullCheckMedia(action_table_message?[action_index]['action_media']);
             _messages.add(TodoMessage(
               text: action_table_name,
               isChecked: action_table_state,
               id:action_table_id,
+              media:action_table_media,//バイナリデータを引き渡す
             ));
             action_index += 1;
             print("todo");
@@ -178,6 +186,14 @@ class _ChatScreenState extends State<ChatScreen> {
           
         });
       }
+    }
+  }
+
+  Uint8List? _nullCheckMedia(var _media) {
+    if (_media != null){
+      return _media;
+    } else {
+      return null;
     }
   }
 
@@ -200,10 +216,8 @@ class _ChatScreenState extends State<ChatScreen> {
     if (_isTodo){
       _insert_action_table(id);
     }
-  }
 
-  void _sendButtonPressed(){//画面処理
-
+    _sendMessage(id,_isTodo);//画面処理
   }
 
   void _addButtonPressed() async {
@@ -214,16 +228,13 @@ class _ChatScreenState extends State<ChatScreen> {
       // 例えば、`result.files.single.path`でファイルのパスにアクセスできます
       final path = result.files.single.path;
       if (path != null) {
-        final file = File(path);
         // ファイルにアクセスして適切な処理を行います
+        final bytes = await io.File(path).readAsBytes();
+        _file_data = Uint8List?.fromList(bytes);
       }
     } else {
       // キャンセルされた場合の処理
     }
-  }
-
-  _sendButtonPressed() {
-
   }
 
   // 照会ボタンクリック
@@ -254,7 +265,7 @@ class _ChatScreenState extends State<ChatScreen> {
       DatabaseHelper.columnActionEnd : null,
       DatabaseHelper.columnActionDuration : null,
       DatabaseHelper.columnActionMessage : null,
-      DatabaseHelper.columnActionMedia : null,
+      DatabaseHelper.columnActionMedia : _file_data,
       DatabaseHelper.columnActionNotes : null,
       DatabaseHelper.columnActionScore : null,
       DatabaseHelper.columnActionState : 0,

@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 
 class DatabaseHelper {
 
-  static final _databaseName = "MyDatabase17.db"; // DB名
+  static final _databaseName = "MyDatabase18.db"; // DB名
   static final _databaseVersion = 1; // スキーマのバージョン指定
 
   static final chat_table = 'chat_table'; // チャット管理テーブル
@@ -34,6 +34,8 @@ class DatabaseHelper {
   static final columnActionScore = 'action_score'; //充実度
   static final columnActionState = 'action_state'; //状態(0=未完了,1=完了)
   static final columnActionPlace = 'action_place'; //場所
+  static final columnActionMainTag = 'action_main_tag'; //メインタグ
+  static final columnActionSubTag = 'action_sub_tag'; //サブタグ
 
   // DatabaseHelper クラスを定義
   DatabaseHelper._privateConstructor();
@@ -109,7 +111,9 @@ class DatabaseHelper {
         $columnActionNotes TEXT,
         $columnActionScore INTEGER,
         $columnActionState INTEGER,
-        $columnActionPlace TEXT
+        $columnActionPlace TEXT,
+        $columnActionMainTag TEXT,
+        $columnActionSubTag TEXT
       )
     ''');
   }

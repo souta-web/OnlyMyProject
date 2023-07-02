@@ -6,6 +6,8 @@ import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'database_helper.dart';
+import 'package:file_picker/file_picker.dart';
+import 'dart:typed_data';
 
 
 class ChatMessage extends StatelessWidget {
@@ -43,10 +45,11 @@ class ChatMessage extends StatelessWidget {
 
 //todoを追加した時のチャットひな形
 class TodoMessage extends StatefulWidget {
-  TodoMessage({required this.text,required this.isChecked,required this.id});//クラスを呼び出すときに引数を必要とする(辻)
+  TodoMessage({required this.text,required this.isChecked,required this.id,required this.media});//クラスを呼び出すときに引数を必要とする(辻)
   final String text;// チャットメッセージのテキスト
   final int isChecked;
   final int id;// チャットのid
+  final Uint8List? media;//バイナリデータを受け取る
 
   @override
   _TodoMessage createState() => _TodoMessage();
@@ -113,8 +116,8 @@ class _TodoMessage extends State<TodoMessage> {
               ),
               Text(
                 "開始:2022-10-10-10:10:10"
-                
-              )
+              ),
+              _draw_image(),
             ],
           )
         ),
@@ -175,5 +178,17 @@ class _TodoMessage extends State<TodoMessage> {
       '/actionEditPage',
       arguments:{'choice_record':result?[0]}//main.dartのonGenerateRouteに引数として渡す,型はMap<String, dynamic>
     );
+  }
+
+  Widget _draw_image() {
+    if (widget.media != null) {
+      final Uint8List _image = widget.media!;
+      return Container(
+        child: Image.memory(_image),
+      );
+    } else {
+      return Container(
+      );
+    }
   }
 }

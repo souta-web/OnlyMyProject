@@ -11,6 +11,7 @@ import 'chatpage.dart';
 import 'actionlistpage.dart';
 import 'actiondetailpage.dart';
 import 'actioneditpage.dart';
+import 'graphpage.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,6 +22,8 @@ class MyApp extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
       initialRoute: '/',
       routes: {//画面遷移で任意のページに移動するための初期設定
         '/': (context) => MyAppHome(),
@@ -61,6 +64,7 @@ class _MyAppHome extends State<MyAppHome> {
     ActionListPage(),
     NavigationChatPage(),
     OptionPage(),
+    GraphPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -78,6 +82,7 @@ class _MyAppHome extends State<MyAppHome> {
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
+        type: BottomNavigationBarType.fixed,
         onTap: _onItemTapped,
         items: [
           BottomNavigationBarItem(
@@ -91,6 +96,10 @@ class _MyAppHome extends State<MyAppHome> {
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: 'Settings',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.auto_graph),
+            label: 'Graph',
           ),
         ],
       ),
