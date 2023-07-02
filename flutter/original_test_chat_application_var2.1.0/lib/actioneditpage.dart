@@ -24,6 +24,7 @@ class _ActionEditPage extends State<ActionEditPage> {
   final TextEditingController _textEditingController_title = TextEditingController();
   final TextEditingController _textEditingController_score = TextEditingController();
   final TextEditingController _textEditingController_notes = TextEditingController();
+  final TextEditingController _textEditingController_main_tag = TextEditingController();
 
   List<Map<String, dynamic>> undo_stack = []; //テキストフィールドの変更を保持するためのリスト宣言 
   List<Map<String, dynamic>> redo_stack = [];
@@ -38,6 +39,7 @@ class _ActionEditPage extends State<ActionEditPage> {
     _textEditingController_title.text = _getColumnData('action_name');
     _textEditingController_score.text = _getColumnData('action_score').toString();
     _textEditingController_notes.text = _getColumnData('action_notes');
+    _textEditingController_main_tag.text = _getColumnData('action_main_tag');
   }
 
   Widget build(BuildContext context) {
@@ -56,6 +58,12 @@ class _ActionEditPage extends State<ActionEditPage> {
     void _textEditingController_notes_Changed(){//テキストフィールドの値を検知したら実行される
       final text = _textEditingController_notes.text;
       final Map<String, dynamic> _textfield_inf = {'text':text,'fieldname':'_textEditingController_notes'};
+      undo_stack.add(_textfield_inf);
+    };
+
+    void _textEditingController_main_tag_Changed(){//テキストフィールドの値を検知したら実行される
+      final text = _textEditingController_main_tag.text;
+      final Map<String, dynamic> _textfield_inf = {'text':text,'fieldname':'_textEditingController_main_tag'};
       undo_stack.add(_textfield_inf);
     };
 
@@ -101,15 +109,17 @@ class _ActionEditPage extends State<ActionEditPage> {
             ),
             _drawHorizontalLine(),
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'タグ',
-                  softWrap: false,
-                  textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: field2FontSize),
+              padding: const EdgeInsets.all(0.0),
+              child: TextField(
+                controller: _textEditingController_main_tag,
+                decoration: InputDecoration(
+                  hintText: _getColumnData('action_main_tag'),
                 ),
+                maxLines: null,
+                onChanged: (value){
+                  _textEditingController_main_tag_Changed();
+                  print("onChanged");
+                },
               ),
             ),
             _drawHorizontalLine(),
@@ -166,9 +176,9 @@ class _ActionEditPage extends State<ActionEditPage> {
                 ),
                 maxLines: null,
                 onChanged: (value){
-                    _textEditingController_notes_Changed();
-                    print("onChanged");
-                  },
+                  _textEditingController_notes_Changed();
+                  print("onChanged");
+                },
               ),
             ),
           ],
@@ -216,17 +226,19 @@ class _ActionEditPage extends State<ActionEditPage> {
   dynamic _getColumnData(column_key){
     if (widget.action_table_alldata_editpage?[column_key] != null) {
       return widget.action_table_alldata_editpage?[column_key];//String?型を返すことがある
+    }else{
+      return '';
     }
-    return '';
   }
 
-  void _updateActionTable() async {
+  void _updateActionTable() async {//保存ボタン押されたとき
     // DatabaseHelper クラスのインスタンス取得
     final dbHelper = DatabaseHelper.instance;
     Map<String, dynamic> row = {
       DatabaseHelper.columnActionName   : _textEditingController_title.text.toString(),
       DatabaseHelper.columnActionScore  : int.parse(_textEditingController_score.text),
       DatabaseHelper.columnActionNotes  : _textEditingController_notes.text.toString(),
+      DatabaseHelper.columnActionMainTag: _textEditingController_main_tag.text.toString()
     };
     final rowsAffected = await dbHelper.update_action_table(row,_getColumnData('_action_id'));
     print('更新しました。 ID：$rowsAffected ');
@@ -243,7 +255,7 @@ class _ActionEditPage extends State<ActionEditPage> {
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ActionDetailPage(action_table_alldata_detailpage:result?[0])));
   }
 
-  void _onButtonPressed(int index) {
+  void _onButtonPressed(int index) {//ボトムナビゲーションバーが押されたときの挙動
     // ボタンが押されたときに実行する処理を記述する
     if(index == 2) {
       if(undo_stack.isNotEmpty) {

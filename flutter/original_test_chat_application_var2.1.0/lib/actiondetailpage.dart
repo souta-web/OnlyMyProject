@@ -48,10 +48,10 @@ class ActionDetailPage extends StatelessWidget {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'タグ',
+                  'tag:' + _getColumnData('action_main_tag'),
                   softWrap: false,
                   textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: field2FontSize),
+                  style: TextStyle(fontSize: field5FontSize),
                 ),
               ),
             ),
@@ -122,7 +122,7 @@ class ActionDetailPage extends StatelessWidget {
     );
   }
 
-  String _getColumnData(column_key){
+  String _getColumnData(column_key){//引数として受け取ったカラムのデータを取得
     if (action_table_alldata_detailpage?[column_key] != null) {
       return action_table_alldata_detailpage?[column_key].toString() ?? "エラーが発生しました。";
     }
