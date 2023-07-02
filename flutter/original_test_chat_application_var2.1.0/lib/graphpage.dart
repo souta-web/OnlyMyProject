@@ -13,6 +13,7 @@ import 'chatpage.dart';
 import 'actionlistpage.dart';
 import 'actiondetailpage.dart';
 import 'actioneditpage.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class GraphPage extends StatefulWidget {
   @override
@@ -20,46 +21,23 @@ class GraphPage extends StatefulWidget {
 }
 
 class _GraphPage extends State<GraphPage> {
-  late List<charts.Series> seriesList;
-  late bool animate;
-
-  PieChartExample(this.seriesList, {required this.animate});
-
   @override
   Widget build(BuildContext context) {
-    return charts.PieChart(
-      seriesList,
-      animate: animate,
-      defaultRenderer: charts.ArcRendererConfig(
-        arcRendererDecorators: [charts.ArcLabelDecorator()],
+    return Container(//appbarのある画面を作るという宣言
+      child: Padding(//余白のあるウィジェットを作成
+        padding: const EdgeInsets.all(30),//余白のサイズ
+        child: PieChart(PieChartData(
+          centerSpaceRadius: 5,
+          borderData: FlBorderData(show: false),
+          sectionsSpace: 2,
+          sections: [
+            PieChartSectionData(value: 35, color: Colors.purple, radius: 100),
+            PieChartSectionData(value: 40, color: Colors.amber, radius: 100),
+            PieChartSectionData(value: 55, color: Colors.green, radius: 100),
+            PieChartSectionData(value: 70, color: Colors.orange, radius: 100),
+          ])
+      )
       ),
     );
   }
-}
-
-List<charts.Series<Task, String>> _createSampleData() {
-  final data = [
-    Task('Task 1', 35.0),
-    Task('Task 2', 25.0),
-    Task('Task 3', 20.0),
-    Task('Task 4', 10.0),
-    Task('Task 5', 10.0),
-  ];
-
-  return [
-    charts.Series<Task, String>(
-      id: 'Tasks',
-      domainFn: (Task task, _) => task.task,
-      measureFn: (Task task, _) => task.taskValue,
-      data: data,
-      labelAccessorFn: (Task row, _) => '${row.taskValue}%',
-    )
-  ];
-}
-
-class Task {
-  final String task;
-  final double taskValue;
-
-  Task(this.task, this.taskValue);
 }
