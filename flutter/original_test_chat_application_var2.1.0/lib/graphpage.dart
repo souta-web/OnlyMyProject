@@ -65,7 +65,7 @@ class _GraphPage extends State<GraphPage> {
             _getTagAmount_relation(index);//tag_amountのカウントを増やす
           }else{//登録されていなかったら
             final _tmp = {'tag_name':_main_tag_name,'tag_amount':1};
-            _tags_amount_tmp.add(_tmp);
+            _getTagAmount_relation(_tmp);
           }
         });
       } else {
@@ -78,9 +78,11 @@ class _GraphPage extends State<GraphPage> {
 
   void _getTagAmount_relation(var _data) {
     if (_data is Map<String, dynamic>) {
-      //_tags_amount.add(_data);
-    }else(
-      _tags_amount[_data]['tag_amount'] = int.parse(_tags_amount[_data]['tag_amount']) + 1
-    );
+      _tags_amount.add(_data);
+      print('_getTagAmount_relationがtrue');
+    }else{
+      _tags_amount[_data]['tag_amount']++;
+      print('_getTagAmount_relationがfalse');
+    };
   }
 }
