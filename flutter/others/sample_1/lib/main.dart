@@ -2,18 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'theme_helper.dart';
 
-// テーマ変更用の状態クラス
-class MyTheme extends ChangeNotifier {
-  ThemeData current = ThemeData.light();
-  bool _isDark = false;
-
-  toggle() {
-    _isDark = !_isDark;
-    current = _isDark ? ThemeData.dark() : ThemeData.light();
-    notifyListeners();
-  }
-}
-
 void main() => runApp(MyApp());
 
 // MyApp ウイジェット
@@ -55,30 +43,32 @@ class _MyHomePage extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children:[
             Text('テーマ切替テスト'),
-            themeChangeButton(isButtonToggled, (bool newValue) {
-              setState(() {
-                isButtonToggled = newValue;
-              });
-            }),
+            SwitchButton(),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed:  () {
-          Provider.of<MyTheme>(context, listen: false).toggle();
-        },
-        child: Icon(Icons.autorenew),
-      ),
-
     );
   }
 }
 
-Widget themeChangeButton(bool _isToggled, Function(bool) onPressed) {
-  return ElevatedButton(
-    onPressed: () {
-      _isToggled = !_isToggled;
-    },
-    child: Text(_isToggled ? 'ON' : 'OFF'),
-  );
+class SwitchButton extends StatefulWidget {
+  @override
+  _SwitchButtonState createState() => _SwitchButtonState();
+}
+
+class _SwitchButtonState extends State<SwitchButton> {
+  bool isSwitched = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Switch(
+      value: isSwitched,
+      onChanged: (value) {
+        setState(() {
+          isSwitched = value;
+          Provider.of<MyTheme>(context, listen: false).toggle();
+        });
+      },
+    );
+  }
 }
