@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 class ConfigScreenWidget extends StatefulWidget {
   @override
   _ConfigScreenWidgetState createState() => _ConfigScreenWidgetState();
+  // pushNamed で使えるように定義しておく
+  //static const path = '/config/';
 }
 
 class _ConfigScreenWidgetState extends State<ConfigScreenWidget> {

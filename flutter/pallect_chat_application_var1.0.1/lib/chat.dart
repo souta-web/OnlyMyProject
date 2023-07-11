@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'config.dart';
+//import 'config.dart';//一時コメントアウト
 
 class ChatScreenWidget extends StatelessWidget {
   @override
@@ -7,21 +7,20 @@ class ChatScreenWidget extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Chat'),
-        actions: [
+        actions: [  
           IconButton(
             icon: Icon(Icons.more_vert),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ConfigScreenWidget()),
-              );
+              Navigator.pushNamed(context, '/config');//routeに追加したconfigに遷移
             },
           ),
-        ],//config
+        ],
       ),
+      ///記述範囲
       body: Center(
         child: Text('Chat Screen'),
       ),
+      ///
     );
   }
 }

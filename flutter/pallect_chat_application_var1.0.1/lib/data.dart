@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'config.dart';
+//import 'config.dart';
 
 class DataScreenWidget extends StatelessWidget {
   @override
@@ -11,10 +11,7 @@ class DataScreenWidget extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.more_vert),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ConfigScreenWidget()),
-              );
+              Navigator.pushNamed(context, '/config');
             },
           ),
         ],

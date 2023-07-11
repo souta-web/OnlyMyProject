@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'chat.dart';
 import 'timeline.dart';
 import 'data.dart';
+import 'config.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,6 +14,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Chat App',
       home: MainScreen(),
+      routes: {//遷移先追加するならここに追加
+        '/config': (context) => ConfigScreenWidget(),
+      },
     );
   }
 }

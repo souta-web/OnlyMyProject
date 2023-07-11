@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'config.dart';
+//import 'config.dart';
 
 class TimelineScreenWidget extends StatelessWidget {
   @override
@@ -11,17 +11,16 @@ class TimelineScreenWidget extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.more_vert),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ConfigScreenWidget()),
-              );
+              Navigator.pushNamed(context, '/config');//routeに追加したconfigに遷移
             },
           ),
         ],
       ),
+      ///記述範囲
       body: Center(
         child: Text('Timeline Screen'),
       ),
+      ///記述範囲
     );
   }
 }
