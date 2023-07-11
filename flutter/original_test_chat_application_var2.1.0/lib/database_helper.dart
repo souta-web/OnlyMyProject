@@ -5,24 +5,24 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
 class DatabaseHelper {
-
   static final _databaseName = "MyDatabase18.db"; // DB名
   static final _databaseVersion = 1; // スキーマのバージョン指定
 
   static final chat_table = 'chat_table'; // チャット管理テーブル
   static final action_table = 'action_table'; //アクション(Todo)管理テーブル
+  static final tag_table = 'tag_table'; // タグ管理テーブル
 
-  //カラム名とは項目名の事(辻)
-  //チャットテーブルのカラム
+  // カラム名とは項目名の事(辻)
+  // チャットテーブルのカラム
   static final columnChatId = '_chat_id'; // カラム名：ID
   static final columnChatSender = 'chat_sender'; // 送信者情報(true=ユーザー:fasle=AI)
   static final columnChatTodo = 'chat_todo'; //todoかどうか(true=todo:false=message)
-  static final columnChatTodofinish = 'chat_todofinish'; 
+  static final columnChatTodofinish = 'chat_todofinish';
   static final columnChatMessage = 'chat_message'; // チャットのテキスト
   static final columnChatTime = 'chat_time'; //送信時間
   static final columnChatChannel = 'chat_channel'; //チャットチャンネル
 
-  //アクションテーブルのカラム
+  // アクションテーブルのカラム
   static final columnActionId = '_action_id'; //ID
   static final columnActionName = 'action_name'; //アクション名
   static final columnActionStart = 'action_start'; //開始時刻
@@ -36,6 +36,11 @@ class DatabaseHelper {
   static final columnActionPlace = 'action_place'; //場所
   static final columnActionMainTag = 'action_main_tag'; //メインタグ
   static final columnActionSubTag = 'action_sub_tag'; //サブタグ
+
+  // タグテーブルのカラム
+  static final columnTagName = 'tag_name'; // タグ名
+  static final columnTagColor = 'tag_color'; // タグの色
+  static final columnTagRegisteredActionName = 'tag_registered_action_name'; // 登録されたアクション名
 
   // DatabaseHelper クラスを定義
   DatabaseHelper._privateConstructor();
@@ -58,7 +63,7 @@ class DatabaseHelper {
     if (_database != null) return _database;
     _database = await _initDatabase();
     //カラムを追加したい時だけ次の行のコメントアウトを解除プラス関数の中身を書き換える
-    //_addcolumn(); 
+    //_addcolumn();
     return _database;
   }
 
@@ -99,6 +104,7 @@ class DatabaseHelper {
       )
     ''');
 
+    // アクションテーブルの作成
     await db.execute('''
       CREATE TABLE $action_table (
         $columnActionId INTEGER PRIMARY KEY,
@@ -114,6 +120,15 @@ class DatabaseHelper {
         $columnActionPlace TEXT,
         $columnActionMainTag TEXT,
         $columnActionSubTag TEXT
+      )
+    ''');
+
+    // タグテーブルの作成
+    await db.execute('''
+      CREATE TABLE $tag_table (
+        $columnTagName TEXT PRIMARY KEY,
+        $columnTagColor TEXT,
+        $columnTagRegisteredActionName TEXT
       )
     ''');
   }
@@ -132,25 +147,28 @@ class DatabaseHelper {
   }
 
   // レコード数を確認
-   Future<int?> queryRowCount_chat_table() async {
+  Future<int?> queryRowCount_chat_table() async {
     Database? db = await instance.database;
-    return Sqflite.firstIntValue(await db!.rawQuery('SELECT COUNT(*) FROM $chat_table'));
+    return Sqflite.firstIntValue(
+        await db!.rawQuery('SELECT COUNT(*) FROM $chat_table'));
   }
 
   //　更新処理
-   Future<int> update_chat_table(Map<String, dynamic> row) async {
+  Future<int> update_chat_table(Map<String, dynamic> row) async {
     Database? db = await instance.database;
     int id = row[columnChatId];
-    return await db!.update(chat_table, row, where: '$columnChatId = ?', whereArgs: [id]);
+    return await db!
+        .update(chat_table, row, where: '$columnChatId = ?', whereArgs: [id]);
   }
 
   //　削除処理
-   Future<int> delete_chat_table(int id) async {
+  Future<int> delete_chat_table(int id) async {
     Database? db = await instance.database;
-    return await db!.delete(chat_table, where: '$columnChatId = ?', whereArgs: [id]);
+    return await db!
+        .delete(chat_table, where: '$columnChatId = ?', whereArgs: [id]);
   }
 
-  //アクションテーブル用の関数  
+  //アクションテーブル用の関数
   // 登録処理
   Future<int> insert_action_table(Map<String, dynamic> row) async {
     Database? db = await instance.database;
@@ -164,20 +182,58 @@ class DatabaseHelper {
   }
 
   // レコード数を確認
-   Future<int?> queryRowCount_action_table() async {
+  Future<int?> queryRowCount_action_table() async {
     Database? db = await instance.database;
-    return Sqflite.firstIntValue(await db!.rawQuery('SELECT COUNT(*) FROM $action_table'));
+    return Sqflite.firstIntValue(
+        await db!.rawQuery('SELECT COUNT(*) FROM $action_table'));
   }
 
   //　更新処理
-   Future<int> update_action_table(Map<String, dynamic> row,int _id) async {
+  Future<int> update_action_table(Map<String, dynamic> row, int _id) async {
     Database? db = await instance.database;
-    return await db!.update(action_table, row, where: '$columnActionId = ?', whereArgs: [_id]);
+    return await db!.update(action_table, row,
+        where: '$columnActionId = ?', whereArgs: [_id]);
   }
 
   //　削除処理
-   Future<int> delete_action_table(int id) async {
+  Future<int> delete_action_table(int id) async {
     Database? db = await instance.database;
-    return await db!.delete(action_table, where: '$columnActionId = ?', whereArgs: [id]);
+    return await db!
+        .delete(action_table, where: '$columnActionId = ?', whereArgs: [id]);
+  }
+
+  // タグテーブル用の関数
+  // 登録処理
+  Future<int> insert_tag_table(Map<String, dynamic> row) async {
+    Database? db = await instance.database;
+    return await db!.insert(tag_table, row);
+  }
+
+  // 照会処理
+  Future<List<Map<String, dynamic>>> queryAllRows_tag_table() async {
+    Database? db = await instance.database;
+    return await db!.query(tag_table);
+  }
+
+  // レコード数を確認
+  Future<int?> queryAllRowsCount_tag_table() async {
+    Database? db = await instance.database;
+    return Sqflite.firstIntValue(
+        await db!.rawQuery('SELECT COUNT(*) FROM $tag_table'));
+  }
+
+  // 更新処理
+  Future<int> update_tag_table(Map<String, dynamic> row) async {
+    Database? db = await instance.database;
+    String name = row[columnTagName];
+    return await db!
+        .update(tag_table, row, where: '$columnTagName = ?', whereArgs: [name]);
+  }
+
+  // 削除処理
+  Future<int> delete_tag_table(String name) async {
+    Database? db = await instance.database;
+    return await db!
+        .delete(tag_table, where: '$columnTagName = ?', whereArgs: [name]);
   }
 }
