@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 //import 'config.dart';
 
-class DataScreenWidget extends StatelessWidget {
+class TimelineScreenWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Data'),
+        title: Text('Timeline'),
         actions: [
           IconButton(
             icon: Icon(Icons.more_vert),
@@ -18,7 +18,7 @@ class DataScreenWidget extends StatelessWidget {
       ),
       ///記述範囲
       body: Center(
-        child: Text('Data Screen'),
+        child: Text('Timeline Screen'),
       ),
       ///記述範囲
     );
