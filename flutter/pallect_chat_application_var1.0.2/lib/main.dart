@@ -1,21 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+
 import 'chat.dart';
 import 'timeline.dart';
 import 'data.dart';
 import 'config.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
+// アプリ全体の外観モードの状態を管理するプロバイダー
+final themeModeProvider = StateProvider<ThemeMode>((ref)=>ThemeMode.system);//.system:システム設定に従う.light.dark:それぞれのモード
 
-class MyApp extends StatelessWidget {
+// 1. ConsumerWidget を継承したクラスを作成する
+class MyApp extends ConsumerWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
-  Widget build(BuildContext context) {
+  // 2. 引数に WidgetRef ref を取るようにする
+  Widget build(BuildContext context, WidgetRef ref) {
+    // 3. themModeProvider の ref オブジェクトを取得する
+    // デフォルトはシステム設定に従う(ThemeMode.system)ようにしておくといいかも
+    final themeMode = ref.watch(themeModeProvider.state);
     return MaterialApp(
+      debugShowCheckedModeBanner: false,//右上のデバッグ表示の設定
       title: 'Chat App',
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      // 4. themeModeProvider の state を用いて themeMode を設定する
+      themeMode: themeMode.state,
       home: MainScreen(),
       routes: {//遷移先追加するならここに追加
-        '/config': (context) => ConfigScreenWidget(),
+        '/': (BuildContext context) => new MainScreen(),
+        '/config': (BuildContext context) => new MyHomePage(),
+
       },
     );
   }
@@ -43,6 +62,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
@@ -57,6 +77,7 @@ class _MainScreenState extends State<MainScreen> {
             //icon: Icon(Icons.timeline),
             icon: Image.asset('assets/images/timeline_icon.png',width: 30,height: 30,), // オリジナルのアイコン画像を指定
             label: 'Timeline',
+
           ),
           BottomNavigationBarItem(
             //icon: Icon(Icons.data_usage),
@@ -68,3 +89,5 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 }
+
+

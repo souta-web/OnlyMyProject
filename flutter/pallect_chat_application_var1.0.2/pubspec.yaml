@@ -33,6 +33,8 @@ dependencies:
   sqflite: ^2.2.0+3
   path_provider: ^2.0.11
   path: any
+  flutter_riverpod: ^2.0.0-dev.9
+  #provider: ^4.0.2
 
 
 
