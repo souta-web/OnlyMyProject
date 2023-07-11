@@ -24,7 +24,7 @@ class MyApp extends ConsumerWidget {
     // デフォルトはシステム設定に従う(ThemeMode.system)ようにしておくといいかも
     final themeMode = ref.watch(themeModeProvider.state);
     return MaterialApp(
-      debugShowCheckedModeBanner: false,//右上のデバッグ表示の設定
+      debugShowCheckedModeBanner: false,
       title: 'Chat App',
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
@@ -32,9 +32,7 @@ class MyApp extends ConsumerWidget {
       themeMode: themeMode.state,
       home: MainScreen(),
       routes: {//遷移先追加するならここに追加
-        '/': (BuildContext context) => new MainScreen(),
-        '/config': (BuildContext context) => new MyHomePage(),
-
+        '/config': (context) => ConfigScreenWidget(),
       },
     );
   }
@@ -89,5 +87,3 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 }
-
-
