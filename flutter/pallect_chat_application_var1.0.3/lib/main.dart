@@ -62,6 +62,11 @@ class _MainScreenState extends State<MainScreen> {
       
       body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
+        /*
+        selectedIconTheme: IconThemeData(
+          color: Colors.pink,
+        ),
+        */
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         items: [
