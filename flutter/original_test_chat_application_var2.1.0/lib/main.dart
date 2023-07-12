@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
+      darkTheme: ThemeData.light(),
       initialRoute: '/',
       routes: {//画面遷移で任意のページに移動するための初期設定
         '/': (context) => MyAppHome(),
