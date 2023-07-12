@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'chat.dart';
-import 'timeline.dart';
-import 'data.dart';
-import 'config.dart';
+import 'screen/chat/chat.dart';
+import 'screen/timeline/timeline.dart';
+import 'screen/data/data.dart';
+import 'screen/setting/config.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -27,7 +27,11 @@ class MyApp extends ConsumerWidget {
       themeMode: themeMode.state,
       home: MainScreen(),
       routes: {//遷移先追加するならここに追加
+        '/main': (BuildContext context) => new MainScreen(),
         '/config': (BuildContext context) => new ConfigScreenWidget(),
+        '/chat': (BuildContext context) => new ChatScreenWidget(),
+        '/timelime': (BuildContext context) => new TimelineScreenWidget(),
+        '/data': (BuildContext context) => new DataScreenWidget(),
       },
     );
   }

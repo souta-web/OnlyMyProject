@@ -6,9 +6,10 @@ class DataScreenWidget extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Data'),
+        automaticallyImplyLeading: false, // バックボタンを非表示にする
         actions: [
           IconButton(
-            icon: Icon(Icons.more_vert),
+            icon: Icon(Icons.settings),
             onPressed: () {
               Navigator.pushNamed(context, '/config');//routeに追加したconfigに遷移
             },

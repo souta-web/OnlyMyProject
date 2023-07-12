@@ -18,7 +18,7 @@ class ConfigScreenWidget extends ConsumerWidget {
           IconButton(
             icon: Icon(Icons.close),
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.pushNamed(context, '/main');//routeに追加したconfigに遷移
             },
           ),
         ],
