@@ -40,7 +40,8 @@ class DatabaseHelper {
   // タグテーブルのカラム
   static final columnTagName = 'tag_name'; // タグ名
   static final columnTagColor = 'tag_color'; // タグの色
-  static final columnTagRegisteredActionName = 'tag_registered_action_name'; // 登録されたアクション名
+  static final columnTagRegisteredActionName =
+      'tag_registered_action_name'; // 登録されたアクション名
 
   // DatabaseHelper クラスを定義
   DatabaseHelper._privateConstructor();
@@ -133,7 +134,7 @@ class DatabaseHelper {
     ''');
   }
 
-  //チャット画面用の関数
+  // チャット画面用の関数
   // 登録処理
   Future<int> insert_chat_table(Map<String, dynamic> row) async {
     Database? db = await instance.database;
@@ -168,7 +169,7 @@ class DatabaseHelper {
         .delete(chat_table, where: '$columnChatId = ?', whereArgs: [id]);
   }
 
-  //アクションテーブル用の関数
+  // アクションテーブル用の関数
   // 登録処理
   Future<int> insert_action_table(Map<String, dynamic> row) async {
     Database? db = await instance.database;
