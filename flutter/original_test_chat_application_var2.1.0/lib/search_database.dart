@@ -1,8 +1,3 @@
-import 'dart:io';
-
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path_provider/path_provider.dart';
 import 'database_helper.dart';
 
 class SearchDatabase {
@@ -15,10 +10,23 @@ class SearchDatabase {
         await dbHelper.queryAllRows_chat_table();
     List<Map<String, dynamic>> matchedChatRecords = chatRecords
         .where((record) =>
+            record[DatabaseHelper.columnChatId].toString().contains(keyword) ||
+            record[DatabaseHelper.columnChatSender]
+                .toString()
+                .contains(keyword) ||
+            record[DatabaseHelper.columnChatTodo]
+                .toString()
+                .contains(keyword) ||
+            record[DatabaseHelper.columnChatTodofinish]
+                .toString()
+                .contains(keyword) ||
             record[DatabaseHelper.columnChatMessage]
                 .toString()
                 .contains(keyword) ||
-            record[DatabaseHelper.columnChatSender]
+            record[DatabaseHelper.columnChatTime]
+                .toString()
+                .contains(keyword) ||
+            record[DatabaseHelper.columnChatChannel]
                 .toString()
                 .contains(keyword))
         .toList();
@@ -28,13 +36,43 @@ class SearchDatabase {
         await dbHelper.queryAllRows_action_table();
     List<Map<String, dynamic>> matchedActionRecords = actionRecords
         .where((record) =>
+            record[DatabaseHelper.columnActionId]
+                .toString()
+                .contains(keyword) ||
             record[DatabaseHelper.columnActionName]
+                .toString()
+                .contains(keyword) ||
+            record[DatabaseHelper.columnActionStart]
+                .toString()
+                .contains(keyword) ||
+            record[DatabaseHelper.columnActionEnd]
+                .toString()
+                .contains(keyword) ||
+            record[DatabaseHelper.columnActionDuration]
                 .toString()
                 .contains(keyword) ||
             record[DatabaseHelper.columnActionMessage]
                 .toString()
                 .contains(keyword) ||
+            record[DatabaseHelper.columnActionMedia]
+                .toString()
+                .contains(keyword) ||
             record[DatabaseHelper.columnActionNotes]
+                .toString()
+                .contains(keyword) ||
+            record[DatabaseHelper.columnActionScore]
+                .toString()
+                .contains(keyword) ||
+            record[DatabaseHelper.columnActionState]
+                .toString()
+                .contains(keyword) ||
+            record[DatabaseHelper.columnActionPlace]
+                .toString()
+                .contains(keyword) ||
+            record[DatabaseHelper.columnActionMainTag]
+                .toString()
+                .contains(keyword) ||
+            record[DatabaseHelper.columnActionSubTag]
                 .toString()
                 .contains(keyword))
         .toList();
@@ -44,7 +82,8 @@ class SearchDatabase {
         await dbHelper.queryAllRows_tag_table();
     List<Map<String, dynamic>> matchedTagRecords = tagRecords
         .where((record) =>
-            record[DatabaseHelper.columnTagName]
+            record[DatabaseHelper.columnTagName].toString().contains(keyword) ||
+            record[DatabaseHelper.columnTagColor]
                 .toString()
                 .contains(keyword) ||
             record[DatabaseHelper.columnTagRegisteredActionName]
