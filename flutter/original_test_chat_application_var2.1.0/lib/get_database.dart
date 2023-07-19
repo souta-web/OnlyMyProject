@@ -2,8 +2,8 @@ import 'database_helper.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
-import 'database_helper.dart';
 
+// タイムライン表示用のウィジェットに引き渡すためのデータを取得する
 class GetDatabase {
 
   // データを取得するメソッド

@@ -3,6 +3,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'database_helper.dart';
 
+// 検索ボタンの動作
 class SearchDatabase {
   // 検索メソッド
   Future<void> search(String keyword) async {
@@ -17,7 +18,10 @@ class SearchDatabase {
         await dbHelper.queryAllRows_chat_table();
     List<Map<String, dynamic>> matchedChatRecords = chatRecords
         .where((record) =>
-            record[DatabaseHelper.columnChatId].toString().toLowerCase().contains(keyword) ||
+            record[DatabaseHelper.columnChatId]
+                .toString()
+                .toLowerCase()
+                .contains(keyword) ||
             record[DatabaseHelper.columnChatSender]
                 .toString()
                 .toLowerCase()
@@ -49,10 +53,7 @@ class SearchDatabase {
         await dbHelper.queryAllRows_action_table();
     List<Map<String, dynamic>> matchedActionRecords = actionRecords
         .where((record) =>
-            record[DatabaseHelper.columnActionId]
-                .toString()
-                .toLowerCase()
-                .contains(keyword) ||
+            record[DatabaseHelper.columnActionId].toString().toLowerCase().contains(keyword) ||
             record[DatabaseHelper.columnActionName]
                 .toString()
                 .toLowerCase()
@@ -108,7 +109,10 @@ class SearchDatabase {
         await dbHelper.queryAllRows_tag_table();
     List<Map<String, dynamic>> matchedTagRecords = tagRecords
         .where((record) =>
-            record[DatabaseHelper.columnTagName].toString().toLowerCase().contains(keyword) ||
+            record[DatabaseHelper.columnTagName]
+                .toString()
+                .toLowerCase()
+                .contains(keyword) ||
             record[DatabaseHelper.columnTagColor]
                 .toString()
                 .toLowerCase()
