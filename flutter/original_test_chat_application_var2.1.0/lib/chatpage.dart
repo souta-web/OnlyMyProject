@@ -3,7 +3,7 @@ import 'dart:io' as io;
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
-import 'database_helper.dart';
+import 'utils/database_helper.dart';
 import 'chatpagewidget.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:typed_data';

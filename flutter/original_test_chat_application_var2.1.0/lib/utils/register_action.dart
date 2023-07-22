@@ -1,7 +1,4 @@
-import 'dart:io';
 import 'package:sqflite/sqflite.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
 import 'database_helper.dart';
 
 // actionをデータベースに登録する
@@ -31,7 +28,7 @@ class RegisterAction {
     String actionSubTag,
   ) async {
     // DatabaseHelperからDatabaseインスタンスを取得
-    Database? db = await DatabaseHelper.instance.database;
+    final Database? db = await DatabaseHelper.instance.database;
 
     // チャットテーブルの登録データを作成
     Map<String, dynamic> chatRow = {

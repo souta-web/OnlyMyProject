@@ -1,6 +1,4 @@
-import 'package:sqflite/sqflite.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'database_helper.dart';
 
 // テキストをデータベースに登録する
@@ -11,13 +9,14 @@ class RegisterText extends StatefulWidget {
 
 // ウィジェットの状態を管理する
 class _RegisterTextState extends State<RegisterText> {
-  TextEditingController _textController = TextEditingController();  // テキストフィールドのコントロールに使用する
+  TextEditingController _textController =
+      TextEditingController(); // テキストフィールドのコントロールに使用する
 
   // テキストフィールドに入力されたテキストをデータベースに登録する
   void _registerTextToDatabase() async {
     String text = _textController.text;
     if (text.isNotEmpty) {
-      DatabaseHelper dbHelper = DatabaseHelper.instance;
+      final DatabaseHelper dbHelper = DatabaseHelper.instance;
       Map<String, dynamic> row = {
         DatabaseHelper.columnChatSender: 0, // 送信者情報: 0 (0=AI, 1=User)
         DatabaseHelper.columnChatTodo: false, // todoかどうか: false (false=message)

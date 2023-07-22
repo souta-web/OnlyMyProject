@@ -1,11 +1,8 @@
 import 'dart:io';
-import 'package:sqflite/sqflite.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
 import 'database_helper.dart';
 
 // 画像データをデータベースに登録する
-class RegisterMedia {
+class ChangeBinalyData {
   // データベースに画像をバイナリデータとして登録するメソッド
   static Future<void> registerImage(File imageFile) async {
     try {
@@ -21,7 +18,7 @@ class RegisterMedia {
         };
 
         // DatabaseHelperのインスタンスを取得
-        DatabaseHelper dbHelper = DatabaseHelper.instance;
+        final DatabaseHelper dbHelper = DatabaseHelper.instance;
 
         // 画像データをaction_tableに登録
         int id = await dbHelper.insert_action_table(row);
@@ -46,5 +43,5 @@ void main() async {
   File imageFile = File('/画像へのパス/image.png');
 
   // registerImageメソッドを呼び出して画像をデータベースに登録します
-  await RegisterMedia.registerImage(imageFile);
+  await ChangeBinalyData.registerImage(imageFile);
 }

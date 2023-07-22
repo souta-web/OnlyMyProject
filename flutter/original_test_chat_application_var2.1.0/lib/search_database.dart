@@ -1,13 +1,10 @@
-import 'package:sqflite/sqflite.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
-import 'database_helper.dart';
+import 'utils/database_helper.dart';
 
 // 検索ボタンの動作
 class SearchDatabase {
   // 検索メソッド
   Future<void> search(String keyword) async {
-    // データベースヘルパーのインスタンスを生成
+    // databasehelperのインスタンスを生成
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
 
     // キーワードを小文字に変換
