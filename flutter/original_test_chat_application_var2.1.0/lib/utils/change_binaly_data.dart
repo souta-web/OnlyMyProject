@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'database_helper.dart';
 
+
 // 画像データをデータベースに登録する
 class ChangeBinalyData {
   // データベースに画像をバイナリデータとして登録するメソッド

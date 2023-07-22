@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'utils/database_helper.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -17,18 +18,21 @@ class TimeLineListCard {
     ]);
   }
 
-  // 以下は実装例です。記述するとエラーが出るのでコメントアウトで残しておきます
-  // GetDatabase database = GetDatabase();
-  // List<Map<String, dynamic>> actionData = await database.getActionData();
+  // void main() async
+  // {
+  //   // 以下は実装例です。記述するとエラーが出るのでコメントアウトで残しておきます
+  //   TimeLineListCard database = TimeLineListCard();
+  //   List<Map<String, dynamic>> actionData = await database.getActionData();
 
-  // アクションデータの表示例
-  // for (var record in actionData) {
-  //   print('Action Name: ${record[DatabaseHelper.columnActionName]}');
-  //   print('Description: ${record[DatabaseHelper.columnActionNotes]}');
-  //   print('Main Tag: ${record[DatabaseHelper.columnActionMainTag]}');
-  //   print('Sub Tag: ${record[DatabaseHelper.columnActionSubTag]}');
-  //   print('Status: ${record[DatabaseHelper.columnActionState]}');
-  //   print('ActionScore: ${record[DatabaseHelper.columnActionScore]}');
-  //   print('------------------');
+  //   // アクションデータの表示例
+  //   for (var record in actionData) {
+  //     print('Action Name: ${record[DatabaseHelper.columnActionName]}');
+  //     print('Description: ${record[DatabaseHelper.columnActionNotes]}');
+  //     print('Main Tag: ${record[DatabaseHelper.columnActionMainTag]}');
+  //     print('Sub Tag: ${record[DatabaseHelper.columnActionSubTag]}');
+  //     print('Status: ${record[DatabaseHelper.columnActionState]}');
+  //     print('ActionScore: ${record[DatabaseHelper.columnActionScore]}');
+  //     print('------------------');
+  //   }
   // }
 }
