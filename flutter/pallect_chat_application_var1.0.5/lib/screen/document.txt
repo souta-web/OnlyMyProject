@@ -1,9 +1,0 @@
-var1.0.3
-追加内容:
-    ダークモードの実装
-        main.dartとconfig.dart両方にfinal themeModeProvider = StateProvider<ThemeMode>((ref) => ThemeMode.system);を入力していたためダークモードの切り替えに影響していた
-        遷移先でMaterialAppを使用すると元の画面に戻れなくなるのでMaterialAppを使用するのはmain.dartのみに留めること
-
-変更点:
-    一部変数名の変更
-    不要なコメント文の削除

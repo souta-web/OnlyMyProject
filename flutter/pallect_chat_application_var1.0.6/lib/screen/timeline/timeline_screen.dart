@@ -8,7 +8,7 @@ class TimelineScreenWidget extends StatefulWidget {
 class _TimelineScreenWidgetState extends State<TimelineScreenWidget> {
   bool showButtons = false;
   int selectedNumber = 1;//デフォルト月です、あとから表示されたタイミングの時刻で変数作ります
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
