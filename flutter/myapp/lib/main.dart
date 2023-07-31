@@ -86,9 +86,8 @@ class MyHomePage extends StatelessWidget {
 
   // // 更新ボタンクリック
   // void _update() async {
-  //   int targetId = 9;
   //   Map<String, dynamic> row = {
-  //     DatabaseHelper.columnChatId: targetId,
+  //     DatabaseHelper.columnChatId: 1,
   //     DatabaseHelper.columnChatSender: '山田　鼻子',
   //     DatabaseHelper.columnChatTodo: 'false',
   //     DatabaseHelper.columnChatTodofinish: 'false',
@@ -96,7 +95,7 @@ class MyHomePage extends StatelessWidget {
   //     DatabaseHelper.columnChatTime: '10:15',
   //     DatabaseHelper.columnChatChannel: '2'
   //   };
-  //   final rowsAffected = await dbHelper.update_chat_table(row,targetId);
+  //   final rowsAffected = await dbHelper.update_chat_table(row, 1);
   //   print('更新しました。 ID：$rowsAffected ');
   // }
 
@@ -106,6 +105,7 @@ class MyHomePage extends StatelessWidget {
   //   final rowsDeleted = await dbHelper.delete_chat_table(id!);
   //   print('削除しました。 $rowsDeleted ID: $id');
   // }
+
   // 登録ボタンクリック
   // void _insert() async {
   //   // row to insert
@@ -137,9 +137,9 @@ class MyHomePage extends StatelessWidget {
 
   // // 更新ボタンクリック
   // void _update() async {
-  //  
+  //
   //   Map<String, dynamic> row = {
-  //     DatabaseHelper.columnActionId: 2,
+  //     DatabaseHelper.columnActionId: 1,
   //     DatabaseHelper.columnActionName: 'マラソン',
   //     DatabaseHelper.columnActionStart: '10:00',
   //     DatabaseHelper.columnActionEnd: '12:00',
@@ -153,7 +153,7 @@ class MyHomePage extends StatelessWidget {
   //     DatabaseHelper.columnActionMainTag: '#運動',
   //     DatabaseHelper.columnActionSubTag: '#トレーニング'
   //   };
-  //   final rowsAffected = await dbHelper.update_action_table(row, 2);
+  //   final rowsAffected = await dbHelper.update_action_table(row, 1);
   //   print('更新しました。 ID：$rowsAffected ');
   // }
 
@@ -193,7 +193,7 @@ class MyHomePage extends StatelessWidget {
       DatabaseHelper.columnTagColor: '赤',
       DatabaseHelper.columnTagRegisteredActionName: '縄跳びをした'
     };
-    final rowsAffected = await dbHelper.update_tag_table(row,targetId);
+    final rowsAffected = await dbHelper.update_tag_table(row, targetId);
     print('更新しました。 ID：$rowsAffected ');
   }
 
