@@ -1,5 +1,7 @@
-import 'utils/database_helper.dart';
+import 'database_helper.dart';
 
+// 動作確認は仮の画面を作って確認
+// 関数は指定して実行
 // 検索ボタンの動作
 class SearchDatabase {
   // 検索メソッド

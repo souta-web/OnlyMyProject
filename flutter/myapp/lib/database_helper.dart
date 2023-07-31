@@ -39,6 +39,7 @@ class DatabaseHelper {
   static final columnActionSubTag = 'action_sub_tag'; //サブタグ
 
   // タグテーブルのカラム
+  static final columnTagId = '_tag_id';  // タグID
   static final columnTagName = 'tag_name'; // タグ名
   static final columnTagColor = 'tag_color'; // タグの色
   static final columnTagRegisteredActionName =
@@ -128,7 +129,8 @@ class DatabaseHelper {
     // タグテーブルの作成
     await db.execute('''
       CREATE TABLE $tag_table (
-        $columnTagName TEXT PRIMARY KEY,
+        $columnTagId INTEGER PRIMARY KEY,
+        $columnTagName TEXT ,
         $columnTagColor TEXT,
         $columnTagRegisteredActionName TEXT
       )
@@ -156,7 +158,7 @@ class DatabaseHelper {
   }
 
   //　更新処理
-  Future<int> update_chat_table(Map<String, dynamic> row) async {
+  Future<int> update_chat_table(Map<String, dynamic> row, int id) async {
     Database? db = await instance.database;
     int id = row[columnChatId];
     return await db!
@@ -218,24 +220,24 @@ class DatabaseHelper {
   }
 
   // レコード数を確認
-  Future<int?> queryAllRowsCount_tag_table() async {
+  Future<int?> queryRowCount_tag_table() async {
     Database? db = await instance.database;
     return Sqflite.firstIntValue(
-        await db!.rawQuery('SELECT COUNT(*) FROM $tag_table'));
+        await db!.rawQuery('SELECT COUNT(*) FROM $tag_table'))!;
   }
 
   // 更新処理
-  Future<int> update_tag_table(Map<String, dynamic> row) async {
+  Future<int> update_tag_table(Map<String, dynamic> row, int _id) async {
     Database? db = await instance.database;
-    String name = row[columnTagName];
+    int _id = row[columnTagId];
     return await db!
-        .update(tag_table, row, where: '$columnTagName = ?', whereArgs: [name]);
+        .update(tag_table, row, where: '$columnTagId = ?', whereArgs: [_id]);
   }
 
   // 削除処理
-  Future<int> delete_tag_table(String name) async {
+  Future<int> delete_tag_table(int id) async {
     Database? db = await instance.database;
     return await db!
-        .delete(tag_table, where: '$columnTagName = ?', whereArgs: [name]);
+        .delete(action_table, where: '$columnTagId = ?', whereArgs: [id]);
   }
 }
