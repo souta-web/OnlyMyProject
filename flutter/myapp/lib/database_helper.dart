@@ -39,6 +39,7 @@ class DatabaseHelper {
   static final columnActionSubTag = 'action_sub_tag'; //サブタグ
 
   // タグテーブルのカラム
+  static final columnTagId = 'tag_id';  // タグID
   static final columnTagName = 'tag_name'; // タグ名
   static final columnTagColor = 'tag_color'; // タグの色
   static final columnTagRegisteredActionName =
