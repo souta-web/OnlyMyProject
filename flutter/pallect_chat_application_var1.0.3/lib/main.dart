@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'screen/chat/chat.dart';
-import 'timeline.dart';
+import 'screen/timeline/timeline.dart';
 import 'data.dart';
 import 'config.dart';
 
