@@ -186,14 +186,12 @@ class MyHomePage extends StatelessWidget {
 
   // 更新ボタンクリック
   void _update() async {
-    int targetId = 1;
     Map<String, dynamic> row = {
-      DatabaseHelper.columnTagId: targetId,
       DatabaseHelper.columnTagName: '運動',
       DatabaseHelper.columnTagColor: '赤',
       DatabaseHelper.columnTagRegisteredActionName: '縄跳びをした'
     };
-    final rowsAffected = await dbHelper.update_tag_table(row, targetId);
+    final rowsAffected = await dbHelper.update_tag_table(row);
     print('更新しました。 ID：$rowsAffected ');
   }
 
