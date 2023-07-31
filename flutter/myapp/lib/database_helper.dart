@@ -228,15 +228,15 @@ class DatabaseHelper {
   // 更新処理
   Future<int> update_tag_table(Map<String, dynamic> row, int _id) async {
     Database? db = await instance.database;
-    int _id = row[columnTagId];
+    int _id = row[columnTagName];
     return await db!
-        .update(tag_table, row, where: '$columnTagId = ?', whereArgs: [_id]);
+        .update(tag_table, row, where: '$columnTagName = ?', whereArgs: [_id]);
   }
 
   // 削除処理
   Future<int> delete_tag_table(int id) async {
     Database? db = await instance.database;
     return await db!
-        .delete(action_table, where: '$columnTagId = ?', whereArgs: [id]);
+        .delete(action_table, where: '$columnTagName = ?', whereArgs: [id]);
   }
 }

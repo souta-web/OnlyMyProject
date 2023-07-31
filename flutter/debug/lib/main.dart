@@ -13,10 +13,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: SearchScreen(),
       onGenerateRoute: (settings) {
+        // SecondScreenに移動するための初期設定
         if (settings.name == '/second') {
           return MaterialPageRoute(
             builder: (context) => SecondScreen(),
-            settings: settings,
           );
         }
         // ルート名が'/second'以外の場合はホーム画面に遷移
@@ -28,7 +28,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -87,11 +86,13 @@ class _SearchScreenState extends State<SearchScreen> {
                 },
               ),
             ),
+            
+            // ここで遷移先の画面のボタンを定義する
             ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/second');
-            },
-            child: Text('Second Screen へ遷移'),
+              onPressed: () {
+                Navigator.pushNamed(context, '/second');
+              },
+              child: Text('Second Screen へ遷移'),
             ),
           ],
         ),
