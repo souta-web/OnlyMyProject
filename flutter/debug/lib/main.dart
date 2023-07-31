@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'database_helper.dart'; 
+import 'database_helper.dart';
 import 'search_database.dart';
+import 'second_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,9 +12,23 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: SearchScreen(),
+      onGenerateRoute: (settings) {
+        if (settings.name == '/second') {
+          return MaterialPageRoute(
+            builder: (context) => SecondScreen(),
+            settings: settings,
+          );
+        }
+        // ルート名が'/second'以外の場合はホーム画面に遷移
+        return MaterialPageRoute(
+          builder: (context) => SearchScreen(),
+          settings: settings,
+        );
+      },
     );
   }
 }
+
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -71,6 +86,12 @@ class _SearchScreenState extends State<SearchScreen> {
                   );
                 },
               ),
+            ),
+            ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/second');
+            },
+            child: Text('Second Screen へ遷移'),
             ),
           ],
         ),
