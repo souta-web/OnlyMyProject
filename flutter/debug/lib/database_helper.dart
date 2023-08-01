@@ -238,6 +238,6 @@ class DatabaseHelper {
   Future<int> delete_tag_table(int id) async {
     Database? db = await instance.database;
     return await db!
-        .delete(action_table, where: '$columnTagId = ?', whereArgs: [id]);
+        .delete(tag_table, where: '$columnTagId = ?', whereArgs: [id]);
   }
 }

@@ -164,7 +164,7 @@ class MyHomePage extends StatelessWidget {
   //   print('削除しました。 $rowsDeleted ID: $id');
   // }
 
-  // バグってるやつ
+  // 登録ボタンクリック
   void _insert() async {
     // row to insert
     Map<String, dynamic> row = {
@@ -192,7 +192,7 @@ class MyHomePage extends StatelessWidget {
       DatabaseHelper.columnTagColor: '赤',
       DatabaseHelper.columnTagRegisteredActionName: '縄跳びをした'
     };
-    final rowsAffected = await dbHelper.update_tag_table(row,1);
+    final rowsAffected = await dbHelper.update_tag_table(row, 1);
     print('更新しました。 ID：$rowsAffected ');
   }
 
