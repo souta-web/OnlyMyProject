@@ -1,110 +1,216 @@
 import 'package:flutter/material.dart';
 import 'database_helper.dart';
+import 'search_database.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MyHomePage(),
+      home: SearchScreen(),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  // DatabaseHelper クラスのインスタンス取得
+class SearchScreen extends StatefulWidget {
+  @override
+  _SearchScreenState createState() => _SearchScreenState();
+}
+
+class _SearchScreenState extends State<SearchScreen> {
+  final TextEditingController _searchController = TextEditingController();
+  List<Map<String, dynamic>> _searchResults = [];
+  String _searchMessage = '';
+
   final dbHelper = DatabaseHelper.instance;
 
-  // homepage layout
+  List<String> _getMatchedKeywords(String keyword) {
+    List<String> matchedKeywords = [];
+
+    // チャットテーブルを検索
+    List<String> chatKeywords = _searchResults
+        .where((record) => record.toString().toLowerCase().contains(keyword))
+        .map((record) => 'チャットテーブル：${record[DatabaseHelper.columnChatId]}')
+        .toList();
+    matchedKeywords.addAll(chatKeywords);
+
+    // アクションテーブルを検索
+    List<String> actionKeywords = _searchResults
+        .where((record) => record.toString().toLowerCase().contains(keyword))
+        .map((record) => 'アクションテーブル：${record[DatabaseHelper.columnActionId]}')
+        .toList();
+    matchedKeywords.addAll(actionKeywords);
+
+    // タグテーブルを検索
+    List<String> tagKeywords = _searchResults
+        .where((record) => record.toString().toLowerCase().contains(keyword))
+        .map((record) => 'タグテーブル：${record[DatabaseHelper.columnTagId]}')
+        .toList();
+    matchedKeywords.addAll(tagKeywords);
+
+    return matchedKeywords;
+  }
+
+  // 一致するキーワードの検索
+  List<Widget> _buildMatchedKeywords() {
+    List<String> matchedKeywords = _getMatchedKeywords(_searchController.text);
+
+    if (matchedKeywords.isNotEmpty) {
+      return [
+        Text('一致するキーワード：'),
+        ...matchedKeywords.map((keyword) => Text(keyword)),
+      ];
+    } else {
+      return [];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('SQLiteデモ'),
+        title: Text('データベース検索'),
       ),
-      body: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            ElevatedButton(
-              child: Text(
-                '登録',
-                style: TextStyle(fontSize: 35),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                labelText: '検索キーワードを入力してください',
               ),
-              onPressed: _insert,
             ),
+            SizedBox(height: 16.0),
             ElevatedButton(
-              child: Text(
-                '照会',
-                style: TextStyle(fontSize: 35),
-              ),
-              onPressed: _query,
+              onPressed: () async {
+                // 検索ボタンがクリックされたとき、検索を実行
+                String keyword = _searchController.text;
+                List<Map<String, dynamic>> results =
+                    await SearchDatabase().search(keyword);
+                setState(() {
+                  _searchResults = results;
+                  _searchMessage =
+                      _searchResults.isEmpty ? '一致する検索ワードがありません' : '';
+                });
+              },
+              child: Text('検索'),
             ),
-            ElevatedButton(
-              child: Text(
-                '更新',
-                style: TextStyle(fontSize: 35),
+            SizedBox(height: 16.0),
+            Text(_searchMessage),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _searchResults.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text('検索結果 ${index + 1}'),
+                    subtitle: Text(_searchResults[index].toString()),
+                  );
+                },
               ),
-              onPressed: _update,
             ),
+
+            SizedBox(height: 16.0), // ボタン間のスペース
             ElevatedButton(
-              child: Text(
-                '削除',
-                style: TextStyle(fontSize: 35),
-              ),
-              onPressed: _delete,
+              onPressed: () {
+                Navigator.pushNamed(context, '/second');
+              },
+              child: Text('Second Screen へ遷移'),
+            ),
+            SizedBox(height: 16.0), // ボタン間のスペース
+            ElevatedButton(
+              onPressed: () {
+                // ChatScreenに画面遷移
+                Navigator.pushNamed(context, '/chat');
+              },
+              child: Text('Chat Screen へ遷移'),
+            ),
+            // CRUD操作のためのボタン
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center, // 修正：ボタンを中央に配置
+              children: <Widget>[
+                ElevatedButton(
+                  child: Text(
+                    '登録',
+                    style: TextStyle(fontSize: 35),
+                  ),
+                  onPressed: _insert,
+                ),
+                ElevatedButton(
+                  child: Text(
+                    '照会',
+                    style: TextStyle(fontSize: 35),
+                  ),
+                  onPressed: _query,
+                ),
+                ElevatedButton(
+                  child: Text(
+                    '更新',
+                    style: TextStyle(fontSize: 35),
+                  ),
+                  onPressed: _update,
+                ),
+                ElevatedButton(
+                  child: Text(
+                    '削除',
+                    style: TextStyle(fontSize: 35),
+                  ),
+                  onPressed: _delete,
+                ),
+              ],
             ),
           ],
         ),
       ),
     );
   }
+  // 登録ボタンクリック
+  void _insert() async {
+    // row to insert
+    Map<String, dynamic> row = {
+      // チャットテーブルデバッグ用
+      DatabaseHelper.columnChatSender: '山田　ji郎',
+      DatabaseHelper.columnChatTodo: 'true',
+      DatabaseHelper.columnChatTodofinish: 'true',
+      DatabaseHelper.columnChatMessage: 'Test Message',
+      DatabaseHelper.columnChatTime: '10:10',
+      DatabaseHelper.columnChatChannel: '1'
+    };
+    final id = await dbHelper.insert_chat_table(row);
+    print('登録しました。id: $id');
+  }
 
-  // // 登録ボタンクリック
-  // void _insert() async {
-  //   // row to insert
-  //   Map<String, dynamic> row = {
-  //     // チャットテーブルデバッグ用
-  //     DatabaseHelper.columnChatSender: '山田　ji郎',
-  //     DatabaseHelper.columnChatTodo: 'true',
-  //     DatabaseHelper.columnChatTodofinish: 'true',
-  //     DatabaseHelper.columnChatMessage: 'Test Message',
-  //     DatabaseHelper.columnChatTime: '10:10',
-  //     DatabaseHelper.columnChatChannel: '1'
-  //   };
-  //   final id = await dbHelper.insert_chat_table(row);
-  //   print('登録しました。id: $id');
-  // }
+  // 照会ボタンクリック
+  void _query() async {
+    final allRows = await dbHelper.queryAllRows_chat_table();
+    print('全てのデータを照会しました。');
+    allRows.forEach(print);
+  }
 
-  // // 照会ボタンクリック
-  // void _query() async {
-  //   final allRows = await dbHelper.queryAllRows_chat_table();
-  //   print('全てのデータを照会しました。');
-  //   allRows.forEach(print);
-  // }
+  // 更新ボタンクリック
+  void _update() async {
+    Map<String, dynamic> row = {
+      DatabaseHelper.columnChatId: 1,
+      DatabaseHelper.columnChatSender: '山田　鼻子',
+      DatabaseHelper.columnChatTodo: 'false',
+      DatabaseHelper.columnChatTodofinish: 'false',
+      DatabaseHelper.columnChatMessage: 'Test Message2',
+      DatabaseHelper.columnChatTime: '10:15',
+      DatabaseHelper.columnChatChannel: '2'
+    };
+    final rowsAffected = await dbHelper.update_chat_table(row, 1);
+    print('更新しました。 ID：$rowsAffected ');
+  }
 
-  // // 更新ボタンクリック
-  // void _update() async {
-  //   Map<String, dynamic> row = {
-  //     DatabaseHelper.columnChatId: 1,
-  //     DatabaseHelper.columnChatSender: '山田　鼻子',
-  //     DatabaseHelper.columnChatTodo: 'false',
-  //     DatabaseHelper.columnChatTodofinish: 'false',
-  //     DatabaseHelper.columnChatMessage: 'Test Message2',
-  //     DatabaseHelper.columnChatTime: '10:15',
-  //     DatabaseHelper.columnChatChannel: '2'
-  //   };
-  //   final rowsAffected = await dbHelper.update_chat_table(row, 1);
-  //   print('更新しました。 ID：$rowsAffected ');
-  // }
-
-  // // 削除ボタンクリック
-  // void _delete() async {
-  //   final id = await dbHelper.queryRowCount_chat_table();
-  //   final rowsDeleted = await dbHelper.delete_chat_table(id!);
-  //   print('削除しました。 $rowsDeleted ID: $id');
-  // }
+  // 削除ボタンクリック
+  void _delete() async {
+    final id = await dbHelper.queryRowCount_chat_table();
+    final rowsDeleted = await dbHelper.delete_chat_table(id!);
+    print('削除しました。 $rowsDeleted ID: $id');
+  }
 
   // 登録ボタンクリック
   // void _insert() async {
@@ -164,42 +270,42 @@ class MyHomePage extends StatelessWidget {
   //   print('削除しました。 $rowsDeleted ID: $id');
   // }
 
-  // 登録ボタンクリック
-  void _insert() async {
-    // row to insert
-    Map<String, dynamic> row = {
-      // タグテーブルデバッグ用
-      DatabaseHelper.columnTagName: 'ゲーム',
-      DatabaseHelper.columnTagColor: '青',
-      DatabaseHelper.columnTagRegisteredActionName: 'サマポケを攻略'
-    };
-    final id = await dbHelper.insert_tag_table(row);
-    print('登録しました。ID: $id');
-  }
+  // バグってるやつ
+  // void _insert() async {
+  //   // row to insert
+  //   Map<String, dynamic> row = {
+  //     // タグテーブルデバッグ用
+  //     DatabaseHelper.columnTagName: 'ゲーム',
+  //     DatabaseHelper.columnTagColor: '青',
+  //     DatabaseHelper.columnTagRegisteredActionName: 'サマポケを攻略'
+  //   };
+  //   final id = await dbHelper.insert_tag_table(row);
+  //   print('登録しました。ID: $id');
+  // }
 
-  // 照会ボタンクリック
-  void _query() async {
-    final allRows = await dbHelper.queryAllRows_tag_table();
-    print('全てのデータを照会しました。');
-    allRows.forEach(print);
-  }
+  // // 照会ボタンクリック
+  // void _query() async {
+  //   final allRows = await dbHelper.queryAllRows_tag_table();
+  //   print('全てのデータを照会しました。');
+  //   allRows.forEach(print);
+  // }
 
-  // 更新ボタンクリック
-  void _update() async {
-    Map<String, dynamic> row = {
-      DatabaseHelper.columnTagId: 1,
-      DatabaseHelper.columnTagName: '運動',
-      DatabaseHelper.columnTagColor: '赤',
-      DatabaseHelper.columnTagRegisteredActionName: '縄跳びをした'
-    };
-    final rowsAffected = await dbHelper.update_tag_table(row, 1);
-    print('更新しました。 ID：$rowsAffected ');
-  }
+  // // 更新ボタンクリック
+  // void _update() async {
+  //   Map<String, dynamic> row = {
+  //     DatabaseHelper.columnTagId: 1,
+  //     DatabaseHelper.columnTagName: '運動',
+  //     DatabaseHelper.columnTagColor: '赤',
+  //     DatabaseHelper.columnTagRegisteredActionName: '縄跳びをした'
+  //   };
+  //   final rowsAffected = await dbHelper.update_tag_table(row, 1);
+  //   print('更新しました。 ID：$rowsAffected ');
+  // }
 
-  // 削除ボタンクリック
-  void _delete() async {
-    final id = await dbHelper.queryRowCount_tag_table();
-    final rowsDeleted = await dbHelper.delete_tag_table(id!);
-    print('削除しました。 $rowsDeleted ID: $id');
-  }
+  // // 削除ボタンクリック
+  // void _delete() async {
+  //   final id = await dbHelper.queryRowCount_tag_table();
+  //   final rowsDeleted = await dbHelper.delete_tag_table(id!);
+  //   print('削除しました。 $rowsDeleted ID: $id');
+  // }
 }
