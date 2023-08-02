@@ -4,7 +4,7 @@ import 'package:sqflite/sqflite.dart';
 
 // 動作確認はPrintで出力
 // タイムライン表示用のウィジェットに引き渡すためのデータを取得する
-class TimeLineListCard {
+class TimeLineDataRetriever {
   // データを取得するメソッド
   Future<List<Map<String, dynamic>>> getActionData() async {
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
@@ -22,7 +22,7 @@ class TimeLineListCard {
   void main() async
   {
     // 以下は実装例です。記述するとエラーが出るのでコメントアウトで残しておきます
-    TimeLineListCard database = TimeLineListCard();
+    TimeLineDataRetriever database = TimeLineDataRetriever();
     List<Map<String, dynamic>> actionData = await database.getActionData();
 
     // アクションデータの表示例

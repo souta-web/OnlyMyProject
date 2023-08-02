@@ -108,6 +108,7 @@ class SearchDatabase {
         await dbHelper.queryAllRows_tag_table();
     List<Map<String, dynamic>> matchedTagRecords = tagRecords
         .where((record) =>
+            record[DatabaseHelper.columnTagId].toString().toLowerCase().contains(keyword) ||
             record[DatabaseHelper.columnTagName]
                 .toString()
                 .toLowerCase()
