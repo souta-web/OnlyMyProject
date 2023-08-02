@@ -111,7 +111,14 @@ class _SearchScreenState extends State<SearchScreen> {
             SizedBox(height: 16.0), // ボタン間のスペース
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/second');
+                // 画面遷移前にcanPopメソッドを使って遷移元の画面から戻れるか判定
+                bool canGoBack = ScreenTransition.canPop(context, '/second');
+                // 判定結果に応じて遷移先への画面遷移を制御
+                if (canGoBack) {
+                  Navigator.pop(context); // 遷移元の画面に戻る
+                } else {
+                  Navigator.pushNamed(context, '/second'); // 遷移先の画面に遷移
+                }
               },
               child: Text('Second Screen へ遷移'),
             ),

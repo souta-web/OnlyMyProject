@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'timeline_date_retriever.dart';
 import 'database_helper.dart';
+import 'screen_transition.dart';
 
 // デバッグ用の仮画面クラス
 class SecondScreen extends StatefulWidget {
@@ -16,11 +17,30 @@ class _SecondScreenState extends State<SecondScreen> {
         title: Text('Second Screen'),
       ),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            _retrieveDataFromDatabase();
-          },
-          child: Text('Retrieve Data'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                _retrieveDataFromDatabase();
+              },
+              child: Text('Retrieve Data'),
+            ),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () {
+                bool canGoBack =
+                    ScreenTransition.canPop(context, '/'); // ここでは遷移元を'/'と仮定
+
+                if (canGoBack) {
+                  Navigator.pop(context); // 遷移元の画面に戻る
+                } else {
+                  // 何らかの処理を実行
+                }
+              },
+              child: Text('Back to Home'),
+            ),
+          ],
         ),
       ),
     );
