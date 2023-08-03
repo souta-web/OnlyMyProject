@@ -7,6 +7,7 @@ import 'package:sqflite/sqflite.dart';
 class TimeLineDataRetriever {
   // データを取得するメソッド
   Future<List<Map<String, dynamic>>> getActionData() async {
+    // DatabaseHelperのインスタンス生成
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
     Database? db = await dbHelper.database;
     return await db!.query(DatabaseHelper.action_table, columns: [
@@ -17,23 +18,5 @@ class TimeLineDataRetriever {
       DatabaseHelper.columnActionState, // 状態
       DatabaseHelper.columnActionScore, // 充実度
     ]);
-  }
-
-  void main() async
-  {
-    // 以下は実装例です。記述するとエラーが出るのでコメントアウトで残しておきます
-    TimeLineDataRetriever database = TimeLineDataRetriever();
-    List<Map<String, dynamic>> actionData = await database.getActionData();
-
-    // アクションデータの表示例
-    for (var record in actionData) {
-      print('Action Name: ${record[DatabaseHelper.columnActionName]}');
-      print('Description: ${record[DatabaseHelper.columnActionNotes]}');
-      print('Main Tag: ${record[DatabaseHelper.columnActionMainTag]}');
-      print('Sub Tag: ${record[DatabaseHelper.columnActionSubTag]}');
-      print('Status: ${record[DatabaseHelper.columnActionState]}');
-      print('ActionScore: ${record[DatabaseHelper.columnActionScore]}');
-      print('------------------');
-    }
   }
 }
