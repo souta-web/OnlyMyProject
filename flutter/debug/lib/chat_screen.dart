@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'screen_transition.dart';
 
 // チャット画面を構築するウィジェット
 class ChatScreen extends StatefulWidget {
@@ -79,7 +80,12 @@ class _ChatScreenState extends State<ChatScreen> {
           Center(
             child: ElevatedButton(
               onPressed: () {
-                Navigator.pop(context);
+                bool canGoBack =
+                    ScreenTransition.canPop(context, '/'); // ここでは遷移元を'/'と仮定
+
+                if (canGoBack) {
+                  Navigator.pop(context); // 遷移元の画面に戻る
+                }
               },
               child: Text('Go Back'),
             ),

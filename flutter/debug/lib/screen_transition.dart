@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 // 画面遷移に関する情報を管理するクラス
 class ScreenTransition {
   /// 遷移元の画面から戻るかどうかを判定するメソッド
-  static bool canPop(BuildContext context) {
+  static bool canPop(BuildContext context, String path) {
     // 現在のルートを取得
     final currentRoute = ModalRoute.of(context);
 

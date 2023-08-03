@@ -38,7 +38,7 @@ class _SecondScreenState extends State<SecondScreen> {
                   // 何らかの処理を実行
                 }
               },
-              child: Text('Back to Home'),
+              child: Text('Go Back'),
             ),
           ],
         ),

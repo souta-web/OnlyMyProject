@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'database_helper.dart';
 import 'search_database.dart';
 import 'second_screen.dart';
+import 'chat_screen.dart';
 import 'screen_transition.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-// MyAppクラスのbuildメソッド内に以下を追加します
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,13 @@ class MyApp extends StatelessWidget {
             builder: (context) => SecondScreen(),
           );
         }
-        // ルート名が'/second'以外の場合はホーム画面に遷移
+        // ChatScreenに移動するための初期設定
+        if (settings.name == '/chat') {
+          return MaterialPageRoute(
+            builder: (context) => ChatScreen(),
+          );
+        }
+        // ルート名が'/second'or'/chat'以外の場合はホーム画面に遷移
         return MaterialPageRoute(
           builder: (context) => SearchScreen(),
           settings: settings,
@@ -121,6 +127,20 @@ class _SearchScreenState extends State<SearchScreen> {
                 }
               },
               child: Text('Second Screen へ遷移'),
+            ),
+            SizedBox(height: 16.0), // ボタン間のスペース
+            ElevatedButton(
+              onPressed: () {
+                // 画面遷移前にcanPopメソッドを使って遷移元の画面から戻れるか判定
+                bool canGoBack = ScreenTransition.canPop(context, '/chat');
+                // 判定結果に応じて遷移先への画面遷移を制御
+                if (canGoBack) {
+                  Navigator.pop(context); // 遷移元の画面に戻る
+                } else {
+                  Navigator.pushNamed(context, '/chat'); // 遷移先の画面に遷移
+                }
+              },
+              child: Text('Chat Screen へ遷移'),
             ),
             SizedBox(height: 16.0),
             ElevatedButton(
