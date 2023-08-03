@@ -21,8 +21,8 @@ class MyApp extends ConsumerWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,//右上のデバッグ表示の設定
       title: 'Chat App',
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
+      //theme: ThemeData.light(),
+      //darkTheme: ThemeData.dark(),
       // 4. themeModeProvider の state を用いて themeMode を設定する
       themeMode: themeMode.state,
       home: MainScreen(),
