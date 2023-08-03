@@ -47,6 +47,7 @@ class _SearchScreenState extends State<SearchScreen> {
   List<Map<String, dynamic>> _searchResults = [];
   String _searchMessage = '';
 
+  String _lastKeyword = ''; // 直前のキーワードを保存する
   final dbHelper = DatabaseHelper.instance;
 
   // 検索結果の取得
@@ -81,6 +82,14 @@ class _SearchScreenState extends State<SearchScreen> {
     matchedKeywords.addAll(tagKeywords);
 
     return matchedKeywords;
+  }
+
+  // 直前の検索結果をクリアする関数
+  void _clearLastResults() {
+    setState(() {
+      _searchResults = [];
+      _searchMessage = '';
+    });
   }
 
   // 一致するキーワードの検索
@@ -147,14 +156,19 @@ class _SearchScreenState extends State<SearchScreen> {
               onPressed: () async {
                 // 検索ボタンがクリックされたとき、検索を実行
                 String keyword = _searchController.text;
-                List<Map<String, dynamic>> results =
+                if (keyword.isNotEmpty && keyword != _lastKeyword) {
+                  // キーワードが空でなく、かつ直前の検索キーワードと異なる場合のみ検索を実行
+                  _clearLastResults();  // 直前の検索結果をクリア
+                  List<Map<String, dynamic>> results =
                     await SearchDatabase().search(keyword);
-                print('検索結果: $results');
-                setState(() {
-                  _searchResults = results;
-                  _searchMessage =
-                      _searchResults.isEmpty ? '一致する検索ワードがありません' : '';
-                });
+                  print('検索結果: $results');
+                  setState(() {
+                    _searchResults = results;
+                    _searchMessage =
+                        _searchResults.isEmpty ? '一致する検索ワードがありません' : '';
+                    _lastKeyword = keyword; // 直前のキーワードを保存
+                  });
+                }
               },
               child: Text('検索'),
             ),
@@ -211,6 +225,8 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
     );
   }
+
+
   // 登録ボタンクリック
   // void _insert() async {
   //   // row to insert
