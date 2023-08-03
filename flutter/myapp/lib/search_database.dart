@@ -108,7 +108,10 @@ class SearchDatabase {
         await dbHelper.queryAllRows_tag_table();
     List<Map<String, dynamic>> matchedTagRecords = tagRecords
         .where((record) =>
-            record[DatabaseHelper.columnTagId].toString().toLowerCase().contains(keyword) ||
+            record[DatabaseHelper.columnTagId]
+                .toString()
+                .toLowerCase()
+                .contains(keyword) ||
             record[DatabaseHelper.columnTagName]
                 .toString()
                 .toLowerCase()
@@ -123,7 +126,7 @@ class SearchDatabase {
                 .contains(keyword))
         .toList();
 
-      // チャットテーブルの一致するレコードを出力
+    // チャットテーブルの一致するレコードを出力
     if (matchedChatRecords.isNotEmpty) {
       print('チャットテーブルと一致しました:');
       for (var record in matchedChatRecords) {
@@ -146,12 +149,18 @@ class SearchDatabase {
         print(record);
       }
     }
-    
+
     // 一致するキーワードがない場合の処理
-    if (matchedChatRecords.isEmpty && matchedActionRecords.isEmpty && matchedTagRecords.isEmpty) {
+    if (matchedChatRecords.isEmpty &&
+        matchedActionRecords.isEmpty &&
+        matchedTagRecords.isEmpty) {
       print('一致する検索ワードがありません');
     }
 
-    return matchedChatRecords;
+    return [
+      ...matchedChatRecords,
+      ...matchedActionRecords,
+      ...matchedTagRecords
+    ];
   }
 }
