@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'database_helper.dart';
-import 'search_database.dart';
-import 'second_screen.dart';
-import 'chat_screen.dart';
-import 'screen_transition.dart';
+import 'utils/database_helper.dart';
+import 'utils/search_database.dart';
+import 'utils/second_screen.dart';
+import 'utils/chat_screen.dart';
+import 'utils/screen_transition.dart';
 
 void main() {
   runApp(MyApp());
