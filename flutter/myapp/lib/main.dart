@@ -37,22 +37,27 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// データベースの検索機能を持つ画面
+// StatefluWigetを継承し内部で状態保持可能
 class SearchScreen extends StatefulWidget {
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
 
+
 class _SearchScreenState extends State<SearchScreen> {
+  // 検索キーワードを入力するためのテキストフィールドコントローラー
   final TextEditingController _searchController = TextEditingController();
-  List<Map<String, dynamic>> _searchResults = [];
-  String _searchMessage = '';
+
+  List<Map<String, dynamic>> _searchResults = [];   // 検索結果を保持する
+  String _searchMessage = ''; // 検索結果がない場合に表示するメッセージを保持する
 
   String _lastKeyword = ''; // 直前のキーワードを保存する
-  final dbHelper = DatabaseHelper.instance;
+  final dbHelper = DatabaseHelper.instance; // Databasehelperクラスのインスタンス生成
 
   // 検索結果の取得
   List<String> _getMatchedKeywords(String keyword) {
-    List<String> matchedKeywords = [];
+    List<String> matchedKeywords = []; // 一致した検索キーワードを保持する
 
     // キーワードを小文字に変換
     String lowercaseKeyword = keyword.toLowerCase();
