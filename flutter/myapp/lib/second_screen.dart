@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'timeline_date_retriever.dart';
+import 'timeline_data_retriever.dart';
 import 'database_helper.dart';
 import 'screen_transition.dart';
 
@@ -38,7 +38,7 @@ class _SecondScreenState extends State<SecondScreen> {
                   Navigator.pop(context); // 遷移元の画面に戻る
                 }
               },
-              child: Text('Go Back'),
+              child: Text('Go Back'), // ScreenTransitionクラスを使用した遷移元に戻るボタン
             ),
           ],
         ),
@@ -50,10 +50,18 @@ class _SecondScreenState extends State<SecondScreen> {
   void _retrieveDataFromDatabase() async {
     // TimeLineDataRetrieverクラスのインスタンス作成
     TimeLineDataRetriever database = TimeLineDataRetriever();
+
     // データベースからアクションデータを取得する
-    List<Map<String, dynamic>> actionData = await database.getActionData();
+    // これによりTimeLineDataクラス内のgetActionDataメソッド
+    // を使用してアクションデータの取得をする
+    // TimeLineDataRetriever クラスの 
+    // await database.getActionData()はgetActionData()メソッドを非同期で呼び出し、
+    // データベースからアクションデータを取得する
+    List<Map<String, dynamic>> actionData = await database.getActionData(); 
+    
 
     // 各レコードの情報をコンソールに表示する
+    // 取得したアクションデータをループ処理で表示
     for (var record in actionData) {
       print('ActionName: ${record[DatabaseHelper.columnActionName]}');
       print('ActionNotes: ${record[DatabaseHelper.columnActionNotes]}');

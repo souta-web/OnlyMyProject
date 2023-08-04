@@ -1,15 +1,16 @@
 import 'database_helper.dart';
 
-// 動作確認は仮の画面を作って確認
-// 関数は指定して実行
-// 検索ボタンの動作
+
+// データベース内の複数のテーブルから特定のキーワードを含むレコードを検索するクラス
 class SearchDatabase {
-  // 検索メソッド
+  // データベース内の複数のテーブルから特定のキーワードを含むレコードを検索し、
+  // 一致するレコードのリストを返す非同期メソッド
   Future<List<Map<String, dynamic>>> search(String keyword) async {
     // databasehelperのインスタンスを生成
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
 
     // キーワードを小文字に変換
+    // これにより大文字と小文字を区別せずに検索可能
     keyword = keyword.toLowerCase();
 
     // データベースからチャットテーブルの一致するレコードを検索
@@ -157,6 +158,7 @@ class SearchDatabase {
       print('一致する検索ワードがありません');
     }
 
+    // チャットテーブル、アクションテーブル、タグテーブルの一致するレコードを結合して返す
     return [
       ...matchedChatRecords,
       ...matchedActionRecords,

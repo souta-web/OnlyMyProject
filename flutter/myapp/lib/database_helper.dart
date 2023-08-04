@@ -7,7 +7,7 @@ import 'package:path_provider/path_provider.dart';
 // 個人確認は仮の画面
 class DatabaseHelper {
   // デバッグ時はDB名を変えてよい
-  static final _databaseName = "MyDatabase19.db"; // DB名
+  static final _databaseName = "MyDatabase20.db"; // DB名
   static final _databaseVersion = 1; // スキーマのバージョン指定
 
   static final chat_table = 'chat_table'; // チャット管理テーブル
@@ -38,6 +38,7 @@ class DatabaseHelper {
   static final columnActionPlace = 'action_place'; //場所
   static final columnActionMainTag = 'action_main_tag'; //メインタグ
   static final columnActionSubTag = 'action_sub_tag'; //サブタグ
+  
 
   // タグテーブルのカラム
   static final columnTagId = 'tag_id';  // タグID
@@ -123,7 +124,8 @@ class DatabaseHelper {
         $columnActionState INTEGER,
         $columnActionPlace TEXT,
         $columnActionMainTag TEXT,
-        $columnActionSubTag TEXT
+        $columnActionSubTag TEXT,
+        $columnTagRegisteredActionName TEXT
       )
     ''');
 
@@ -236,9 +238,9 @@ class DatabaseHelper {
   }
 
   // 削除処理
-  Future<int> delete_tag_table(int id) async {
+  Future<int> delete_tag_table(int _id) async {
     Database? db = await instance.database;
     return await db!
-        .delete(tag_table, where: '$columnTagId = ?', whereArgs: [id]);
+        .delete(tag_table, where: '$columnTagId = ?', whereArgs: [_id]);
   }
 }
