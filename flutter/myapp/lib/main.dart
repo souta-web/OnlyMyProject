@@ -289,8 +289,8 @@ class _SearchScreenState extends State<SearchScreen> {
       DatabaseHelper.columnActionMessage: 'アクションを開始しました',
       DatabaseHelper.columnActionMedia: 'メディアです',
       DatabaseHelper.columnActionNotes: 'ゲームをしています',
-      DatabaseHelper.columnActionScore: '5',
-      DatabaseHelper.columnActionState: '0',
+      DatabaseHelper.columnActionScore: 5,
+      DatabaseHelper.columnActionState: 0,
       DatabaseHelper.columnActionPlace: '自宅',
       DatabaseHelper.columnActionMainTag: '#遊び',
       DatabaseHelper.columnActionSubTag: '#趣味'
@@ -317,8 +317,8 @@ class _SearchScreenState extends State<SearchScreen> {
       DatabaseHelper.columnActionMessage: 'アクションを開始しました',
       DatabaseHelper.columnActionMedia: 'マラソンメディアです',
       DatabaseHelper.columnActionNotes: '走っています',
-      DatabaseHelper.columnActionScore: '10',
-      DatabaseHelper.columnActionState: '1',
+      DatabaseHelper.columnActionScore: 10,
+      DatabaseHelper.columnActionState: 1,
       DatabaseHelper.columnActionPlace: '公園',
       DatabaseHelper.columnActionMainTag: '#運動',
       DatabaseHelper.columnActionSubTag: '#トレーニング'

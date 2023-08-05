@@ -26,7 +26,7 @@ class _SecondScreenState extends State<SecondScreen> {
                 // データの情報をコンソールで確認する
                 _retrieveDataFromDatabase();
               },
-              child: Text('Retrieve Data'),
+              child: Text('データ確認'),
             ),
             SizedBox(height: 16.0),
             ElevatedButton(
@@ -38,7 +38,7 @@ class _SecondScreenState extends State<SecondScreen> {
                   Navigator.pop(context); // 遷移元の画面に戻る
                 }
               },
-              child: Text('Go Back'), // ScreenTransitionクラスを使用した遷移元に戻るボタン
+              child: Text('戻る'), // ScreenTransitionクラスを使用した遷移元に戻るボタン
             ),
           ],
         ),

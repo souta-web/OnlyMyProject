@@ -81,7 +81,7 @@ class _ChatScreenState extends State<ChatScreen> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('Go Back'),
+              child: Text('戻る'),
             ),
           )
         ],
