@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
 }
 
 // データベースの検索機能を持つ画面
-// StatefluWigetを継承し内部で状態保持可能
+// StatefulWigetを継承し内部で状態保持可能
 class SearchScreen extends StatefulWidget {
   @override
   _SearchScreenState createState() => _SearchScreenState();
@@ -105,7 +105,6 @@ class _SearchScreenState extends State<SearchScreen> {
       return [
         Text('一致するキーワード：'),
         ...matchedKeywords.map((keyword) => Text(keyword.toString())),
-        // for (var keyword in matchedKeywords) Text(keyword.toString()),
       ];
     } else {
       return [];
