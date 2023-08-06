@@ -7,7 +7,7 @@ import 'package:path_provider/path_provider.dart';
 // 個人確認は仮の画面
 class DatabaseHelper {
   // デバッグ時はDB名を変えてよい
-  static final _databaseName = "MyDatabase19.db"; // DB名
+  static final _databaseName = "MyDatabase20.db"; // DB名
   static final _databaseVersion = 1; // スキーマのバージョン指定
 
   static final chat_table = 'chat_table'; // チャット管理テーブル
@@ -34,7 +34,7 @@ class DatabaseHelper {
   static final columnActionMessage = 'action_message'; //開始メッセージ
   static final columnActionMedia = 'action_media'; //添付メディア
   static final columnActionNotes = 'action_notes'; //説明文
-  static final columnActionScore = 'action_score'; //充実度
+  static final columnActionScore = 'action_score'; //充実度(1から5までの値で制限する)
   static final columnActionState = 'action_state'; //状態(0=未完了,1=完了)
   static final columnActionPlace = 'action_place'; //場所
   static final columnActionMainTag = 'action_main_tag'; //メインタグ
@@ -106,11 +106,13 @@ class DatabaseHelper {
         $columnChatTodofinish INTEGER,
         $columnChatMessage TEXT,
         $columnChatTime TEXT,
-        $columnChatChannel TEXT
+        $columnChatChannel TEXT,
+        $columnChatActionId INTEGER
       )
     ''');
 
     // アクションテーブルの作成
+    
     await db.execute('''
       CREATE TABLE $action_table (
         $columnActionId INTEGER PRIMARY KEY,
@@ -121,12 +123,11 @@ class DatabaseHelper {
         $columnActionMessage TEXT,
         $columnActionMedia BLOB,
         $columnActionNotes TEXT,
-        $columnActionScore INTEGER,
+        $columnActionScore INTEGER CHECK ($columnActionScore >= 1 AND $columnActionScore <= 5), // 充実度を1から5の範囲で制限
         $columnActionState INTEGER,
         $columnActionPlace TEXT,
         $columnActionMainTag TEXT,
-        $columnActionSubTag TEXT,
-        $columnTagRegisteredActionName TEXT
+        $columnActionSubTag TEXT
       )
     ''');
 
@@ -180,7 +181,7 @@ class DatabaseHelper {
   // 登録処理
   Future<int> insert_action_table(Map<String, dynamic> row) async {
     Database? db = await instance.database;
-    return await db!.insert(action_table, row);
+    return await db!.insert(action_table, row, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   // 照会処理
@@ -197,10 +198,10 @@ class DatabaseHelper {
   }
 
   //　更新処理
-  Future<int> update_action_table(Map<String, dynamic> row, int _id) async {
+  Future<int> update_action_table(Map<String, dynamic> row, int id) async {
     Database? db = await instance.database;
     return await db!.update(action_table, row,
-        where: '$columnActionId = ?', whereArgs: [_id]);
+        where: '$columnActionId = ?', whereArgs: [id]);
   }
 
   //　削除処理

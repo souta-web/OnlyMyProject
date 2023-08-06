@@ -239,10 +239,11 @@ class _SearchScreenState extends State<SearchScreen> {
   //     // チャットテーブルデバッグ用
   //     DatabaseHelper.columnChatSender: '山田　ji郎',
   //     DatabaseHelper.columnChatTodo: 'true',
-  //     DatabaseHelper.columnChatTodofinish: 'true',
+  //     DatabaseHelper.columnChatTodofinish: 1,
   //     DatabaseHelper.columnChatMessage: 'Test Message',
   //     DatabaseHelper.columnChatTime: '10:10',
-  //     DatabaseHelper.columnChatChannel: '1'
+  //     DatabaseHelper.columnChatChannel: '1',
+  //     DatabaseHelper.columnChatActionId: 2
   //   };
   //   final id = await dbHelper.insert_chat_table(row);
   //   print('登録しました。id: $id');
@@ -261,10 +262,11 @@ class _SearchScreenState extends State<SearchScreen> {
   //     DatabaseHelper.columnChatId: 1,
   //     DatabaseHelper.columnChatSender: '山田　鼻子',
   //     DatabaseHelper.columnChatTodo: 'false',
-  //     DatabaseHelper.columnChatTodofinish: 'false',
+  //     DatabaseHelper.columnChatTodofinish: 0,
   //     DatabaseHelper.columnChatMessage: 'Test Message2',
   //     DatabaseHelper.columnChatTime: '10:15',
-  //     DatabaseHelper.columnChatChannel: '2'
+  //     DatabaseHelper.columnChatChannel: '2',
+  //     DatabaseHelper.columnChatActionId: 3
   //   };
   //   final rowsAffected = await dbHelper.update_chat_table(row, 1);
   //   print('更新しました。 ID：$rowsAffected ');
@@ -289,7 +291,7 @@ class _SearchScreenState extends State<SearchScreen> {
       DatabaseHelper.columnActionMessage: 'アクションを開始しました',
       DatabaseHelper.columnActionMedia: 'メディアです',
       DatabaseHelper.columnActionNotes: 'ゲームをしています',
-      DatabaseHelper.columnActionScore: 5,
+      DatabaseHelper.columnActionScore: 4,
       DatabaseHelper.columnActionState: 0,
       DatabaseHelper.columnActionPlace: '自宅',
       DatabaseHelper.columnActionMainTag: '#遊び',
@@ -317,7 +319,7 @@ class _SearchScreenState extends State<SearchScreen> {
       DatabaseHelper.columnActionMessage: 'アクションを開始しました',
       DatabaseHelper.columnActionMedia: 'マラソンメディアです',
       DatabaseHelper.columnActionNotes: '走っています',
-      DatabaseHelper.columnActionScore: 10,
+      DatabaseHelper.columnActionScore: 6,
       DatabaseHelper.columnActionState: 1,
       DatabaseHelper.columnActionPlace: '公園',
       DatabaseHelper.columnActionMainTag: '#運動',

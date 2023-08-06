@@ -45,7 +45,11 @@ class SearchDatabase {
             record[DatabaseHelper.columnChatChannel]
                 .toString()
                 .toLowerCase()
-                .contains(keyword))
+                .contains(keyword) ||
+            record[DatabaseHelper.columnChatActionId]
+            .toString()
+            .toLowerCase()
+            .contains(keyword))
         .toList();
 
     // データベースからアクションテーブルの一致するレコードを検索
