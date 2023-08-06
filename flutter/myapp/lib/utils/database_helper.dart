@@ -23,6 +23,7 @@ class DatabaseHelper {
   static final columnChatMessage = 'chat_message'; // チャットのテキスト
   static final columnChatTime = 'chat_time'; //送信時間
   static final columnChatChannel = 'chat_channel'; //チャットチャンネル
+  static final columnChatActionId = 'chat_action_id'; //このチャットと紐づけられているアクションのidがここに入る
 
   // アクションテーブルのカラム
   static final columnActionId = '_action_id'; //ID
