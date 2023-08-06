@@ -181,7 +181,7 @@ class DatabaseHelper {
   // 登録処理
   Future<int> insert_action_table(Map<String, dynamic> row) async {
     Database? db = await instance.database;
-    return await db!.insert(action_table, row, conflictAlgorithm: ConflictAlgorithm.replace);
+    return await db!.insert(action_table, row);
   }
 
   // 照会処理
