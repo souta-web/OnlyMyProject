@@ -3,6 +3,7 @@ import 'utils/database_helper.dart';
 import 'utils/search_database.dart';
 import 'utils/second_screen.dart';
 import 'utils/chat_screen.dart';
+import 'utils/debug_action.dart';
 import 'utils/screen_transition.dart';
 
 void main() {
@@ -27,7 +28,13 @@ class MyApp extends StatelessWidget {
             builder: (context) => ChatScreen(),
           );
         }
-        // ルート名が'/second'or'/chat'以外の場合はホーム画面に遷移
+        // DebugActionに移動するための初期設定
+        if (settings.name == '/debug') {
+          return MaterialPageRoute(
+            builder: (context) => DebugAction(),
+          );
+        }
+        // ルート名が'/second'or'/chat'or'/debug'以外の場合はホーム画面に遷移
         return MaterialPageRoute(
           builder: (context) => SearchScreen(),
           settings: settings,
@@ -154,6 +161,20 @@ class _SearchScreenState extends State<SearchScreen> {
                 }
               },
               child: Text('Chat Screen へ遷移'),
+            ),
+            SizedBox(height: 16.0), // ボタン間のスペース
+            ElevatedButton(
+              onPressed: () {
+                // 画面遷移前にcanPopメソッドを使って遷移元の画面から戻れるか判定
+                bool canGoBack = ScreenTransition.canPop(context, '/debug');
+                // 判定結果に応じて遷移先への画面遷移を制御
+                if (canGoBack) {
+                  Navigator.pop(context); // 遷移元の画面に戻る
+                } else {
+                  Navigator.pushNamed(context, '/debug'); // 遷移先の画面に遷移
+                }
+              },
+              child: Text('DebugAction へ遷移'),
             ),
             SizedBox(height: 16.0),
             ElevatedButton(

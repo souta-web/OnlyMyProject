@@ -7,7 +7,7 @@ import 'package:path_provider/path_provider.dart';
 // 個人確認は仮の画面
 class DatabaseHelper {
   // デバッグ時はDB名を変えてよい
-  static final _databaseName = "MyDatabase20.db"; // DB名
+  static final _databaseName = "MyDatabase21.db"; // DB名
   static final _databaseVersion = 1; // スキーマのバージョン指定
 
   static final chat_table = 'chat_table'; // チャット管理テーブル
@@ -106,8 +106,7 @@ class DatabaseHelper {
         $columnChatTodofinish INTEGER,
         $columnChatMessage TEXT,
         $columnChatTime TEXT,
-        $columnChatChannel TEXT,
-        $columnChatActionId INTEGER
+        $columnChatChannel TEXT
       )
     ''');
 
@@ -123,11 +122,12 @@ class DatabaseHelper {
         $columnActionMessage TEXT,
         $columnActionMedia BLOB,
         $columnActionNotes TEXT,
-        $columnActionScore INTEGER CHECK ($columnActionScore >= 1 AND $columnActionScore <= 5), // 充実度を1から5の範囲で制限
+        $columnActionScore INTEGER CHECK ($columnActionScore >= 1 AND $columnActionScore <= 5), 
         $columnActionState INTEGER,
         $columnActionPlace TEXT,
         $columnActionMainTag TEXT,
-        $columnActionSubTag TEXT
+        $columnActionSubTag TEXT,
+        $columnChatActionId INTEGER DEFAULT $columnChatId 
       )
     ''');
 
