@@ -4,20 +4,33 @@ import 'register_action.dart';
 import 'database_helper.dart';
 import 'screen_transition.dart';
 
+// アクションデータベースに登録する処理のデバッグ用クラス
 class DebugAction extends StatefulWidget {
   @override
   _DebugActionState createState() => _DebugActionState();
 
+  // チャット入力用テキストフィールドのコントローラ
   final TextEditingController _chatPageTextFieldController =
       TextEditingController();
 
+  // アクションのON/OFFを制御するための値通知リスナー
   final ValueNotifier<bool> _toggleController = ValueNotifier<bool>(false);
 
   TextEditingController get chatPageTextFieldController =>
       _chatPageTextFieldController;
   ValueNotifier<bool> get toggleController => _toggleController;
+}
 
-  // データベース内のデータを表示するメソッド
+class _DebugActionState extends State<DebugAction> {
+  final RegisterAction registerAction = RegisterAction();
+
+  final TextEditingController resultController = TextEditingController();
+
+  List<Map<String, dynamic>> _chatData = []; // チャットデータを保持するリスト
+  List<Map<String, dynamic>> _actionData = []; // アクションデータを保持するリスト
+  String _errorMessage = ''; // エラーメッセージを保持
+
+  // データベースからチャットデータとアクションデータを取得して表示するメソッド
   Future<void> displayData(BuildContext context) async {
     final Database? db = await DatabaseHelper.instance.database;
 
@@ -39,21 +52,18 @@ class DebugAction extends StatefulWidget {
       actionData.forEach((row) {
         print(row);
       });
+
+      setState(() {
+        _chatData = chatData; // 取得したチャットデータを保持
+        _actionData = actionData; // 取得したアクションデータを保持
+        _errorMessage = ''; // エラーメッセージをクリア
+      });
     } catch (e) {
-      print('データ表示中にエラーが発生しました');
+      setState(() {
+        _errorMessage = 'データの取得中にエラーが発生しました'; // エラーメッセージを設定
+        print('データの取得中にエラーが発生しました');
+      });
     }
-  }
-}
-
-class _DebugActionState extends State<DebugAction> {
-  final RegisterAction registerAction = RegisterAction();
-
-  // アクションの結果を画面に表示するためのテキストコントローラ
-  final TextEditingController resultController = TextEditingController();
-
-  // デバッグ画面のウィジェットを作成
-  Widget buildDebugScreen(BuildContext context) {
-    return DebugAction(); // DebugActionを直接返す
   }
 
   @override
@@ -68,29 +78,32 @@ class _DebugActionState extends State<DebugAction> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // ユーザーが入力するテキストフィールド
             TextFormField(
               controller:
-                  registerAction.debugAction._chatPageTextFieldController,
+                  registerAction.debugAction.chatPageTextFieldController,
               decoration: const InputDecoration(border: OutlineInputBorder()),
             ),
             SizedBox(height: 10),
+            // アクションのON/OFFを切り替えるスイッチ
             ValueListenableBuilder<bool>(
-              valueListenable: registerAction.debugAction._toggleController,
+              valueListenable: registerAction.debugAction.toggleController,
               builder: (context, isAction, child) {
                 return Switch(
                   value: isAction,
                   onChanged: (newValue) {
                     setState(() {
-                      registerAction.debugAction._toggleController.value =
+                      registerAction.debugAction.toggleController.value =
                           newValue;
                     });
                   },
                 );
               },
             ),
+            // アクションを登録するボタン
             ElevatedButton(
               onPressed: () async {
-                if (registerAction.debugAction._toggleController.value) {
+                if (registerAction.debugAction.toggleController.value) {
                   await registerAction.sendAction();
                   resultController.text = 'アクションが登録されました。';
                 } else {
@@ -99,18 +112,52 @@ class _DebugActionState extends State<DebugAction> {
               },
               child: Text("アクションを登録"),
             ),
+            // データを表示するボタン
             ElevatedButton(
               onPressed: () async {
-                // データを表示するためのボタン
-                await widget.displayData(context);
+                await displayData(context); // データの表示メソッドを呼び出す
               },
               child: Text("データを表示"),
             ),
+            // アクション結果やエラーメッセージを表示するテキストフィールド
             TextFormField(
               controller: resultController,
               enabled: false,
               decoration: const InputDecoration(border: OutlineInputBorder()),
             ),
+            // エラーメッセージを表示
+            if (_errorMessage.isNotEmpty)
+              Text(
+                _errorMessage,
+                style: TextStyle(color: Colors.red),
+              ),
+            // チャットデータのリスト表示
+            if (_chatData.isNotEmpty)
+              Expanded(
+                child: ListView.builder(
+                  itemCount: _chatData.length,
+                  itemBuilder: (context, index) {
+                    final row = _chatData[index];
+                    return ListTile(
+                      title: Text('チャットデータ: $row'),
+                    );
+                  },
+                ),
+              ),
+            // アクションデータのリスト表示
+            if (_actionData.isNotEmpty)
+              Expanded(
+                child: ListView.builder(
+                  itemCount: _actionData.length,
+                  itemBuilder: (context, index) {
+                    final row = _actionData[index];
+                    return ListTile(
+                      title: Text('アクションデータ: $row'),
+                    );
+                  },
+                ),
+              ),
+            // 画面遷移を行うボタン
             Center(
               child: ElevatedButton(
                 onPressed: () {
@@ -121,7 +168,7 @@ class _DebugActionState extends State<DebugAction> {
                     Navigator.pop(context); // 遷移元の画面に戻る
                   }
                 },
-                child: Text('戻る'), // ScreenTransitionクラスを使用した遷移元に戻るボタン
+                child: Text('戻る'),
               ),
             )
           ],
