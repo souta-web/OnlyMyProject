@@ -66,6 +66,31 @@ class _DebugActionState extends State<DebugAction> {
     }
   }
 
+  // データベースからチャットデータを取得して表示するメソッド
+  Future<void> displayChatData(BuildContext context) async {
+    final Database? db = await DatabaseHelper.instance.database;
+
+    try {
+      final List<Map<String, dynamic>> chatData =
+          await db!.query(DatabaseHelper.chat_table);
+
+      print('チャットテーブルのデータ:');
+      chatData.forEach((row) {
+        print(row);
+      });
+
+      setState(() {
+        _chatData = chatData;
+        _errorMessage = '';
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'データの取得中にエラーが発生しました';
+        print('データの取得中にエラーが発生しました');
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,10 +132,11 @@ class _DebugActionState extends State<DebugAction> {
                   await registerAction.sendAction();
                   resultController.text = 'アクションが登録されました。';
                 } else {
-                  resultController.text = 'トグルがオフのため、アクションは登録されませんでした。';
+                  await registerAction.sendChat();
+                  resultController.text = 'チャットが登録されました。';
                 }
               },
-              child: Text("アクションを登録"),
+              child: Text("登録"),
             ),
             // データを表示するボタン
             ElevatedButton(
@@ -118,6 +144,13 @@ class _DebugActionState extends State<DebugAction> {
                 await displayData(context); // データの表示メソッドを呼び出す
               },
               child: Text("データを表示"),
+            ),
+            // チャットデータを表示するボタン
+            ElevatedButton(
+              onPressed: () async {
+                await displayChatData(context); // チャットデータの表示メソッドを呼び出す
+              },
+              child: Text("チャットデータを表示"),
             ),
             // アクション結果やエラーメッセージを表示するテキストフィールド
             TextFormField(

@@ -174,7 +174,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   Navigator.pushNamed(context, '/debug'); // 遷移先の画面に遷移
                 }
               },
-              child: Text('DebugAction へ遷移'),
+              child: Text('Debug Action へ遷移'),
             ),
             SizedBox(height: 16.0),
             ElevatedButton(

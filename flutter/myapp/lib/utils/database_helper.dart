@@ -123,7 +123,7 @@ class DatabaseHelper {
         $columnActionMedia BLOB,
         $columnActionNotes TEXT,
         $columnActionScore INTEGER CHECK ($columnActionScore >= 1 AND $columnActionScore <= 5), 
-        $columnActionState INTEGER,
+        $columnActionState INTEGER CHECK ($columnActionState >= 0 AND $columnActionState <= 1),
         $columnActionPlace TEXT,
         $columnActionMainTag TEXT,
         $columnActionSubTag TEXT,
