@@ -17,15 +17,11 @@ class ChatScreenWidget extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text('Chat'),
-          leading: ElevatedButton(
-            style: ButtonStyle(
-              shape: MaterialStateProperty.all<CircleBorder>(
-                CircleBorder(),
-              ),
-            ),
-            child: Image.asset(
-              'assets/images/account_icon.png',
-              //fit: BoxFit.contain,
+          leading: IconButton(
+            icon: CircleAvatar(
+              backgroundImage: AssetImage('assets/images/account_icon.png'),
+              backgroundColor: Colors.transparent, // 背景色
+              radius: 25,
             ),
             onPressed: () {},
           ),
@@ -122,7 +118,8 @@ class ChatScreenWidget extends StatelessWidget {
                                 border: InputBorder.none,
                                 hintText: 'メッセージを入力してください',
                                 contentPadding: EdgeInsets.symmetric(
-                                    vertical: 11.0)), //hintTextの位置
+                                  vertical: 11.0,
+                                )), //hintTextの位置
                           ),
                         )),
                         Material(
