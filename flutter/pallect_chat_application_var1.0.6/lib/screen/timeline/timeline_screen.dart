@@ -21,8 +21,8 @@ class _TimelineScreenWidgetState extends State<TimelineScreenWidget> {
     return Scaffold(
       appBar: AppBar(
         title: Text('タイムライン'),
-        backgroundColor:ThemeMode==ThemeMode ? Colors.white:Colors.black,// AppBarの背景色を白に設定 //ThemeModeではなくthemeMode.stateにしたいんだけどなー
-        foregroundColor:ThemeMode==ThemeMode ? Colors.black:Colors.white, // 文字の背景色を白に設定
+        //backgroundColor:ThemeMode==ThemeMode ? Colors.white:Colors.black,// AppBarの背景色を白に設定 //ThemeModeではなくthemeMode.stateにしたいんだけどなー
+        //foregroundColor:ThemeMode==ThemeMode ? Colors.black:Colors.white, // 文字の背景色を白に設定
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
