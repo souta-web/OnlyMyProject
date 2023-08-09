@@ -51,12 +51,11 @@ class SearchScreen extends StatefulWidget {
   _SearchScreenState createState() => _SearchScreenState();
 }
 
-
 class _SearchScreenState extends State<SearchScreen> {
   // 検索キーワードを入力するためのテキストフィールドコントローラー
   final TextEditingController _searchController = TextEditingController();
 
-  List<Map<String, dynamic>> _searchResults = [];   // 検索結果を保持する
+  List<Map<String, dynamic>> _searchResults = []; // 検索結果を保持する
   String _searchMessage = ''; // 検索結果がない場合に表示するメッセージを保持する
 
   String _lastKeyword = ''; // 直前のキーワードを保存する
@@ -106,6 +105,11 @@ class _SearchScreenState extends State<SearchScreen> {
 
   // 一致するキーワードの検索
   List<Widget> _buildMatchedKeywords() {
+    
+    if (_searchController.text.isEmpty) {
+      return [];
+    }
+
     List<String> matchedKeywords = _getMatchedKeywords(_searchController.text);
 
     if (matchedKeywords.isNotEmpty) {
@@ -155,7 +159,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 bool canGoBack = ScreenTransition.canPop(context, '/chat');
                 // 判定結果に応じて遷移先への画面遷移を制御
                 if (canGoBack) {
-                  Navigator.pushNamed(context,'/'); // 遷移元の画面に戻る
+                  Navigator.pushNamed(context, '/'); // 遷移元の画面に戻る
                 } else {
                   Navigator.pushNamed(context, '/chat'); // 遷移先の画面に遷移
                 }
@@ -169,7 +173,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 bool canGoBack = ScreenTransition.canPop(context, '/debug');
                 // 判定結果に応じて遷移先への画面遷移を制御
                 if (canGoBack) {
-                  Navigator.pushNamed(context,'/'); // 遷移元の画面に戻る
+                  Navigator.pushNamed(context, '/'); // 遷移元の画面に戻る
                 } else {
                   Navigator.pushNamed(context, '/debug'); // 遷移先の画面に遷移
                 }
@@ -183,9 +187,9 @@ class _SearchScreenState extends State<SearchScreen> {
                 String keyword = _searchController.text;
                 if (keyword.isNotEmpty && keyword != _lastKeyword) {
                   // キーワードが空でなく、かつ直前の検索キーワードと異なる場合のみ検索を実行
-                  _clearLastResults();  // 直前の検索結果をクリア
+                  _clearLastResults(); // 直前の検索結果をクリア
                   List<Map<String, dynamic>> results =
-                    await SearchDatabase().search(keyword);
+                      await SearchDatabase().search(keyword);
                   print('検索結果: $results');
                   setState(() {
                     _searchResults = results;
@@ -193,6 +197,9 @@ class _SearchScreenState extends State<SearchScreen> {
                         _searchResults.isEmpty ? '一致する検索ワードがありません' : '';
                     _lastKeyword = keyword; // 直前のキーワードを保存
                   });
+                } else if (keyword.isEmpty && _searchResults.isNotEmpty) {
+                  // キーワードが空で、かつ検索結果がある場合、検索結果をクリア
+                  _clearLastResults();
                 }
               },
               child: Text('検索'),
@@ -250,7 +257,6 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
     );
   }
-
 
   // 登録ボタンクリック
   // void _insert() async {
