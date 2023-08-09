@@ -71,7 +71,7 @@ class _SecondScreenState extends State<SecondScreen> {
                     Text('Main Tag: ${record[DatabaseHelper.columnActionMainTag]}'), // メインタグ
                     Text('Sub Tag: ${record[DatabaseHelper.columnActionSubTag]}'), // サブタグ
                     Text('Status: ${record[DatabaseHelper.columnActionState]}'), // ステータス
-                    Text('ActionScore: ${record[DatabaseHelper.columnActionScore]}'), // アクションスコア
+                    Text('ActionScore: ${record[DatabaseHelper.columnActionScore]}'), // 充実度
                     Divider(), // 区切り線
                   ],
                 );
