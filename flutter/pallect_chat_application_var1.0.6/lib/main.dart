@@ -9,29 +9,26 @@ import 'screen/setting/config_screen.dart';
 void main() {
   runApp(const ProviderScope(child: MyApp()));
 }
-// 1. ConsumerWidget を継承したクラスを作成する
+
 class MyApp extends ConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  // 2. 引数に WidgetRef ref を取るようにする
   Widget build(BuildContext context, WidgetRef ref) {
-    // 3. themModeProvider の ref オブジェクトを取得する
     final themeMode = ref.watch(themeModeProvider.state);
     return MaterialApp(
-      debugShowCheckedModeBanner: false,//右上のデバッグ表示の設定
+      debugShowCheckedModeBanner: false,
       title: 'Chat App',
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      // 4. themeModeProvider の state を用いて themeMode を設定する
       themeMode: themeMode.state,
       home: MainScreen(),
-      routes: {//遷移先追加するならここに追加
-        '/main': (BuildContext context) => new MainScreen(),
-        '/config': (BuildContext context) => new ConfigScreenWidget(),
-        '/chat': (BuildContext context) => new ChatScreenWidget(),
-        '/timelime': (BuildContext context) => new TimelineScreenWidget(),
-        '/data': (BuildContext context) => new DataScreenWidget(),
+      routes: {
+        '/main': (BuildContext context) => MainScreen(),
+        '/config': (BuildContext context) => ConfigScreenWidget(),
+        '/chat': (BuildContext context) => ChatScreenWidget(),
+        '/timelime': (BuildContext context) => TimelineScreenWidget(),
+        '/data': (BuildContext context) => DataScreenWidget(),
       },
     );
   }
@@ -44,10 +41,22 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
-  List<Widget> _screens = [
-    ChatScreenWidget(),
-    TimelineScreenWidget(),
-    DataScreenWidget(),
+  List<BottomNavigationBarItem> _bottomNavBarItems = [
+    BottomNavigationBarItem(
+      icon: Image.asset('assets/images/chat_icon.png', width: 30, height: 30),
+      activeIcon: Image.asset('assets/images/chat_icon_d.png', width: 30, height: 30),
+      label: 'Chat',
+    ),
+    BottomNavigationBarItem(
+      icon: Image.asset('assets/images/timeline_icon.png', width: 30, height: 30),
+      activeIcon: Image.asset('assets/images/timeline_icon_d.png', width: 30, height: 30),
+      label: 'Timeline',
+    ),
+    BottomNavigationBarItem(
+      icon: Image.asset('assets/images/data_icon.png', width: 30, height: 30),
+      activeIcon: Image.asset('assets/images/data_icon_d.png', width: 30, height: 30),
+      label: 'Data',
+    ),
   ];
 
   void _onItemTapped(int index) {
@@ -56,40 +65,22 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+  List<Widget> _screens = [
+    ChatScreenWidget(),
+    TimelineScreenWidget(),
+    DataScreenWidget(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
-        /*
-        selectedIconTheme: IconThemeData(
-          color: Colors.pink,
-        ),
-        */
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-        items: [
-          BottomNavigationBarItem(
-            //icon: Icon(Icons.chat),
-            icon: Image.asset('assets/images/chat_icon.png',width: 30,height: 30,), // オリジナルのアイコン画像を指定
-            label: 'Chat',
-          ),
-          BottomNavigationBarItem(
-            //icon: Icon(Icons.timeline),
-            icon: Image.asset('assets/images/timeline_icon.png',width: 30,height: 30,), // オリジナルのアイコン画像を指定
-            label: 'Timeline',
-
-          ),
-          BottomNavigationBarItem(
-            //icon: Icon(Icons.data_usage),
-            icon: Image.asset('assets/images/data_icon.png',width: 30,height: 30,), // オリジナルのアイコン画像を指定
-            label: 'Data',
-          ),
-        ],
+        items: _bottomNavBarItems,
+        selectedItemColor: Color(0xFFFF9515), // カラーコードで指定します (例: 青色)
       ),
     );
   }
 }
-
-

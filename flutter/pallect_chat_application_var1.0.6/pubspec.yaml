@@ -63,6 +63,9 @@ flutter:
     - assets/images/chat_icon.png
     - assets/images/timeline_icon.png
     - assets/images/data_icon.png
+    - assets/images/chat_icon_d.png
+    - assets/images/timeline_icon_d.png
+    - assets/images/data_icon_d.png
 #使用する画像です
 
   # The following line ensures that the Material Icons font is
