@@ -198,7 +198,7 @@ class _DebugActionState extends State<DebugAction> {
                       ScreenTransition.canPop(context, '/'); // ここでは遷移元を'/'と仮定
 
                   if (canGoBack) {
-                    Navigator.pop(context); // 遷移元の画面に戻る
+                    Navigator.pushNamed(context, '/'); // 遷移元の画面に戻る
                   }
                 },
                 child: Text('戻る'),

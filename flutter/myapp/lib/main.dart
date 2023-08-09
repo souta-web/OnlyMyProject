@@ -141,7 +141,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 bool canGoBack = ScreenTransition.canPop(context, '/second');
                 // 判定結果に応じて遷移先への画面遷移を制御
                 if (canGoBack) {
-                  Navigator.pop(context); // 遷移元の画面に戻る
+                  Navigator.pushNamed(context, '/'); // 遷移元の画面に戻る
                 } else {
                   Navigator.pushNamed(context, '/second'); // 遷移先の画面に遷移
                 }
@@ -155,7 +155,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 bool canGoBack = ScreenTransition.canPop(context, '/chat');
                 // 判定結果に応じて遷移先への画面遷移を制御
                 if (canGoBack) {
-                  Navigator.pop(context); // 遷移元の画面に戻る
+                  Navigator.pushNamed(context,'/'); // 遷移元の画面に戻る
                 } else {
                   Navigator.pushNamed(context, '/chat'); // 遷移先の画面に遷移
                 }
@@ -169,7 +169,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 bool canGoBack = ScreenTransition.canPop(context, '/debug');
                 // 判定結果に応じて遷移先への画面遷移を制御
                 if (canGoBack) {
-                  Navigator.pop(context); // 遷移元の画面に戻る
+                  Navigator.pushNamed(context,'/'); // 遷移元の画面に戻る
                 } else {
                   Navigator.pushNamed(context, '/debug'); // 遷移先の画面に遷移
                 }

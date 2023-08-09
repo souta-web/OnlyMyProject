@@ -35,7 +35,7 @@ class _SecondScreenState extends State<SecondScreen> {
               onPressed: () {
                 bool canGoBack = ScreenTransition.canPop(context, '/');
                 if (canGoBack) {
-                  Navigator.pop(context); // 画面を閉じて遷移元に戻る
+                  Navigator.pushNamed(context,'/'); // 遷移元の画面に戻る
                 }
               },
               child: Text('戻る'), // 戻るボタン
@@ -129,7 +129,7 @@ class _SecondScreenState extends State<SecondScreen> {
 //                     ScreenTransition.canPop(context, '/'); // ここでは遷移元を'/'と仮定
 
 //                 if (canGoBack) {
-//                   Navigator.pop(context); // 遷移元の画面に戻る
+//                   Navigator.pushNamed(context, '/'); // 遷移元の画面に戻る
 //                 }
 //               },
 //               child: Text('戻る'), // ScreenTransitionクラスを使用した遷移元に戻るボタン
