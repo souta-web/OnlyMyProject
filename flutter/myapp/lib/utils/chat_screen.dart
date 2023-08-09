@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'screen_transition.dart';
+import 'register_text.dart';
+import 'database_helper.dart';
 
 // チャット画面を構築するウィジェット
 class ChatScreen extends StatefulWidget {
@@ -25,6 +27,26 @@ class _ChatScreenState extends State<ChatScreen> {
     // チャットメッセージをリストの先頭に追加する
     setState(() {
       _messages.insert(0, message);
+    });
+
+    // テキストをデータベースに登録して返信メッセージを表示する
+    _registerAndShowReplyMessage(text);
+  }
+
+  // テキストをデータベースに登録し、返信メッセージを表示するメソッド
+  _registerAndShowReplyMessage(String text) {
+    // テキストをデータベースに登録
+    RegisterText.registerTextToDatabase(text, 1); // 1は送信者を'ユーザー'とする
+
+    // 返信メッセージを作成してリストに追加
+    String replyText = "データが登録されました"; // 返信メッセージの内容
+    print("データが登録されました");
+    ChatMessage replyMessage = ChatMessage(
+      text: replyText,
+      sender: 'AI',
+    );
+    setState(() {
+      _messages.insert(0, replyMessage);
     });
   }
 
@@ -77,6 +99,48 @@ class _ChatScreenState extends State<ChatScreen> {
             decoration: BoxDecoration(color: Theme.of(context).cardColor),
             child: _buildTextComposer(),
           ),
+          ElevatedButton(
+            onPressed: () async {
+              // チャットテーブルのデータを取得
+              final dbHelper = DatabaseHelper.instance;
+              final List<Map<String, dynamic>> chats =
+                  await dbHelper.queryAllRows_chat_table();
+
+              print("チャットテーブルのデータ:");
+              chats.forEach((chat) {
+                print(
+                    "Sender: ${chat[DatabaseHelper.columnChatSender]}, Todo: ${chat[DatabaseHelper.columnChatTodo]}, Text: ${chat[DatabaseHelper.columnChatMessage]}, Time: ${chat[DatabaseHelper.columnChatTime]} Channel: ${chat[DatabaseHelper.columnChatChannel]},");
+              });
+              // ダイアログでデータを表示
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('チャットテーブルのデータ'),
+                    content: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: chats.map((chat) {
+                          return Text(
+                            'Sender: ${chat[DatabaseHelper.columnChatSender]}, Todo: ${chat[DatabaseHelper.columnChatTodo]}, Text: ${chat[DatabaseHelper.columnChatMessage]}, Time: ${chat[DatabaseHelper.columnChatTime]} Channel: ${chat[DatabaseHelper.columnChatChannel]},',
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('閉じる'),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            child: Text('データを確認する'),
+          ),
           Center(
             child: ElevatedButton(
               onPressed: () {
@@ -87,7 +151,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   Navigator.pushNamed(context, '/'); // 遷移元の画面に戻る
                 }
               },
-              child: Text('戻る'),  // ScreenTransitionクラスを使用した遷移元に戻るボタン
+              child: Text('戻る'), // ScreenTransitionクラスを使用した遷移元に戻るボタン
             ),
           )
         ],
@@ -98,7 +162,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
 // チャットメッセージを構築するウィジェット
 class ChatMessage extends StatelessWidget {
-  const ChatMessage({super.key, required this.text, required this.sender});
+  const ChatMessage({Key? key, required this.text, required this.sender})
+      : super(key: key);
 
   final String text; // 表示するテキスト用の変数定義
   final String sender; // 送信者の名前の変数定義
