@@ -21,8 +21,8 @@ class ChatTodo extends StatelessWidget {
                         Text(
                           '12:03　',
                           style: TextStyle(
-                              //wordSpacing: 3.0,
-                              ),
+                            fontSize: 12.0,
+                          ),
                         ),
                         Column(
                           children: [

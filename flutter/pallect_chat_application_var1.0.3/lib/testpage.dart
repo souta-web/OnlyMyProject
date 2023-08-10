@@ -45,3 +45,15 @@ class _ChatTodoState extends State<ChatTodo> {
     );
   }
 }
+
+/*boxShadow: [
+  BoxShadow(
+      color: Color.fromARGB(255, 206, 202, 202),
+      blurRadius: 3.0,
+      spreadRadius: 1.0,
+      offset: Offset(3, 3))
+],*/
+
+
+
+      

@@ -66,12 +66,11 @@ class ChatScreenWidget extends StatelessWidget {
           children: <Widget>[
             //動作確認ボタン
             ElevatedButton(
-              onPressed: () => Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) {
-                return ChatFukidashi();
-              })),
-              child: Text('吹き出し確認'),
-            ),
+                child: Text('吹き出し確認'),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ChatFukidashi()));
+                }),
             ElevatedButton(
               onPressed: () => Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) {

@@ -4,7 +4,7 @@
             "outputFile": "com.example.original_test_chat_application.app-mergeDebugResources-9:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "C:\\src\\flutter\\work\\OnlyMyProject\\flutter\\original_test_chat_application_var2.1.0\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "C:\\Users\\Owner\\Documents\\GitHub\\OnlyMyProject\\flutter\\original_test_chat_application_var2.1.0\\android\\app\\src\\main\\res\\values-night\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",

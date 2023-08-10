@@ -1,45 +1,58 @@
 import 'package:flutter/material.dart';
-import 'package:bubble/bubble.dart';
-//import 'package:bubble/issue_clipper.dart';
 
-/*class ChatFukidashi extends StatelessWidget {
+class ChatFukidashi extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('fukidashi')),
-      body: SafeArea(
-        child: Column(
+    );
+  }
+}
+
+//メッセージ送信吹き出し
+class ChatMessageSend extends StatelessWidget {
+  final String send;
+  ChatMessageSend({required this.send});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        child: ListView(
+          //画面全体の周りの余白
+          padding: const EdgeInsets.all(20.0),
           children: [
             Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 17.0,
-                  vertical: 25.0,
-                ),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 28.0),
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(10),
-                              topLeft: Radius.circular(10),
-                              bottomLeft: Radius.circular(10),
-                            ),
-                            color: Color.fromARGB(255, 255, 191, 114),
+              child: Column(
+                children: [
+                  Padding(
+                    //吹き出し下の余白
+                    padding: EdgeInsets.only(bottom: 18.0),
+                    child: Align(
+                      //右側に寄せる
+                      alignment: Alignment.centerRight,
+                      child: Container(
+                        //角の丸みの設定
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(10),
+                            topLeft: Radius.circular(10),
+                            bottomLeft: Radius.circular(10),
                           ),
-                          child: Padding(
-                            padding: EdgeInsets.all(15.0),
-                            child: Text('行動１を開始'),
+                          color: Color.fromARGB(255, 255, 149, 21),
+                        ),
+                        child: Padding(
+                          //文字と吹き出しの間の余白
+                          padding: EdgeInsets.all(15.0),
+                          child: Text(
+                            send,
+                            style: TextStyle(fontSize: 13),
                           ),
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -47,78 +60,52 @@ import 'package:bubble/bubble.dart';
       ),
     );
   }
-}*/
+}
 
-class ChatFukidashi extends StatelessWidget {
+//メッセージ返信吹き出し
+class ChatMessageReply extends StatelessWidget {
+  final String reply;
+  ChatMessageReply({required this.reply});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('fukidashi'),
-      ),
       body: Container(
         child: ListView(
-          padding: const EdgeInsets.all(6),
+          //画面全体の周りの余白
+          padding: const EdgeInsets.all(20.0),
           children: [
-            Bubble(
-              margin: BubbleEdges.all(10.0),
-              padding: BubbleEdges.all(14.0),
-              radius: Radius.circular(10.0),
-              alignment: Alignment.topRight,
-              stick: true,
-              nip: BubbleNip.rightBottom,
-              color: Color.fromARGB(255, 255, 191, 114),
-              child: Text(
-                '行動１を開始',
-                style: TextStyle(fontSize: 13.0),
-              ),
-            ),
-            Bubble(
-              margin: BubbleEdges.all(10.0),
-              padding: BubbleEdges.all(14.0),
-              radius: Radius.circular(10.0),
-              alignment: Alignment.topLeft,
-              stick: true,
-              nip: BubbleNip.leftBottom,
-              color: Color.fromARGB(255, 207, 203, 203),
-              child: Text(
-                '行動１を開始しました。頑張ってください！',
-                style: TextStyle(fontSize: 13.0),
-              ),
-            ),
             Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 14.0,
-                  vertical: 25.0,
-                ),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 28.0),
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(10),
-                              topLeft: Radius.circular(10),
-                              bottomLeft: Radius.circular(10),
-                            ),
-                            color: Color.fromARGB(255, 255, 191, 114),
+              child: Column(
+                children: [
+                  Padding(
+                    //吹き出し下の余白
+                    padding: EdgeInsets.only(bottom: 28.0),
+                    child: Align(
+                      //左側に寄せる
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        //角の丸みの設定
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(10),
+                            topLeft: Radius.circular(10),
+                            bottomRight: Radius.circular(10),
                           ),
-                          child: Padding(
-                            padding: EdgeInsets.all(15.0),
-                            child: Text(
-                              '行動１を開始',
-                              style: TextStyle(fontSize: 13),
-                            ),
+                          color: Color.fromARGB(255, 189, 187, 184),
+                        ),
+                        child: Padding(
+                          //文字と吹き出しの間の余白
+                          padding: EdgeInsets.all(15.0),
+                          child: Text(
+                            reply,
+                            style: TextStyle(fontSize: 13),
                           ),
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ],
