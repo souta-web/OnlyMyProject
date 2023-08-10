@@ -7,7 +7,8 @@ class ChatMessageSend extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Scaffold(
+      body: Container(
         child: ListView(
           //画面全体の周りの余白
           padding: const EdgeInsets.all(20.0),
@@ -47,6 +48,7 @@ class ChatMessageSend extends StatelessWidget {
             ),
           ],
         ),
+      ),
     );
   }
 }
