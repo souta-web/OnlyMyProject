@@ -43,6 +43,45 @@ class _DebugActionState extends State<DebugAction> {
       final List<Map<String, dynamic>> actionData =
           await db.query(DatabaseHelper.action_table);
 
+      // ダイアログを表示
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('データ表示'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // チャットデータ表示
+                Text('チャットテーブルのデータ:'),
+                Column(
+                  children:
+                      chatData.map((row) => Text(row.toString())).toList(),
+                ),
+                Divider(), // 区切り線
+                SizedBox(height: 10),
+                // アクションデータ表示
+                Text('アクションテーブルのデータ:'),
+                Column(
+                  children:
+                      actionData.map((row) => Text(row.toString())).toList(),
+                ),
+                Divider(), // 区切り線
+              ],
+            ),
+            actions: [
+              // ダイアログを閉じるボタン
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('閉じる'),
+              ),
+            ],
+          );
+        },
+      );
+
       print('チャットテーブルのデータ:');
       chatData.forEach((row) {
         print(row);
@@ -73,6 +112,37 @@ class _DebugActionState extends State<DebugAction> {
     try {
       final List<Map<String, dynamic>> chatData =
           await db!.query(DatabaseHelper.chat_table);
+
+      // ダイアログを表示
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('チャットデータ表示'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // チャットデータ表示
+                Text('チャットテーブルのデータ:'),
+                Column(
+                  children:
+                      chatData.map((row) => Text(row.toString())).toList(),
+                ),
+                Divider(), // 区切り線
+              ],
+            ),
+            actions: [
+              // ダイアログを閉じるボタン
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('閉じる'),
+              ),
+            ],
+          );
+        },
+      );
 
       print('チャットテーブルのデータ:');
       chatData.forEach((row) {
@@ -128,12 +198,22 @@ class _DebugActionState extends State<DebugAction> {
             // アクションを登録するボタン
             ElevatedButton(
               onPressed: () async {
+                final inputValue =
+                    registerAction.debugAction.chatPageTextFieldController.text;
                 if (registerAction.debugAction.toggleController.value) {
-                  await registerAction.sendAction();
-                  resultController.text = 'アクションが登録されました。';
+                  if (inputValue.isEmpty) {
+                    resultController.text = "アクションが登録できませんでした。";
+                  } else {
+                    await registerAction.sendAction();
+                    resultController.text = 'アクションが登録されました。';
+                  }
                 } else {
-                  await registerAction.sendChat();
-                  resultController.text = 'チャットが登録されました。';
+                  if (inputValue.isEmpty) {
+                    resultController.text = "チャットが登録できませんでした。";
+                  } else {
+                    await registerAction.sendChat();
+                    resultController.text = 'チャットが登録されました。';
+                  }
                 }
               },
               child: Text("登録"),
