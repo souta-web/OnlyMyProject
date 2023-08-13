@@ -8,6 +8,12 @@ class Screen1_1 extends StatefulWidget {
 class _Screen1_1 extends State<Screen1_1> {
   final TextEditingController _textController = TextEditingController();
 
+  void initState() {
+    print("screen1_1が読み込まれました");
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,10 +36,11 @@ class _Screen1_1 extends State<Screen1_1> {
             ElevatedButton(
               onPressed: () {
                 // ボタンが押されたときの処理をここに追加
-                Navigator.pushNamed(context, '/screen2_1').then((value) {
-                  // 再描画
-                  setState(() {});
-                });
+                Navigator.pushNamed(
+                  context, 
+                  '/screen2_1',
+                  arguments: {'caller_screen': '/screen1_1'},
+                );
               },
               child: Text('screen2_1'),
             ),
