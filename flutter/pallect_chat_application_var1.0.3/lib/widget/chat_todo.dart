@@ -8,7 +8,7 @@ class ChatTodo extends StatelessWidget {
       body: Column(
         children: [
           Container(
-            color: Color.fromARGB(255, 207, 203, 203),
+            color: Color.fromARGB(255, 229, 229, 229),
             margin: EdgeInsets.symmetric(vertical: 20.0),
             padding: EdgeInsets.all(7.0),
             width: MediaQuery.of(context).size.width,
@@ -48,13 +48,16 @@ class ChatTodo extends StatelessWidget {
                     ),
                   ),
                   Material(
-                    color: Color.fromARGB(255, 207, 203, 203),
+                    color: Color.fromARGB(255, 229, 229, 229),
                     child: Center(
                       child: Ink(
                         child: IconButton(
-                          icon: Icon(Icons.play_circle_outline),
-                          iconSize: 40.0,
-                          color: const Color.fromARGB(255, 25, 25, 25),
+                          icon: CircleAvatar(
+                            backgroundImage:
+                                AssetImage('assets/images/play_circle.png'),
+                            backgroundColor: Colors.transparent, // 背景色
+                            radius: 25,
+                          ),
                           onPressed: () {},
                         ),
                       ),

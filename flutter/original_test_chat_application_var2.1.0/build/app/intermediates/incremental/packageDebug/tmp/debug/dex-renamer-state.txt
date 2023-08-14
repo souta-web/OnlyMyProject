@@ -1,4 +1,4 @@
-#Wed Aug 09 19:28:58 JST 2023
+#Mon Aug 14 10:18:38 JST 2023
 base.0=C\:\\Users\\Owner\\Documents\\GitHub\\OnlyMyProject\\flutter\\original_test_chat_application_var2.1.0\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
 path.0=classes.dex
 renamed.0=classes.dex
