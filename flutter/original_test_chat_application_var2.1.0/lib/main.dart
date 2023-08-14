@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
-import 'database_helper.dart';
+import 'utils/database_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'chatpage.dart';
 import 'actionlistpage.dart';
@@ -19,29 +19,33 @@ void main() {
 
 class MyApp extends StatelessWidget {
   @override
-
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.light(),
       darkTheme: ThemeData.light(),
       initialRoute: '/',
-      routes: {//画面遷移で任意のページに移動するための初期設定
+      routes: {
+        //画面遷移で任意のページに移動するための初期設定
         '/': (context) => MyAppHome(),
       },
-      onGenerateRoute: (settings) {//ActionDetailPageに移動するための初期設定
-        if (settings.name == '/actionDetailPage') {//Navigator.PushNamedで/actionDetailPageを指定すると移動できる
+      onGenerateRoute: (settings) {
+        //ActionDetailPageに移動するための初期設定
+        if (settings.name == '/actionDetailPage') {
+          //Navigator.PushNamedで/actionDetailPageを指定すると移動できる
           // 引数を指定して新しい画面に遷移
           final args = settings.arguments as Map<String, dynamic>;
-          print('/actionDetailPage'+args['choice_record'].toString());
+          print('/actionDetailPage' + args['choice_record'].toString());
           return MaterialPageRoute(
-            builder: (context) => ActionDetailPage(action_table_alldata_detailpage:args['choice_record']),
+            builder: (context) => ActionDetailPage(
+                action_table_alldata_detailpage: args['choice_record']),
           );
-        } else if (settings.name == '/actionEditPage'){
+        } else if (settings.name == '/actionEditPage') {
           // 引数を指定して新しい画面に遷移
           final args = settings.arguments as Map<String, dynamic>;
-          print('/actionEditPage'+args['choice_record'].toString());
+          print('/actionEditPage' + args['choice_record'].toString());
           return MaterialPageRoute(
-            builder: (context) => ActionEditPage(action_table_alldata_editpage:args['choice_record']),
+            builder: (context) => ActionEditPage(
+                action_table_alldata_editpage: args['choice_record']),
           );
         }
         return null;
@@ -51,7 +55,6 @@ class MyApp extends StatelessWidget {
 }
 
 class MyAppHome extends StatefulWidget {
-  
   @override
   _MyAppHome createState() => _MyAppHome();
 }
@@ -162,10 +165,11 @@ class _OptionPage extends State<OptionPage> {
     });
   }
 
-  void initstate(){
+  void initstate() {
     super.initState();
     isDarkMode = switchValues[0];
   }
+
   @override
   Widget build(BuildContext context) {
     return Material(
