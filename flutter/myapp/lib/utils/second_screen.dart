@@ -67,7 +67,7 @@ class _SecondScreenState extends State<SecondScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('ActionName: ${record[DatabaseHelper.columnActionName]}'), // アクション名
-                    Text('ActionNotes: ${record[DatabaseHelper.columnActionNotes]}'), // アクションのノート
+                    Text('ActionNotes: ${record[DatabaseHelper.columnActionNotes]}'), // アクションの詳細
                     Text('Main Tag: ${record[DatabaseHelper.columnActionMainTag]}'), // メインタグ
                     Text('Sub Tag: ${record[DatabaseHelper.columnActionSubTag]}'), // サブタグ
                     Text('Status: ${record[DatabaseHelper.columnActionState]}'), // ステータス
