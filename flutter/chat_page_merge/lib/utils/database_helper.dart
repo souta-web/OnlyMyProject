@@ -4,20 +4,49 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
+// 個人確認は仮の画面
 class DatabaseHelper {
-
-  static final _databaseName = "MyDatabase.db"; // DB名
+  // デバッグ時はDB名を変えてよい
+  static final _databaseName = "MyDatabase21.db"; // DB名
   static final _databaseVersion = 1; // スキーマのバージョン指定
 
-  static final table = 'my_table'; // テーブル名
+  static final chat_table = 'chat_table'; // チャット管理テーブル
+  static final action_table = 'action_table'; //アクション(Todo)管理テーブル
+  static final tag_table = 'tag_table'; // タグ管理テーブル
 
-  //カラム名とは項目名の事(辻)
-  static final columnId = '_id'; // カラム名：ID
-  static final columnName = 'name'; // カラム名:Name
-  static final columnAge = 'age'; // カラム名：age
-  static final columnSender = 'sender'; // 送信者情報(true=ユーザー:fasle=Bot)
-  static final columnMessage = 'message'; // チャットのテキスト
-  static final columnTime = 'time'; //送信時間
+  // カラム名とは項目名の事(辻)
+  // チャットテーブルのカラム
+  static final columnChatId = '_chat_id'; // カラム名：ID
+  static final columnChatSender = 'chat_sender'; // 送信者情報(true=ユーザー:fasle=AI)
+  static final columnChatTodo = 'chat_todo'; //todoかどうか(true=todo:false=message)
+  static final columnChatTodofinish = 'chat_todofinish';
+  static final columnChatMessage = 'chat_message'; // チャットのテキスト
+  static final columnChatTime = 'chat_time'; //送信時間
+  static final columnChatChannel = 'chat_channel'; //チャットチャンネル
+  static final columnChatActionId = 'chat_action_id'; //このチャットと紐づけられているアクションのidがここに入る
+
+  // アクションテーブルのカラム
+  static final columnActionId = '_action_id'; //ID
+  static final columnActionName = 'action_name'; //アクション名
+  static final columnActionStart = 'action_start'; //開始時刻
+  static final columnActionEnd = 'action_end'; //終了時刻
+  static final columnActionDuration = 'action_duration'; //総時間
+  static final columnActionMessage = 'action_message'; //開始メッセージ
+  static final columnActionMedia = 'action_media'; //添付メディア
+  static final columnActionNotes = 'action_notes'; //説明文
+  static final columnActionScore = 'action_score'; //充実度(1から5までの値で制限する)
+  static final columnActionState = 'action_state'; //状態(0=未完了,1=完了)
+  static final columnActionPlace = 'action_place'; //場所
+  static final columnActionMainTag = 'action_main_tag'; //メインタグ
+  static final columnActionSubTag = 'action_sub_tag'; //サブタグ
+  
+
+  // タグテーブルのカラム
+  static final columnTagId = 'tag_id';  // タグID
+  static final columnTagName = 'tag_name'; // タグ名
+  static final columnTagColor = 'tag_color'; // タグの色
+  static final columnTagRegisteredActionName =
+      'tag_registered_action_name'; // 登録されたアクション名
 
   // DatabaseHelper クラスを定義
   DatabaseHelper._privateConstructor();
@@ -40,7 +69,7 @@ class DatabaseHelper {
     if (_database != null) return _database;
     _database = await _initDatabase();
     //カラムを追加したい時だけ次の行のコメントアウトを解除プラス関数の中身を書き換える
-    //_addcolumn(); 
+    //_addcolumn();
     return _database;
   }
 
@@ -67,46 +96,153 @@ class DatabaseHelper {
   // スキーマーのバージョンはテーブル変更時にバージョンを上げる（テーブル・カラム追加・変更・削除など）
   Future _onCreate(Database db, int version) async {
     //それぞれのidの型を指定する必要がある($id 型)の形で指定
+    //データベースを再生成するときは１行下のプログラム実行しないといけない
+    //await db.execute('DROP TABLE IF EXISTS my_table');
     await db.execute('''
-          CREATE TABLE $table (
-            $columnId INTEGER PRIMARY KEY,
-            $columnName TEXT NOT NULL,
-            $columnAge INTEGER NOT NULL,
-            $columnSender TEXT,
-            $columnMessage TEXT,
-            $columnTime TEXT,
-          )
-          ''');
+      CREATE TABLE $chat_table (
+        $columnChatId INTEGER PRIMARY KEY,
+        $columnChatSender TEXT,
+        $columnChatTodo TEXT,
+        $columnChatTodofinish INTEGER,
+        $columnChatMessage TEXT,
+        $columnChatTime TEXT,
+        $columnChatChannel TEXT
+      )
+    ''');
+
+    // アクションテーブルの作成
+    
+    await db.execute('''
+      CREATE TABLE $action_table (
+        $columnActionId INTEGER PRIMARY KEY,
+        $columnActionName TEXT,
+        $columnActionStart TEXT,
+        $columnActionEnd TEXT,
+        $columnActionDuration TEXT,
+        $columnActionMessage TEXT,
+        $columnActionMedia BLOB,
+        $columnActionNotes TEXT,
+        $columnActionScore INTEGER CHECK ($columnActionScore >= 1 AND $columnActionScore <= 5), 
+        $columnActionState INTEGER CHECK ($columnActionState >= 0 AND $columnActionState <= 1),
+        $columnActionPlace TEXT,
+        $columnActionMainTag TEXT,
+        $columnActionSubTag TEXT,
+        $columnChatActionId INTEGER DEFAULT $columnChatId 
+      )
+    ''');
+
+    // タグテーブルの作成
+    await db.execute('''
+      CREATE TABLE $tag_table (
+        $columnTagId INTEGER PRIMARY KEY,
+        $columnTagName TEXT ,
+        $columnTagColor TEXT,
+        $columnTagRegisteredActionName TEXT
+      )
+    ''');
   }
 
+  // チャット画面用の関数
   // 登録処理
-  Future<int> insert(Map<String, dynamic> row) async {
+  Future<int> insert_chat_table(Map<String, dynamic> row) async {
     Database? db = await instance.database;
-    return await db!.insert(table, row);
+    return await db!.insert(chat_table, row);
   }
 
   // 照会処理
-  Future<List<Map<String, dynamic>>> queryAllRows() async {
+  Future<List<Map<String, dynamic>>> queryAllRows_chat_table() async {
     Database? db = await instance.database;
-    return await db!.query(table);
+    return await db!.query(chat_table);
   }
 
   // レコード数を確認
-   Future<int?> queryRowCount() async {
+  Future<int?> queryRowCount_chat_table() async {
     Database? db = await instance.database;
-    return Sqflite.firstIntValue(await db!.rawQuery('SELECT COUNT(*) FROM $table'));
+    return Sqflite.firstIntValue(
+        await db!.rawQuery('SELECT COUNT(*) FROM $chat_table'));
   }
 
   //　更新処理
-   Future<int> update(Map<String, dynamic> row) async {
+  Future<int> update_chat_table(Map<String, dynamic> row, int id) async {
     Database? db = await instance.database;
-    int id = row[columnId];
-    return await db!.update(table, row, where: '$columnId = ?', whereArgs: [id]);
+    int id = row[columnChatId];
+    return await db!
+        .update(chat_table, row, where: '$columnChatId = ?', whereArgs: [id]);
   }
 
   //　削除処理
-   Future<int> delete(int id) async {
+  Future<int> delete_chat_table(int id) async {
     Database? db = await instance.database;
-    return await db!.delete(table, where: '$columnId = ?', whereArgs: [id]);
+    return await db!
+        .delete(chat_table, where: '$columnChatId = ?', whereArgs: [id]);
+  }
+
+  // アクションテーブル用の関数
+  // 登録処理
+  Future<int> insert_action_table(Map<String, dynamic> row) async {
+    Database? db = await instance.database;
+    return await db!.insert(action_table, row);
+  }
+
+  // 照会処理
+  Future<List<Map<String, dynamic>>> queryAllRows_action_table() async {
+    Database? db = await instance.database;
+    return await db!.query(action_table);
+  }
+
+  // レコード数を確認
+  Future<int?> queryRowCount_action_table() async {
+    Database? db = await instance.database;
+    return Sqflite.firstIntValue(
+        await db!.rawQuery('SELECT COUNT(*) FROM $action_table'));
+  }
+
+  //　更新処理
+  Future<int> update_action_table(Map<String, dynamic> row, int id) async {
+    Database? db = await instance.database;
+    return await db!.update(action_table, row,
+        where: '$columnActionId = ?', whereArgs: [id]);
+  }
+
+  //　削除処理
+  Future<int> delete_action_table(int id) async {
+    Database? db = await instance.database;
+    return await db!
+        .delete(action_table, where: '$columnActionId = ?', whereArgs: [id]);
+  }
+
+  // タグテーブル用の関数
+  // 登録処理
+  Future<int> insert_tag_table(Map<String, dynamic> row) async {
+    Database? db = await instance.database;
+    return await db!.insert(tag_table, row);
+  }
+
+  // 照会処理
+  Future<List<Map<String, dynamic>>> queryAllRows_tag_table() async {
+    Database? db = await instance.database;
+    return await db!.query(tag_table);
+  }
+
+  // レコード数を確認
+  Future<int?> queryRowCount_tag_table() async {
+    Database? db = await instance.database;
+    return Sqflite.firstIntValue(
+        await db!.rawQuery('SELECT COUNT(*) FROM $tag_table'))!;
+  }
+
+  // 更新処理
+  Future<int> update_tag_table(Map<String, dynamic> row, int _id) async {
+    Database? db = await instance.database;
+    int _id = row[columnTagId];
+    return await db!
+        .update(tag_table, row, where: '$columnTagId = ?', whereArgs: [_id]);
+  }
+
+  // 削除処理
+  Future<int> delete_tag_table(int _id) async {
+    Database? db = await instance.database;
+    return await db!
+        .delete(tag_table, where: '$columnTagId = ?', whereArgs: [_id]);
   }
 }
