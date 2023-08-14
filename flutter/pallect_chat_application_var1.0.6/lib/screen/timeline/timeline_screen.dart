@@ -1,35 +1,30 @@
 import 'package:flutter/material.dart';
-
-//final themeModeProvider = StateProvider<ThemeMode>((ref) => ThemeMode.system);//system本体の初期設定に従う　あとからデータベースに保存した最後のデータになる？
+import 'package:table_calendar/table_calendar.dart';
 
 class TimelineScreenWidget extends StatefulWidget {
   @override
   _TimelineScreenWidgetState createState() => _TimelineScreenWidgetState();
-  
 }
 
 class _TimelineScreenWidgetState extends State<TimelineScreenWidget> {
   bool showButtons = false;
-  int selectedNumber = 1;//デフォルト月です、あとから表示されたタイミングの時刻で変数作ります
-  //final themeMode = ref.watch(themeModeProvider.state);//アプリのモードを切り替えに関わる変数
-  
-  
-  
+  int selectedMonth = DateTime.now().month; // 現在の月を初期値として設定
+  DateTime _focusedDay = DateTime.now();// 現在の日付を初期値として設定
+  DateTime? _selectedDay;
+
+  List<Widget> addedButtons = []; // 新しいボタンのリスト
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text('タイムライン'),
-        //backgroundColor:ThemeMode==ThemeMode ? Colors.white:Colors.black,// AppBarの背景色を白に設定 //ThemeModeではなくthemeMode.stateにしたいんだけどなー
-        //foregroundColor:ThemeMode==ThemeMode ? Colors.black:Colors.white, // 文字の背景色を白に設定
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
             icon: Icon(Icons.settings),
             onPressed: () {
               Navigator.pushNamed(context, '/config');
-              ///print(ThemeMode);
             },
           ),
         ],
@@ -38,8 +33,8 @@ class _TimelineScreenWidgetState extends State<TimelineScreenWidget> {
         children: [
           Expanded(
             child: SingleChildScrollView(
-              child: Stack(//要素を重ねる　あとのものが上にくる
-              alignment: Alignment.topCenter,
+              child: Stack(
+                alignment: Alignment.topCenter,
                 children: [
                   Column(
                     children: [
@@ -60,62 +55,28 @@ class _TimelineScreenWidgetState extends State<TimelineScreenWidget> {
                           ),
                         ],
                       ),
-                      //SizedBox(height: 10.0),
-                      // 0時から23時までの時間を表示する部分
-                      for (var i = 0; i < 24; i++)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                '$i:00', // 時刻を表示します
-                                textAlign: TextAlign.right,
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.all(10.0),
-                              color: Color.fromARGB(255, 104, 104, 104),
-                              width: 300.0,
-                              height: 2.0,
-                            ),
-                            SizedBox(height: 40.0),
-                            SizedBox(width: 30.0),
-                          ],
-                        ),
-                        // 0時から23時までの時間を表示する部分
-
-                      // 0時を表示する部分
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              '0:00', // 0時を表示します
-                              textAlign: TextAlign.right,
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.all(10.0),
-                            color: Color.fromARGB(255, 104, 104, 104),
-                            width: 300.0,
-                            height: 2.0,
-                          ),
-                          SizedBox(height: 40.0),
-                          SizedBox(width: 30.0),
-                        ],
-                      ),
-                    // 0時を表示する部分
+                      // 24時間表示を呼び出し
+                      buildHourRows(),
+                      //if (showButtons) ...addedButtons, // 新しいボタンのリストを表示
                     ],
                   ),
-                  // ボタンを表示するか単一のボタンを表示するかの条件に基づいて、適切なウィジェットを返します
                   
-                  showButtons ? buildGridButtons() : buildSingleButton(),
-                  
+                   // 呼び出すウィジェットを切り替え
+                  showButtons ? buildTableCalendar() : buildSingleButton(),
                 ],
               ),
             ),
           ),
         ],
+      ),
+      // 画面右下にFAB（Floating Action Button）を追加
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // ボタンが押されたときの処理を記述
+          addedButtons.add(buildActionButton());
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.blue, // FABの背景色を変更
       ),
     );
   }
@@ -124,15 +85,14 @@ class _TimelineScreenWidgetState extends State<TimelineScreenWidget> {
   Widget buildSingleButton() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        //padding: EdgeInsets.all(1.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
           side: BorderSide(color: Color.fromARGB(255, 255, 81, 0)),
         ),
-        backgroundColor: Colors.white, // ボタンの背景色を白に変更
-        foregroundColor: Colors.black, // ボタンの文字の色を黒に変更
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
       ),
-      child: Text('$selectedNumber月'), // 選択された月を表示します
+      child: Text('$selectedMonth月'),
       onPressed: () {
         setState(() {
           showButtons = true;
@@ -141,41 +101,84 @@ class _TimelineScreenWidgetState extends State<TimelineScreenWidget> {
     );
   }
 
-  // グリッド形式のボタンを表示するためのウィジェット
-  Widget buildGridButtons() {
-
-    // アスペクト比を計算する
-    var size = MediaQuery.of(context).size;
-    final double itemHeight = size.width / 3;
-    final double itemWidth = size.width / 2;
-
-    return GridView.count(
-      childAspectRatio: (itemWidth / itemHeight), //←比を計算していれる。
-      shrinkWrap: true,
-      crossAxisCount: 3,
-      children: List.generate(12, (index) {//1-12月のボタンをつくる
-        final number = index + 1;
-        return ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            //padding: EdgeInsets.symmetric(vertical: 40, horizontal: 20), // 縦方向のパディングと横方向のパディングを設定します
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-              side: BorderSide(color: Color.fromARGB(255, 255, 81, 0)),
-            ),
-            backgroundColor: Colors.white, // ボタンの背景色を白に変更
-            foregroundColor: Colors.black, // ボタンの文字の色を黒に変更
-            //fixedSize: Size(10, 40), // ボタンの幅を狭めるために縦横固定サイズを設定します
-          ),
-          child: Text(number.toString()), // 数字を表示します
-          onPressed: () {
+  // カレンダーを表示するためのウィジェット
+  Widget buildTableCalendar() {
+    return Container(
+      color: Colors.white,
+      child: TableCalendar(
+        firstDay: DateTime.utc(2023, 1, 1),
+        lastDay: DateTime.utc(2024, 12, 31),
+        selectedDayPredicate: (day) {
+          return isSameDay(_selectedDay, day);
+        },
+        onDaySelected: (selected, focused) {
+          if (!isSameDay(_selectedDay, selected)) {
             setState(() {
-              selectedNumber = number; // 選択された数字を更新します
-              showButtons = false;
-              print(selectedNumber);//動作確認用
+              _selectedDay = selected;
+              _focusedDay = focused;
+
+              selectedMonth = selected.month;
             });
-          },
-        );
-      }),
+          }
+          showButtons = false;
+        },
+        focusedDay: _focusedDay,
+      ),
     );
   }
+
+// 24時間を表示するためのウィジェット
+  Widget buildHourRows() {
+    return Column(
+      children: [
+        for (var i = 0; i < 25; i++)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Text(
+                  '$i:00',
+                  textAlign: TextAlign.right,
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.all(10.0),
+                color: Color.fromARGB(255, 104, 104, 104),
+                width: 300.0,
+                height: 2.0,
+              ),
+              SizedBox(height: 40.0),
+              SizedBox(width: 30.0),
+            ],
+          ),
+      ],
+    );
+  }
+
+//fabを押した際に追加されるボタン
+  Widget buildActionButton() {
+  double buttonSize = MediaQuery.of(context).size.width * 0.8; // ボタンのサイズを画面幅の80%として設定
+
+  return Center(
+    child: Container(
+      width: buttonSize,
+      height: buttonSize,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(buttonSize / 2), // 正方形にするために半径を設定
+            side: BorderSide(color: Color.fromARGB(255, 40, 190, 20)),
+          ),
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+        ),
+        child: Text('$selectedMonth月'),
+        onPressed: () {
+          print("tap");
+        },
+      ),
+    ),
+  );
+}
+
 }

@@ -17,7 +17,7 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeModeProvider.state);
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false,//右上のデバッグ表示を消す（最終版には必要ない）
       title: 'Chat App',
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
