@@ -3,7 +3,12 @@ import '/widget/chat_fukidashi.dart';
 import '/screen/chat/func/register_text.dart';
 import '/utils/database_helper.dart';
 
-class ChatScreenWidget extends StatelessWidget {
+class ChatScreenWidget extends StatefulWidget {
+  @override
+  _ChatScreenWidget createState() => _ChatScreenWidget();
+}
+
+class _ChatScreenWidget extends State<ChatScreenWidget> {
   // テキスト入力フィールドのコントローラー
   final TextEditingController _textEditingController = TextEditingController();
 
