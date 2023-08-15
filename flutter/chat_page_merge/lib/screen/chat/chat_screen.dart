@@ -13,40 +13,11 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   final TextEditingController _textEditingController = TextEditingController();
 
   // チャットメッセージのリスト
-  final List<ChatMessage> _messages = [
+  final List<dynamic> _messages = [
     ChatMessage(text: "aaaa", isSentByUser: true), // isSentByUserがtrueはユーザーが送信
     ChatMessage(text: "testdayo", isSentByUser: false), // falseはAIが返信する
   ];
   //今はサンプルのデータを入れているけど実際には空の状態でプログラムを動作させます
-
-  // メッセージの送信を処理するメソッド
-  void _handLeSubmitted(String text) {
-    // テキストをデータベースに登録して返答メッセージを表示する
-    _registerAndShowReplyMessage(text);
-
-    // 新しいチャットメッセージを作成する
-    ChatMessage message =
-        ChatMessage(text: text, isSentByUser: true); // 送信側のメッセージ
-    // チャットメッセージをリストの先頭に追加する
-    _messages.insert(0, message);
-
-    // テキスト入力をクリアする
-    _textEditingController.clear();
-  }
-
-  // テキストをデータベースに登録し、返答メッセージを表示するメソッド
-  _registerAndShowReplyMessage(String text) {
-    // テキストをデータベースに登録
-    RegisterText.registerTextToDatabase(text, 1); // 1は送信者を'ユーザー'とする
-    if (_textEditingController.text.isNotEmpty) {
-      // テキストフィールドに値が入っているかチェック
-      String replyText = "データが登録されました"; // 返信メッセージの内容
-      print(replyText);
-      ChatMessage replayMessage =
-          ChatMessage(text: replyText, isSentByUser: false);
-      _messages.insert(0, replayMessage);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +82,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                             print("チャットテーブルのデータ:");
                             chats.forEach((chat) {
                               print(
-                                  "Sender: ${chat[DatabaseHelper.columnChatSender]}, Todo: ${chat[DatabaseHelper.columnChatTodo]}, Text: ${chat[DatabaseHelper.columnChatMessage]}, Time: ${chat[DatabaseHelper.columnChatTime]} Channel: ${chat[DatabaseHelper.columnChatChannel]},");
+                                  "ID: ${chat[DatabaseHelper.columnChatId]}, Sender: ${chat[DatabaseHelper.columnChatSender]}, Todo: ${chat[DatabaseHelper.columnChatTodo]}, Text: ${chat[DatabaseHelper.columnChatMessage]}, Time: ${chat[DatabaseHelper.columnChatTime]} ChatActionId: ${chat[DatabaseHelper.columnChatActionId]},");
                             });
                           },
                         ),
@@ -150,7 +121,9 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                                 onPressed: () {
                                   //ここに送信ボタンが押された時の動作を記述する
                                   //ここの中で関数を呼び出す
-                                  _handLeSubmitted(_textEditingController.text);
+                                  String text = _textEditingController.text;
+                                  RegisterText.handLeSubmitted(text, _messages,
+                                      _textEditingController);
                                 },
                               ),
                             ),

@@ -7,7 +7,7 @@ import 'package:path_provider/path_provider.dart';
 // 個人確認は仮の画面
 class DatabaseHelper {
   // デバッグ時はDB名を変えてよい
-  static final _databaseName = "MyDatabase21.db"; // DB名
+  static final _databaseName = "MyDatabase23.db"; // DB名
   static final _databaseVersion = 1; // スキーマのバージョン指定
 
   static final chat_table = 'chat_table'; // チャット管理テーブル
@@ -100,13 +100,14 @@ class DatabaseHelper {
     //await db.execute('DROP TABLE IF EXISTS my_table');
     await db.execute('''
       CREATE TABLE $chat_table (
-        $columnChatId INTEGER PRIMARY KEY,
+        $columnChatId INTEGER PRIMARY KEY AUTOINCREMENT,
         $columnChatSender TEXT,
         $columnChatTodo TEXT,
         $columnChatTodofinish INTEGER,
         $columnChatMessage TEXT,
         $columnChatTime TEXT,
-        $columnChatChannel TEXT
+        $columnChatChannel TEXT,
+        $columnChatActionId INTEGER DEFAULT $columnChatId
       )
     ''');
 
@@ -126,8 +127,7 @@ class DatabaseHelper {
         $columnActionState INTEGER CHECK ($columnActionState >= 0 AND $columnActionState <= 1),
         $columnActionPlace TEXT,
         $columnActionMainTag TEXT,
-        $columnActionSubTag TEXT,
-        $columnChatActionId INTEGER DEFAULT $columnChatId 
+        $columnActionSubTag TEXT
       )
     ''');
 
