@@ -112,7 +112,6 @@ class DatabaseHelper {
     ''');
 
     // アクションテーブルの作成
-    
     await db.execute('''
       CREATE TABLE $action_table (
         $columnActionId INTEGER PRIMARY KEY,

@@ -118,6 +118,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                                   //ここに送信ボタンが押された時の動作を記述する
                                   //ここの中で関数を呼び出す
                                   String text = _textEditingController.text;
+                                  // メッセージ送信処理をするメソッドを呼び出す
                                   RegisterText.handLeSubmitted(
                                       text, _messages, _textEditingController);
                                   // Stateを更新して表示を更新する
