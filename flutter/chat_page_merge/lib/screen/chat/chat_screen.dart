@@ -13,33 +13,31 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   final TextEditingController _textEditingController = TextEditingController();
 
   // チャットメッセージのリスト
-  final List<dynamic> _messages = [
-    ChatMessage(text: "aaaa", isSentByUser: true), // isSentByUserがtrueはユーザーが送信
-    ChatMessage(text: "testdayo", isSentByUser: false), // falseはAIが返信する
-  ];
-  //今はサンプルのデータを入れているけど実際には空の状態でプログラムを動作させます
+  final List<dynamic> _messages = [];
 
   // メッセージの送信を処理するメソッド
   void _handLeSubmitted(String text, TextEditingController controller) {
     String replyText = "データが登録されました"; // 返信メッセージの内容
     print(replyText);
-    ChatMessage replyMessage =
-        ChatMessage(text: replyText, isSentByUser: false);
+    ChatMessage replyMessage = ChatMessage(
+        text: replyText, isSentByUser: false); // isSentUserがfalseはAIが返信する
 
     // テキストをデータベースに登録して返答メッセージを表示する
     RegisterText.registerAndShowReplyMessage(text, _messages, controller);
 
     // 新しいチャットメッセージを作成する
-    ChatMessage userMessage = ChatMessage(text: text, isSentByUser: true);
+    ChatMessage userMessage = ChatMessage(
+        text: text, isSentByUser: true); // isSentByUserがtrueはユーザーが送信する
 
     // テキスト入力をクリアする
     controller.clear();
 
     // メッセージを追加
-    setState(() {
-      _messages.add(userMessage);
-      _messages.add(replyMessage);
-    });
+    _messages.add(userMessage);
+    _messages.add(replyMessage);
+
+    // Stateを更新して表示を更新する
+    setState(() {});
   }
 
   @override
