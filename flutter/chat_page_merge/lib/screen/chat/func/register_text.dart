@@ -46,7 +46,7 @@ class RegisterText {
     final chats = await dbHelper.queryAllRows_chat_table();
 
     // テキストをデータベースに登録
-    _registerTextToDatabase(text, 1); // 1は送信者を'ユーザー'とする
+    _registerTextToDatabase(text, 0); // 0は送信者を'ユーザー'とする
 
     if (controller.text.isNotEmpty) {
       // テキストフィールドに値が入っているかチェック
