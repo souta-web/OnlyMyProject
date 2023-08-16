@@ -33,7 +33,7 @@ class RegisterText {
         text: replyText, isSentByUser: false); // isSentUserがfalseはAIが返信する
 
     // テキストをデータベースに登録して返答メッセージを表示する
-    RegisterText.registerAndShowReplyMessage(text, messages, controller);
+    _registerAndShowReplyMessage(text, messages, controller);
 
     // 新しいチャットメッセージを作成する
     ChatMessage userMessage = ChatMessage(
@@ -62,7 +62,7 @@ class RegisterText {
   }
 
   // テキストをデータベースに登録し、返答メッセージを表示するメソッド
-  static registerAndShowReplyMessage(String text, List<dynamic> messages,
+  static _registerAndShowReplyMessage(String text, List<dynamic> messages,
       TextEditingController controller) async {
     final dbHelper = DatabaseHelper.instance;
     final chats = await dbHelper.queryAllRows_chat_table();
