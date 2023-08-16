@@ -20,15 +20,14 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   //今はサンプルのデータを入れているけど実際には空の状態でプログラムを動作させます
 
   // メッセージの送信を処理するメソッド
-  void _handLeSubmitted(
-      String text, List<dynamic> messages, TextEditingController controller) {
+  void _handLeSubmitted(String text, TextEditingController controller) {
     String replyText = "データが登録されました"; // 返信メッセージの内容
     print(replyText);
     ChatMessage replyMessage =
         ChatMessage(text: replyText, isSentByUser: false);
 
     // テキストをデータベースに登録して返答メッセージを表示する
-    RegisterText.registerAndShowReplyMessage(text, messages, controller);
+    RegisterText.registerAndShowReplyMessage(text, _messages, controller);
 
     // 新しいチャットメッセージを作成する
     ChatMessage userMessage = ChatMessage(text: text, isSentByUser: true);
@@ -147,8 +146,8 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                                   //ここに送信ボタンが押された時の動作を記述する
                                   //ここの中で関数を呼び出す
                                   String text = _textEditingController.text;
-                                  _handLeSubmitted(text, _messages,
-                                      _textEditingController);
+                                  _handLeSubmitted(
+                                      text, _textEditingController);
                                 },
                               ),
                             ),
