@@ -25,6 +25,28 @@ class RegisterText {
     }
   }
 
+  // メッセージの送信を処理するメソッド
+  static void handLeSubmitted(String text, List<dynamic> messages, TextEditingController controller) {
+    String replyText = "データが登録されました"; // 返信メッセージの内容
+    print(replyText);
+    ChatMessage replyMessage = ChatMessage(
+        text: replyText, isSentByUser: false); // isSentUserがfalseはAIが返信する
+
+    // テキストをデータベースに登録して返答メッセージを表示する
+    RegisterText.registerAndShowReplyMessage(text, messages, controller);
+
+    // 新しいチャットメッセージを作成する
+    ChatMessage userMessage = ChatMessage(
+        text: text, isSentByUser: true); // isSentByUserがtrueはユーザーが送信する
+
+    // テキスト入力をクリアする
+    controller.clear();
+
+    // メッセージを追加
+    messages.add(userMessage);
+    messages.add(replyMessage);
+  }
+
   // 新しいメッセージをデータベースから読み込む
   static Future<void> _loadChatMessages(List<dynamic> messages) async {
     // databasehelperのインスタンス生成
