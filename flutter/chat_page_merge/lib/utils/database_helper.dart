@@ -1,14 +1,12 @@
 import 'dart:io';
 
-import '/widget/chat_fukidashi.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
-// 個人確認は仮の画面
 class DatabaseHelper {
   // デバッグ時はDB名を変えてよい
-  static final _databaseName = "MyDatabase23.db"; // DB名
+  static final _databaseName = "MyDatabase24.db"; // DB名
   static final _databaseVersion = 1; // スキーマのバージョン指定
 
   static final chat_table = 'chat_table'; // チャット管理テーブル
@@ -68,14 +66,14 @@ class DatabaseHelper {
     // これにより、データベースを初期化する処理は、最初にデータベースを参照するときにのみ実行されるようになります。
     // このような実装を「遅延初期化 (lazy initialization)」と呼びます。
     if (_database != null) return _database;
-    _database = await _initDatabase();
+    _database = await initDatabase();
     //カラムを追加したい時だけ次の行のコメントアウトを解除プラス関数の中身を書き換える
     //_addcolumn();
     return _database;
   }
 
   // データベース接続
-  _initDatabase() async {
+  initDatabase() async {
     // アプリケーションのドキュメントディレクトリのパスを取得
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     // 取得パスを基に、データベースのパスを生成
@@ -175,25 +173,6 @@ class DatabaseHelper {
     Database? db = await instance.database;
     return await db!
         .delete(chat_table, where: '$columnChatId = ?', whereArgs: [id]);
-  }
-
-  // チャットメッセージを永続化するメソッド
-  Future<void> saveChatMessages(List<dynamic> messages) async {
-    Database? db = await instance.database;
-    String time = DateTime.now().toIso8601String();
-    for (var message in messages) {
-      // messageの型がChatMessageであることを前提としてキャストする
-      if (message is ChatMessage) {
-        int sender = message.isSentByUser ? 0 : 1; // 送信者の判定
-        await db!.insert(chat_table, {
-          columnChatSender: sender,
-          columnChatTodo: 'false',
-          columnChatMessage: message.text,
-          columnChatTime: time,
-          columnChatActionId: 0,
-        });
-      }
-    }
   }
 
   // アクションテーブル用の関数

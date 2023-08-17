@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'utils/database_helper.dart';
 import 'screen/chat/chat_screen.dart';
 import 'screen/timeline/timeline_screen.dart';
 import 'screen/data/data_screen.dart';
 import 'screen/setting/config_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  // データベースの初期化
+  DatabaseHelper.instance.initDatabase();
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -44,17 +47,21 @@ class _MainScreenState extends State<MainScreen> {
   List<BottomNavigationBarItem> _bottomNavBarItems = [
     BottomNavigationBarItem(
       icon: Image.asset('assets/images/chat_icon.png', width: 30, height: 30),
-      activeIcon: Image.asset('assets/images/chat_icon_d.png', width: 30, height: 30),
+      activeIcon:
+          Image.asset('assets/images/chat_icon_d.png', width: 30, height: 30),
       label: 'Chat',
     ),
     BottomNavigationBarItem(
-      icon: Image.asset('assets/images/timeline_icon.png', width: 30, height: 30),
-      activeIcon: Image.asset('assets/images/timeline_icon_d.png', width: 30, height: 30),
+      icon:
+          Image.asset('assets/images/timeline_icon.png', width: 30, height: 30),
+      activeIcon: Image.asset('assets/images/timeline_icon_d.png',
+          width: 30, height: 30),
       label: 'Timeline',
     ),
     BottomNavigationBarItem(
       icon: Image.asset('assets/images/data_icon.png', width: 30, height: 30),
-      activeIcon: Image.asset('assets/images/data_icon_d.png', width: 30, height: 30),
+      activeIcon:
+          Image.asset('assets/images/data_icon_d.png', width: 30, height: 30),
       label: 'Data',
     ),
   ];

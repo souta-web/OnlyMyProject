@@ -121,6 +121,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                                   // メッセージ送信処理をするメソッドを呼び出す
                                   RegisterText.handLeSubmitted(
                                       text, _messages, _textEditingController);
+
                                   // Stateを更新して表示を更新する
                                   setState(() {});
                                 },
