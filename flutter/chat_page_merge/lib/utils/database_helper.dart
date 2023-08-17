@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import '/widget/chat_fukidashi.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
@@ -23,7 +24,8 @@ class DatabaseHelper {
   static final columnChatMessage = 'chat_message'; // チャットのテキスト
   static final columnChatTime = 'chat_time'; //送信時間
   static final columnChatChannel = 'chat_channel'; //チャットチャンネル
-  static final columnChatActionId = 'chat_action_id'; //このチャットと紐づけられているアクションのidがここに入る
+  static final columnChatActionId =
+      'chat_action_id'; //このチャットと紐づけられているアクションのidがここに入る
 
   // アクションテーブルのカラム
   static final columnActionId = '_action_id'; //ID
@@ -39,10 +41,9 @@ class DatabaseHelper {
   static final columnActionPlace = 'action_place'; //場所
   static final columnActionMainTag = 'action_main_tag'; //メインタグ
   static final columnActionSubTag = 'action_sub_tag'; //サブタグ
-  
 
   // タグテーブルのカラム
-  static final columnTagId = 'tag_id';  // タグID
+  static final columnTagId = 'tag_id'; // タグID
   static final columnTagName = 'tag_name'; // タグ名
   static final columnTagColor = 'tag_color'; // タグの色
   static final columnTagRegisteredActionName =
@@ -174,6 +175,25 @@ class DatabaseHelper {
     Database? db = await instance.database;
     return await db!
         .delete(chat_table, where: '$columnChatId = ?', whereArgs: [id]);
+  }
+
+  // チャットメッセージを永続化するメソッド
+  Future<void> saveChatMessages(List<dynamic> messages) async {
+    Database? db = await instance.database;
+    String time = DateTime.now().toIso8601String();
+    for (var message in messages) {
+      // messageの型がChatMessageであることを前提としてキャストする
+      if (message is ChatMessage) {
+        int sender = message.isSentByUser ? 0 : 1; // 送信者の判定
+        await db!.insert(chat_table, {
+          columnChatSender: sender,
+          columnChatTodo: 'false',
+          columnChatMessage: message.text,
+          columnChatTime: time,
+          columnChatActionId: 0,
+        });
+      }
+    }
   }
 
   // アクションテーブル用の関数
