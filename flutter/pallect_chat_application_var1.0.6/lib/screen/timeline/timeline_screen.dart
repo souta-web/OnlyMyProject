@@ -57,13 +57,15 @@ class _TimelineScreenWidgetState extends State<TimelineScreenWidget> {
                       ),
                       // 24時間表示を呼び出し
                       buildHourRows(),
-                      if (showButtons) ...addedButtons, // 新しいボタンのリストを表示
+                      
                     ],
                   ),
-                  
+                  ...addedButtons, // 新しいボタンのリストを表示
                    // 呼び出すウィジェットを切り替え
                   showButtons ? buildTableCalendar() : buildSingleButton(),
+                  
                 ],
+                
               ),
             ),
           ),
@@ -73,7 +75,10 @@ class _TimelineScreenWidgetState extends State<TimelineScreenWidget> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // ボタンが押されたときの処理を記述
-          addedButtons.add(buildActionButton());
+          setState(() {
+              print("tap");
+              addedButtons.add(buildActionButton());
+            });
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.blue, // FABの背景色を変更
@@ -129,6 +134,7 @@ class _TimelineScreenWidgetState extends State<TimelineScreenWidget> {
 
 // 24時間を表示するためのウィジェット
   Widget buildHourRows() {
+    
     return Column(
       children: [
         for (var i = 0; i < 25; i++)
@@ -157,28 +163,32 @@ class _TimelineScreenWidgetState extends State<TimelineScreenWidget> {
 
 //fabを押した際に追加されるボタン
   Widget buildActionButton() {
-  double buttonSize = MediaQuery.of(context).size.width * 0.8; // ボタンのサイズを画面幅の80%として設定
-
-  return Center(
-    child: Container(
-      width: buttonSize,
-      height: buttonSize,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(buttonSize / 2), // 正方形にするために半径を設定
-            side: BorderSide(color: Color.fromARGB(255, 40, 190, 20)),
+  return Column(
+    children: [
+      SizedBox(height: 70.0),
+      Container(
+        width: 250.0, // ボタンの幅を設定
+        height: 35.0, // ボタンの高さを設定
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+              //side: BorderSide(color: Color.fromARGB(255, 255, 81, 0)),
+            ),
+            backgroundColor: const Color.fromARGB(255, 255, 81, 0).withOpacity(0.5), // 半透明な白色
+            foregroundColor: Colors.black,
           ),
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
+          child: Text('aaa'),
+          onPressed: () {
+            setState(() {
+              print("tap");
+            });
+          },
         ),
-        child: Text('$selectedMonth月'),
-        onPressed: () {
-          print("tap");
-        },
       ),
-    ),
+    ],
   );
 }
+
 
 }
