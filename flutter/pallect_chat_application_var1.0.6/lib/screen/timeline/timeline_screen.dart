@@ -57,7 +57,7 @@ class _TimelineScreenWidgetState extends State<TimelineScreenWidget> {
                       ),
                       // 24時間表示を呼び出し
                       buildHourRows(),
-                      //if (showButtons) ...addedButtons, // 新しいボタンのリストを表示
+                      if (showButtons) ...addedButtons, // 新しいボタンのリストを表示
                     ],
                   ),
                   
