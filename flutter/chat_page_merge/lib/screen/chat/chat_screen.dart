@@ -38,6 +38,22 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                 Navigator.pushNamed(context, '/config'); //routeに追加したconfigに遷移
               },
             ),
+            IconButton(
+              // このIconButtonを追加します
+              icon: Icon(Icons.data_usage), // 任意のアイコンを選べます
+              onPressed: () async {
+                // データ確認や表示ロジックをここに記述します
+                final dbHelper = DatabaseHelper.instance;
+                final List<Map<String, dynamic>> chats =
+                    await dbHelper.queryAllRows_chat_table();
+
+                print("チャットテーブルのデータ:");
+                chats.forEach((chat) {
+                  print(
+                      "ID: ${chat[DatabaseHelper.columnChatId]}, Sender: ${chat[DatabaseHelper.columnChatSender]}, Todo: ${chat[DatabaseHelper.columnChatTodo]}, Text: ${chat[DatabaseHelper.columnChatMessage]}, Time: ${chat[DatabaseHelper.columnChatTime]} ChatActionId: ${chat[DatabaseHelper.columnChatActionId]},");
+                });
+              },
+            ),
           ],
         ),
         body: Column(
@@ -68,19 +84,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                           //メディア追加ボタン
                           icon: Icon(Icons.add),
                           color: Colors.white,
-                          onPressed: () async {
-                            // ここでデータ確認できます
-                            // チャットテーブルのデータを取得
-                            final dbHelper = DatabaseHelper.instance;
-                            final List<Map<String, dynamic>> chats =
-                                await dbHelper.queryAllRows_chat_table();
-
-                            print("チャットテーブルのデータ:");
-                            chats.forEach((chat) {
-                              print(
-                                  "ID: ${chat[DatabaseHelper.columnChatId]}, Sender: ${chat[DatabaseHelper.columnChatSender]}, Todo: ${chat[DatabaseHelper.columnChatTodo]}, Text: ${chat[DatabaseHelper.columnChatMessage]}, Time: ${chat[DatabaseHelper.columnChatTime]} ChatActionId: ${chat[DatabaseHelper.columnChatActionId]},");
-                            });
-                          },
+                          onPressed: () {},
                         ),
                         Flexible(
                             child: Container(
