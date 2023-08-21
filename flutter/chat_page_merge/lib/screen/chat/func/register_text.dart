@@ -115,4 +115,18 @@ class RegisterText {
       }
     }
   }
+
+  // データ確認用メソッド
+  static Future<void> confilrmData() async {
+    // データ確認や表示ロジックをここに記述
+    final dbHelper = DatabaseHelper.instance;
+    final List<Map<String, dynamic>> chats =
+        await dbHelper.queryAllRows_chat_table();
+
+    print("チャットテーブルのデータ:");
+    chats.forEach((chat) {
+      print(
+          "ID: ${chat[DatabaseHelper.columnChatId]}, Sender: ${chat[DatabaseHelper.columnChatSender]}, Todo: ${chat[DatabaseHelper.columnChatTodo]}, Text: ${chat[DatabaseHelper.columnChatMessage]}, Time: ${chat[DatabaseHelper.columnChatTime]} ChatActionId: ${chat[DatabaseHelper.columnChatActionId]},");
+    });
+  }
 }

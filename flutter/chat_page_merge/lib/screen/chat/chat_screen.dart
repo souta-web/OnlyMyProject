@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '/screen/chat/func/register_text.dart';
-import '/utils/database_helper.dart';
 
 class ChatScreenWidget extends StatefulWidget {
   @override
@@ -41,16 +40,8 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
             IconButton(
               icon: Icon(Icons.data_usage),
               onPressed: () async {
-                // データ確認や表示ロジックをここに記述
-                final dbHelper = DatabaseHelper.instance;
-                final List<Map<String, dynamic>> chats =
-                    await dbHelper.queryAllRows_chat_table();
-
-                print("チャットテーブルのデータ:");
-                chats.forEach((chat) {
-                  print(
-                      "ID: ${chat[DatabaseHelper.columnChatId]}, Sender: ${chat[DatabaseHelper.columnChatSender]}, Todo: ${chat[DatabaseHelper.columnChatTodo]}, Text: ${chat[DatabaseHelper.columnChatMessage]}, Time: ${chat[DatabaseHelper.columnChatTime]} ChatActionId: ${chat[DatabaseHelper.columnChatActionId]},");
-                });
+                // データ確認用メソッドの呼び出し
+                RegisterText.confilrmData();
               },
             ),
           ],
