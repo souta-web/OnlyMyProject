@@ -39,10 +39,9 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
               },
             ),
             IconButton(
-              // このIconButtonを追加します
-              icon: Icon(Icons.data_usage), // 任意のアイコンを選べます
+              icon: Icon(Icons.data_usage),
               onPressed: () async {
-                // データ確認や表示ロジックをここに記述します
+                // データ確認や表示ロジックをここに記述
                 final dbHelper = DatabaseHelper.instance;
                 final List<Map<String, dynamic>> chats =
                     await dbHelper.queryAllRows_chat_table();
