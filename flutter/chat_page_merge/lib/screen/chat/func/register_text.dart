@@ -117,7 +117,7 @@ class RegisterText {
   }
 
   // データ確認用メソッド
-  static Future<void> confilrmData() async {
+  static Future<void> confirmData() async {
     // データ確認や表示ロジックをここに記述
     final dbHelper = DatabaseHelper.instance;
     final List<Map<String, dynamic>> chats =

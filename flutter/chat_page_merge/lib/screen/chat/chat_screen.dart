@@ -41,7 +41,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
               icon: Icon(Icons.data_usage),
               onPressed: () async {
                 // データ確認用メソッドの呼び出し
-                RegisterText.confilrmData();
+                RegisterText.confirmData();
               },
             ),
           ],
