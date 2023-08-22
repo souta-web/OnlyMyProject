@@ -13,7 +13,7 @@ class RegisterText {
       final DatabaseHelper dbHelper = DatabaseHelper.instance;
       String time = DateTime.now().toIso8601String();
       // 登録するデータの行を生成
-      Map<String, dynamic> row = { 
+      Map<String, dynamic> row = {
         DatabaseHelper.columnChatSender: sender, // 送信者情報: 0 (0=User, 1=AI)
         DatabaseHelper.columnChatTodo:
             'false', // todoかどうか: false (false=message)

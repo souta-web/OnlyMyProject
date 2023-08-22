@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'utils/database_helper.dart';
 import 'screen/chat/chat_screen.dart';
 import 'screen/timeline/timeline_screen.dart';
 import 'screen/data/data_screen.dart';
 import 'screen/setting/config_screen.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  // データベースの初期化
-  DatabaseHelper.instance.initDatabase();
   runApp(const ProviderScope(child: MyApp()));
 }
 
