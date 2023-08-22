@@ -76,6 +76,7 @@ flutter:
     - assets/images/timeline_icon_d.png
     - assets/images/data_icon_d.png
     - assets/images/account_icon.png
+    - assets/images/play_circle.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

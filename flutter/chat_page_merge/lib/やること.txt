@@ -9,4 +9,5 @@
 　　　　　　  テキスト送信時にデータベースに登録する内容は[_chat_id][chat_sender][chat_todo][chat_message][chat_time][chat_action_id]になります。(actionをデータベースに登録するのchat_tableの要素のみ)
 　　　　　　　※1テキストフィールドの値は_textEditingControllerを使用して取得することができます。詳しくは調べてみてください。
 　　　　　　　16行目のList<dynamic>がList<ChatMessage>になっていますがdynamicのままでお願いします。将来的にはアクションもそこに入れる予定です。
+
 第２段階：後で追加

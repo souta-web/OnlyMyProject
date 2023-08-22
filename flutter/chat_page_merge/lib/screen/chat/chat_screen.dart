@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '/screen/chat/func/register_text.dart';
+import '/widget/chat_todo.dart';
 
 class ChatScreenWidget extends StatefulWidget {
   @override
@@ -9,9 +10,16 @@ class ChatScreenWidget extends StatefulWidget {
 class _ChatScreenWidget extends State<ChatScreenWidget> {
   // テキスト入力フィールドのコントローラー
   final TextEditingController _textEditingController = TextEditingController();
+  //switchボタンの状態管理変数
+  bool _isTodo = false;//テキスト入力の左のやつ
 
   // チャットメッセージのリスト
-  final List<dynamic> _messages = [];
+  final List<dynamic> _messages = [ChatTodo(title: "！サンプル！", 
+                                            isSentByUser: true, 
+                                            mainTag: "テスト", 
+                                            startTime: "24:00",
+                                            actionFinished: false)];
+                                            //↑サンプルだから作業の時消していいです
 
   @override
   Widget build(BuildContext context) {
@@ -65,10 +73,13 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                       child: Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                        IconButton(
-                          icon: Icon(Icons.textsms),
-                          color: Colors.white,
-                          onPressed: () {},
+                        Switch(//テキスト入力欄の一番左のやつ
+                          value: _isTodo,
+                          onChanged: (value) {
+                            setState(() {
+                              _isTodo = value;
+                            });
+                          },
                         ),
                         IconButton(
                           //メディア追加ボタン

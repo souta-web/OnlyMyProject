@@ -8,7 +8,7 @@ class ChatMessage extends StatelessWidget {
   final bool isSentByUser;
 
   //クラスを呼び出すときに引数を必要とする(辻)
-  ChatMessage({required this.text, required this.isSentByUser});
+  ChatMessage({required this.text, required this.isSentByUser,});
 
   @override
   Widget build(BuildContext context) {
