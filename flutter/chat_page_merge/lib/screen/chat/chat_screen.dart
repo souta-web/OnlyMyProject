@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '/screen/chat/func/register_text.dart';
-import '/widget/chat_todo.dart';
+import '/screen/chat/func/register_action.dart';
 
 class ChatScreenWidget extends StatefulWidget {
   @override
@@ -11,16 +11,11 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   // テキスト入力フィールドのコントローラー
   final TextEditingController _textEditingController = TextEditingController();
   //switchボタンの状態管理変数
-  bool _isTodo = false;//テキスト入力の左のやつ
+  bool _isTodo = false; //テキスト入力の左のやつ
 
   // チャットメッセージのリスト
-  final List<dynamic> _messages = [ChatTodo(title: "！サンプル！", 
-                                            isSentByUser: true, 
-                                            mainTag: "テスト", 
-                                            startTime: "24:00",
-                                            actionFinished: false)];
-                                            //↑サンプルだから作業の時消していいです
-
+  final List<dynamic> _messages = [];
+  //↑サンプルだから作業の時消していいです
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +44,8 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
               icon: Icon(Icons.data_usage),
               onPressed: () async {
                 // データ確認用メソッドの呼び出し
-                RegisterText.confirmData();
+                //RegisterText.confirmData();
+                RegisterAction.confirmChatActionData();
               },
             ),
           ],
@@ -73,7 +69,8 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                       child: Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                        Switch(//テキスト入力欄の一番左のやつ
+                        Switch(
+                          //テキスト入力欄の一番左のやつ
                           value: _isTodo,
                           onChanged: (value) {
                             setState(() {
@@ -122,13 +119,22 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                                 onPressed: () {
                                   //ここに送信ボタンが押された時の動作を記述する
                                   //ここの中で関数を呼び出す
-                                  String text = _textEditingController.text;
-                                  // メッセージ送信処理をするメソッドを呼び出す
-                                  RegisterText.handLeSubmitted(
-                                      text, _messages, _textEditingController);
-
-                                  // Stateを更新して表示を更新する
-                                  setState(() {});
+                                  String _chatText =
+                                      _textEditingController.text;
+                                  // スイッチがオンの時呼び出されるアクションを登録する
+                                  if (_isTodo) {
+                                    RegisterText.handLeSubmitted(_chatText,
+                                        _messages, _textEditingController);
+                                    RegisterAction.sendAction(_messages,
+                                        _chatText, _textEditingController);
+                                    // Stateを更新して表示を更新する
+                                    setState(() {});
+                                  } else {
+                                    // メッセージ送信処理をするメソッドを呼び出す
+                                    RegisterText.handLeSubmitted(_chatText,
+                                        _messages, _textEditingController);
+                                    setState(() {});
+                                  }
                                 },
                               ),
                             ),

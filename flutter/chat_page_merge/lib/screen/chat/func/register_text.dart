@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '/utils/database_helper.dart';
 import '/widget/chat_fukidashi.dart';
-import '/widget/chat_todo.dart';
 
 // テキストをデータベースに登録する
 class RegisterText {
