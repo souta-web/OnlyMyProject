@@ -17,11 +17,9 @@ class ChatMessageSend extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      //画面全体の周りの余白
-      padding: const EdgeInsets.all(20.0),
       child: Padding(
-        //吹き出し下の余白
-        padding: EdgeInsets.only(bottom: 18.0),
+        //吹き出し周りの余白
+        padding: EdgeInsets.only(bottom: 13.0, right: 17.0, top: 17.0),
         child: Align(
           //右側に寄せる
           alignment: Alignment.centerRight,
@@ -58,38 +56,32 @@ class ChatMessageReply extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      //画面全体の周りの余白
-      padding: const EdgeInsets.all(20.0),
-      child: ListView(
-        children: [
-          Padding(
-            //吹き出し下の余白
-            padding: EdgeInsets.only(bottom: 28.0),
-            child: Align(
-              //左側に寄せる
-              alignment: Alignment.centerLeft,
-              child: Container(
-                //角の丸みの設定
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(10),
-                    topLeft: Radius.circular(10),
-                    bottomRight: Radius.circular(10),
-                  ),
-                  color: Color.fromARGB(255, 189, 187, 184),
-                ),
-                child: Padding(
-                  //文字と吹き出しの間の余白
-                  padding: EdgeInsets.all(15.0),
-                  child: Text(
-                    reply,
-                    style: TextStyle(fontSize: 13),
-                  ),
-                ),
+      child: Padding(
+        //吹き出し周りの余白
+        padding: EdgeInsets.only(bottom: 13.0, left: 17.0, top: 17.0),
+        child: Align(
+          //左側に寄せる
+          alignment: Alignment.centerLeft,
+          child: Container(
+            //角の丸みの設定
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(10),
+                topLeft: Radius.circular(10),
+                bottomRight: Radius.circular(10),
+              ),
+              color: Color.fromARGB(255, 189, 187, 184),
+            ),
+            child: Padding(
+              //文字と吹き出しの間の余白
+              padding: EdgeInsets.all(15.0),
+              child: Text(
+                reply,
+                style: TextStyle(fontSize: 13),
               ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }

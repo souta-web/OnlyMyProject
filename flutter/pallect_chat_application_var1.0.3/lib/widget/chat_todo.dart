@@ -7,7 +7,7 @@ class ChatTodo extends StatelessWidget {
       children: [
         Container(
           color: Color.fromARGB(255, 229, 229, 229),
-          margin: EdgeInsets.symmetric(vertical: 20.0),
+          margin: EdgeInsets.symmetric(vertical: 8.0),
           padding: EdgeInsets.all(7.0),
           width: MediaQuery.of(context).size.width,
           child: Row(

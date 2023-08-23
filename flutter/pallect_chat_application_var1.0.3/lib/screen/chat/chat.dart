@@ -29,7 +29,7 @@ class ChatScreenWidget extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          //動作確認ボタン
+          /*動作確認ボタン
           ElevatedButton(
             child: Text('吹き出し確認'),
             onPressed: () {
@@ -51,7 +51,15 @@ class ChatScreenWidget extends StatelessWidget {
                 )
               );
             }
-          ),
+          ),*/
+
+          ChatMessageSend(send: '行動１を開始'),
+          ChatMessageReply(reply: '行動１を開始しました。頑張ってください！'),
+          ChatTodo(),
+          ChatMessageSend(send: '行動２を開始'),
+          ChatMessageReply(reply: '行動２を記録します。終了も教えてください。'),
+          ChatMessageSend(send: '行動３を開始'),
+          ChatTodo(),
 
           Container(
             color: Color.fromARGB(255, 103, 100, 100),
