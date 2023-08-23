@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import '/utils/database_helper.dart';
 import '/widget/chat_todo.dart';
+import '/screen/chat/func/register_text.dart';
 
 // actionをデータベースに登録する
 class RegisterAction {
   // トグルボタンの状態とテキストフィールドの入力内容を基に、
   // チャットテーブルとアクションテーブルにデータを登録する役割を担う
-  static Future<void> sendAction(List<dynamic> messages, String chatText,
+  static Future<void> sendAction(String chatText, List<dynamic> messages,
       TextEditingController controller) async {
+    RegisterText.handLeSubmitted(chatText, messages, controller);
     String startTime = DateTime.now().toString(); // 送信時間
     // アクションを作成する
     ChatTodo actionMessage = ChatTodo(
@@ -17,7 +19,7 @@ class RegisterAction {
         mainTag: "#趣味",
         startTime: startTime,
         actionFinished: false);
-    
+
     controller.clear();
     messages.add(actionMessage);
 
@@ -40,8 +42,8 @@ class RegisterAction {
 
       // チャットテーブルに登録されたメッセージのID（プライマリーキー）
       // アクションテーブルのChatActionIdと紐づけるために使用される
-      final int chatId = await db!.insert(DatabaseHelper.chat_table, chatRow);
-
+      final int chatActionId =
+          await db!.insert(DatabaseHelper.chat_table, chatRow);
       // アクションテーブルに登録する際の各カラムに対するデータを含むマップ
       // トグルボタンがオンの場合にのみ生成
       final Map<String, dynamic> actionRow = {
@@ -57,13 +59,13 @@ class RegisterAction {
         DatabaseHelper.columnActionPlace: "自宅", // 場所
         DatabaseHelper.columnActionMainTag: actionMessage.mainTag, // メインタグ
         DatabaseHelper.columnActionSubTag: "ゲーム", // サブタグ
-        DatabaseHelper.columnChatActionId:
-            chatId, // このチャットと紐づけられているアクションのidがここに入る
+        DatabaseHelper.columnActionId:
+            chatActionId, // このチャットと紐づけられているアクションのidがここに入る
       };
+
       // アクションテーブルにデータを登録
       await db.insert(DatabaseHelper.action_table, actionRow);
     }
-    
   }
 
   // データ確認用メソッド
@@ -71,7 +73,7 @@ class RegisterAction {
     // データ確認や表示ロジックをここに記述
     final dbHelper = DatabaseHelper.instance;
     final List<Map<String, dynamic>> chats =
-    await dbHelper.queryAllRows_chat_table();
+        await dbHelper.queryAllRows_chat_table();
 
     final List<Map<String, dynamic>> actions =
         await dbHelper.queryAllRows_action_table();

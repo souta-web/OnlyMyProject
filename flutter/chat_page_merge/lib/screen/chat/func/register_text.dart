@@ -48,9 +48,6 @@ class RegisterText {
         text: replyText, isSentByUser: false); // isSentUserがfalseはAIが返信する
 
     messages.add(replyMessage); // 返答メッセージを追加
-
-    // テキストをデータベースに永続化
-    await _saveChatMessages(messages);
   }
 
   // 新しいメッセージをデータベースから読み込む
@@ -92,27 +89,6 @@ class RegisterText {
       // メッセージ表示を更新
       messages.clear();
       messages.addAll(chats);
-    }
-  }
-
-  // チャットメッセージを永続化するメソッド
-  static Future<void> _saveChatMessages(List<dynamic> messages) async {
-    final db = DatabaseHelper.instance;
-    String time = DateTime.now().toIso8601String();
-    for (var message in messages) {
-      // messageの型がChatMessageであることを前提としてキャストする
-      if (message is ChatMessage) {
-        int sender = message.isSentByUser ? 0 : 1; // 送信者の判定
-        Map<String, dynamic> row = {
-          DatabaseHelper.columnChatSender: sender, // 送信者情報: 0 (0=User, 1=AI)
-          DatabaseHelper.columnChatTodo:
-              'false', // todoかどうか: false (false=message)
-          DatabaseHelper.columnChatMessage: message.text, // チャットのテキスト
-          DatabaseHelper.columnChatTime: time, // 送信時間
-          DatabaseHelper.columnChatActionId: 0,
-        };
-        await db.insert_chat_table(row);
-      }
     }
   }
 

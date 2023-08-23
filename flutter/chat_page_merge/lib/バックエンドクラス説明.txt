@@ -3,4 +3,7 @@ register_text...テキストをデータベースに登録するクラス。
                 引数に入力されたテキストを受け取るtext及び送信者を判定するsenderを設定。
                 handLeSubmitted...メッセージの送信を処理するメソッド。
                 _loadChatMessages...新しいメッセージをデータベースから読み込む。
-                _registerAndShowReplyMessage...テキストをデータベースに登録し、返答メッセージを表示するメソッド。
+                _registerAndShowReplyMessage...テキストをデータベースに登録し、返答メッセージを表示するメソッド
+
+register_action...アクション及びチャットをデータベースに登録するクラス。
+                sendAction...トグルボタンの状態とテキストフィールドの入力内容を基に、 チャットテーブルとアクションテーブルにデータを登録する役割を担う
