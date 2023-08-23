@@ -121,7 +121,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                                   //ここの中で関数を呼び出す
                                   String _chatText =
                                       _textEditingController.text;
-                                  // スイッチがオンの時呼び出されるアクションを登録する
+                                  // スイッチがオンの時呼び出されるアクションを登録するメソッド
                                   if (_isTodo) {
                                     RegisterAction.sendAction(
                                         _chatText,
