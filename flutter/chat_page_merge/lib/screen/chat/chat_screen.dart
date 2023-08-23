@@ -1,3 +1,4 @@
+import 'package:chat_page_merge/screen/chat/func/chat_history_restorer.dart';
 import 'package:flutter/material.dart';
 import '/screen/chat/func/register_action.dart';
 
@@ -14,8 +15,14 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
 
   // チャットメッセージのリスト
   final List<dynamic> _messages = [];
-  //↑サンプルだから作業の時消していいです
+
   @override
+  void initState() {
+    ChatHistoryRestorer.restoreChatHistory(_messages);
+    setState(() {});
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -120,7 +127,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                                   //ここの中で関数を呼び出す
                                   String _chatText =
                                       _textEditingController.text;
-                                  
+
                                   // スイッチの状態を管理するメソッド
                                   RegisterAction.switchController(
                                       _isTodo,
