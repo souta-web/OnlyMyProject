@@ -153,11 +153,10 @@ class _ChatScreenState extends State<ChatScreen> {
 
     var action_index = 0;//todoの数をカウントするための変数
 
-    if (chat_table_message != null){
-      for (final row in chat_table_message){
+    if (chat_table_message != null){ //チャットテーブルに１つ以上データが登録されていたらtrue
+      for (final row in chat_table_message){ //chat_table_messageの要素数だけループする
         final chat_table_message = row['chat_message'];
         final chat_table_todo = row['chat_todo'];
-        final chat_table_id = row['_chat_id'];
         setState(() {
           //ChatMessageクラスを呼び出すときにテキストと、送り主を引数で渡す
           // 送信されたテキストを画面右側に表示する
@@ -165,10 +164,8 @@ class _ChatScreenState extends State<ChatScreen> {
             final action_table_id = action_table_message?[action_index]['_action_id'];
             final action_table_name = action_table_message?[action_index]['action_name'];
             final action_table_state = action_table_message?[action_index]['action_state'];
-            final action_table_start = action_table_message?[action_index]['action_start'];
-            final action_table_end = action_table_message?[action_index]['action_end'];
             final action_table_media = _nullCheckMedia(action_table_message?[action_index]['action_media']);
-            _messages.add(TodoMessage(
+            _messages.add(TodoMessage( //action表示ウィジェットのクラスを呼び出してオブジェクト生成
               text: action_table_name,
               isChecked: action_table_state,
               id:action_table_id,
@@ -177,7 +174,7 @@ class _ChatScreenState extends State<ChatScreen> {
             action_index += 1;
             print("todo");
           }else{//通常チャットの時
-            _messages.add(ChatMessage(
+            _messages.add(ChatMessage( //吹き出しウィジェットのクラスを呼び出してオブジェクト生成
               text: chat_table_message,
               isSentByUser: true,
             ));
