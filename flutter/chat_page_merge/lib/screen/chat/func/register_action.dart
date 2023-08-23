@@ -8,7 +8,7 @@ import '/screen/chat/func/register_text.dart';
 class RegisterAction {
   // トグルボタンの状態とテキストフィールドの入力内容を基に、
   // チャットテーブルとアクションテーブルにデータを登録する役割を担う
-  static Future<void> sendAction(String chatText, List<dynamic> messages,
+  static Future<void> _sendAction(String chatText, List<dynamic> messages,
       TextEditingController controller) async {
     RegisterText.handLeSubmitted(chatText, messages, controller);
     String startTime = DateTime.now().toString(); // 送信時間
@@ -65,6 +65,18 @@ class RegisterAction {
 
       // アクションテーブルにデータを登録
       await db.insert(DatabaseHelper.action_table, actionRow);
+    }
+  }
+
+  // スイッチの状態(ON/OFF)でアクションか通常チャットを送信するメソッド
+  static void switchController(bool isTodo, String chatText,
+      List<dynamic> messages, TextEditingController controller) {
+    // スイッチがオンの時呼び出されるアクションを登録するメソッド
+    if (isTodo) {
+      _sendAction(chatText, messages, controller);
+    } else {
+      // スイッチがオフの時メッセージ送信処理をするメソッドを呼び出す
+      RegisterText.handLeSubmitted(chatText, messages, controller);
     }
   }
 

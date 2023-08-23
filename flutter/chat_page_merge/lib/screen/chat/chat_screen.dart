@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '/screen/chat/func/register_text.dart';
 import '/screen/chat/func/register_action.dart';
 
 class ChatScreenWidget extends StatefulWidget {
@@ -121,17 +120,13 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                                   //ここの中で関数を呼び出す
                                   String _chatText =
                                       _textEditingController.text;
-                                  // スイッチがオンの時呼び出されるアクションを登録するメソッド
-                                  if (_isTodo) {
-                                    RegisterAction.sendAction(
-                                        _chatText,
-                                        _messages,
-                                        _textEditingController);
-                                  } else {
-                                    // スイッチがオフの時メッセージ送信処理をするメソッドを呼び出す
-                                    RegisterText.handLeSubmitted(_chatText,
-                                        _messages, _textEditingController);
-                                  }
+                                  
+                                  // スイッチの状態を管理するメソッド
+                                  RegisterAction.switchController(
+                                      _isTodo,
+                                      _chatText,
+                                      _messages,
+                                      _textEditingController);
                                   setState(() {});
                                 },
                               ),
