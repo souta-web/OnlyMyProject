@@ -1,4 +1,4 @@
-import '../../utils/chat_history_restorer.dart';
+import '/utils/chat_history_restorer.dart';
 import 'package:flutter/material.dart';
 import '/screen/chat/func/register_action.dart';
 
