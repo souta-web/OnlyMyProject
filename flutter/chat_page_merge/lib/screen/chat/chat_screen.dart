@@ -18,9 +18,13 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
 
   @override
   void initState() {
-    ChatHistoryRestorer.restoreChatHistory(_messages);
-    setState(() {});
     super.initState();
+    _restoreChatHistory();  // アプリ起動時にチャット履歴を復元
+  }
+
+  Future<void> _restoreChatHistory() async {
+    await ChatHistoryRestorer.restoreChatHistory(_messages);
+    setState(() {});
   }
 
   Widget build(BuildContext context) {

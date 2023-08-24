@@ -1,60 +1,59 @@
 import '/utils/database_helper.dart';
-import '/widget/chat_fukidashi.dart'; 
-import '/widget/chat_todo.dart'; 
+import '/widget/chat_todo.dart';
+import '/widget/chat_fukidashi.dart';
 
 class ChatHistoryRestorer {
   static Future<void> restoreChatHistory(List<dynamic> messages) async {
     final db = await DatabaseHelper.instance.database;
-
-    final chatMessages = await db?.query(
-      DatabaseHelper.chat_table,
+    final List<Map<String, dynamic>>? chat_table_message = await db?.query(
+      'chat_table',
       columns: [
-        DatabaseHelper.columnChatSender,
-        DatabaseHelper.columnChatTodo,
-        DatabaseHelper.columnChatMessage,
-        DatabaseHelper.columnChatTime,
-        DatabaseHelper.columnChatActionId,
+        'chat_todo',
+        'chat_message',
       ],
     );
 
-    final actionMessages = await db?.query(
-      DatabaseHelper.action_table,
+    final List<Map<String, dynamic>>? action_table_message = await db?.query(
+      'action_table',
       columns: [
-        DatabaseHelper.columnActionName,
-        DatabaseHelper.columnActionState,
-        DatabaseHelper.columnActionStart,
-        DatabaseHelper.columnActionMainTag,
+        'action_name',
+        'action_main_tag',
+        'action_start',
       ],
     );
 
-    var actionIndex = 0;
+    var action_index = 0;
 
-    if (chatMessages != null) {
-      for (final row in chatMessages) {
-        final chatSender = row[DatabaseHelper.columnChatSender] as String;
-        final chatTodo = row[DatabaseHelper.columnChatTodo] as String;
-        final chatMessage = row[DatabaseHelper.columnChatMessage] as String;
-        // final chatTime = row[DatabaseHelper.columnChatTime] as String;
-        // final chatActionId = row[DatabaseHelper.columnChatActionId] as int;
+    if (chat_table_message != null) {
+      for (final row in chat_table_message) {
+        final chat_table_todo = row['chat_todo'];
+        final chat_table_message_text = row['chat_message'];
 
-        if (chatTodo == 'true') {
-          final actionName = actionMessages?[actionIndex][DatabaseHelper.columnActionName] as String;
-          final actionStartTime = actionMessages?[actionIndex][DatabaseHelper.columnActionStart] as String;
-          final actionMainTag = actionMessages?[actionIndex][DatabaseHelper.columnActionMainTag] as String;
+        if (chat_table_todo == "true" &&
+            action_index < action_table_message!.length) {
+          final action_table_name =
+              action_table_message[action_index]['action_name'];
+          final action_table_maintag =
+              action_table_message[action_index]['action_main_tag'];
+          final action_table_start =
+              action_table_message[action_index]['action_start'];
 
           messages.add(ChatTodo(
-            title: actionName,
-            isSentByUser: false,
-            mainTag: actionMainTag,
-            startTime: actionStartTime,
-            actionFinished: false,
-          ));
+              title: action_table_name,
+              isSentByUser: false,
+              mainTag: action_table_maintag,
+              startTime: action_table_start,
+              actionFinished: false));
 
-          actionIndex++;
+          action_index++;
         } else {
           messages.add(ChatMessage(
-            text: chatMessage,
-            isSentByUser: chatSender == 0,
+            text: chat_table_message_text,
+            isSentByUser: true, // ユーザーからのメッセージなのでtrueに設定
+          ));
+          messages.add(ChatMessage(
+            text: chat_table_message_text,
+            isSentByUser: false, // AIからのメッセージなのでfalseに設定
           ));
         }
       }
