@@ -29,56 +29,44 @@ class RegisterText {
   // メッセージの送信を処理するメソッド
   static void handLeSubmitted(String text, List<dynamic> messages,
       TextEditingController controller) async {
-    // テキストをデータベースに登録して返答メッセージを表示する
-    _registerAndShowReplyMessage(text, messages, controller);
+    String replyText = "データが登録されました"; // 返信メッセージの内容
+    print(replyText);
 
-    // 新しいチャットメッセージを作成する
-    ChatMessage userMessage = ChatMessage(
-        text: text, isSentByUser: true); // isSentByUserがtrueはユーザーが送信する
+    // テキストをデータベースに登録して返答メッセージを表示する
+    _registerAndShowReplyMessage(text, replyText, messages, controller);
+
+    ChatMessage userMessage =
+        ChatMessage(text: text, isSentByUser: true); // 応答側のメッセージ
+    ChatMessage replyMessage =
+        ChatMessage(text: replyText, isSentByUser: false); // 返信側のメッセージ
 
     // テキスト入力をクリアする
     controller.clear();
 
-    // 送信メッセージを追加
+    // チャットメッセージをリストの先頭に追加する
     messages.add(userMessage);
-
-    String replyText = "データが登録されました"; // 返信メッセージの内容
-    print(replyText);
-    ChatMessage replyMessage = ChatMessage(
-        text: replyText, isSentByUser: false); // isSentUserがfalseはAIが返信する
-
-    messages.add(replyMessage); // 返答メッセージを追加
-  }
-
-  // 新しいメッセージをデータベースから読み込む
-  static Future<void> _loadChatMessages(List<dynamic> messages) async {
-    // databasehelperのインスタンス生成
-    final dbHelper = DatabaseHelper.instance;
-    final chats = await dbHelper.queryAllRows_chat_table();
-
-    messages.clear(); // メッセージをクリアする
-    chats.forEach((chat) {
-      messages.add(ChatMessage(
-          text: chat[DatabaseHelper.columnChatMessage],
-          isSentByUser: chat[DatabaseHelper.columnChatSender] == 0));
-    });
+    messages.add(replyMessage);
   }
 
   // テキストをデータベースに登録し、返答メッセージを表示するメソッド
-  static _registerAndShowReplyMessage(String text, List<dynamic> messages,
-      TextEditingController controller) async {
+  static _registerAndShowReplyMessage(String text, String replyText,
+      List<dynamic> messages, TextEditingController controller) async {
     final dbHelper = DatabaseHelper.instance;
     final chats = await dbHelper.queryAllRows_chat_table();
 
     // テキストをデータベースに登録
     _registerTextToDatabase(text, 0); // 0は送信者を'ユーザー'とする
+    _registerTextToDatabase(replyText, 1); // 1は返答者を'AI'とする
 
     if (controller.text.isNotEmpty) {
       // テキストフィールドに値が入っているかチェック
       // 新しいチャットメッセージを作成する
+      ChatMessage userMessage =
+          ChatMessage(text: text, isSentByUser: true); // 応答側のメッセージ
       ChatMessage replyMessage =
-          ChatMessage(text: text, isSentByUser: false); // 送信側のメッセージ
+          ChatMessage(text: replyText, isSentByUser: false); // 返信側のメッセージ
       // チャットメッセージをリストの先頭に追加する
+      messages.add(userMessage);
       messages.add(replyMessage);
 
       // テキストをクリアする
@@ -90,6 +78,21 @@ class RegisterText {
       messages.clear();
       messages.addAll(chats);
     }
+  }
+
+  // 新しいメッセージをデータベースから読み込む
+  static Future<void> _loadChatMessages(List<dynamic> messages) async {
+    // databasehelperのインスタンス生成
+    final dbHelper = DatabaseHelper.instance;
+    final chats = await dbHelper.queryAllRows_chat_table();
+
+    messages.clear(); // メッセージをクリアする
+    chats.forEach((chat) {
+      messages.add(ChatMessage(
+        text: chat[DatabaseHelper.columnChatMessage],
+        isSentByUser: chat[DatabaseHelper.columnChatSender] == 0,
+      ));
+    });
   }
 
   // データ確認用メソッド

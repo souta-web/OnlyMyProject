@@ -12,7 +12,7 @@ class ChatHistoryRestorer {
     final List<Map<String, dynamic>>? chat_table_message = await db?.query(
       'chat_table',
       columns: [
-        'chat_todo',    // チャットメッセージの種類（true: アクション, false: ユーザー）
+        'chat_todo', // チャットメッセージの種類（true: アクション, false: ユーザー）
         'chat_message', // メッセージテキスト
       ],
     );
@@ -48,25 +48,27 @@ class ChatHistoryRestorer {
           // ChatTodoオブジェクトを作成してメッセージリストに追加
           messages.add(ChatTodo(
               title: action_table_name,
-              isSentByUser: false,  // アクションメッセージはユーザーからのものではないのでfalseに設定
+              isSentByUser: false, // アクションメッセージはユーザーからのものではないのでfalseに設定
               mainTag: action_table_maintag,
               startTime: action_table_start,
               actionFinished: false));
 
           action_index++; // 次のアクション移るためにインデックスを増やす
         } else {
-          // ユーザーメッセージまたはアクションメッセージが終了した場合
-          // チャットメッセージを作成してリストに追加
-          // TODO: AI側の返答が復元時に送信メッセージと同じ値になるのでそれを修正する
-          // AIの返答メッセージを保存するリストを追加する？
-          messages.add(ChatMessage(
-            text: chat_table_message_text,
-            isSentByUser: true, // ユーザーからのメッセージなのでtrueに設定
-          ));
-          messages.add(ChatMessage(
-            text: chat_table_message_text,
-            isSentByUser: false, // AIからのメッセージなのでfalseに設定
-          ));
+          // ユーザーメッセージの場合はユーザーからのメッセージとして追加
+          if (chat_table_todo == "false") {
+            // TODO: AI側の返答が復元時に送信メッセージと同じ値になるのでそれを修正する
+            messages.add(ChatMessage(
+              text: chat_table_message_text,
+              isSentByUser: true, // ユーザーからのメッセージなのでtrueに設定
+            ));
+          } else if (chat_table_todo == "true") {
+            messages.add(ChatMessage(
+              text: chat_table_message_text,
+              isSentByUser: false, // AIからのメッセージなのでfalseに設定
+            ));
+            action_index++;
+          }
         }
       }
     }
