@@ -58,6 +58,7 @@ class ChatHistoryRestorer {
           // ユーザーメッセージまたはアクションメッセージが終了した場合
           // チャットメッセージを作成してリストに追加
           // TODO: AI側の返答が復元時に送信メッセージと同じ値になるのでそれを修正する
+          // AIの返答メッセージを保存するリストを追加する？
           messages.add(ChatMessage(
             text: chat_table_message_text,
             isSentByUser: true, // ユーザーからのメッセージなのでtrueに設定

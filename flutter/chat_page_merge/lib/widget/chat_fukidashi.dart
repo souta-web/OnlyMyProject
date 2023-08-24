@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-//辻が作った吹き出し
+// 辻が作った吹き出し
 class ChatMessage extends StatelessWidget {
   // チャットメッセージのテキスト
   final String text;
