@@ -1,4 +1,0 @@
-#Sat Aug 26 21:11:52 GMT+09:00 2023
-base.0=C\:\\Users\\souta\\Document\\GitHub\\OnlyMyProject\\flutter\\pallect_chat_application_var1.0.6\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
-path.0=classes.dex
-renamed.0=classes.dex
