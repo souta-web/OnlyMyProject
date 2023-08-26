@@ -186,13 +186,7 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  Uint8List? _nullCheckMedia(var _media) {
-    if (_media != null){
-      return _media;
-    } else {
-      return null;
-    }
-  }
+
 
   //送信ボタン
   void _insert_chat_table() async {
@@ -217,6 +211,7 @@ class _ChatScreenState extends State<ChatScreen> {
     _sendMessage(id,_isTodo);//画面処理
   }
 
+  //メディア追加ボタン押された時の処理
   void _addButtonPressed() async {
     final result = await FilePicker.platform.pickFiles();//選択されたファイルを取得する
     if (result != null) {
@@ -231,6 +226,14 @@ class _ChatScreenState extends State<ChatScreen> {
       }
     } else {
       // キャンセルされた場合の処理
+    }
+  }
+  
+  Uint8List? _nullCheckMedia(var _media) {
+    if (_media != null){
+      return _media;
+    } else {
+      return null;
     }
   }
 

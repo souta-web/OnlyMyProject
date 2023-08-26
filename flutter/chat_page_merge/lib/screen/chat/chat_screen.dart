@@ -1,6 +1,8 @@
 import '/screen/chat/chat_history_restorer.dart';
 import 'package:flutter/material.dart';
 import '/screen/chat/func/register_action.dart';
+import '/utils/media_controller.dart';
+import 'dart:typed_data';
 
 class ChatScreenWidget extends StatefulWidget {
   @override
@@ -12,6 +14,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   final TextEditingController _textEditingController = TextEditingController();
   //switchボタンの状態管理変数
   bool _isTodo = false; //テキスト入力の左のやつ
+  late Uint8List? _mediaData = null;//メディアを格納する
 
   // チャットメッセージのリスト
   final List<dynamic> _messages = [];
@@ -25,6 +28,11 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   Future<void> _restoreChatHistory() async {
     await ChatHistoryRestorer.restoreChatHistory(_messages);
     setState(() {});
+  }
+
+  //ほかのファイルの非同期処理関数をbuild内で呼び出して戻り値受け取れないからそれを可能にするための記述
+  Future<Uint8List?> _getMedia() async {
+    return await MediaController.getMedia();
   }
 
   Widget build(BuildContext context) {
@@ -92,7 +100,11 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                           //メディア追加ボタン
                           icon: Icon(Icons.add),
                           color: Colors.white,
-                          onPressed: () {},
+                          onPressed: () async {
+                            _mediaData = await _getMedia();
+                            //現状は取得したメディアの処理がないためprintで取得確認
+                            print(_mediaData);
+                          },
                         ),
                         Flexible(
                             child: Container(

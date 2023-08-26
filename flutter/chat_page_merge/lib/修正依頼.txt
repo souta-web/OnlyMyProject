@@ -5,4 +5,25 @@
 未修正：action登録時にはchat_tableとaction_tableにそれぞれ必要なデータを登録しますが、吹き出しの表示自体はしないです。表示はChatTodoのみです。
 未修正：データベースにデータを登録した段階で「データが登録されました」の表示とデータベースへの登録の必要はないです。(返信はAIからもらうため)
 未修正：register_text.dart-handLeSubmittedでやりたいことがよくわからない。
+未修正：database_helper.dartのchat_tableのカラムにメディア用のカラムがないから追加。
+
+送信ボタン押したときの処理ざっくりわけると
+・データベース登録
+・吹き出し、アクション表示
+なので最終的な処理の流れとしては
+1.chat_tableに登録(トグルボタンがオンオフどちらでも共通)
+2.if(トグルボタンがオン)→action_tableに登録
+3.if(トグルボタンの状態)→吹き出し、アクション表示
+
+------解説-------
+・データベース登録
+→通常チャット時(chat_table)
+ アクション時(chat_table,action_table)
+ 
+chat_tableに登録するカラムは共通しているので、そこまでは一つの関数で処理して問題ない
+登録カラム→(columnChatSender,columnChatTodo,columnChatTodofinish,columnChatMessage,columnChatTime)
+
+その後はif文でトグルボタンの状態を受け取ってtrueならaction_tableへのデータ登録をする
+
+　
 

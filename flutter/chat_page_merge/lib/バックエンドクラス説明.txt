@@ -10,3 +10,5 @@ register_action...アクション及びチャットをデータベースに登�
 
 chat_history_restorer...アプリ起動時にチャット及びアクションを復元するクラス
                         restoreChatHistory...チャットメッセージとアクション情報をデータベースから取得し、表示するメソッド
+
+media_controller...メディアの取得をする
