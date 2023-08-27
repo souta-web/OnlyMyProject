@@ -22,7 +22,7 @@ class InsertChatTable{
                     this.chatActionId
                     });
 
-  void _insert_chat_table() async {
+  void _insertChatTable() async {
     // row to insert
     //データベースに登録
     print("これからデータベース登録");
