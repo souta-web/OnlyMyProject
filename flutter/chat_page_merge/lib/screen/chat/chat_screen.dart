@@ -4,6 +4,7 @@ import '/screen/chat/func/register_action.dart';
 import '/utils/media_controller.dart';
 import 'dart:typed_data';
 import '/utils/register_chat_table.dart';
+import '/utils/register_action_table.dart';
 
 class ChatScreenWidget extends StatefulWidget {
   @override
@@ -20,16 +21,16 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   // チャットメッセージのリスト
   final List<dynamic> _messages = [];
 
-  @override
-  void initState() {
-    super.initState();
-    _restoreChatHistory();  // アプリ起動時にチャット履歴を復元
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _restoreChatHistory();  // アプリ起動時にチャット履歴を復元
+  // }
 
-  Future<void> _restoreChatHistory() async {
-    await ChatHistoryRestorer.restoreChatHistory(_messages);
-    setState(() {});
-  }
+  // Future<void> _restoreChatHistory() async {
+  //   await ChatHistoryRestorer.restoreChatHistory(_messages);
+  //   setState(() {});
+  // }
 
   //ほかのファイルの非同期処理関数をbuild内で呼び出して戻り値受け取れないからそれを可能にするための記述
   Future<Uint8List?> _getMedia() async {
@@ -145,8 +146,14 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                                     chatSender: 'John',
                                     chatMessage: 'Hello!',
                                   );
+                                  //↓加藤作成のアクション登録プログラムの動作確認用
+                                  RegisterActionTable registerActionTable = RegisterActionTable(
+                                    actionName: 'ゲーム',
+                                    actionStart: '10:00',
+                                  );
+                                  registerActionTable.registerActionTableFunc();
 
-                                  registerChatTable.registerChatTableFunc(); //実際にデータベース登録
+                                  //registerChatTable.registerChatTableFunc(); //実際にデータベース登録
                                 },
                               ),
                             ),
