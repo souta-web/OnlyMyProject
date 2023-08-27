@@ -140,6 +140,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                                 icon: Icon(Icons.send),
                                 color: Colors.white,
                                 onPressed: () {
+                                  //↓辻作成の登録プログラム動作確認用。カトゥーンのほうでも動作確認出来たら消してください。
                                   RegisterChatTable registerChatTable = RegisterChatTable( //インスタンス化、引数渡し
                                     chatSender: 'John',
                                     chatMessage: 'Hello!',
