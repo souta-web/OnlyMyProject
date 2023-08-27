@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '/screen/chat/func/register_action.dart';
 import '/utils/media_controller.dart';
 import 'dart:typed_data';
+import '/utils/register_chat_table.dart';
 
 class ChatScreenWidget extends StatefulWidget {
   @override
@@ -139,18 +140,12 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                                 icon: Icon(Icons.send),
                                 color: Colors.white,
                                 onPressed: () {
-                                  //ここに送信ボタンが押された時の動作を記述する
-                                  //ここの中で関数を呼び出す
-                                  String _chatText =
-                                      _textEditingController.text;
+                                  RegisterChatTable registerChatTable = RegisterChatTable( //インスタンス化、引数渡し
+                                    chatSender: 'John',
+                                    chatMessage: 'Hello!',
+                                  );
 
-                                  // スイッチの状態を管理するメソッド
-                                  RegisterAction.switchController(
-                                      _isTodo,
-                                      _chatText,
-                                      _messages,
-                                      _textEditingController);
-                                  setState(() {});
+                                  registerChatTable.registerChatTableFunc(); //実際にデータベース登録
                                 },
                               ),
                             ),

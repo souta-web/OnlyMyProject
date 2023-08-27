@@ -2,7 +2,7 @@ import 'database_helper.dart';
 
 //動作未チェック
 
-class InsertChatTable{
+class RegisterChatTable{
   final int? chatId; //idはデータ登録時に自動で割り当てられるため、引数で渡す必要は基本的にはない
   final String? chatSender;
   final String? chatTodo;
@@ -12,7 +12,7 @@ class InsertChatTable{
   final String? chatChannel;
   final int? chatActionId;
 
-  InsertChatTable ({this.chatId,
+  RegisterChatTable ({this.chatId,
                     this.chatSender,
                     this.chatTodo,
                     this.chatTodofinish,
@@ -22,7 +22,7 @@ class InsertChatTable{
                     this.chatActionId
                     });
 
-  void _insertChatTable() async {
+  void registerChatTableFunc() async {
     // row to insert
     //データベースに登録
     print("これからデータベース登録");
@@ -40,16 +40,20 @@ class InsertChatTable{
     };
 
     await dbHelper.insert_chat_table(row);
+
+    //↓デバッグ用のデータ表示プログラム
+    final allRows = await dbHelper.queryAllRows_chat_table();
+    print('全てのデータを照会しました。');
+    allRows.forEach(print);
   }
 }
 
 /*
 次のような形で呼び出すことができる
-  InsertChatTable chatTable = InsertChatTable( //インスタンス化、引数渡し
-    chatId: 1,
+  RegisterChatTable registerChatTable = RegisterChatTable( //インスタンス化、引数渡し
     chatSender: 'John',
     chatMessage: 'Hello!',
   );
 
-  chatTable.insertChatTable(); //実際にデータベース登録
+  registerChatTable.registerChatTableFunc(); //実際にデータベース登録
 */
