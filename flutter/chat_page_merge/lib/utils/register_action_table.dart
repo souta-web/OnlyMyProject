@@ -1,4 +1,5 @@
 import 'database_helper.dart';
+import 'dart:typed_data';
 
 // アクション登録汎用クラス
 class RegisterActionTable {
@@ -8,7 +9,7 @@ class RegisterActionTable {
   final String? actionEnd;
   final String? actionDuration;
   final String? actionMessage;
-  final String? actionMedia;
+  final Unit8List? actionMedia;
   final String? actionNotes;
   final int? actionScore;
   final int? actionState;
