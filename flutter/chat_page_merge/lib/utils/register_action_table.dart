@@ -29,7 +29,7 @@ class RegisterActionTable {
                       this.actionState,
                       this.actionPlace,
                       this.actionMainTag,
-                      this.actionSubTag
+                      this.actionSubTag,
                       });
 
   void registerActionTableFunc() async {
