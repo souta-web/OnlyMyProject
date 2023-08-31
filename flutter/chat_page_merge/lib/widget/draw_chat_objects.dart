@@ -1,5 +1,8 @@
+import 'package:flutter/material.dart';
+
 import '/widget/chat_fukidashi.dart';
 import '/widget/chat_todo.dart';
+import '/utils/database_helper.dart';
 import '/utils/register_chat_table.dart';
 import '/utils/register_action_table.dart';
 
@@ -18,7 +21,7 @@ class DrawChatObjects {
   }
 
   // テキストフィールドに入力されたメッセージをデータベースに登録する
-  void _registerTextToDatabase(String text, int sender) {
+  void _registerTextToDatabase(String text, String sender) {
     final dbHelper = DatabaseHelper.instance;
 
     // テキストがnullでないかをチェック
@@ -43,17 +46,16 @@ class DrawChatObjects {
         text: chat[DatabaseHelper.columnChatMessage],
         isSentByUser: chat[DatabaseHelper.columnChatSender] == 0,
       ));
-    });
+    }
   }
 
   void _registerAndShowMessage(String text, List<dynamic> messages, TextEditingController controller) async {
     
     _registerTextToDatabase(text, 0); // ユーザーの登録
 
-    \\
     if (controller.text.isNotEmpty) {
       // 新しいメッセージを読み込む
-      await _loadMessages(messages);
+      await _loadChatMessages(messages);
     }
   }
 
