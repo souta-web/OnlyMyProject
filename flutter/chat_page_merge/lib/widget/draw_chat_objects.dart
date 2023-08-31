@@ -2,74 +2,60 @@ import 'package:flutter/material.dart';
 
 import '/widget/chat_fukidashi.dart';
 import '/widget/chat_todo.dart';
-import '/utils/database_helper.dart';
 import '/utils/register_chat_table.dart';
 import '/utils/register_action_table.dart';
 
-
+// トグルボタンの状態によってオブジェクトを表示する
 class DrawChatObjects {
-
-  // トグルボタンがオンでもオフでもチャットは送信するのでメソッド化する
-  void sendChatMessage(String chatText, List<dynamic> messages, TextEditingController controller) {
-    ChatMessage userMessage = ChatMessage(text: chatText, isSentByUser: true); // 送信側のメッセージ
-
-    // テキスト入力をクリアする
-    controller.clear();
-
-    // チャットメッセージをリストの先頭に追加
-    messages.add(userMessage);
-  }
-
-  // テキストフィールドに入力されたメッセージをデータベースに登録する
-  void _registerTextToDatabase(String text, String sender) {
-    final dbHelper = DatabaseHelper.instance;
-
-    // テキストがnullでないかをチェック
-    if (text.isNotEmpty) {
-      RegisterChatTable registerChatTable = RegisterChatTable( //インスタンス化、引数渡し
-      chatSender: sender,
-      chatMessage: text,
-    );
-
-    registerChatTable.registerChatTableFunc(); //実際にデータベース登録
-    }
-  }
-
-  // 新しいメッセージをデータベースから読み込む
-  void _loadChatMessages(List<dynamic> messages) async {
-    // databasehelperのインスタンス生成
-    final dbHelper = DatabaseHelper.instance;
-    final chats = await dbHelper.queryAllRows_chat_table();
-
-    messages.clear(); // メッセージをクリアする
-        messages.add(ChatMessage(
-        text: chat[DatabaseHelper.columnChatMessage],
-        isSentByUser: chat[DatabaseHelper.columnChatSender] == 0,
-      ));
-    }
-  }
-
-  void _registerAndShowMessage(String text, List<dynamic> messages, TextEditingController controller) async {
-    
-    _registerTextToDatabase(text, 0); // ユーザーの登録
-
+  // トグルボタンの状態によってオブジェクトを表示する
+  void drawChatObjects(String chattext, List<dynamic> messages,
+      TextEditingController controller, bool isTodo) {
+    // テキストフィールドが空でないかチェック
     if (controller.text.isNotEmpty) {
-      // 新しいメッセージを読み込む
-      await _loadChatMessages(messages);
+      ChatMessage userMessage =
+          ChatMessage(text: chattext, isSentByUser: true); // 応答側のメッセージ
+
+      // テキスト入力をクリアする
+      controller.clear();
+
+      // チャットメッセージをリストの先頭に追加
+      messages.add(userMessage);
+    }
+
+    // スイッチの状態を引数で受け取る
+    if (isTodo) {
+      // アクションを作成する
+      ChatTodo actionMessage = ChatTodo(
+          title: chattext,
+          isSentByUser: false,
+          mainTag: "#趣味",
+          startTime: DateTime.now().toString(),
+          actionFinished: false);
+
+      controller.clear();
+      messages.add(actionMessage);
     }
   }
 
-  // 送信ボタンが押されたときに呼び出される
-  void sendButtonPressed(String chatText, List<dynamic> messages, TextEditingController controller) {
-    registerChatTable();
-    if (_isTodo) {  // トグルボタンがオンの時だけ呼び出す
-      RegisterActionTable registerActionTable = RegisterActionTable( //インスタンス化、引数渡し
-      actionName: 'ゲーム',
-      actionStart: '10:00',
+  sendButtonPressed(String chattext, List<dynamic> messages,
+      TextEditingController controller) {
+    bool _isTodo = true;
+    // チャットをデータベースに登録する
+    RegisterChatTable registerChatTable = RegisterChatTable(
+      chatSender: 'John',
+      chatMessage: chattext,
     );
+    registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
 
-    registerActionTable.registerActionTableFunc(); //実際にデータベース登録
+    // トグルボタンがオンの時
+    if (_isTodo) {
+      String time = DateTime.now().toString();
+      RegisterActionTable registerActionTable = RegisterActionTable(
+        actionName: 'ゲーム',
+        actionStart: time,
+      );
+      registerActionTable.registerActionTableFunc();
     }
-    return drawChatObjects();  // この関数で吹き出しなどを作ってreturnで返す
+    return drawChatObjects(chattext, messages, controller, _isTodo);
   }
 }
