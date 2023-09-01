@@ -1,5 +1,6 @@
 utils/register_chat_table.dartは引数で受けとった内容をチャットテーブルに登録します。
 statelesswidgetで実装されているものは状況に応じてstatefulwidgetにして問題ないです。
+chat_screen専用の関数はfuncフォルダに入れてください。
 
 1.チャット画面の作成
 UI
