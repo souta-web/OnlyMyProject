@@ -1,11 +1,26 @@
-utils/register_chat_table.dartは引数で受けとった内容をデータベースに登録します。
+utils/register_chat_table.dartは引数で受けとった内容をチャットテーブルに登録します。
+statelesswidgetで実装されているものは状況に応じてstatefulwidgetにして問題ないです。
 
 1.チャット画面の作成
 UI
-　・基本的にはPallectのチャット画面と同じものを作ってください。
+　・基本的にはPallectのチャット画面と同じものを作ってください。(chat_screen.dart)
 
-機能
+機能()
 　・送信ボタンが押されたときに、テキストフィールドに入力された内容をデータベースに登録＆送信メッセージが表示されている吹き出しを描画する。(吹き出しはwidget/chat_fukidashi.dartを使ってください。) 
 　・テキストフィールド左のトグルボタン(flutterではSwitchButton)の状態がTrueの場合にアクション登録＆描画する。
-　　→アクション表示用のウィジェットはchat_fukidashi.dartを参考に作ってください。
+　・画像送信機能　
+　・アプリを再起動したときにチャットのログが描画されるようにする
+　
+解説
+　最終的には送信ボタンのOnPressedにsubmitButtonPressedを割り当てる
+　↓submitButtonPressedの中身はおおむねこの形になる。
+　submitButtonPressed(引数) {
+    registerChatTableFunc(引数) //チャットテーブルに登録する
+    if (トグルボタンがtrue)
+        registerActionTableFunc(引数) //アクションテーブルに登録する
+    
+    drawMessages()　//引数で受け取ったトグルボタンの状態を見て吹き出し、アクション表示を行う関数
+　}
 
+　実際にはテキストフィールドが空になっているかの確認をしたうえでデータベース登録しないといけないので、そこは考えて実装してみてください。
+　ここに書かれていない関数で必要なものがあれば実装してもらって問題ないです。
