@@ -1,74 +1,73 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'theme_helper.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
-// MyApp ウイジェット
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => MyTheme(),
-      child: Consumer<MyTheme>(
-        builder: (context, theme, _) {
-          return MaterialApp(
-            theme: theme.current,
-            home: MyHomePage(),
-          );
-        },
+    return MaterialApp(
+      title: 'Timeline Example',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
+      home: TimelineScreen(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePage createState() => _MyHomePage();
-}
-
-// MyHomePage ウイジェット
-class _MyHomePage extends State<MyHomePage> {
-  final String title = "Example";
-  bool isButtonToggled = false;
-
+class TimelineScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text('Timeline'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children:[
-            Text('テーマ切替テスト'),
-            SwitchButton(),
-          ],
+        child: CustomPaint(
+          size: Size(200, 800), // カスタム描画領域のサイズ
+          painter: TimelinePainter(), // カスタムペインターを指定
         ),
       ),
     );
   }
 }
 
-class SwitchButton extends StatefulWidget {
+class TimelinePainter extends CustomPainter {
   @override
-  _SwitchButtonState createState() => _SwitchButtonState();
-}
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.black
+      ..strokeWidth = 1.0;
 
-class _SwitchButtonState extends State<SwitchButton> {
-  bool isSwitched = false;
+    // タイムラインの時間と縦線を描画
+    for (int hour = 1; hour <= 24; hour++) {
+      final y = (hour / 12) * size.height;
+      final double startX = 0;
+      final endX = size.width;
+      canvas.drawLine(Offset(startX, y), Offset(endX, y), paint);
+
+      final textPainter = TextPainter(
+        text: TextSpan(
+          text: hour.toString(),
+          style: TextStyle(color: Colors.black, fontSize: 14),
+        ),
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.ltr,
+      );
+
+      textPainter.layout(
+        minWidth: size.width, // テキストの位置を調整
+        maxWidth: size.width,
+      );
+
+      textPainter.paint(canvas, Offset(endX + 5, y - textPainter.height / 2));
+    }
+  }
 
   @override
-  Widget build(BuildContext context) {
-    return Switch(
-      value: isSwitched,
-      onChanged: (value) {
-        setState(() {
-          isSwitched = value;
-          Provider.of<MyTheme>(context, listen: false).toggle();
-        });
-      },
-    );
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
   }
 }
