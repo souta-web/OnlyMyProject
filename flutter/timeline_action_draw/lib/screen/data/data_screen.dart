@@ -22,7 +22,8 @@ class _DataScreenWidgetState extends State<DataScreenWidget> {
           ),
         ],
       ),
-      body:TimeLineBody()
+      body:TimeLineBody(),
+      floatingActionButton: WidgetAddButton(),
     );
   }
 }
@@ -38,7 +39,7 @@ class TimeLineBody extends StatelessWidget {
         return Center(
           child:SingleChildScrollView(
             child:TimeLineBase(bodyWidth: _bodyWidth,bodyHeight: _bodyHeight,)
-          ) 
+          )
         );
       },
     );
@@ -55,12 +56,91 @@ class TimeLineBase extends StatefulWidget {
 }
 
 class _TimeLineBase extends State<TimeLineBase> {
-  final double _timeDrawSpace = 50;
-  final double _oneHourHeight = 100;
-  final double _timeTextHeight = 16;
-  final double _horizontalLineThickness = 1.5;
-
+  final double _timeDrawSpace = 50; //時間を表示する欄の幅
+  final double _oneHourHeight = 60; //これを変えたら1時間当たりの縦幅が変わる
+  final double _timeTextHeight = 16; //時間テキストの縦幅 変えるとおかしくなる
+  final double _horizontalLineThickness = 1.5; //横線の縦幅
+  final double _timeLineActionDrawAreaMargin = 30; //時間とアクション表示領域の余白＆表示領域左の余白
+  late double _timeLineHeight = _oneHourHeight * 24 - (_horizontalLineThickness * 48); //タイムライン画面の合計縦幅
+  late double _timeLineActionDrawAreaWidth = widget.bodyWidth - _timeDrawSpace - _timeLineActionDrawAreaMargin; //アクション表示領域の横幅
+  //↓この配列に要素を追加したらその分だけ表示数を増やせる。(開始時刻が早い順に並んでいないとうまく動かないかも)
+  List<Map<String, dynamic>> _actionsDatas = [{"startTime": "1:00","endTime": "2:45" ,"color": Colors.red,"title": "ご飯食べる"},
+                                              {"startTime": "2:00","endTime": "8:00" ,"color": Colors.blue,"title": "学校に行く"},
+                                              {"startTime": "5:00","endTime": "9:00" ,"color": Colors.pink,"title": "寝る"},
+                                              {"startTime": "5:00","endTime": "6:00" ,"color": Colors.purple,"title": "BGM聞く"},
+                                              {"startTime": "15:00","endTime": "18:00" ,"color": Colors.purple,"title": "ブルアカやる"},
+                                              {"startTime": "16:00","endTime": "18:00" ,"color": Colors.purple,"title": "勉強やる"},
+                                              ];
+  List<Widget> _actionWidgets = [];
+  //占領されていないアクション表示のエリアを格納
+  //例えば{"startTime":60,"endTime":1440}であれば1:00～24:00の間はどのアクションにも占領されていないことになる
+  List<List<Map<String,int>>> _clearActionArea = [[{"startTime":0,"endTime":1440}]]; 
   @override
+
+  void initState() {
+    super.initState();
+    _actionWidgets.add(_drawHorizontalLineConstructure()); //これは表示領域のベースになるから変更してはいけない
+    for (int i = 0; i < _actionsDatas.length;i++){
+      _actionWidgets.add(_createTimeLineActions(_actionsDatas[i],_clearActionArea));
+
+      _clearActionArea = removeRangeFromClearActionArea(_clearActionArea, ConversionTimeToMinutes(_actionsDatas[i]["startTime"]), ConversionTimeToMinutes(_actionsDatas[i]["endTime"]));
+    }
+    print("_clearActionAreaの中身:" + _clearActionArea.toString());        
+  }
+    //↓チャットGPTの関数
+  List<List<Map<String, int>>> removeRangeFromClearActionArea(
+    List<List<Map<String, int>>> clearActionArea,
+    int actionStartTime,
+    int actionEndTime,
+  ) {
+    // 結果のリスト
+    List<List<Map<String, int>>> updatedClearActionArea = [];
+    
+    
+    //受け取った配列の-1が2つ以上の場合はアクションの表示領域が確定されない可能性があるから、そうならないように追加しておく
+    if(clearActionArea[clearActionArea.length -1 ].length > 1){
+      clearActionArea.add([{"startTime":0,"endTime":1440}]);
+    }
+
+    bool confirmActionPosition = false;
+    for (var entry in clearActionArea) {//引数で受け取った配列をfor文で回すList<List<Map<String, int>>>
+      List<Map<String, int>> entryList = []; 
+      for (var map in entry) {
+        int startClearTime = map["startTime"] ?? 0;
+        int endClearTime = map["endTime"] ?? 0;
+
+        // 削除範囲にかかる場合、適切に分割して追加
+        //アクションの位置がすでに確定している場合はfalseとなり、elseの中身を実行するだけ
+        if (!confirmActionPosition) {
+          //↓アクションを表示するエリアがある場合true
+          print("confirmActionPositionは正常");
+          if (startClearTime < actionStartTime && endClearTime > actionEndTime) {
+            entryList.add({"startTime": startClearTime, "endTime": actionStartTime - 1});
+            entryList.add({"startTime": actionEndTime + 1, "endTime": endClearTime});
+            confirmActionPosition = true;
+          } else {
+            // 削除対象外の範囲なのでそのまま追加
+            entryList.add(map);
+          }
+        }else{
+          entryList.add(map);
+        }
+      }
+      if (entryList.isNotEmpty) {
+        updatedClearActionArea.add(entryList);
+      }
+    }
+
+  return updatedClearActionArea;
+  }
+  //↑チャットGPTの関数
+
+  int ConversionTimeToMinutes(String _time) {
+    List<String> _TimeList = _time.split(":");
+    int _Hour = int.parse(_TimeList[0]) * 60;
+    int _Minutes = int.parse(_TimeList[1]) + _Hour;
+    return _Minutes;
+  }
 
   Widget build(BuildContext context) {
     return Row (
@@ -68,7 +148,7 @@ class _TimeLineBase extends State<TimeLineBase> {
         //時間表示範囲
         SizedBox(
           width: _timeDrawSpace,
-          height: _oneHourHeight * 24 - (_horizontalLineThickness * 48),
+          height: _timeLineHeight,
           child:Container(
             color: Colors.red,
             child:Column(
@@ -83,6 +163,10 @@ class _TimeLineBase extends State<TimeLineBase> {
                       Text(
                         '$i:00',
                         textAlign: TextAlign.right,
+                        style: TextStyle(
+                          color: Colors.black, // テキストの色を黒に変更
+                          fontSize: (14/16) * _timeTextHeight,    // テキストのフォントサイズ
+                        ),
                       ),
                     ],
                   ),
@@ -91,30 +175,11 @@ class _TimeLineBase extends State<TimeLineBase> {
           )
         ),
         SizedBox(
-          width: widget.bodyWidth - _timeDrawSpace,
-          height: _oneHourHeight * 24 - (_horizontalLineThickness * 48),
-          child:Container(
-            color: Colors.blue,
-            child:Column(
-              crossAxisAlignment: CrossAxisAlignment.start, // 左揃えに設定
-              children: [
-                for (var i = 1; i <= 48; i++)
-                  Column(
-                    children: [
-                      //childrenの中身のheightの値の合計が_oneHourHeightになる
-                      SizedBox(
-                        width: widget.bodyWidth - _timeDrawSpace,
-                        height: (_oneHourHeight/2)-(_horizontalLineThickness),
-                        child:Container(
-                          color: Colors.green,
-                        )
-                      ),
-                      _drawHorizontalLine(),
-                    ],
-                ),
-              ],
-            )
-          )
+          width: _timeLineActionDrawAreaMargin/2,
+          height: _timeLineHeight,
+        ),
+        Stack(
+          children:_actionWidgets
         )
       ],
     );
@@ -128,29 +193,274 @@ class _TimeLineBase extends State<TimeLineBase> {
       endIndent: 0.0, // 線の終了位置からのオフセットを指定 (省略可能)
     );
   }
-}
-
-class ActionWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Opacity(//
-      opacity: 0.5,
+  
+  Widget _drawHorizontalLineConstructure() {
+    return SizedBox(
+      width: _timeLineActionDrawAreaWidth,
+      height: _timeLineHeight,
       child:Container(
         color: Colors.blue,
-        height: 100.0,
-        width: 110.0,
-        child:Opacity(
-          opacity: 0.3,
-          child: Align(//※1のalighnmentを使えるようにする
-            alignment: Alignment.topRight, //※1
-            child: Container(
-              height: 100.0,
-              width: 100.0,
-              color: Colors.blue[50],
+        child:Column(
+          crossAxisAlignment: CrossAxisAlignment.start, // 左揃えに設定
+          children: [
+            for (var i = 1; i <= 48; i++)
+              Column(
+                children: [
+                  //childrenの中身のheightの値の合計が_oneHourHeightになる
+                  SizedBox(
+                    width: widget.bodyWidth - _timeDrawSpace,
+                    height: (_oneHourHeight/2)-(_horizontalLineThickness),
+                    child:Container(
+                      color: Colors.green,
+                    )
+                  ),
+                  _drawHorizontalLine(),
+                ],
             ),
-          ),
+          ],
         )
+      )
+    );
+  }
+
+  Widget _createTimeLineActions(Map<String, dynamic> _actionData, List<List<Map<String,int>>> _clearActionArea) {
+    String _startTime = _actionData["startTime"];
+    String _endTime = _actionData["endTime"];
+    Color _color = _actionData["color"];
+    String _title = _actionData["title"];
+    
+
+    return ActionWidget(startTime: _startTime,
+                        endTime: _endTime ,
+                        timeLineHeight: _timeLineHeight,
+                        bodyWidth: _timeLineActionDrawAreaWidth,
+                        color: _color,
+                        title: _title,
+                        clearActionArea:_clearActionArea
+                       );
+  }
+}
+
+class ActionWidget extends StatefulWidget {
+  final double timeLineHeight;
+  final double bodyWidth;
+  final String startTime;
+  final String endTime;
+  final Color color;
+  final double leftVerticalLineLength = 10;
+  final String title;
+  final List<List<Map<String,int>>> clearActionArea;
+
+  ActionWidget({required this.startTime,
+                required this.endTime,
+                required this.timeLineHeight,
+                required this.bodyWidth,
+                required this.color,
+                required this.title,
+                required this.clearActionArea
+                });
+
+  @override
+  _ActionWidget createState() => _ActionWidget();
+}
+
+class _ActionWidget extends State<ActionWidget> {
+  late double halfAnHourHeight = widget.timeLineHeight / 48; //タイムライン画面の合計の高さを48等分した高さをタイトルテキストの高さとする
+  final double titleFontSize = 16;
+  final double tagFontSize = 14;
+  final double tagMargin = 5.0;
+  final double tagPadding = 5.0;
+  final double tagBorderRadius = 20;
+  late double titleHeight = halfAnHourHeight;
+  late double tagHeight = halfAnHourHeight - 5;
+  late int actionTotalTime = calcTotalTime(widget.startTime,widget.endTime);
+  late double widgetHeight = calcHeight(widget.startTime,widget.endTime);
+  late double widgetLeft = calcLeft(widget.clearActionArea,widget.startTime,widget.endTime);
+
+  @override
+
+  Widget build(BuildContext context) {
+    return Positioned(
+      left: widgetLeft, // 左からのオフセット
+      top: calcTop(widget.startTime), // 上からのオフセット
+      child:Opacity(//
+        opacity: 1,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              color: widget.color,
+              height: widgetHeight,
+              width: widget.leftVerticalLineLength,
+            ),
+            Stack(
+              children: [
+                Opacity(
+                  opacity: 0.3,
+                  child: Align(//※1のalighnmentを使えるようにする
+                    alignment: Alignment.topRight, //※1
+                    child: Container(
+                      height: widgetHeight,
+                      width: widget.bodyWidth - widget.leftVerticalLineLength,
+                      color: widget.color,
+                    ),
+                  ),
+                ),
+                drawTimeLineActionContents(actionTotalTime),
+              ],
+            )
+          ],
+        )
+      )
+    );
+  }
+
+  Widget timeLineActionWidgetPartsTitle() {
+    return Container(
+      height: titleHeight,
+      child:Text(//タイトルテキスト表示
+        widget.title,
+        style: TextStyle(
+          color: Colors.black, // テキストの色を赤に変更
+          fontSize: titleFontSize,    // テキストのフォントサイズ
+          fontWeight: FontWeight.bold, // テキストのフォントの太さ
+        ),
       ),
+    );
+  }
+
+  Widget timeLineActionWidgetPartsTag() {
+    return Container(
+      height: tagHeight,
+      margin: EdgeInsets.only(
+        left: tagMargin,
+        right: tagMargin,
+      ),
+      padding: EdgeInsets.only(
+        left:tagPadding,
+        right:tagPadding
+      ), // テキストとコンテナの間にスペースを設定
+      decoration: BoxDecoration(
+        color: widget.color, // テキストの背景色を設定
+        borderRadius: BorderRadius.circular(tagBorderRadius),
+      ),
+      child: Align(
+        alignment: Alignment.center, // テキストを中央に配置
+        child: Text(
+          '#タグ',
+          style: TextStyle(
+            color: Colors.black, // テキストの色を設定
+            fontSize: tagFontSize,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      )
+    );
+  }
+
+  //ウィジェットの縦幅に応じてタイトルとタグの適切な配置を返す
+  //アクションの時間が60分未満の場合はタイトルとタグを横に並べる
+  Widget drawTimeLineActionContents(int _totalTime) {
+    if (_totalTime < 60){
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start, // 子ウィジェットを左揃えに設定
+        children: [
+          timeLineActionWidgetPartsTitle(),
+          timeLineActionWidgetPartsTag(),
+        ],
+      );
+    }else{
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start, // 子ウィジェットを左揃えに設定
+        children: [
+          timeLineActionWidgetPartsTitle(),
+          timeLineActionWidgetPartsTag(),
+        ],
+      );
+    }
+  }
+
+  //タスクの開始時刻を[XX:YY]の形で受け取る
+  double calcTop(String startTime) {
+    final int _oneDayMinutes = 1440;
+    List<String> startTimeList = startTime.split(":");
+    int startHour = int.parse(startTimeList[0]) * 60;
+    int startMinutes = int.parse(startTimeList[1]) + startHour;
+
+    double widgetTop = (widget.timeLineHeight/_oneDayMinutes) * startMinutes;
+
+    return widgetTop;
+  }
+
+  //タイムラインアクションウィジェットの縦幅を計算する
+  double calcHeight(String startTime,String EndTime){
+    final int _oneDayMinutes = 1440;
+    List<String> startTimeList = startTime.split(":");
+    List<String> endTimeList = widget.endTime.split(":");
+    int startTimeConvMinutes = (int.parse(startTimeList[0]) * 60) + int.parse(startTimeList[1]);
+    int endTimeConvMinutes = (int.parse(endTimeList[0]) * 60) + int.parse(endTimeList[1]);
+    int totalTime = endTimeConvMinutes - startTimeConvMinutes;
+    
+    if (totalTime < 30) {
+      totalTime = 30;
+    }
+  
+    double widgetHeight = (widget.timeLineHeight/_oneDayMinutes) * totalTime;
+
+    return widgetHeight;
+  }
+
+  double calcLeft(List<List<Map<String,int>>> clearArea,_startTime,_endTime) {
+    List<String> startTimeList = _startTime.split(":");
+    int startHour = int.parse(startTimeList[0]) * 60;
+    int startTimeMinutes = int.parse(startTimeList[1]) + startHour; //開始時刻を分のみで表した
+    List<String> endTimeList = _endTime.split(":");
+    int endHour = int.parse(endTimeList[0]) * 60;
+    int endTimeMinutes = int.parse(endTimeList[1]) + endHour;//終了時刻を分のみで表した
+    double _left = clearArea.length*10;
+    for (int i = 0; i < clearArea.length; i++){
+      for (int j = 0; j < clearArea[i].length; j++){
+        if (clearArea[i][j]["startTime"]! - 1 <= startTimeMinutes){
+          if (clearArea[i][j]["endTime"]! >= endTimeMinutes){
+            _left = (i) * 10;
+            return _left;
+          }
+        }
+      }
+    }
+    return _left;
+  }
+
+  int calcTotalTime(String _startTime,String _endTime) {
+    List<String> startTimeList = _startTime.split(":");
+    List<String> endTimeList = _endTime.split(":");
+    int startTimeConvMinutes = (int.parse(startTimeList[0]) * 60) + int.parse(startTimeList[1]);
+    int endTimeConvMinutes = (int.parse(endTimeList[0]) * 60) + int.parse(endTimeList[1]);
+    int _totalTime = endTimeConvMinutes - startTimeConvMinutes;
+    
+    return _totalTime;
+  }
+}
+
+
+
+class WidgetAddButton extends StatefulWidget {
+  @override
+  _WidgetAddButtonState createState() => _WidgetAddButtonState();
+}
+
+class _WidgetAddButtonState extends State<WidgetAddButton> {
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        // ボタンが押されたときの処理を記述
+        setState(() {
+          print("tap");
+        });
+      },
+      child: Icon(Icons.add),
+      backgroundColor: Colors.blue, // FABの背景色を変更
     );
   }
 }
