@@ -111,7 +111,6 @@ class _TimelineScreenWidgetState extends State<TimelineScreenWidget> {
 
   // カレンダーを表示するためのウィジェット
   Widget buildTableCalendar() {
-
     return Container(
       color: Colors.white,
       child: TableCalendar(

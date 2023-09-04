@@ -25,6 +25,7 @@ class _TimeLineBase extends State<TimeLineBase> {
                                               {"startTime": "5:00","endTime": "6:00" ,"color": Colors.purple,"title": "BGM聞く"},
                                               {"startTime": "15:00","endTime": "18:00" ,"color": Colors.purple,"title": "ブルアカやる"},
                                               {"startTime": "16:00","endTime": "18:00" ,"color": Colors.purple,"title": "勉強やる"},
+                                              {"startTime": "17:00","endTime": "17:30" ,"color": Colors.white,"title": "test"},
                                               ];
   List<Widget> _actionWidgets = [];
   //占領されていないアクション表示のエリアを格納
@@ -150,7 +151,6 @@ class _TimeLineBase extends State<TimeLineBase> {
   ) {
     // 結果のリスト
     List<List<Map<String, int>>> updatedClearActionArea = [];
-    
     
     //受け取った配列の-1が2つ以上の場合はアクションの表示領域が確定されない可能性があるから、そうならないように追加しておく
     if(clearActionArea[clearActionArea.length -1 ].length > 1){

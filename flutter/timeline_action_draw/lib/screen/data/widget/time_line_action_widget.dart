@@ -35,7 +35,7 @@ class _ActionWidget extends State<ActionWidget> {
   late double tagHeight = halfAnHourHeight - 5;
   late int actionTotalTime = calcTotalTime(widget.startTime,widget.endTime);
   late double widgetHeight = calcHeight(widget.startTime,widget.endTime);
-  late double widgetLeft = calcLeft(widget.clearActionArea,widget.startTime,widget.endTime);
+  late double widgetLeft = calcLeft(widget.clearActionArea,widget.startTime,widget.endTime,widget.bodyWidth);
 
   @override
 
@@ -176,7 +176,7 @@ class _ActionWidget extends State<ActionWidget> {
   }
 
   //アクションの表示状態から、アクションのLeftの位置を計算する
-  double calcLeft(List<List<Map<String,int>>> clearArea,_startTime,_endTime) {
+  double calcLeft(List<List<Map<String,int>>> clearArea,_startTime,_endTime,_timeLineWidth) {
     List<String> startTimeList = _startTime.split(":");
     int startHour = int.parse(startTimeList[0]) * 60;
     int startTimeMinutes = int.parse(startTimeList[1]) + startHour; //開始時刻を分のみで表した
@@ -188,7 +188,8 @@ class _ActionWidget extends State<ActionWidget> {
       for (int j = 0; j < clearArea[i].length; j++){
         if (clearArea[i][j]["startTime"]! - 1 <= startTimeMinutes){
           if (clearArea[i][j]["endTime"]! >= endTimeMinutes){
-            _left = (i) * 10;
+            //_left = (i) * 10;
+            _left = _timeLineWidth - (_timeLineWidth / (i+1)); //半分
             return _left;
           }
         }
