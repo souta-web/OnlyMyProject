@@ -7,10 +7,10 @@ import '/utils/register_action_table.dart';
 
 // トグルボタンの状態によってオブジェクトを表示する
 class DrawChatObjects {
+  final bool _isTodo; // _isTodoを格納するフィールドを追加
+
   // コンストラクタを追加して_isTodoを受け取れるようにする
   DrawChatObjects(this._isTodo);
-
-  final bool _isTodo; // _isTodoを格納するフィールドを追加
 
   // チャットオブジェクトを表示する
   void drawChatObjects(String chatText, List<dynamic> messages,
@@ -31,17 +31,23 @@ class DrawChatObjects {
   // 送信ボタンが押されたときに呼び出される
   sendButtonPressed(String chatText, List<dynamic> messages,
       TextEditingController controller) {
-    // チャットをデータベースに登録する
-    RegisterChatTable registerChatTable = RegisterChatTable(
-      chatSender: 'John',
-      chatMessage: chatText,
-    );
-    registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
-    print("チャットが送信されました");
 
     if (controller.text.isNotEmpty) {
+      // チャットをデータベースに登録する
+      RegisterChatTable registerChatTable = RegisterChatTable(
+        chatSender: 'John',
+        chatMessage: chatText,
+      );
+      registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
+      print("チャットが送信されました");
+
       // トグルボタンがオンの時アクションを登録する
       if (_isTodo) {
+        RegisterActionTable registerActionTable = RegisterActionTable(
+          actionName: 'ゲーム',
+          actionStart: DateTime.now().toString(),
+        );
+        registerActionTable.registerActionTableFunc();
         // アクションを作成する
         ChatTodo actionMessage = ChatTodo(
             title: chatText,
@@ -50,14 +56,9 @@ class DrawChatObjects {
             startTime: DateTime.now().toString(),
             actionFinished: false);
 
-        controller.clear();
         messages.add(actionMessage);
+        controller.clear();
         print("アクションが登録されました");
-        RegisterActionTable registerActionTable = RegisterActionTable(
-          actionName: 'ゲーム',
-          actionStart: DateTime.now().toString(),
-        );
-        registerActionTable.registerActionTableFunc();
       }
     }
     return drawChatObjects(chatText, messages, controller);

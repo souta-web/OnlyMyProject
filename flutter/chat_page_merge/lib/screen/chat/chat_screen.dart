@@ -19,11 +19,14 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   // チャットメッセージのリスト
   final List<dynamic> _messages = [];
 
-  // DrawChatObjectsクラスのインスタンスをコンストラクタで初期化
-  final DrawChatObjects chatObjects;
+  // コンストラクタで_isTodoを初期化して、DrawChatObjectsインスタンス生成
+  _ChatScreenWidget() {
+    chatObjects = DrawChatObjects(_isTodo);
+  }
 
-  // コンストラクタ内で_isTodoを初期化
-  _ChatScreenWidget() : chatObjects = DrawChatObjects(false);
+  // DrawChatObjectsをlate修飾子で宣言
+  late DrawChatObjects chatObjects;
+
   // @override
   // void initState() {
   //   super.initState();
@@ -148,6 +151,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                                       _textEditingController.text,
                                       _messages,
                                       _textEditingController));
+                                  setState(() {});
                                 },
                               ),
                             ),
