@@ -39,7 +39,7 @@ class DrawChatObjects {
     registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
     print("チャットが送信されました");
 
-    if (controller.text.isEmpty) {
+    if (controller.text.isNotEmpty) {
       // トグルボタンがオンの時アクションを登録する
       if (_isTodo) {
         // アクションを作成する
