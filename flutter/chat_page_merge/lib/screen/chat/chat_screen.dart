@@ -19,13 +19,15 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   // チャットメッセージのリスト
   final List<dynamic> _messages = [];
 
+  // DrawChatObjectsをlate修飾子で宣言
+  late DrawChatObjects chatObjects;
+
   // コンストラクタで_isTodoを初期化して、DrawChatObjectsインスタンス生成
   _ChatScreenWidget() {
     chatObjects = DrawChatObjects(_isTodo);
   }
 
-  // DrawChatObjectsをlate修飾子で宣言
-  late DrawChatObjects chatObjects;
+  
 
   // @override
   // void initState() {

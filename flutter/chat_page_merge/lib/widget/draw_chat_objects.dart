@@ -31,7 +31,6 @@ class DrawChatObjects {
   // 送信ボタンが押されたときに呼び出される
   sendButtonPressed(String chatText, List<dynamic> messages,
       TextEditingController controller) {
-
     if (controller.text.isNotEmpty) {
       // チャットをデータベースに登録する
       RegisterChatTable registerChatTable = RegisterChatTable(
@@ -58,7 +57,8 @@ class DrawChatObjects {
 
         messages.add(actionMessage);
         controller.clear();
-        print("アクションが登録されました");
+        print("アクションが登録されました: ");
+        print(messages);
       }
     }
     return drawChatObjects(chatText, messages, controller);
