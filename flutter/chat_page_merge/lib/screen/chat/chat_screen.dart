@@ -1,10 +1,8 @@
-import '/screen/chat/chat_history_restorer.dart';
+import '/widget/draw_chat_objects.dart';
 import 'package:flutter/material.dart';
 import '/screen/chat/func/register_action.dart';
 import '/utils/media_controller.dart';
 import 'dart:typed_data';
-import '/utils/register_chat_table.dart';
-import '/utils/register_action_table.dart';
 
 class ChatScreenWidget extends StatefulWidget {
   @override
@@ -16,11 +14,16 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   final TextEditingController _textEditingController = TextEditingController();
   //switchボタンの状態管理変数
   bool _isTodo = false; //テキスト入力の左のやつ
-  late Uint8List? _mediaData = null;//メディアを格納する
+  late Uint8List? _mediaData = null; //メディアを格納する
 
   // チャットメッセージのリスト
   final List<dynamic> _messages = [];
 
+  // DrawChatObjectsクラスのインスタンスをコンストラクタで初期化
+  final DrawChatObjects chatObjects;
+
+  // コンストラクタ内で_isTodoを初期化
+  _ChatScreenWidget() : chatObjects = DrawChatObjects(false);
   // @override
   // void initState() {
   //   super.initState();
@@ -141,19 +144,10 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                                 icon: Icon(Icons.send),
                                 color: Colors.white,
                                 onPressed: () {
-                                  //↓辻作成の登録プログラム動作確認用。カトゥーンのほうでも動作確認出来たら消してください。
-                                  RegisterChatTable registerChatTable = RegisterChatTable( //インスタンス化、引数渡し
-                                    chatSender: 'John',
-                                    chatMessage: 'Hello!',
-                                  );
-                                  //↓加藤作成のアクション登録プログラムの動作確認用
-                                  RegisterActionTable registerActionTable = RegisterActionTable(
-                                    actionName: 'ゲーム',
-                                    actionStart: '10:00',
-                                  );
-                                  registerActionTable.registerActionTableFunc();
-
-                                  //registerChatTable.registerChatTableFunc(); //実際にデータベース登録
+                                  _messages.add(chatObjects.sendButtonPressed(
+                                      _textEditingController.text,
+                                      _messages,
+                                      _textEditingController));
                                 },
                               ),
                             ),
