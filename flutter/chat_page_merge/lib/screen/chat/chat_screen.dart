@@ -19,14 +19,8 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   // チャットメッセージのリスト
   final List<dynamic> _messages = [];
 
-  // DrawChatObjectsをlate修飾子で宣言
-  late DrawChatObjects chatObjects;
-
-  // コンストラクタで_isTodoを初期化して、DrawChatObjectsインスタンス生成
-  _ChatScreenWidget() {
-    chatObjects = DrawChatObjects(_isTodo);
-  }
-
+  // DrawChatObjectsをfinal修飾子で宣言
+  final DrawChatObjects chatObjects = DrawChatObjects();
   
 
   // @override
@@ -151,6 +145,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                                 onPressed: () {
                                   _messages.add(chatObjects.sendButtonPressed(
                                       _textEditingController.text,
+                                      _isTodo,
                                       _messages,
                                       _textEditingController));
                                   setState(() {});
