@@ -1,4 +1,3 @@
-import 'package:chat_page_merge/utils/database_helper.dart';
 import 'package:flutter/material.dart';
 
 import '/widget/chat_fukidashi.dart';
@@ -9,39 +8,35 @@ import '/utils/register_action_table.dart';
 // トグルボタンの状態によってオブジェクトを表示する
 class DrawChatObjects {
   // チャットオブジェクトを表示する
-  void drawChatObjects(String chatText, List<dynamic> messages,
+  void drawChatObjects(String chatText, bool isTodo, List<dynamic> messages,
       TextEditingController controller) {
-    // テキストフィールドが空でないかチェック
-    if (controller.text.isNotEmpty) {
-      ChatMessage userMessage =
-          ChatMessage(text: chatText, isSentByUser: true); // 応答側のメッセージ
+    ChatMessage userMessage =
+        ChatMessage(text: chatText, isSentByUser: true); // 応答側のメッセージ
 
-      // テキスト入力をクリアする
+    // テキスト入力をクリアする
+    controller.clear();
+
+    // チャットメッセージをリストの先頭に追加
+    messages.add(userMessage);
+
+    if (isTodo) {
+      // アクションを作成する
+      ChatTodo actionMessage = ChatTodo(
+          title: chatText,
+          isSentByUser: false,
+          mainTag: "#趣味",
+          startTime: DateTime.now().toString(),
+          actionFinished: false);
+
+      messages.add(actionMessage);
       controller.clear();
-
-      // チャットメッセージをリストの先頭に追加
-      messages.add(userMessage);
     }
-  }
-
-  // 連続してチャットが送信できるように新しいメッセージを読み込むメソッド
-  void _loadChatMessages(List<dynamic> messages) async {
-    final dbHelper = DatabaseHelper.instance;
-    final chats = await dbHelper.queryAllRows_chat_table();
-
-    messages.clear();
-    chats.forEach((chat) {
-      messages.add(ChatMessage(
-        text: chat[DatabaseHelper.columnChatMessage],
-        isSentByUser: chat[DatabaseHelper.columnChatSender] == 0,
-      ));
-    });
   }
 
   // 送信ボタンが押されたときに呼び出される
   sendButtonPressed(String chatText, bool isTodo, List<dynamic> messages,
       TextEditingController controller) {
-    if (controller.text.isNotEmpty) {
+    if (chatText.isNotEmpty) {
       // チャットをデータベースに登録する
       RegisterChatTable registerChatTable = RegisterChatTable(
         chatSender: 'John',
@@ -57,20 +52,8 @@ class DrawChatObjects {
           actionStart: DateTime.now().toString(),
         );
         registerActionTable.registerActionTableFunc();
-        // アクションを作成する
-        ChatTodo actionMessage = ChatTodo(
-            title: chatText,
-            isSentByUser: false,
-            mainTag: "#趣味",
-            startTime: DateTime.now().toString(),
-            actionFinished: false);
-
-        messages.add(actionMessage);
-        controller.clear();
-        print("アクションが登録されました: ");
-        print(messages);
       }
+      return drawChatObjects(chatText, isTodo, messages, controller);
     }
-    return drawChatObjects(chatText, messages, controller);
   }
 }
