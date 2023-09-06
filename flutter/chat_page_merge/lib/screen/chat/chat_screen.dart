@@ -21,7 +21,6 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
 
   // DrawChatObjectsをfinal修飾子で宣言
   final DrawChatObjects chatObjects = DrawChatObjects();
-  
 
   // @override
   // void initState() {
@@ -147,7 +146,9 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                                       _textEditingController.text,
                                       _isTodo,
                                       _messages,
-                                      _textEditingController));
+                                      _textEditingController
+                                      ));
+                                  
                                   setState(() {});
                                 },
                               ),

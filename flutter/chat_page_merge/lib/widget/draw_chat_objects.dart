@@ -13,9 +13,6 @@ class DrawChatObjects {
     ChatMessage userMessage =
         ChatMessage(text: chatText, isSentByUser: true); // 応答側のメッセージ
 
-    // テキスト入力をクリアする
-    controller.clear();
-
     // チャットメッセージをリストの先頭に追加
     messages.add(userMessage);
 
@@ -28,9 +25,10 @@ class DrawChatObjects {
           startTime: DateTime.now().toString(),
           actionFinished: false);
 
+      // アクションメッセージをリストに追加
       messages.add(actionMessage);
-      controller.clear();
     }
+    controller.clear();
   }
 
   // 送信ボタンが押されたときに呼び出される
@@ -39,7 +37,7 @@ class DrawChatObjects {
     if (chatText.isNotEmpty) {
       // チャットをデータベースに登録する
       RegisterChatTable registerChatTable = RegisterChatTable(
-        chatSender: 'John',
+        chatSender: '0',
         chatMessage: chatText,
       );
       registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
@@ -48,11 +46,13 @@ class DrawChatObjects {
       // トグルボタンがオンの時アクションを登録する
       if (isTodo) {
         RegisterActionTable registerActionTable = RegisterActionTable(
-          actionName: 'ゲーム',
+          actionName: chatText,
           actionStart: DateTime.now().toString(),
         );
         registerActionTable.registerActionTableFunc();
       }
+      //messages.add(chatText);
+      // 吹き出し及びアクションの表示
       return drawChatObjects(chatText, isTodo, messages, controller);
     }
   }
