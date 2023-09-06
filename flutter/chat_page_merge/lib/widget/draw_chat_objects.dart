@@ -32,7 +32,6 @@ class DrawChatObjects {
     }
     //↓チャットオブジェクトを返す関数の本筋と直接関係のない処理は書き込まないほうが良い。
     //関数は基本的に1つの機能のみを持たせる。今回の場合はチャットオブジェクトを作ること＆コントローラーのクリアの2つの機能が含まれることになるから良くない。
-    //controller.clear();
   }
 
   // 送信ボタンが押されたときに呼び出される
@@ -57,10 +56,8 @@ class DrawChatObjects {
         );
         registerActionTable.registerActionTableFunc();
       }
-      //messages.add(chatText);
-      // 吹き出し及びアクションの表示
-      
     }
+    // 吹き出し及びアクションの表示
     return drawChatObjects(chatText, isTodo ,isUser);
   }
 }
