@@ -142,14 +142,15 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                                 icon: Icon(Icons.send),
                                 color: Colors.white,
                                 onPressed: () {
-                                  _messages.add(chatObjects.sendButtonPressed(
-                                      _textEditingController.text,
-                                      _isTodo,
-                                      _messages,
-                                      _textEditingController
+                                  setState(() {
+                                    //表示させたい内容はreturnで帰ってきて_messagesに渡されるので、引数にする必要はない。
+                                    _messages.add(chatObjects.sendButtonPressed(
+                                        _textEditingController.text,
+                                        _isTodo,
+                                        _textEditingController,
+                                        true
                                       ));
-                                  
-                                  setState(() {});
+                                  });
                                 },
                               ),
                             ),

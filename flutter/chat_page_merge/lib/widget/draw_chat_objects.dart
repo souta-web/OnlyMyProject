@@ -8,32 +8,38 @@ import '/utils/register_action_table.dart';
 // トグルボタンの状態によってオブジェクトを表示する
 class DrawChatObjects {
   // チャットオブジェクトを表示する
-  void drawChatObjects(String chatText, bool isTodo, List<dynamic> messages,
-      TextEditingController controller) {
-    ChatMessage userMessage =
-        ChatMessage(text: chatText, isSentByUser: true); // 応答側のメッセージ
-
-    // チャットメッセージをリストの先頭に追加
-    messages.add(userMessage);
-
+  //受け取れる引数増やせば、アプリ再起動時の履歴復元にも使えるので
+  Widget drawChatObjects(String chatText, bool isTodo, bool isUser) {
     if (isTodo) {
       // アクションを作成する
-      ChatTodo actionMessage = ChatTodo(
+      ChatTodo message = ChatTodo(
           title: chatText,
           isSentByUser: false,
           mainTag: "#趣味",
-          startTime: DateTime.now().toString(),
+          startTime: DateTime.now().toString(), //チャットオブジェクトを表示することが目的の関数なので、日時を取得してそれを表示させるのはふさわしくない。引数で受け取るようにする。(辻)
           actionFinished: false);
+      return message;
 
-      // アクションメッセージをリストに追加
-      messages.add(actionMessage);
+    }else{
+      if (isUser) {
+        ChatMessage message = ChatMessage(text: chatText, isSentByUser: isUser); // 応答側のメッセージ
+        return message;
+      }else{
+        ChatMessage message = ChatMessage(text: chatText, isSentByUser: isUser); // 返答側のメッセージ
+        return message;
+      }
+
     }
-    controller.clear();
+    //↓チャットオブジェクトを返す関数の本筋と直接関係のない処理は書き込まないほうが良い。
+    //関数は基本的に1つの機能のみを持たせる。今回の場合はチャットオブジェクトを作ること＆コントローラーのクリアの2つの機能が含まれることになるから良くない。
+    //controller.clear();
   }
 
   // 送信ボタンが押されたときに呼び出される
-  sendButtonPressed(String chatText, bool isTodo, List<dynamic> messages,
-      TextEditingController controller) {
+  //引数にisUser追加(辻)
+  sendButtonPressed(String chatText, bool isTodo, 
+      TextEditingController controller, bool isUser) {
+    controller.clear();
     if (chatText.isNotEmpty) {
       // チャットをデータベースに登録する
       RegisterChatTable registerChatTable = RegisterChatTable(
@@ -53,7 +59,8 @@ class DrawChatObjects {
       }
       //messages.add(chatText);
       // 吹き出し及びアクションの表示
-      return drawChatObjects(chatText, isTodo, messages, controller);
+      
     }
+    return drawChatObjects(chatText, isTodo ,isUser);
   }
 }
