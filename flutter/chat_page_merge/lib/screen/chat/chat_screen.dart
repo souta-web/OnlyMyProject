@@ -22,17 +22,6 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   // DrawChatObjectsをfinal修飾子で宣言
   final DrawChatObjects chatObjects = DrawChatObjects();
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _restoreChatHistory();  // アプリ起動時にチャット履歴を復元
-  // }
-
-  // Future<void> _restoreChatHistory() async {
-  //   await ChatHistoryRestorer.restoreChatHistory(_messages);
-  //   setState(() {});
-  // }
-
   //ほかのファイルの非同期処理関数をbuild内で呼び出して戻り値受け取れないからそれを可能にするための記述
   Future<Uint8List?> _getMedia() async {
     return await MediaController.getMedia();
