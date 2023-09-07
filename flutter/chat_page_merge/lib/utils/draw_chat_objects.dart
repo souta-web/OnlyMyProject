@@ -9,7 +9,7 @@ import 'register_action_table.dart';
 class DrawChatObjects {
   // チャットオブジェクトを表示する
   //受け取れる引数増やせば、アプリ再起動時の履歴復元にも使えるので
-  Widget drawChatObjects({required bool isTodo, required String chatText, required bool isUser,}) {
+  Widget drawChatObjects({required bool isTodo, required String chatText, required bool isUser, required String mainTag, required String startTime,}) {
     
     Widget chatWidget; // Widgetを格納する変数
 
@@ -18,8 +18,8 @@ class DrawChatObjects {
       ChatTodo message = ChatTodo(
           title: chatText,
           isSentByUser: isUser,
-          mainTag: "#趣味",
-          startTime: DateTime.now().toString(), //チャットオブジェクトを表示することが目的の関数なので、日時を取得してそれを表示させるのはふさわしくない。引数で受け取るようにする。(辻)
+          mainTag: mainTag,
+          startTime: startTime, //チャットオブジェクトを表示することが目的の関数なので、日時を取得してそれを表示させるのはふさわしくない。引数で受け取るようにする。(辻)
           actionFinished: false);
       chatWidget = message; // chatWidgetにメッセージを代入
 
@@ -65,6 +65,6 @@ class DrawChatObjects {
     }
     // 吹き出し及びアクションの表示
     // 吹き出しクラスの引数を受け取れるように変更
-    return drawChatObjects(isTodo: isTodo, chatText: chatText, isUser: isUser,);
+    return drawChatObjects(isTodo: isTodo, chatText: chatText, isUser: isUser, mainTag: '#趣味', startTime: DateTime.now().toString(),);
   }
 }
