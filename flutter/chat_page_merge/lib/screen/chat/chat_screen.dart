@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '/utils/media_controller.dart';
 import 'dart:typed_data';
 import '/utils/register_chat_table.dart';
+import '/utils/register_action_table.dart';
 
 class ChatScreenWidget extends StatefulWidget {
   @override
@@ -132,6 +133,13 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                                   );
 
                                   registerChatTable.registerChatTableFunc(); //実際にデータベース登録
+
+                                  RegisterActionTable registerActionTable = RegisterActionTable( //インスタンス化、引数渡し
+                                    actionName: 'Emily',
+                                    actionStart: 10,
+                                  );
+
+                                  registerActionTable.registerActionTableFunc();
                                 },
                               ),
                             ),

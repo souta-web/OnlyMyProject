@@ -12,7 +12,8 @@ class ChatFukidashi extends StatelessWidget {
 //メッセージ送信吹き出し
 class ChatMessageSend extends StatelessWidget {
   final String send;
-  ChatMessageSend({required this.send});
+  final bool isUser;
+  ChatMessageSend({required this.send, required this.isUser});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,8 @@ class ChatMessageSend extends StatelessWidget {
                 topLeft: Radius.circular(10),
                 bottomLeft: Radius.circular(10),
               ),
-              color: Color.fromARGB(255, 255, 149, 21),
+              color: isUser ? 
+              Color.fromARGB(255, 255, 161, 77):Color.fromARGB(255, 229, 229, 229)
             ),
             child: Padding(
               //文字と吹き出しの間の余白
@@ -47,7 +49,7 @@ class ChatMessageSend extends StatelessWidget {
     );
   }
 }
-
+/*
 //メッセージ返信吹き出し
 class ChatMessageReply extends StatelessWidget {
   final String reply;
@@ -70,7 +72,7 @@ class ChatMessageReply extends StatelessWidget {
                 topLeft: Radius.circular(10),
                 bottomRight: Radius.circular(10),
               ),
-              color: Color.fromARGB(255, 189, 187, 184),
+              color: Color.fromARGB(255, 229, 229, 229),
             ),
             child: Padding(
               //文字と吹き出しの間の余白
@@ -85,4 +87,4 @@ class ChatMessageReply extends StatelessWidget {
       ),
     );
   }
-}
+}*/

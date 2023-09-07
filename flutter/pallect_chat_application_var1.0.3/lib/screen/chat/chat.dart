@@ -53,13 +53,15 @@ class ChatScreenWidget extends StatelessWidget {
             }
           ),*/
 
-          ChatMessageSend(send: '行動１を開始'),
+          /*ChatMessageSend(send: '行動１を開始'),
           ChatMessageReply(reply: '行動１を開始しました。頑張ってください！'),
           ChatTodo(),
           ChatMessageSend(send: '行動２を開始'),
           ChatMessageReply(reply: '行動２を記録します。終了も教えてください。'),
           ChatMessageSend(send: '行動３を開始'),
-          ChatTodo(),
+          ChatTodo(),*/
+          ChatMessageSend(send: '行動１を開始', isUser: true),
+          ChatMessageSend(send: '行動１を開始しました。頑張ってください！', isUser: false),
 
           Container(
             color: Color.fromARGB(255, 103, 100, 100),
@@ -88,7 +90,7 @@ class ChatScreenWidget extends StatelessWidget {
                           margin: const EdgeInsets.symmetric(vertical: 5.0),
                           height: 40.0,
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 222, 216, 216),
+                            color: Color.fromARGB(255, 229, 229, 229),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: TextFormField(
