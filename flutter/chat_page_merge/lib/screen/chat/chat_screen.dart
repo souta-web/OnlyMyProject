@@ -1,6 +1,5 @@
 import '/utils/draw_chat_objects.dart';
 import 'package:flutter/material.dart';
-import '/screen/chat/func/register_action.dart';
 import '/utils/media_controller.dart';
 import 'dart:typed_data';
 
@@ -53,9 +52,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
             IconButton(
               icon: Icon(Icons.data_usage),
               onPressed: () async {
-                // データ確認用メソッドの呼び出し
-                //RegisterText.confirmData();
-                RegisterAction.confirmChatActionData();
+                
               },
             ),
           ],
