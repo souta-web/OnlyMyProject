@@ -42,9 +42,6 @@ class TimeLineBody extends StatelessWidget {
         return Stack(
           children:[
             Expanded(
-               child:TimeLineTopBar(topBarWidth:_bodyWidth,topBarHeight:_topBarHeight),
-            ),
-            Expanded(
               child:SingleChildScrollView(
                 child:Column(
                   children: [
@@ -54,6 +51,10 @@ class TimeLineBody extends StatelessWidget {
                 )
               )
             ),
+            Expanded(
+               child:TimeLineTopBar(topBarWidth:_bodyWidth,topBarHeight:_topBarHeight),
+            )
+           
           ]
         );
       },
