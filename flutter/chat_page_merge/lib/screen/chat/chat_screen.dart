@@ -1,4 +1,4 @@
-import '/widget/draw_chat_objects.dart';
+import '/utils/draw_chat_objects.dart';
 import 'package:flutter/material.dart';
 import '/screen/chat/func/register_action.dart';
 import '/utils/media_controller.dart';

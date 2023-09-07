@@ -1,6 +1,6 @@
 import 'database_helper.dart';
 
-//動作未チェック
+//動作確認済み
 
 class RegisterChatTable{
   final int? chatId; //idはデータ登録時に自動で割り当てられるため、引数で渡す必要は基本的にはない
