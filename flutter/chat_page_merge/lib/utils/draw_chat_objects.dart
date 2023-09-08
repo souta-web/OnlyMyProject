@@ -9,7 +9,7 @@ import 'register_action_table.dart';
 class DrawChatObjects {
   // チャットオブジェクトを表示する
   //受け取れる引数増やせば、アプリ再起動時の履歴復元にも使えるので
-  dynamic drawChatObjects({required bool isTodo,
+  dynamic createChatObjects({required bool isTodo,
                           required String chatText,
                           required bool isUser,
                           required String mainTag,
@@ -72,7 +72,7 @@ class DrawChatObjects {
 
     // 吹き出し及びアクションの表示
     // 吹き出しクラスの引数を受け取れるように変更
-    return drawChatObjects(isTodo: isTodo,
+    return createChatObjects(isTodo: isTodo,
                            chatText: chatText,
                            isUser: isUser,
                            mainTag: '#趣味',

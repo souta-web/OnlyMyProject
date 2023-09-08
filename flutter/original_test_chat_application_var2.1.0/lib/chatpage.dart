@@ -155,7 +155,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
     if (chat_table_message != null){ //チャットテーブルに１つ以上データが登録されていたらtrue
       for (final row in chat_table_message){ //chat_table_messageの要素数だけループする
-        final chat_table_message = row['chat_message'];
+        chat_table_message = row['chat_message'];
         final chat_table_todo = row['chat_todo'];
         setState(() {
           //ChatMessageクラスを呼び出すときにテキストと、送り主を引数で渡す
