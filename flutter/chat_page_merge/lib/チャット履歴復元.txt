@@ -9,3 +9,6 @@
 4.createChatObjectsに変数を渡す。(drawChatObjectsから名前変えました。)
 
 11日の週でやる予定だったのでゆっくり進めても大丈夫です。
+
+追記
+呼び出しはchat_screen.dartの_ChatScreenWidgetのinitstateで行います
