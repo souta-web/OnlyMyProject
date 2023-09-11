@@ -4,7 +4,7 @@ import '/widget/chat_fukidashi.dart';
 import '/widget/chat_todo.dart';
 import 'register_chat_table.dart';
 import 'register_action_table.dart';
-import 'time_formatter.dart';
+import 'text_formatter.dart';
 
 // トグルボタンの状態によってオブジェクトを表示する
 class DrawChatObjects {
@@ -48,7 +48,7 @@ class DrawChatObjects {
                             TextEditingController controller, 
                             bool isUser) {
     String sendTime = DateTime.now().toString().toString();//日付取得
-    TimeFormatter timeFormatter = TimeFormatter();
+    TextFormatter timeFormatter = TextFormatter();
     late String drawTime = timeFormatter.returnHourMinute(sendTime); //登録時間を表示用にする
 
     if (chatText.isEmpty) {

@@ -39,6 +39,7 @@ class DatabaseHelper {
   static final columnActionPlace = 'action_place'; //場所
   static final columnActionMainTag = 'action_main_tag'; //メインタグ
   static final columnActionSubTag = 'action_sub_tag'; //サブタグ
+  static final columnActionChatId = 'action_chat_id'; //チャットテーブルとアクションテーブル紐づけ用
 
   // タグテーブルのカラム
   static final columnTagId = 'tag_id'; // タグID
