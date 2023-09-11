@@ -12,7 +12,7 @@ class TimeLineBase extends StatefulWidget {
 
 class _TimeLineBase extends State<TimeLineBase> {
   final double _timeDrawSpace = 50; //時間を表示する欄の横幅
-  final double _oneHourHeight = 60*2; //これを変えたら1時間当たりの縦幅が変わる
+  final double _oneHourHeight = 60; //これを変えたら1時間当たりの縦幅が変わる
   final double _timeTextHeight = 16; //時間テキストの縦幅 変えるとおかしくなる
   final double _horizontalLineThickness = 1.5; //横線の縦幅
   final double _timeLineActionDrawAreaMargin = 30; //時間とアクション表示領域の余白＆表示領域左の余白
