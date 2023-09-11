@@ -37,24 +37,16 @@ class TimeLineBody extends StatelessWidget {
         // constraintsはbodyのサイズを表すBoxConstraintsです。
         final _bodyWidth = constraints.maxWidth; //bodyの横幅取得
         final _bodyHeight = constraints.maxHeight; //bodyの縦幅を取得
-        final double _topBarHeight = 340;//_bodyHeight/10;
+        final double _topBarHeight = 30;
         late double _timeLineHeight = _bodyHeight - _topBarHeight;
-        return Stack(
+        return Column(
           children:[
+            TimeLineTopBar(topBarWidth:_bodyWidth,topBarHeight:_topBarHeight),
             Expanded(
               child:SingleChildScrollView(
-                child:Column(
-                  children: [
-                    SizedBox(height:_topBarHeight),
-                    TimeLineBase(bodyWidth: _bodyWidth,bodyHeight: _timeLineHeight)
-                  ],
-                )
+                child:TimeLineBase(bodyWidth: _bodyWidth,bodyHeight: _timeLineHeight)
               )
-            ),
-            Expanded(
-               child:TimeLineTopBar(topBarWidth:_bodyWidth,topBarHeight:_topBarHeight),
             )
-           
           ]
         );
       },
@@ -77,44 +69,46 @@ class _TimeLineTopBar extends State<TimeLineTopBar> {
   DateTime _focusedDay = DateTime.now();// 現在の日付を初期値として設定
   DateTime? _selectedDay;
 
+  List<Widget> addedButtons = []; // 新しいボタンのリスト
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: widget.topBarWidth,
       height: widget.topBarHeight,
-      child: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.search),
-                    onPressed: () {
-                      print('Search button pressed!');
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.add),
-                    onPressed: () {
-                      print('Add button pressed!');
-                    },
-                  ),
-                ],
-              ),
-            ]
-          ),
-          // 呼び出すウィジェットを切り替え
-          showButtons ? buildTableCalendar() : buildSingleButton(),
-        ]
-      ),
-    );
+      child:Stack(
+      alignment: Alignment.topCenter,
+      children: [
+        Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: () {
+                    print('Search button pressed!');
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () {
+                    print('Add button pressed!');
+                  },
+                ),
+              ],
+            ),
+          ]
+        ),
+        // 呼び出すウィジェットを切り替え
+        showButtons ? buildTableCalendar() : buildSingleButton(),
+      ]
+    ));
   }
-
+  
   // ボタンを表示するためのウィジェット
   Widget buildSingleButton() {
+
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
@@ -135,31 +129,30 @@ class _TimeLineTopBar extends State<TimeLineTopBar> {
 
   // カレンダーを表示するためのウィジェット
   Widget buildTableCalendar() {
-    return Expanded(
-      child: Container(
-        color: Colors.amber,
-        child: TableCalendar(
-          firstDay: DateTime.utc(2023, 1, 1),
-          lastDay: DateTime.utc(2024, 12, 31),
-          selectedDayPredicate: (day) {
-            return isSameDay(_selectedDay, day);
-          },
-          onDaySelected: (selected, focused) {
-            if (!isSameDay(_selectedDay, selected)) {
-              setState(() {
-                _selectedDay = selected;
-                _focusedDay = focused;
+    return Container(
+      color: Colors.white,
+      child: TableCalendar(
+        firstDay: DateTime.utc(2023, 1, 1),
+        lastDay: DateTime.utc(2024, 12, 31),
+        selectedDayPredicate: (day) {
+          return isSameDay(_selectedDay, day);
+        },
+        onDaySelected: (selected, focused) {
+          if (!isSameDay(_selectedDay, selected)) {
+            setState(() {
+              _selectedDay = selected;
+              _focusedDay = focused;
 
-                selectedMonth = selected.month;
-              });
-            }
-            showButtons = false;
-          },
-          focusedDay: _focusedDay,
-        ),
+              selectedMonth = selected.month;
+            });
+          }
+          showButtons = false;
+        },
+        focusedDay: _focusedDay,
       ),
     );
   }
+
 }
 
 //右下のボタン作成

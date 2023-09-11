@@ -11,8 +11,8 @@ class TimeLineBase extends StatefulWidget {
 }
 
 class _TimeLineBase extends State<TimeLineBase> {
-  final double _timeDrawSpace = 50; //時間を表示する欄の横幅
-  final double _oneHourHeight = 60*2; //これを変えたら1時間当たりの縦幅が変わる
+  final double _timeDrawSpace = 50; //時間を表示する欄の幅
+  final double _oneHourHeight = 60; //これを変えたら1時間当たりの縦幅が変わる
   final double _timeTextHeight = 16; //時間テキストの縦幅 変えるとおかしくなる
   final double _horizontalLineThickness = 1.5; //横線の縦幅
   final double _timeLineActionDrawAreaMargin = 30; //時間とアクション表示領域の余白＆表示領域左の余白
@@ -52,7 +52,7 @@ class _TimeLineBase extends State<TimeLineBase> {
           width: _timeDrawSpace,
           height: _timeLineHeight,
           child:Container(
-            color: Colors.blue,
+            color: Colors.red,
             child:Column(
               children: [
                 for (var i = 1; i < 24; i++)
@@ -76,11 +76,10 @@ class _TimeLineBase extends State<TimeLineBase> {
             )
           )
         ),
-        //時間表示とタイムライン間の余白
-        //SizedBox(
-          //width: _timeLineActionDrawAreaMargin/2,
-          //height: _timeLineHeight,
-        //),
+        SizedBox(
+          width: _timeLineActionDrawAreaMargin/2,
+          height: _timeLineHeight,
+        ),
         Stack(
           children:_actionWidgets
         )

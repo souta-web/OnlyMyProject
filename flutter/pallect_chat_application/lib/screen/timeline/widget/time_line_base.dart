@@ -77,10 +77,10 @@ class _TimeLineBase extends State<TimeLineBase> {
           )
         ),
         //時間表示とタイムライン間の余白
-        //SizedBox(
-          //width: _timeLineActionDrawAreaMargin/2,
-          //height: _timeLineHeight,
-        //),
+        SizedBox(
+          width: _timeLineActionDrawAreaMargin/2,
+          height: _timeLineHeight,
+        ),
         Stack(
           children:_actionWidgets
         )
