@@ -1,13 +1,33 @@
 import 'database_helper.dart';
 
-//動作未チェック
-
 class RegisterActionTable{
+  final int? actionId;
   final String? actionName;
   final int? actionStart;
+  final int? actionEnd;
+  final int? actionDuration; //総時間
+  final String? actionMessage;
+  final String? actionMedia;
+  final String? actionNotes; //説明文
+  final int? actionScore;
+  final int? actionState; //状態(0=未完了,1=完了)
+  final String? actionPlace;
+  final String? actionMainTag;
+  final String? actionSubTag;
 
-  RegisterActionTable ({this.actionName,
-                    this.actionStart,
+  RegisterActionTable ({this.actionId,
+                      this.actionName,
+                      this.actionStart,
+                      this.actionEnd,
+                      this.actionDuration,
+                      this.actionMessage,
+                      this.actionMedia,
+                      this.actionNotes,
+                      this.actionScore,
+                      this.actionState,
+                      this.actionPlace,
+                      this.actionMainTag,
+                      this.actionSubTag,
                     });
 
   void registerActionTableFunc() async {
