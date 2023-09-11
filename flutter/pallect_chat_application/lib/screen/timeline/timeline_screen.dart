@@ -41,7 +41,7 @@ class TimeLineBody extends StatelessWidget {
         final _bodyWidth = constraints.maxWidth; //bodyの横幅取得
         final _bodyHeight = constraints.maxHeight; //bodyの縦幅を取得
         final double _topBarHeight = _bodyHeight/11;
-        final double _calenderHeight = 340;//カレンダーサイズ 340未満だと警戒表示される
+        final double _calenderHeight = 340+52;//カレンダーサイズ 340未満だと警戒表示される
         late double _timeLineHeight = _bodyHeight - _topBarHeight;
         return Stack(
           children:[ 
