@@ -11,6 +11,7 @@ action_chat_idカラムにも　202309101212121234566　のような文字列が
 それぞれのカラムの型はTEXT型です。
 
 実際に行ってもらう作業としては
-database_helperの修正
-送信時間から共通idを作成するためのformat関数の作成→関数の作成はtext_formatter.dartのTextFormatterクラスの中で[returnChatActionLinkId]として作成してください。
-　引数とreturnはそれぞれstring型になります。
+・database_helperの修正
+・送信時間から共通idを作成するためのformat関数の作成→関数の作成はtext_formatter.dartのTextFormatterクラスの中で[returnChatActionLinkId]として作成してください。
+　・引数とreturnはそれぞれstring型になります。
+・チャット画面の送信ボタン押したときの処理にchat_action_idとaction_chat_idの登録処理を組み込む
