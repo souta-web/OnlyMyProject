@@ -1,51 +1,50 @@
+import 'package:flutter/material.dart';
+
+import '/utils/database_helper.dart';
 import '/utils/draw_chat_objects.dart';
 
+// アプリ起動時のチャット履歴復元を行う
 class RestoreChatHistory {
-  // データベースからチャット履歴を復元する関数
-  List<dynamic> restoreChatHistoryFromDatabase() {
-    List<dynamic> chatHistory = [];
+  late List<Widget> _messages = []; // チャットメッセージを格納するリスト
 
-    // データベースからchat_table, action_table, tag_tableから必要なデータを取得する
-    // 以下は仮のコードで、実際のデータベース操作に合わせて修正する必要があります
-    List<Map<String, dynamic>> chatTableData = fetchChatTableData();
-    List<Map<String, dynamic>> actionTableData = fetchActionTableData();
-    List<Map<String, dynamic>> tagTableData = fetchTagTableData();
+  // データベースからチャット履歴を取得し、それをウィジェットとして_messagesリストに追加するためのメソッド
+  Future<void> fetchChatHistory() async {
+    // データベースからチャット履歴を取得する
+    final dbHelper = DatabaseHelper.instance;
+    final chatHistory = await dbHelper.queryAllRows_chat_table(); // データベースからチャット履歴を取得する
 
-    // chat_tableのデータを元にチャット履歴を復元する
-    for (var chatData in chatTableData) {
-      String chatMessage = chatData['chat_message'];
-      bool isTodo = chatData['chat_todo']; // データベースからisTodoを取得する処理（仮のコード）
-      bool isUser = chatData['chat_sender'];// データベースからisUserを取得する処理（仮のコード）
-      String mainTag = chatData['action_data'];// データベースからmainTagを取得する処理（仮のコード）
-      String startTime = chatData['sendTime']; // データベースからsendTimeを取得
+    final drawChatObjects = DrawChatObjects(); // チャットメッセージをウィジェットに変換する
 
-      // チャットオブジェクトを生成してchatHistoryに追加する
-      chatHistory.add(DrawChatObjects().createChatObjects(
+    // チャット履歴を処理してウィジェットを生成し、_messagesに追加する
+    for (var chat in chatHistory) {
+      final isTodo = chat[DatabaseHelper.columnChatTodo] == 'true' ? true : false;
+      final chatText = chat[DatabaseHelper.columnChatMessage] as String;
+      final isUser = chat[DatabaseHelper.columnChatSender] == 'true';
+
+      final mainTag = chat[DatabaseHelper.columnActionMainTag] as String?;
+      final startTime = chat[DatabaseHelper.columnChatTime] as String?;
+      final isActionFinished =
+          chat[DatabaseHelper.columnChatTodofinish] == 'false';
+
+      final chatObject = drawChatObjects.createChatObjects(
         isTodo: isTodo,
-        chatText: chatMessage,
+        chatText: chatText,
         isUser: isUser,
         mainTag: mainTag,
         startTime: startTime,
-        isActionFinished: false, // アクションが完了していない場合
-      ));
+        isActionFinished: isActionFinished,
+      );
+
+      // ウィジェットが正常に生成された場合、リストに追加
+      if (chatObject != null) {
+        _messages.add(chatObject);
+      }
     }
-
-    return chatHistory;
   }
 
-  // 仮のデータベース操作関数。実際のデータベース操作に合わせて修正が必要です。
-  List<Map<String, dynamic>> fetchChatTableData() {
-    // データベースからchat_tableのデータを取得する処理
-    return [];
-  }
-
-  List<Map<String, dynamic>> fetchActionTableData() {
-    // データベースからaction_tableのデータを取得する処理
-    return [];
-  }
-
-  List<Map<String, dynamic>> fetchTagTableData() {
-    // データベースからtag_tableのデータを取得する処理
-    return [];
+  // _messagesリストを返す。これを呼び出すことで取得したチャット履歴の
+  // ウィジェットが外部からアクセス可能になる
+  List<Widget> getMessages() {
+    return _messages;
   }
 }

@@ -1,6 +1,7 @@
 import '/utils/draw_chat_objects.dart';
 import 'package:flutter/material.dart';
 import '/utils/media_controller.dart';
+import '/screen/chat/func/restore_chat_history.dart';
 import 'dart:typed_data';
 
 class ChatScreenWidget extends StatefulWidget {
@@ -19,7 +20,26 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   final List<dynamic> _messages = [];
 
   // DrawChatObjectsをfinal修飾子で宣言
-  final DrawChatObjects chatObjects = DrawChatObjects();
+  final DrawChatObjects _chatObjects = DrawChatObjects();
+
+  // チャット履歴復元クラスのインスタンス生成
+  final RestoreChatHistory _restoreChatHistory = RestoreChatHistory();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadChatHistory();
+  }
+
+  // チャット履歴を読み込むメソッド
+  void _loadChatHistory() async {
+    await _restoreChatHistory.fetchChatHistory();
+    final chatMessages = _restoreChatHistory.getMessages();
+
+    setState(() {
+      _messages.addAll(chatMessages);
+    });
+  }
 
   //ほかのファイルの非同期処理関数をbuild内で呼び出して戻り値受け取れないからそれを可能にするための記述
   Future<Uint8List?> _getMedia() async {
@@ -51,9 +71,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
             ),
             IconButton(
               icon: Icon(Icons.data_usage),
-              onPressed: () async {
-                
-              },
+              onPressed: () async {},
             ),
           ],
         ),
@@ -130,12 +148,11 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                                 onPressed: () {
                                   setState(() {
                                     //表示させたい内容はreturnで帰ってきて_messagesに渡されるので、引数にする必要はない。
-                                    _messages.add(chatObjects.sendButtonPressed(
+                                    _messages.add(_chatObjects.sendButtonPressed(
                                         _textEditingController.text,
                                         _isTodo,
                                         _textEditingController,
-                                        true
-                                      ));
+                                        true));
                                   });
                                 },
                               ),
