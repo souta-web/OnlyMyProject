@@ -11,7 +11,8 @@ class RestoreChatHistory {
   Future<void> fetchChatHistory() async {
     // データベースからチャット履歴を取得する
     final dbHelper = DatabaseHelper.instance;
-    final chatHistory = await dbHelper.queryAllRows_chat_table(); // データベースからチャット履歴を取得する
+    final chatHistory =
+        await dbHelper.queryAllRows_chat_table(); // データベースからチャット履歴を取得する
 
     print(chatHistory);
 
@@ -21,15 +22,12 @@ class RestoreChatHistory {
     for (var chat in chatHistory) {
       //chatHistoryの中身は辞書型で帰ってくるから下の三行のような形で値取得する。あと、型の宣言は必ずしてください。
       final bool isTodo = chat['chat_todo'] == "true" ? true : false;
-      final String chatText = chat['chat_message'];
+      final String chatText = chat['chat_message'] ?? "";
       final bool isUser = chat['chat_sender'] == "0" ? true : false;
-
-      final mainTag = chat[DatabaseHelper.columnActionMainTag] as String?;
-      final startTime = chat[DatabaseHelper.columnChatTime] as String?;
-      final isActionFinished =
-          chat[DatabaseHelper.columnChatTodofinish] == 'false';
-
-      
+      final String mainTag = chat['mainTag'] ?? "";
+      final String startTime = chat['chat_time'] ?? "";
+      final bool isActionFinished =
+          chat['chat_todofinish'] == "0" ? true : false;
 
       final chatObject = drawChatObjects.createChatObjects(
         isTodo: isTodo,
