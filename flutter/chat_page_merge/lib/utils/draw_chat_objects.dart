@@ -11,48 +11,53 @@ class DrawChatObjects {
   // チャットオブジェクトを表示する
   //受け取れる引数増やせば、アプリ再起動時の履歴復元にも使えるので
   //この関数を動かすために絶対に必要なものだけrequiredをつける。それ以外にrequiredをつけると問題が発生するのですべてにrequiredをつけないでください。
-  dynamic createChatObjects({ required bool isTodo,
-                              required String chatText,
-                              required bool isUser,
-                              String? mainTag,
-                              String? startTime,
-                              bool? isActionFinished,}) {
-
+  dynamic createChatObjects({
+    required bool isTodo,
+    required String chatText,
+    required bool isUser,
+    String? mainTag,
+    String? startTime,
+    bool? isActionFinished,
+  }) {
     if (chatText.isEmpty) {
-      return ;
+      return;
     }
 
     if (isTodo) {
       // アクションを作成する
-      ChatTodo message = ChatTodo(title: chatText,
-                                  isSentByUser: isUser,
-                                  mainTag: mainTag ?? "null",
-                                  startTime:startTime ?? "null", //チャットオブジェクトを表示することが目的の関数なので、日時を取得してそれを表示させるのはふさわしくない。引数で受け取るようにする。(辻)
-                                  actionFinished: isActionFinished ?? false);
-      return message; 
+      ChatTodo message = ChatTodo(
+          title: chatText,
+          isSentByUser: isUser,
+          mainTag: mainTag ?? "null",
+          startTime: startTime ??
+              "null", //チャットオブジェクトを表示することが目的の関数なので、日時を取得してそれを表示させるのはふさわしくない。引数で受け取るようにする。(辻)
+          actionFinished: isActionFinished ?? false);
+      return message;
     }
 
     if (isUser) {
-      ChatMessage message = ChatMessage(text: chatText, isSentByUser: isUser); // 応答側のメッセージ
-      return message; 
+      ChatMessage message =
+          ChatMessage(text: chatText, isSentByUser: isUser); // 応答側のメッセージ
+      return message;
     } else {
-      ChatMessage message = ChatMessage(text: chatText, isSentByUser: isUser); // 返答側のメッセージ
-      return message; 
+      ChatMessage message =
+          ChatMessage(text: chatText, isSentByUser: isUser); // 返答側のメッセージ
+      return message;
     }
   }
 
   // 送信ボタンが押されたときに呼び出される
   //引数にisUser追加(辻)
-  dynamic sendButtonPressed(String chatText, 
-                            bool isTodo,
-                            TextEditingController controller, 
-                            bool isUser) {
-    String sendTime = DateTime.now().toString().toString();//日付取得
+  dynamic sendButtonPressed(String chatText, bool isTodo,
+      TextEditingController controller, bool isUser) {
+    String mainTag = '#趣味';
+    String sendTime = DateTime.now().toString().toString(); //日付取得
     TextFormatter timeFormatter = TextFormatter();
-    late String drawTime = timeFormatter.returnHourMinute(sendTime); //登録時間を表示用にする
+    late String drawTime =
+        timeFormatter.returnHourMinute(sendTime); //登録時間を表示用にする
 
     if (chatText.isEmpty) {
-      return ;
+      return;
     }
 
     // チャットをデータベースに登録する
@@ -70,20 +75,21 @@ class DrawChatObjects {
       RegisterActionTable registerActionTable = RegisterActionTable(
         actionName: chatText,
         actionStart: sendTime,
+        actionMainTag: mainTag,
       );
       registerActionTable.registerActionTableFunc();
     }
 
     controller.clear(); //テキストフィールドのクリア
 
-
     // 吹き出し及びアクションの表示
     // 吹き出しクラスの引数を受け取れるように変更
-    return createChatObjects( isTodo: isTodo,
-                              chatText: chatText,
-                              isUser: isUser,
-                              mainTag: '#趣味',
-                              startTime: drawTime,
-                              isActionFinished: false);
+    return createChatObjects(
+        isTodo: isTodo,
+        chatText: chatText,
+        isUser: isUser,
+        mainTag: mainTag,
+        startTime: drawTime,
+        isActionFinished: false);
   }
 }
