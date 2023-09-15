@@ -41,7 +41,8 @@ class TimeLineBody extends StatelessWidget {
         // constraintsはbodyのサイズを表すBoxConstraintsです。
         final _bodyWidth = constraints.maxWidth; //bodyの横幅取得
         final _bodyHeight = constraints.maxHeight; //bodyの縦幅を取得
-        final double _topBarHeight = _bodyHeight/11;
+        final double _topBarHeight = _bodyHeight/8;
+        final double _weeekCalenderHeight = 72;//週のカレンダーサイズ
         final double _calenderHeight = 340+52;//カレンダーサイズ 340未満だと警戒表示される
         late double _timeLineHeight = _bodyHeight - _topBarHeight;
         return Stack(
@@ -50,7 +51,7 @@ class TimeLineBody extends StatelessWidget {
               child:SingleChildScrollView(
                 child:Column(
                   children: [
-                    SizedBox(height:_topBarHeight),//TimeLineTopBar分下に下げる
+                    SizedBox(height:_topBarHeight+(_topBarHeight-_weeekCalenderHeight)+10),//TimeLineTopBarと一週間表示分下に下げる（重なっている部分は省く）+00は調整用
                     TimeLineBase(bodyWidth: _bodyWidth,bodyHeight: _timeLineHeight),
                   ],
                 )
@@ -58,7 +59,7 @@ class TimeLineBody extends StatelessWidget {
               )
             ),
             TimeLineTopBar(topBarWidth:_bodyWidth,topBarHeight:_topBarHeight),
-            TimeLineCalender(calenderWidth:_bodyWidth,calenderHeight:_calenderHeight),
+            TimeLineCalender(calenderWidth:_bodyWidth,calenderHeight:_calenderHeight,weekHeight:_weeekCalenderHeight),
           ]
         );
       },

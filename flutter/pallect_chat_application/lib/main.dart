@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/date_symbol_data_local.dart';//日本語化
 
 import 'screen/chat/chat_screen.dart';
 import 'screen/timeline/timeline_screen.dart';
@@ -7,7 +8,7 @@ import 'screen/data/data_screen.dart';
 import 'screen/setting/config_screen.dart';
 
 void main() {
-  runApp(const ProviderScope(child: MyApp()));
+  initializeDateFormatting().then((_) =>runApp(const ProviderScope(child: MyApp())));//initializeDateFormatting().then((_) => は日本語化に使用しています
 }
 
 class MyApp extends ConsumerWidget {

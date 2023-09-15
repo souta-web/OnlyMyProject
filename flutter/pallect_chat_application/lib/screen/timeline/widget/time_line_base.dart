@@ -26,6 +26,7 @@ class _TimeLineBase extends State<TimeLineBase> {
                                               {"startTime": "15:00","endTime": "18:00" ,"color": Colors.purple,"title": "ブルアカやる"},
                                               {"startTime": "16:00","endTime": "18:00" ,"color": Colors.purple,"title": "勉強やる"},
                                               {"startTime": "17:00","endTime": "17:30" ,"color": Colors.white,"title": "test"},
+                                              {"startTime": "0:00","endTime": "1:45" ,"color": Colors.amber,"title": "ポケモンスリープする"},
                                               ];
   List<Widget> _actionWidgets = [];
   //占領されていないアクション表示のエリアを格納
@@ -115,7 +116,7 @@ class _TimeLineBase extends State<TimeLineBase> {
                     width: widget.bodyWidth - _timeDrawSpace,
                     height: (_oneHourHeight/2)-(_horizontalLineThickness),
                     child:Container(
-                      color: Colors.green,
+                      color: Colors.white,
                     )
                   ),
                   _drawHorizontalLine(),
