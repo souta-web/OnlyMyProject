@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
+// 自動スクロールを行う
 class AutoScroll {
   late ScrollController scrollController;
 
-  AutoScroll(ScrollController controller) {
+  AutoScroll(ScrollController controller) { // コンストラクタの作成
     scrollController = controller;
   }
 
