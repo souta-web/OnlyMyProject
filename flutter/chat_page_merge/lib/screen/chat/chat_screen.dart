@@ -1,6 +1,7 @@
 import '/utils/draw_chat_objects.dart';
 import 'package:flutter/material.dart';
 import '/utils/media_controller.dart';
+import '/screen/chat/func/auto_scroll.dart';
 import '/screen/chat/func/restore_chat_history.dart';
 import 'dart:typed_data';
 
@@ -22,12 +23,19 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   // DrawChatObjectsをfinal修飾子で宣言
   final DrawChatObjects _chatObjects = DrawChatObjects();
 
+  late ScrollController
+      _scrollController; // ScrollControllerをChatScreenWidget内で生成
+  // 自動スクロールクラスのインスタンス生成
+  late final AutoScroll _autoScroll;
   // チャット履歴復元クラスのインスタンス生成
   final RestoreChatHistory _restoreChatHistory = RestoreChatHistory();
 
   @override
   void initState() {
     super.initState();
+
+    _scrollController = ScrollController();
+    _autoScroll = AutoScroll(_scrollController);
     _loadChatHistory();
   }
 
@@ -38,6 +46,11 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
 
     setState(() {
       _messages.addAll(chatMessages);
+    });
+
+    // アプリ起動時に自動スクロール
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _autoScroll.scrollToBottom();
     });
   }
 
@@ -81,6 +94,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
             Expanded(
               //Expandedの中身が吹き出しを表示するためのプログラム。_messages配列の中身をListView形式でループして表示させている
               child: ListView.builder(
+                controller: _scrollController, // ScrollControllerをListViewに指定
                 itemCount: _messages.length, //表示させるアイテムのカウント
                 itemBuilder: (context, index) {
                   return _messages[index];
@@ -148,11 +162,13 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                                 onPressed: () {
                                   setState(() {
                                     //表示させたい内容はreturnで帰ってきて_messagesに渡されるので、引数にする必要はない。
-                                    _messages.add(_chatObjects.sendButtonPressed(
-                                        _textEditingController.text,
-                                        _isTodo,
-                                        _textEditingController,
-                                        true));
+                                    _messages.add(
+                                        _chatObjects.sendButtonPressed(
+                                            _textEditingController.text,
+                                            _isTodo,
+                                            _textEditingController,
+                                            true));
+                                    _autoScroll.scrollToBottom();
                                   });
                                 },
                               ),

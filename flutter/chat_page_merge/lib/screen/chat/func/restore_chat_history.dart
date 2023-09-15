@@ -15,7 +15,7 @@ class RestoreChatHistory {
     final dbHelper = DatabaseHelper.instance;
     final chatHistory =
         await dbHelper.queryAllRows_chat_table(); // データベースからチャット履歴を取得する
-
+    
     print(chatHistory);
 
     final drawChatObjects = DrawChatObjects(); // チャットメッセージをウィジェットに変換する
@@ -26,10 +26,10 @@ class RestoreChatHistory {
       final bool isTodo = chat['chat_todo'] == "true" ? true : false;
       final String chatText = chat['chat_message'] ?? "";
       final bool isUser = chat['chat_sender'] == "0" ? true : false;
-      final String mainTag = chat['mainTag'] ?? "#趣味";
+      final String mainTag = chat['action_main_tag'] ?? "#趣味";
       final String startTime = chat['chat_time'] ?? "";
       final bool isActionFinished =
-          chat['chat_todofinish'] == "0" ? true : false;
+          chat['action_end'] == "false" ? true : false;
 
       // final TextFormatter timeFormatter = TextFormatter();
       // late String formattedTime = timeFormatter.returnHourMinute(startTime);
