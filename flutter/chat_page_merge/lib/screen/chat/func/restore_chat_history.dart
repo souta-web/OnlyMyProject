@@ -15,44 +15,52 @@ class RestoreChatHistory {
     final dbHelper = DatabaseHelper.instance;
     final chatHistory =
         await dbHelper.queryAllRows_chat_table(); // データベースからチャット履歴を取得する
-    
+    final actionHistory =
+        await dbHelper.queryAllRows_action_table(); // データベースからチャット履歴を取得する
     print(chatHistory);
 
     final drawChatObjects = DrawChatObjects(); // チャットメッセージをウィジェットに変換する
+    // カラムから取得する必要があるデータを格納する変数を宣言
+    late bool isTodo;
+    late String chatText;
+    late bool isUser;
+    late String mainTag;
+    late String startTime;
+    late bool isActionFinished;
 
     // チャット履歴を処理してウィジェットを生成し、_messagesと_actionsに追加する
     for (var chat in chatHistory) {
       //chatHistoryの中身は辞書型で帰ってくるから下の三行のような形で値取得する。あと、型の宣言は必ずしてください。
-      final bool isTodo = chat['chat_todo'] == "true" ? true : false;
-      final String chatText = chat['chat_message'] ?? "";
-      final bool isUser = chat['chat_sender'] == "0" ? true : false;
-      final String mainTag = chat['action_main_tag'] ?? "#趣味";
-      final String startTime = chat['chat_time'] ?? "";
-      final bool isActionFinished =
-          chat['action_end'] == "false" ? true : false;
+      isTodo = chat['chat_todo'] == "true" ? true : false;
+      chatText = chat['chat_message'] ?? "";
+      isUser = chat['chat_sender'] == "0" ? true : false;
 
       // final TextFormatter timeFormatter = TextFormatter();
       // late String formattedTime = timeFormatter.returnHourMinute(startTime);
+    }
+    for(var action in actionHistory) {
+      mainTag = action['action_main_tag'] ?? "";
+      startTime = action['action_start'] ?? "";
+      isActionFinished = action['action_end'] == "false" ? true : false;
+    }
+    
+    final chatObject = drawChatObjects.createChatObjects(
+      isTodo: isTodo,
+      chatText: chatText,
+      isUser: isUser,
+      mainTag: mainTag,
+      startTime: startTime,
+      isActionFinished: isActionFinished,
+    );
 
-      final chatObject = drawChatObjects.createChatObjects(
-        isTodo: isTodo,
-        chatText: chatText,
-        isUser: isUser,
-        mainTag: mainTag,
-        startTime: startTime,
-        isActionFinished: isActionFinished,
-      );
-
-      // ウィジェットが正常に生成された場合、リストに追加
-      if (chatObject != null) {
-        if (isTodo) {
-          //print(chatHistory);
-          // アクションの場合、_actionsリストに追加
-          _actions.add(chatObject);
-        } else {
-          // チャットの場合、_messagesリストに追加
-          _messages.add(chatObject);
-        }
+    // ウィジェットが正常に生成された場合、リストに追加
+    if (chatObject != null) {
+      if (isTodo) {
+        // アクションの場合、_actionsリストに追加
+        _actions.add(chatObject);
+      } else {
+        // チャットの場合、_messagesリストに追加
+        _messages.add(chatObject);
       }
     }
   }
