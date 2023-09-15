@@ -19,14 +19,14 @@ class _TimeLineBase extends State<TimeLineBase> {
   late double _timeLineHeight = _oneHourHeight * 24 - (_horizontalLineThickness * 48); //タイムライン画面の合計縦幅
   late double _timeLineActionDrawAreaWidth = widget.bodyWidth - _timeDrawSpace - _timeLineActionDrawAreaMargin; //アクション表示領域の横幅
   //↓この配列に要素を追加したらその分だけ表示数を増やせる。(開始時刻が早い順に並んでいないとうまく動かないかも)
-  List<Map<String, dynamic>> _actionsDatas = [{"startTime": "1:00","endTime": "2:45" ,"color": Colors.red,"title": "ご飯食べる"},
+  List<Map<String, dynamic>> _actionsDatas = [{"startTime": "0:00","endTime": "1:45" ,"color": Colors.amber,"title": "ポケモンスリープする"},
+                                              {"startTime": "1:00","endTime": "2:45" ,"color": Colors.red,"title": "ご飯食べる"},
                                               {"startTime": "2:00","endTime": "8:00" ,"color": Colors.blue,"title": "学校に行く"},
                                               {"startTime": "5:00","endTime": "9:00" ,"color": Colors.pink,"title": "寝る"},
                                               {"startTime": "5:00","endTime": "6:00" ,"color": Colors.purple,"title": "BGM聞く"},
                                               {"startTime": "15:00","endTime": "18:00" ,"color": Colors.purple,"title": "ブルアカやる"},
                                               {"startTime": "16:00","endTime": "18:00" ,"color": Colors.purple,"title": "勉強やる"},
                                               {"startTime": "17:00","endTime": "17:30" ,"color": Colors.white,"title": "test"},
-                                              {"startTime": "0:00","endTime": "1:45" ,"color": Colors.amber,"title": "ポケモンスリープする"},
                                               ];
   List<Widget> _actionWidgets = [];
   //占領されていないアクション表示のエリアを格納

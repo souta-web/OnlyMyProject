@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+//import 'package:intl/intl.dart';//カレンダーのタイトルを月の形式にカスタマイズするのに必要
+
 
 class TimeLineCalender extends StatefulWidget {
   TimeLineCalender({required this.calenderWidth,required this.calenderHeight,required this.weekHeight,});
@@ -15,6 +17,7 @@ class TimeLineCalender extends StatefulWidget {
 class _TimeLineCalender extends State<TimeLineCalender> {
   bool showButtons = false;
   int selectedMonth = DateTime.now().month; // 現在の月を初期値として設定
+  int previousSelectedMonth = DateTime.now().month;
   int selectedYear = DateTime.now().year; // 現在の年を初期値として設定
   DateTime _focusedDay = DateTime.now();// 現在の日付を初期値として設定
   DateTime? _selectedDay;
@@ -32,7 +35,6 @@ class _TimeLineCalender extends State<TimeLineCalender> {
       children: [
         // 呼び出すウィジェットを切り替え
         showButtons ? buildTableCalendar() : buildMonthSwitchButton(),
-        //buildWeekCalendar()
       ]
       )
     );
@@ -62,8 +64,6 @@ class _TimeLineCalender extends State<TimeLineCalender> {
           buildWeekCalendar()
         ],
       )
-      
-      
     );
   }
 
@@ -80,9 +80,14 @@ class _TimeLineCalender extends State<TimeLineCalender> {
           weekendStyle: TextStyle(fontSize: 14),//週末のフォント
 	      ),
 	      daysOfWeekHeight: 20,//曜日の高さ
+        availableGestures: AvailableGestures.horizontalSwipe, // 横方向のスワイプのみを有効にする
         headerStyle: HeaderStyle(
           titleCentered: true,
           formatButtonVisible: false,//week切り替えボタンの不可視
+          // カレンダーのタイトルを月の形式にカスタマイズ
+          //titleTextFormatter: (date, locale) {
+          //return '${DateFormat.MMMM(locale).format(date)}';
+        //},
         ),
         locale: 'ja_JP',//日本語化
         selectedDayPredicate: (day) {
@@ -129,10 +134,12 @@ class _TimeLineCalender extends State<TimeLineCalender> {
           weekendStyle: TextStyle(fontSize: 14),//週末のフォント
 	      ),
 	      daysOfWeekHeight: 20,//曜日の高さ
-        //headerStyle: HeaderStyle(
+        availableGestures: AvailableGestures.horizontalSwipe, // 横方向のスワイプのみを有効にする
+        headerStyle: HeaderStyle(
           //titleCentered: false,
           //formatButtonVisible: false,
-        //),
+          
+        ),
         locale: 'ja_JP',//日本語化
         selectedDayPredicate: (day) {
           return isSameDay(_selectedDay, day);
@@ -144,12 +151,12 @@ class _TimeLineCalender extends State<TimeLineCalender> {
               _focusedDay = focused;
 
               selectedMonth = selected.month;
+              previousSelectedMonth = selectedMonth;
             });
           }
-          //showButtons = false;
         },
         
-         onFormatChanged: (format) {
+         onFormatChanged: (format) {// フォーマット変更に成功した際の処理
           if (_weekFormat != format) {
             // Call `setState()` when updating calendar format
             setState(() {
@@ -157,7 +164,27 @@ class _TimeLineCalender extends State<TimeLineCalender> {
             });
           }
         },
-        
+
+        onPageChanged: (focusedDay) {
+          //final nextWeek = focusedDay.add(Duration(days: 7));
+          //focusedDay = nextWeek;
+          _focusedDay = focusedDay;
+          selectedMonth = focusedDay.month;
+          if (selectedMonth != previousSelectedMonth) {
+            // selectedMonth が変更された場合の処理をここに追加
+            // previousSelectedMonth は前回の selectedMonth の値を示す変数です
+            print("change");
+            previousSelectedMonth = selectedMonth; // 変更前の値を更新
+            setState(() {
+              selectedMonth = focusedDay.month;
+            });
+          }
+          
+          
+          
+          
+          //print(focusedDay);
+        },
         focusedDay: _focusedDay,
       ),
     );
