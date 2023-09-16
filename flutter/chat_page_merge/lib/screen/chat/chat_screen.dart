@@ -1,3 +1,5 @@
+import 'package:chat_page_merge/widget/create_image.dart';
+
 import '/utils/draw_chat_objects.dart';
 import 'package:flutter/material.dart';
 import '/utils/media_controller.dart';
@@ -33,7 +35,6 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   @override
   void initState() {
     super.initState();
-
     _scrollController = ScrollController();
     _autoScroll = AutoScroll(_scrollController, context);
     _loadChatHistory();
@@ -57,7 +58,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
 
   //ほかのファイルの非同期処理関数をbuild内で呼び出して戻り値受け取れないからそれを可能にするための記述
   Future<Uint8List?> _getMedia() async {
-    return await MediaController.getMedia();
+    return await MediaController.mediaAddButtonPressed();
   }
 
   Widget build(BuildContext context) {

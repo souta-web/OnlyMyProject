@@ -41,6 +41,7 @@ class DrawChatObjects {
     } else {
       ChatMessage message =
           ChatMessage(text: chatText, isSentByUser: isUser); // 返答側のメッセージ
+      
       return message;
     }
   }

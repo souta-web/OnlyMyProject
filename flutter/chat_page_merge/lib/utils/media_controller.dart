@@ -12,7 +12,7 @@ import 'dart:io' as io;
 
 class MediaController {
   //メディア追加ボタン押された時の処理
-  static Future<Uint8List?> getMedia() async {
+  static Future<Uint8List?> mediaAddButtonPressed() async {
     //late var _file_path; //ユーザーがファイルを送信するときにここにそのディレクトリが入る
     late Uint8List? mediaData = null;
     final result = await FilePicker.platform.pickFiles();//選択されたファイルを取得する
