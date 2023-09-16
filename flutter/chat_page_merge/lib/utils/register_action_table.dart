@@ -44,7 +44,7 @@ class RegisterActionTable {
     print("これからデータベースに登録");
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
     // アクションの送信時間を数値化してaction_chat_idに登録
-    final chatActionLinkId =
+    final actionChatLinkId =
         linkIdFormatter.returnChatActionId(actionStart ?? "null");
     final Map<String, dynamic> actionRow = {
       DatabaseHelper.columnActionName: actionName, // アクション名
@@ -59,7 +59,7 @@ class RegisterActionTable {
       DatabaseHelper.columnActionPlace: actionPlace, // 場所
       DatabaseHelper.columnActionMainTag: actionMainTag, // メインタグ
       DatabaseHelper.columnActionSubTag: actionSubTag, // サブタグ
-      DatabaseHelper.columnActionChatId: chatActionLinkId,
+      DatabaseHelper.columnActionChatId: actionChatLinkId, // チャットテーブルとアクションテーブル紐づけ用
     };
 
     await dbHelper.insert_action_table(actionRow);
