@@ -5,6 +5,7 @@ class ChatMessage extends StatelessWidget {
   // チャットメッセージのテキスト
   final String text;
   // 送信者がユーザー自身かどうかのフラグ
+  //ユーザー送信=true
   final bool isSentByUser;
 
   //クラスを呼び出すときに引数を必要とする(辻)

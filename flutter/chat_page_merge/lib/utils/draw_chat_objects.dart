@@ -29,8 +29,7 @@ class DrawChatObjects {
           title: chatText,
           isSentByUser: isUser,
           mainTag: mainTag ?? "null",
-          startTime: startTime ??
-              "null", //チャットオブジェクトを表示することが目的の関数なので、日時を取得してそれを表示させるのはふさわしくない。引数で受け取るようにする。(辻)
+          startTime: startTime ?? "null", //チャットオブジェクトを表示することが目的の関数なので、日時を取得してそれを表示させるのはふさわしくない。引数で受け取るようにする。(辻)
           actionFinished: isActionFinished ?? false);
       return message;
     }
@@ -51,10 +50,10 @@ class DrawChatObjects {
   dynamic sendButtonPressed(String chatText, bool isTodo,
       TextEditingController controller, bool isUser) {
     String mainTag = '#趣味';
-    String sendTime = DateTime.now().toString().toString(); //日付取得
+    String sendTime = DateTime.now().toString(); //日付取得
     TextFormatter timeFormatter = TextFormatter();
-    late String drawTime =
-        timeFormatter.returnHourMinute(sendTime); //登録時間を表示用にする
+    late String drawTime = timeFormatter.returnHourMinute(sendTime); //登録時間を表示用にする
+    String _actionState = 'false';
 
     if (chatText.isEmpty) {
       return;
@@ -62,7 +61,7 @@ class DrawChatObjects {
 
     // チャットをデータベースに登録する
     RegisterChatTable registerChatTable = RegisterChatTable(
-      chatSender: '0',
+      chatSender: 'true',
       chatMessage: chatText,
       chatTime: sendTime,
       chatTodo: isTodo.toString(),
@@ -76,6 +75,7 @@ class DrawChatObjects {
         actionName: chatText,
         actionStart: sendTime,
         actionMainTag: mainTag,
+        actionState: _actionState,
       );
       registerActionTable.registerActionTableFunc();
     }

@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 
 class DatabaseHelper {
   // デバッグ時はDB名を変えてよい
-  static final _databaseName = "MyDatabase35.db"; // DB名
+  static final _databaseName = "MyDatabase37.db"; // DB名
   static final _databaseVersion = 1; // スキーマのバージョン指定
 
   static final chat_table = 'chat_table'; // チャット管理テーブル
@@ -35,7 +35,7 @@ class DatabaseHelper {
   static final columnActionMedia = 'action_media'; //添付メディア
   static final columnActionNotes = 'action_notes'; //説明文
   static final columnActionScore = 'action_score'; //充実度(1から5までの値で制限する)
-  static final columnActionState = 'action_state'; //状態(0=未完了,1=完了)
+  static final columnActionState = 'action_state'; //状態(0=未完了,1=完了) (false=未完了,true=完了)
   static final columnActionPlace = 'action_place'; //場所
   static final columnActionMainTag = 'action_main_tag'; //メインタグ
   static final columnActionSubTag = 'action_sub_tag'; //サブタグ
@@ -103,11 +103,11 @@ class DatabaseHelper {
         $columnChatId INTEGER PRIMARY KEY AUTOINCREMENT,
         $columnChatSender TEXT,
         $columnChatTodo TEXT,
-        $columnChatTodofinish INTEGER,
+        $columnChatTodofinish TEXT,
         $columnChatMessage TEXT,
         $columnChatTime TEXT,
         $columnChatChannel TEXT,
-        $columnChatActionId INTEGER
+        $columnChatActionId TEXT
       )
     ''');
 
@@ -123,11 +123,11 @@ class DatabaseHelper {
         $columnActionMedia BLOB,
         $columnActionNotes TEXT,
         $columnActionScore INTEGER CHECK ($columnActionScore >= 1 AND $columnActionScore <= 5), 
-        $columnActionState INTEGER CHECK ($columnActionState >= 0 AND $columnActionState <= 1),
+        $columnActionState TEXT,
         $columnActionPlace TEXT,
         $columnActionMainTag TEXT,
         $columnActionSubTag TEXT,
-        $columnChatActionId INTEGER DEFAULT $columnActionId
+        $columnChatActionId TEXT
       )
     ''');
 

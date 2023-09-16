@@ -12,7 +12,7 @@ class RegisterActionTable {
   final Uint8List? actionMedia;
   final String? actionNotes;
   final int? actionScore;
-  final int? actionState;
+  final String? actionState;
   final String? actionPlace;
   final String? actionMainTag;
   final String? actionSubTag;

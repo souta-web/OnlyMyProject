@@ -45,6 +45,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
 
     setState(() {
       _messages.addAll(chatMessages);
+      print(_messages);
     });
 
     // アプリ起動時に自動スクロール
@@ -105,78 +106,83 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                 child: Column(children: [
                   Form(
                       child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                        Switch(
-                          //テキスト入力欄の一番左のやつ
-                          value: _isTodo,
-                          onChanged: (value) {
-                            setState(() {
-                              _isTodo = value;
-                            });
-                          },
-                        ),
-                        IconButton(
-                          //メディア追加ボタン
-                          icon: Icon(Icons.add),
-                          color: Colors.white,
-                          onPressed: () async {
-                            _mediaData = await _getMedia();
-                            //現状は取得したメディアの処理がないためprintで取得確認
-                            print(_mediaData);
-                          },
-                        ),
-                        Flexible(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Switch(
+                            //テキスト入力欄の一番左のやつ
+                            value: _isTodo,
+                            onChanged: (value) {
+                              setState(() {
+                                _isTodo = value;
+                              });
+                            },
+                          ),
+                          IconButton(
+                            //メディア追加ボタン
+                            icon: Icon(Icons.add),
+                            color: Colors.white,
+                            onPressed: () async {
+                              _mediaData = await _getMedia();
+                              //現状は取得したメディアの処理がないためprintで取得確認
+                              print(_mediaData);
+                            },
+                          ),
+                          Flexible(
                             child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          margin: const EdgeInsets.symmetric(vertical: 5.0),
-                          height: 40.0,
-                          decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 222, 216, 216),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: TextField(
-                            controller: _textEditingController,
-                            keyboardType: TextInputType.multiline, //複数行のテキスト入力
-                            maxLines: 5,
-                            minLines: 1,
-                            cursorColor: Color.fromARGB(255, 75, 67, 93),
-                            decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'メッセージを入力してください',
-                                //hintTextの位置
-                                contentPadding: EdgeInsets.symmetric(
-                                  vertical: 11.0,
-                                )),
-                          ),
-                        )),
-                        Material(
-                          //送信ボタンを作成
-                          color: Color.fromARGB(255, 103, 100, 100),
-                          child: Center(
-                            child: Ink(
-                              child: IconButton(
-                                icon: Icon(Icons.send),
-                                color: Colors.white,
-                                onPressed: () {
-                                  setState(() {
-                                    //表示させたい内容はreturnで帰ってきて_messagesに渡されるので、引数にする必要はない。
-                                    _messages.add(
-                                        _chatObjects.sendButtonPressed(
-                                            _textEditingController.text,
-                                            _isTodo,
-                                            _textEditingController,
-                                            true));
-                                    //_autoScroll.scrollToBottom();
-                                  });
-                                },
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              margin: const EdgeInsets.symmetric(vertical: 5.0),
+                              height: 40.0,
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 222, 216, 216),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: TextField(
+                                controller: _textEditingController,
+                                keyboardType: TextInputType.multiline, //複数行のテキスト入力
+                                maxLines: 5,
+                                minLines: 1,
+                                cursorColor: Color.fromARGB(255, 75, 67, 93),
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: 'メッセージを入力してください',
+                                    //hintTextの位置
+                                    contentPadding: EdgeInsets.symmetric(
+                                      vertical: 11.0,
+                                    )),
+                            ),
+                          )),
+                          Material(
+                            //送信ボタンを作成
+                            color: Color.fromARGB(255, 103, 100, 100),
+                            child: Center(
+                              child: Ink(
+                                child: IconButton(
+                                  icon: Icon(Icons.send),
+                                  color: Colors.white,
+                                  onPressed: () {
+                                    setState(() {
+                                      //表示させたい内容はreturnで帰ってきて_messagesに渡されるので、引数にする必要はない。
+                                      _messages.add(
+                                          _chatObjects.sendButtonPressed(
+                                              _textEditingController.text,
+                                              _isTodo,
+                                              _textEditingController,
+                                              true));
+                                      //_autoScroll.scrollToBottom();
+                                    });
+                                  },
+                                ),
                               ),
                             ),
-                          ),
                         )
-                      ])),
-                ])),
+                      ]
+                    )
+                  ),
+                ]
+              )
+            ),
           ],
-        ));
+        )
+      );
   }
 }

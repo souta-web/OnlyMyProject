@@ -6,11 +6,11 @@ class RegisterChatTable{
   final int? chatId; //idはデータ登録時に自動で割り当てられるため、引数で渡す必要は基本的にはない
   final String? chatSender;
   final String? chatTodo;
-  final int? chatTodofinish;
+  final String? chatTodofinish;
   final String? chatMessage;
   final String? chatTime;
   final String? chatChannel;
-  final int? chatActionId;
+  final String? chatActionId;
 
   RegisterChatTable ({this.chatId,
                     this.chatSender,
