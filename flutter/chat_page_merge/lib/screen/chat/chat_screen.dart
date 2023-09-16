@@ -25,10 +25,11 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   // DrawChatObjectsをfinal修飾子で宣言
   final DrawChatObjects _chatObjects = DrawChatObjects();
 
-  late ScrollController _scrollController; // ScrollControllerをChatScreenWidget内で生成
+  late ScrollController
+      _scrollController; // ScrollControllerをChatScreenWidget内で生成
   // 自動スクロールクラスのインスタンス生成
   late AutoScroll _autoScroll;
-  
+
   // チャット履歴復元クラスのインスタンス生成
   final RestoreChatHistory _restoreChatHistory = RestoreChatHistory();
 
@@ -63,128 +64,119 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          //appbarを作成
-          title: Text('Chat'),
-          //左上のアイコン
-          leading: IconButton(
-            //左上のアカウントアイコン
-            icon: CircleAvatar(
-              backgroundImage: AssetImage('assets/images/account_icon.png'),
-              backgroundColor: Colors.transparent, // 背景色
-              radius: 25,
-            ),
-            onPressed: () {},
+      appBar: AppBar(
+        //appbarを作成
+        title: Text('Chat'),
+        //左上のアイコン
+        leading: IconButton(
+          //左上のアカウントアイコン
+          icon: CircleAvatar(
+            backgroundImage: AssetImage('assets/images/account_icon.png'),
+            backgroundColor: Colors.transparent, // 背景色
+            radius: 25,
           ),
-          actions: [
-            IconButton(
-              //右上の三点リーダーのやつ
-              icon: Icon(Icons.more_vert),
-              onPressed: () {
-                Navigator.pushNamed(context, '/config'); //routeに追加したconfigに遷移
+          onPressed: () {},
+        ),
+        actions: [
+          IconButton(
+            //右上の三点リーダーのやつ
+            icon: Icon(Icons.more_vert),
+            onPressed: () {
+              Navigator.pushNamed(context, '/config'); //routeに追加したconfigに遷移
+            },
+          ),
+        ],
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Expanded(
+            //Expandedの中身が吹き出しを表示するためのプログラム。_messages配列の中身をListView形式でループして表示させている
+            child: ListView.builder(
+              controller: _scrollController, // ScrollControllerをListViewに指定
+              itemCount: _messages.length, //表示させるアイテムのカウント
+              itemBuilder: (context, index) {
+                return _messages[index];
               },
             ),
-            IconButton(
-              icon: Icon(Icons.data_usage),
-              onPressed: () async {},
-            ),
-          ],
-        ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Expanded(
-              //Expandedの中身が吹き出しを表示するためのプログラム。_messages配列の中身をListView形式でループして表示させている
-              child: ListView.builder(
-                controller: _scrollController, // ScrollControllerをListViewに指定
-                itemCount: _messages.length, //表示させるアイテムのカウント
-                itemBuilder: (context, index) {
-                  return _messages[index];
-                },
-              ),
-            ),
-            Container(
-                color: Color.fromARGB(255, 103, 100, 100),
-                child: Column(children: [
-                  Form(
-                      child: Row(
+          ),
+          Container(
+              color: Color.fromARGB(255, 103, 100, 100),
+              child: Column(children: [
+                Form(
+                    child: Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Switch(
-                            //テキスト入力欄の一番左のやつ
-                            value: _isTodo,
-                            onChanged: (value) {
-                              setState(() {
-                                _isTodo = value;
-                              });
-                            },
-                          ),
-                          IconButton(
-                            //メディア追加ボタン
-                            icon: Icon(Icons.add),
-                            color: Colors.white,
-                            onPressed: () async {
-                              _mediaData = await _getMedia();
-                              //現状は取得したメディアの処理がないためprintで取得確認
-                              print(_mediaData);
-                            },
-                          ),
-                          Flexible(
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                              margin: const EdgeInsets.symmetric(vertical: 5.0),
-                              height: 40.0,
-                              decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 222, 216, 216),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: TextField(
-                                controller: _textEditingController,
-                                keyboardType: TextInputType.multiline, //複数行のテキスト入力
-                                maxLines: 5,
-                                minLines: 1,
-                                cursorColor: Color.fromARGB(255, 75, 67, 93),
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: 'メッセージを入力してください',
-                                    //hintTextの位置
-                                    contentPadding: EdgeInsets.symmetric(
-                                      vertical: 11.0,
-                                    )),
+                      Switch(
+                        //テキスト入力欄の一番左のやつ
+                        value: _isTodo,
+                        onChanged: (value) {
+                          setState(() {
+                            _isTodo = value;
+                          });
+                        },
+                      ),
+                      IconButton(
+                        //メディア追加ボタン
+                        icon: Icon(Icons.add),
+                        color: Colors.white,
+                        onPressed: () async {
+                          _mediaData = await _getMedia();
+                          //現状は取得したメディアの処理がないためprintで取得確認
+                          print(_mediaData);
+                        },
+                      ),
+                      Flexible(
+                          child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        margin: const EdgeInsets.symmetric(vertical: 5.0),
+                        height: 40.0,
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 222, 216, 216),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: TextField(
+                          controller: _textEditingController,
+                          keyboardType: TextInputType.multiline, //複数行のテキスト入力
+                          maxLines: 5,
+                          minLines: 1,
+                          cursorColor: Color.fromARGB(255, 75, 67, 93),
+                          decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'メッセージを入力してください',
+                              //hintTextの位置
+                              contentPadding: EdgeInsets.symmetric(
+                                vertical: 11.0,
+                              )),
+                        ),
+                      )),
+                      Material(
+                        //送信ボタンを作成
+                        color: Color.fromARGB(255, 103, 100, 100),
+                        child: Center(
+                          child: Ink(
+                            child: IconButton(
+                              icon: Icon(Icons.send),
+                              color: Colors.white,
+                              onPressed: () {
+                                setState(() {
+                                  //表示させたい内容はreturnで帰ってきて_messagesに渡されるので、引数にする必要はない。
+                                  _messages.add(_chatObjects.sendButtonPressed(
+                                      _textEditingController.text,
+                                      _isTodo,
+                                      _textEditingController,
+                                      true));
+                                  _autoScroll.scrollToBottom();
+                                });
+                              },
                             ),
-                          )),
-                          Material(
-                            //送信ボタンを作成
-                            color: Color.fromARGB(255, 103, 100, 100),
-                            child: Center(
-                              child: Ink(
-                                child: IconButton(
-                                  icon: Icon(Icons.send),
-                                  color: Colors.white,
-                                  onPressed: () {
-                                    setState(() {
-                                      //表示させたい内容はreturnで帰ってきて_messagesに渡されるので、引数にする必要はない。
-                                      _messages.add(
-                                          _chatObjects.sendButtonPressed(
-                                              _textEditingController.text,
-                                              _isTodo,
-                                              _textEditingController,
-                                              true));
-                                      _autoScroll.scrollToBottom();
-                                    });
-                                  },
-                                ),
-                              ),
-                            ),
-                        )
-                      ]
-                    )
-                  ),
-                ]
-              )
-            ),
-          ],
-        )
-      );
+                          ),
+                        ),
+                      )
+                    ])),
+              ])),
+        ],
+      ),
+    );
   }
 }
