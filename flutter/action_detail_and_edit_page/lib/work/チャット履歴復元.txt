@@ -1,0 +1,19 @@
+[進行度：]
+アプリ起動時のチャット履歴復元プログラム
+プログラムの作成ファイルは、chat/func/restore_chat_history.dartです。このファイルの中で作業を行ってください。
+---------処理の流れ-------------
+
+(関数呼び出し)
+0.取得するカラムを格納するための変数を宣言する。(late String _chatMessage;のような形。エラー出たらほかの方法でも良いです)
+1.データベースのchat_table,action_table,tag_tableからチャット画面での吹き出し、アクション表示に必要なデータをすべて取得する。※1
+2.chat_tableのカラムの数だけfor文を回す
+3.for文の中で、取得したデータを変数に渡す。
+4.createChatObjectsに変数を渡す。(drawChatObjectsから名前変えました。)
+5.作成されているウィジェットが格納されるchatHistor配列に4で作成したウィジェットを格納する。
+6.returnでinitstateに返す(受け取る配列は_messages以外に作成しておく)
+7.initstate内でfor文を回して_messagesにreturnで受け取ったウィジェットを渡す。
+
+11日の週でやる予定だったのでゆっくり進めても大丈夫です。
+
+追記
+呼び出しはchat_screen.dartの_ChatScreenWidgetのinitstateで行います
