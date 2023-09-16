@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '/utils/database_helper.dart';
 import '/utils/draw_chat_objects.dart';
+import '/utils/text_formatter.dart';
 
 // アプリ起動時のチャット履歴復元を行う
 class RestoreChatHistory {
@@ -16,6 +17,8 @@ class RestoreChatHistory {
         await dbHelper.queryAllRows_action_table(); // データベースからアクションを取得する
 
     final drawChatObjects = DrawChatObjects(); // チャットメッセージをウィジェットに変換する
+    TextFormatter timeFormatter = TextFormatter();
+
     // カラムから取得する必要があるデータを格納する変数を宣言
     late bool _isTodo;
     late String _chatText;
@@ -32,6 +35,7 @@ class RestoreChatHistory {
       _isUser = chat['chat_sender'] == "true" ? true : false;
       _startTime = chat['chat_time'] ?? "null";
 
+      late String drawTime = timeFormatter.returnHourMinute(_startTime);
       // アクションテーブルからデータを取得し、mainTag,isActionFinished を取得
       if (actionHistory != <String, dynamic>{} && actionHistory.isNotEmpty) {
         final actionData = actionHistory.firstWhere(
@@ -47,7 +51,7 @@ class RestoreChatHistory {
         chatText: _chatText,
         isUser: _isUser,
         mainTag: _mainTag,
-        startTime: _startTime,
+        startTime: drawTime,
         isActionFinished: _isActionFinished,
       );
 
@@ -63,7 +67,7 @@ class RestoreChatHistory {
     }
   }
 
-  // _messagesと_actionsリストを返す。これを呼び出すことで取得したチャット履歴の
+  // _messagesリストを返す。これを呼び出すことで取得したチャット履歴の
   // ウィジェットが外部からアクセス可能になる
   List<Widget> getMessages() {
     return _messages;

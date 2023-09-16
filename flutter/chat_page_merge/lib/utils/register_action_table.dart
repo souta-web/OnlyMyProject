@@ -46,7 +46,7 @@ class RegisterActionTable {
       DatabaseHelper.columnActionMedia: actionMedia, // 添付メディア
       DatabaseHelper.columnActionNotes: actionNotes, // 説明文
       DatabaseHelper.columnActionScore: actionScore, // 充実度(1から5までの値で制限する)
-      DatabaseHelper.columnActionState: actionState, // 状態(0=未完了,1=完了)
+      DatabaseHelper.columnActionState: actionState, // 状態
       DatabaseHelper.columnActionPlace: actionPlace, // 場所
       DatabaseHelper.columnActionMainTag: actionMainTag, // メインタグ
       DatabaseHelper.columnActionSubTag: actionSubTag, // サブタグ
