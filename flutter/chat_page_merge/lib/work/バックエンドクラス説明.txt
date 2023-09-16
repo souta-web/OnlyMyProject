@@ -4,7 +4,7 @@ register_chat_table...チャットテーブル登録汎用プログラム
 
 register_action_table...アクションテーブル登録汎用プログラム
 
-text_formatter...テキスト、アクションの表示時間を整形する
+text_formatter...テキスト、アクションの表示時間を整形する、action_chat_id,chat_action_idの整形も行う
 
 draw_chat_objects...吹き出し、アクションの表示を行う
 
