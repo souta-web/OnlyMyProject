@@ -58,6 +58,7 @@ class RegisterActionTable {
     final allRows = await dbHelper.queryAllRows_action_table();
     print('全てのデータを照会しました。');
     allRows.forEach(print);
+    print(actionRow);
   }
 
   /*
