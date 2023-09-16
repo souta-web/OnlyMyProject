@@ -1,14 +1,15 @@
-register_text...テキストをデータベースに登録するクラス。
-                _registerTextToDatabase...テキストフィールドに入力された値をデータベースに登録するメソッド。
-                引数に入力されたテキストを受け取るtext及び送信者を判定するsenderを設定。
-                handLeSubmitted...メッセージの送信を処理するメソッド。
-                _loadChatMessages...新しいメッセージをデータベースから読み込む。
-                _registerAndShowReplyMessage...テキストをデータベースに登録し、返答メッセージを表示するメソッド
+database_helper...チャット、アクション、タグのデータベースを持つ
 
-register_action...アクション及びチャットをデータベースに登録するクラス。
-                sendAction...トグルボタンの状態とテキストフィールドの入力内容を基に、 チャットテーブルとアクションテーブルにデータを登録する役割を担う
+register_chat_table...チャットテーブル登録汎用プログラム
 
-chat_history_restorer...アプリ起動時にチャット及びアクションを復元するクラス
-                        restoreChatHistory...チャットメッセージとアクション情報をデータベースから取得し、表示するメソッド
+register_action_table...アクションテーブル登録汎用プログラム
+
+text_formatter...テキスト、アクションの表示時間を整形する
+
+draw_chat_objects...吹き出し、アクションの表示を行う
 
 media_controller...メディアの取得をする
+
+restore_chat_history...アプリ起動時にチャット及びアクションを復元する
+
+auto_scroll...アプリ起動時とチャット送信時に自動スクロールを行う
