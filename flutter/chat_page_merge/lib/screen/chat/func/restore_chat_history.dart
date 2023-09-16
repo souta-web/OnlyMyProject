@@ -10,13 +10,13 @@ class RestoreChatHistory {
 
   // データベースからチャット履歴を取得し、それをウィジェットとして_messagesリストに追加するためのメソッド
   Future<void> fetchChatHistory() async {
-    final dbHelper = DatabaseHelper.instance;
-    final chatHistory =
+    final DatabaseHelper dbHelper = DatabaseHelper.instance;
+    final List<Map<String, dynamic>> chatHistory =
         await dbHelper.queryAllRows_chat_table(); // データベースからチャット履歴を取得する
-    final actionHistory =
+    final List<Map<String, dynamic>> actionHistory =
         await dbHelper.queryAllRows_action_table(); // データベースからアクションを取得する
 
-    final drawChatObjects = DrawChatObjects(); // チャットメッセージをウィジェットに変換する
+    DrawChatObjects drawChatObjects = DrawChatObjects(); // チャットメッセージをウィジェットに変換する
     TextFormatter timeFormatter = TextFormatter();
 
     // カラムから取得する必要があるデータを格納する変数を宣言
@@ -47,7 +47,7 @@ class RestoreChatHistory {
         print('actionData: $actionData');
       }
 
-      final chatObject = drawChatObjects.createChatObjects(
+      final dynamic chatObject = drawChatObjects.createChatObjects(
         isTodo: _isTodo,
         chatText: _chatText,
         isUser: _isUser,
