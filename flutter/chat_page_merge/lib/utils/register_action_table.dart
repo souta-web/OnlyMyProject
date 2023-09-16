@@ -1,4 +1,5 @@
 import 'database_helper.dart';
+import 'text_formatter.dart';
 import 'dart:typed_data';
 
 // アクション登録汎用クラス
@@ -16,6 +17,10 @@ class RegisterActionTable {
   final String? actionPlace;
   final String? actionMainTag;
   final String? actionSubTag;
+  final String? actionChatId;
+
+  // TextFormatterのインスタンス生成
+  TextFormatter linkIdFormatter = TextFormatter();
 
   RegisterActionTable({
     this.actionId,
@@ -31,12 +36,16 @@ class RegisterActionTable {
     this.actionPlace,
     this.actionMainTag,
     this.actionSubTag,
+    this.actionChatId,
   });
 
   void registerActionTableFunc() async {
     // データベースに登録
     print("これからデータベースに登録");
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
+    // アクションの送信時間を数値化してaction_chat_idに登録
+    final chatActionLinkId =
+        linkIdFormatter.returnChatActionId(actionStart ?? "null");
     final Map<String, dynamic> actionRow = {
       DatabaseHelper.columnActionName: actionName, // アクション名
       DatabaseHelper.columnActionStart: actionStart, // 開始時刻
@@ -50,6 +59,7 @@ class RegisterActionTable {
       DatabaseHelper.columnActionPlace: actionPlace, // 場所
       DatabaseHelper.columnActionMainTag: actionMainTag, // メインタグ
       DatabaseHelper.columnActionSubTag: actionSubTag, // サブタグ
+      DatabaseHelper.columnActionChatId: chatActionLinkId,
     };
 
     await dbHelper.insert_action_table(actionRow);
@@ -58,7 +68,6 @@ class RegisterActionTable {
     final allRows = await dbHelper.queryAllRows_action_table();
     print('全てのデータを照会しました。');
     allRows.forEach(print);
-    print(actionRow);
   }
 
   /*

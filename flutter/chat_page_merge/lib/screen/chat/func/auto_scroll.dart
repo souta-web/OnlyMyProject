@@ -19,7 +19,7 @@ class AutoScroll {
       scrollController.animateTo(
         scrollController.position.maxScrollExtent + // スクロールの最大位置（一番下）
             MediaQuery.of(context).viewInsets.bottom, // ﾋﾞｭーのインセット（ソフトウェアキーボードなどの表示領域）
-        duration: const Duration(milliseconds: 100), // スクロール時間
+        duration: const Duration(milliseconds: 200), // スクロール時間
         curve: Curves.easeOut, // スクロールの仕方
       );
     }

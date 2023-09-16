@@ -50,7 +50,7 @@ class DrawChatObjects {
   //引数にisUser追加(辻)
   dynamic sendButtonPressed(String chatText, bool isTodo,
       TextEditingController controller, bool isUser) {
-    String mainTag = '#趣味';
+    const String mainTag = '#趣味';
     String sendTime = DateTime.now().toString(); //日付取得
     TextFormatter timeFormatter = TextFormatter();
     late String drawTime = timeFormatter.returnHourMinute(sendTime); //登録時間を表示用にする
@@ -66,10 +66,10 @@ class DrawChatObjects {
       chatMessage: chatText,
       chatTime: sendTime,
       chatTodo: isTodo.toString(),
+      chatActionId: drawTime,
     );
     registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
-    print("チャットが送信されました");
-
+    
     // トグルボタンがオンの時アクションを登録する
     if (isTodo) {
       RegisterActionTable registerActionTable = RegisterActionTable(
@@ -77,6 +77,7 @@ class DrawChatObjects {
         actionStart: sendTime,
         actionMainTag: mainTag,
         actionState: _actionState,
+        actionChatId: drawTime,
       );
       registerActionTable.registerActionTableFunc();
     }

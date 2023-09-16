@@ -39,11 +39,12 @@ class RestoreChatHistory {
       // アクションテーブルからデータを取得し、mainTag,isActionFinished を取得
       if (actionHistory != <String, dynamic>{} && actionHistory.isNotEmpty) {
         final actionData = actionHistory.firstWhere(
-          (action) => action['action_id'] == chat['chat_action_id'],
+          (action) => action['action_id'] != action['action_chat_id'],
           orElse: () => <String, dynamic>{}, // 空のマップを返す,
         );
         _mainTag = actionData['action_main_tag'] ?? "null";
-        _isActionFinished = actionData['action_end'] == "true" ? true : false;;
+        _isActionFinished = actionData['action_end'] == "true" ? true : false;
+        print('actionData: $actionData');
       }
 
       final chatObject = drawChatObjects.createChatObjects(
