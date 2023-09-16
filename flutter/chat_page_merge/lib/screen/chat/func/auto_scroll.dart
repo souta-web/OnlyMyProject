@@ -15,7 +15,7 @@ class AutoScroll {
       // スクロールコントローラを使用して画面を一番下にスクロールする
       scrollController.animateTo(
         scrollController.position.maxScrollExtent,
-        duration: Duration(milliseconds: 1), // スクロール時間
+        duration: Duration(milliseconds: 500), // スクロール時間
         curve: Curves.easeOut, // スクロールの仕方
       );
     }
