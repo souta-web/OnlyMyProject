@@ -27,6 +27,9 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   // 自動スクロールクラスのインスタンス生成
   late AutoScroll _autoScroll;
 
+  // フォーカスノードのインスタンス生成
+  final FocusNode _focusNode = FocusNode();
+
   // チャット履歴復元クラスのインスタンス生成
   final RestoreChatHistory _restoreChatHistory = RestoreChatHistory();
 
@@ -36,6 +39,24 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
     _scrollController = ScrollController();
     _autoScroll = AutoScroll(_scrollController, context);
     _loadChatHistory();
+
+    // フォーカスノードのリスナーを追加
+    _focusNode.addListener(_onTextEditingFieldFocus);
+  }
+
+  // フォーカスが変更されたときに呼ばれるメソッド
+  void _onTextEditingFieldFocus() {
+    if (_focusNode.hasFocus) {
+      // テキストフィールドがフォーカスされた場合、オートスクロールを実行
+      _autoScroll.scrollToBottom();
+    }
+  }
+
+  @override
+  void dispose() {
+    // ウィジェットが破棄される際にリスナーを削除
+    _focusNode.removeListener(_onTextEditingFieldFocus);
+    super.dispose();
   }
 
   // チャット履歴を読み込むメソッド
@@ -134,6 +155,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                         ),
                         child: TextField(
                           controller: _textEditingController,
+                          focusNode: _focusNode,  // フォーカスノードを関連付ける
                           keyboardType: TextInputType.multiline, //複数行のテキスト入力
                           maxLines: 5,
                           minLines: 1,
