@@ -26,8 +26,8 @@ class RegisterChatTable {
 
   void registerChatTableFunc() async {
     // 送信時間を数値化してchat_action_idとaction_chat_idに登録
-    final chatActionLinkId =
-        linkIdFormatter.returnChatActionId(chatTime ?? "null");
+    final String chatActionLinkId =
+        linkIdFormatter.returnChatActionLinkId(chatTime ?? "null");
     // row to insert
     //データベースに登録
     print("これからデータベース登録");
@@ -46,7 +46,7 @@ class RegisterChatTable {
     await dbHelper.insert_chat_table(row);
 
     //↓デバッグ用のデータ表示プログラム
-    final allRows = await dbHelper.queryAllRows_chat_table();
+    final List<Map<String, dynamic>> allRows = await dbHelper.queryAllRows_chat_table();
     print('全てのデータを照会しました。');
     allRows.forEach(print);
   }

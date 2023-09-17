@@ -1,5 +1,3 @@
-
-
 import '/utils/draw_chat_objects.dart';
 import 'package:flutter/material.dart';
 import '/utils/media_controller.dart';
@@ -25,8 +23,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   // DrawChatObjectsをfinal修飾子で宣言
   final DrawChatObjects _chatObjects = DrawChatObjects();
 
-  late ScrollController
-      _scrollController; // ScrollControllerをChatScreenWidget内で生成
+  late ScrollController _scrollController; // ScrollControllerをChatScreenWidget内で生成
   // 自動スクロールクラスのインスタンス生成
   late AutoScroll _autoScroll;
 
@@ -44,7 +41,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   // チャット履歴を読み込むメソッド
   void _loadChatHistory() async {
     await _restoreChatHistory.fetchChatHistory();
-    final chatMessages = _restoreChatHistory.getMessages();
+    final List<Widget> chatMessages = _restoreChatHistory.getMessages();
 
     setState(() {
       _messages.addAll(chatMessages);

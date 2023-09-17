@@ -13,7 +13,7 @@ class TextFormatter {
   }
 
   // 送信時間から共通idを作成する
-  String returnChatActionId(String timeText) {
+  String returnChatActionLinkId(String timeText) {
     // 送信時間を数値化して数字以外の文字を取り除く
     final String numericTime = timeText.replaceAll(RegExp(r'[^0-9]'), '');
     return numericTime;

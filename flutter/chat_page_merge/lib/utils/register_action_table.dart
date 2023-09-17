@@ -44,8 +44,8 @@ class RegisterActionTable {
     print("これからデータベースに登録");
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
     // アクションの送信時間を数値化してaction_chat_idに登録
-    final actionChatLinkId =
-        linkIdFormatter.returnChatActionId(actionStart ?? "null");
+    final String actionChatLinkId =
+        linkIdFormatter.returnChatActionLinkId(actionStart ?? "null");
     final Map<String, dynamic> actionRow = {
       DatabaseHelper.columnActionName: actionName, // アクション名
       DatabaseHelper.columnActionStart: actionStart, // 開始時刻
@@ -65,7 +65,7 @@ class RegisterActionTable {
     await dbHelper.insert_action_table(actionRow);
 
     // デバッグ用データ表示プログラム
-    final allRows = await dbHelper.queryAllRows_action_table();
+    final List<Map<String, dynamic>> allRows = await dbHelper.queryAllRows_action_table();
     print('全てのデータを照会しました。');
     allRows.forEach(print);
   }

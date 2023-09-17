@@ -38,7 +38,7 @@ class RestoreChatHistory {
       late String drawTime = timeFormatter.returnHourMinute(_startTime);
       // アクションテーブルからデータを取得し、mainTag,isActionFinished を取得
       if (actionHistory != <String, dynamic>{} && actionHistory.isNotEmpty) {
-        final actionData = actionHistory.firstWhere(
+        final Map<String, dynamic> actionData = actionHistory.firstWhere(
           (action) => action['action_id'] != action['action_chat_id'],
           orElse: () => <String, dynamic>{}, // 空のマップを返す,
         );
