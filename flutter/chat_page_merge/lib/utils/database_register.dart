@@ -90,7 +90,8 @@ class DataBaseRegister {
         // TODO: actionMainTagには↑で作ったmainTag用の変数をいれる
         // TODO: actionStateには↑で作ったアクションの状態を管理する変数を記述
         actionName: 'Emily', actionStart: DateTime.now().toString(),
-      ).registerActionTableFunc(); // TODO: インスタンス生成した変数.registerActionTableFunc()の形にする
+      );
+      //.registerActionTableFunc(); // TODO: インスタンス生成した変数.registerActionTableFunc()の形にする
     }
     // テキストフィールドをクリア
     controller.clear();
