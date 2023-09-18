@@ -13,33 +13,40 @@ class ChatMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // 送信者に応じてメッセージの位置を調整する
-      alignment: isSentByUser ? Alignment.centerRight : Alignment.centerLeft,
+    return GestureDetector(
+      onLongPress: () {
+        // ここに長押し時の処理を追加します
+        print('Widgetが長押しされました！');
+        Navigator.pushNamed(context, '/actionEdit');
+      },
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-        padding: EdgeInsets.all(10.0),
-        decoration: BoxDecoration(
-          // 送信者に応じてメッセージの背景色を設定する
-          color: isSentByUser ? Color.fromARGB(255, 255, 149, 21) : Color.fromARGB(255, 189, 187, 184),
-          // 角丸のボーダーを適用する
-          borderRadius: isSentByUser ?
-          BorderRadius.only(
-            topRight: Radius.circular(10),
-            topLeft: Radius.circular(10),
-            bottomLeft: Radius.circular(10),
-          ) : 
-          BorderRadius.only(
-            topRight: Radius.circular(10),
-            topLeft: Radius.circular(10),
-            bottomRight: Radius.circular(10),
-          )
+        // 送信者に応じてメッセージの位置を調整する
+        alignment: isSentByUser ? Alignment.centerRight : Alignment.centerLeft,
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+          padding: EdgeInsets.all(10.0),
+          decoration: BoxDecoration(
+            // 送信者に応じてメッセージの背景色を設定する
+            color: isSentByUser ? Color.fromARGB(255, 255, 149, 21) : Color.fromARGB(255, 189, 187, 184),
+            // 角丸のボーダーを適用する
+            borderRadius: isSentByUser ?
+            BorderRadius.only(
+              topRight: Radius.circular(10),
+              topLeft: Radius.circular(10),
+              bottomLeft: Radius.circular(10),
+            ) : 
+            BorderRadius.only(
+              topRight: Radius.circular(10),
+              topLeft: Radius.circular(10),
+              bottomRight: Radius.circular(10),
+            )
+          ),
+          child: Text(
+            text,
+            style: TextStyle(fontSize: 16.0),
+          ),
         ),
-        child: Text(
-          text,
-          style: TextStyle(fontSize: 16.0),
-        ),
-      ),
+      )
     );
   }
 }

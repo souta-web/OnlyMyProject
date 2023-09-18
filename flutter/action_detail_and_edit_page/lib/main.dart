@@ -4,6 +4,7 @@ import 'screen/chat/chat_screen.dart';
 import 'screen/timeline/timeline_screen.dart';
 import 'screen/data/data_screen.dart';
 import 'screen/setting/config_screen.dart';
+import 'screen/action_edit/action_edit_screen.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -28,6 +29,7 @@ class MyApp extends ConsumerWidget {
         '/chat': (BuildContext context) => ChatScreenWidget(),
         '/timelime': (BuildContext context) => TimelineScreenWidget(),
         '/data': (BuildContext context) => DataScreenWidget(),
+        '/actionEdit': (BuildContext context) => ActionEditPage(),
       },
     );
   }
