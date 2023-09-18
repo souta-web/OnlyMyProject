@@ -1,5 +1,4 @@
 import 'database_helper.dart';
-import 'text_formatter.dart';
 
 class RegisterChatTable {
   final int? chatId; //idはデータ登録時に自動で割り当てられるため、引数で渡す必要は基本的にはない
@@ -10,9 +9,6 @@ class RegisterChatTable {
   final String? chatTime;
   final String? chatChannel;
   final String? chatActionId;
-
-  // TextFormatterのインスタンス生成
-  TextFormatter linkIdFormatter = TextFormatter();
 
   RegisterChatTable(
       {this.chatId,
@@ -25,9 +21,7 @@ class RegisterChatTable {
       this.chatActionId});
 
   void registerChatTableFunc() async {
-    // 送信時間を数値化してchat_action_idとaction_chat_idに登録
-    final String chatActionLinkId =
-        linkIdFormatter.returnChatActionLinkId(chatTime ?? "null");
+    
     // row to insert
     //データベースに登録
     print("これからデータベース登録");
@@ -40,7 +34,7 @@ class RegisterChatTable {
       DatabaseHelper.columnChatMessage: chatMessage,
       DatabaseHelper.columnChatTime: chatTime,
       DatabaseHelper.columnChatChannel: chatChannel,
-      DatabaseHelper.columnChatActionId: chatActionLinkId,
+      DatabaseHelper.columnChatActionId: chatActionId,
     };
 
     await dbHelper.insert_chat_table(row);
