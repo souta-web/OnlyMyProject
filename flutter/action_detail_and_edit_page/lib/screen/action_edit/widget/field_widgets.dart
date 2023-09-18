@@ -15,67 +15,72 @@ class _ActionEditPagePrimaryWidget extends State<ActionEditPagePrimaryWidget> {
   final TextEditingController _textEditingController_score = TextEditingController();
   final TextEditingController _textEditingController_explain = TextEditingController();
   final TextfieldTagsController _textEditingController_tag = TextfieldTagsController(); //タグフィールドのコントローラー
-  late double _distanceToField; // TextFieldのサイズ？
+
+  late double _distanceToField = widget.bodyWidth; // TextFieldのサイズ？
+  late double _deviceWidth = MediaQuery.of(context).size.width; //画面の横幅を取得
+  late List<String> _tagList = ["料理","勉強"];
   
   @override
+
   void initState() {
     super.initState();
-    _distanceToField = widget.bodyWidth;
   }
-
-  @override
+  
   Widget build(BuildContext context) {
     return Container(
       child:Column(
         children: [
-          _createTitleArea(widget.bodyWidth),
-          _createTagArea(widget.bodyWidth),
+          _createTitleArea(_deviceWidth),
+          _createTagArea(_deviceWidth,_tagList),
         ]
       )
     );
   }
 
-  Widget _createTitleArea(_bodyWidth) {
-    const double _thisHeight = 100.0;
+  Widget _createTitleArea(_deviceWidth) {
+    const double _thisHeight = 70.0;
     const Color _hintTextColor = Colors.red;
+    const double _thisTextFieldMargin = 5.0;
     return SizedBox(
-      width: _bodyWidth,
+      width: _deviceWidth,
       height: _thisHeight,
       child: Container(
         child:Column(
           children: [
-            TextField(
-              controller: _textEditingController_title,
-              decoration: const InputDecoration(
-                hintText: 'タイトル(hintText)', //ヒントテキスト
-                hintStyle: TextStyle(
-                  color: _hintTextColor,
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.black,
-                    width: 1.0,
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal:_thisTextFieldMargin), //ウィジェットの外側の余白
+              child:TextField(
+                controller: _textEditingController_title,
+                decoration: const InputDecoration(
+                  hintText: 'タイトル(hintText)', //ヒントテキスト
+                  hintStyle: TextStyle(
+                    color: _hintTextColor,
                   ),
-                )
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                ),
+                style: const TextStyle(
+                  fontSize: 24,
+                ),
+                onChanged: (value) {
+                  // テキストが変更されたときの処理
+                  print('Input: $value');
+                },
               ),
-              style: const TextStyle(
-                fontSize: 24,
-              ),
-              onChanged: (value) {
-                // テキストが変更されたときの処理
-                print('Input: $value');
-              },
             ),
+            _createHorizontalLine(),
           ],
         )
       )
+      
     );
   }
 
-  Widget _createTagArea(_bodyWidth) {
-    const double _thisHeight = 200.0;
-    const bool _createCLEARTAGS = true;
-    late List<String> _tagList = ["料理"]; //タグのリスト
+  Widget _createTagArea(_bodyWidth,_tagList) {
+    const double _thisHeight = 150.0;
+    const bool _createCLEARTAGS = false;
+    final double _fieldWidth = _bodyWidth;
+    const bool _drawThisIcon = true;
     return SizedBox(
       width: _bodyWidth, 
       height: _thisHeight,
@@ -94,7 +99,7 @@ class _ActionEditPagePrimaryWidget extends State<ActionEditPagePrimaryWidget> {
               }
               return null;
             },
-            inputfieldBuilder:(context, tec, fn, error, onChanged, onSubmitted) {
+            inputfieldBuilder:(context, tec, fn, error, onChanged, onSubmitted) { //入力欄
               return ((context, sc, tags, onTagDelete) {
                 return Padding(
                   padding: const EdgeInsets.all(10.0),
@@ -104,10 +109,10 @@ class _ActionEditPagePrimaryWidget extends State<ActionEditPagePrimaryWidget> {
                     decoration: InputDecoration(
                       // テキストフィールドの装飾
                       isDense: true, //若干変わる
-                      helperText: 'タグを追加してください', // ヘルパーテキスト
-                      hintText: _textEditingController_tag.hasTags ? '' : "Enter tag...", // ヒントテキスト
-                      errorText: error, // エラーテキスト
-                      prefixIconConstraints:BoxConstraints(maxWidth: _distanceToField * 0.74),
+                      hintText: _textEditingController_tag.hasTags ? '' : "タグを追加してください。", // ヒントテキスト
+                      prefixIconConstraints:BoxConstraints(maxWidth: _fieldWidth),
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
                       prefixIcon: tags.isNotEmpty
                         ? SingleChildScrollView(
                           controller: sc,
@@ -127,6 +132,7 @@ class _ActionEditPagePrimaryWidget extends State<ActionEditPagePrimaryWidget> {
               });
             },
           ),
+          _createHorizontalLine(),
           _createClearTagsButton(_createCLEARTAGS),
         ],
       ),
@@ -193,7 +199,7 @@ class _ActionEditPagePrimaryWidget extends State<ActionEditPagePrimaryWidget> {
 
   Widget _createHorizontalLine() {
     const double _thisHeight = 1.5;
-    return Divider(
+    return const Divider(
       color: Colors.black, // 線の色を指定 (省略可能)
       height: _thisHeight, // 線の高さを指定 (省略可能)
       thickness: 1.5, // 線の太さを指定 (省略可能)
