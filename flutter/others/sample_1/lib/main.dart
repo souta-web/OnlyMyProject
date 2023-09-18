@@ -1,51 +1,73 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
-
-import 'package:fl_chart/fl_chart.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,//デバッグモードバナーを非表示にする
-      title: 'Piechart',
-      theme: ThemeData(//アプリケーションのテーマカラーを決める
+      title: 'Timeline Example',
+      theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(),
+      home: TimelineScreen(),
     );
   }
 }
 
-class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
-
+class TimelineScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(//appbarのある画面を作るという宣言
+    return Scaffold(
       appBar: AppBar(
-        title: const Text('Piechart'),
+        title: Text('Timeline'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(30),
-        child: PieChart(PieChartData(
-            centerSpaceRadius: 5,
-            borderData: FlBorderData(show: false),
-            sectionsSpace: 2,
-            sections: [
-              PieChartSectionData(value: 35, color: Colors.purple, radius: 100),
-              PieChartSectionData(value: 40, color: Colors.amber, radius: 100),
-              PieChartSectionData(value: 55, color: Colors.green, radius: 100),
-              PieChartSectionData(value: 70, color: Colors.orange, radius: 100),
-            ])
-            )
-          ),
-        );
+      body: Center(
+        child: CustomPaint(
+          size: Size(200, 800), // カスタム描画領域のサイズ
+          painter: TimelinePainter(), // カスタムペインターを指定
+        ),
+      ),
+    );
+  }
+}
+
+class TimelinePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.black
+      ..strokeWidth = 1.0;
+
+    // タイムラインの時間と縦線を描画
+    for (int hour = 1; hour <= 24; hour++) {
+      final y = (hour / 12) * size.height;
+      final double startX = 0;
+      final endX = size.width;
+      canvas.drawLine(Offset(startX, y), Offset(endX, y), paint);
+
+      final textPainter = TextPainter(
+        text: TextSpan(
+          text: hour.toString(),
+          style: TextStyle(color: Colors.black, fontSize: 14),
+        ),
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.ltr,
+      );
+
+      textPainter.layout(
+        minWidth: size.width, // テキストの位置を調整
+        maxWidth: size.width,
+      );
+
+      textPainter.paint(canvas, Offset(endX + 5, y - textPainter.height / 2));
     }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
+  }
 }

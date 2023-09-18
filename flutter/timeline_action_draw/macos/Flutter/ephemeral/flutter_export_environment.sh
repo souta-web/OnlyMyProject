@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
 export "FLUTTER_ROOT=C:\src\flutter"
-export "FLUTTER_APPLICATION_PATH=C:\Users\kouty\OneDrive\Documents\GitHub\OnlyMyProject\flutter\timeline_action_draw"
+export "FLUTTER_APPLICATION_PATH=C:\Users\kajit\Documents\GitHub\OnlyMyProject\flutter\timeline_action_draw"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=1.0.0"

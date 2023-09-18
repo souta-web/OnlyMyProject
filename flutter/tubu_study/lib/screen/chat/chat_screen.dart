@@ -11,24 +11,17 @@ class ChatScreenWidget extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.settings),
             onPressed: () {
-              Navigator.pushNamed(context, '/config'); //routeに追加したconfigに遷移
+              Navigator.pushNamed(context, '/config');//routeに追加したconfigに遷移
             },
           ),
         ],
       ),
-
       ///記述範囲
-      body: Column(children: [
-        Expanded(
-            child: Container(
-          child: Text('This is a text'),
-          padding: EdgeInsets.all(16),
-          color: Colors.blue,
-        )),
-        Text('Chat Screen'),
-      ]),
-
+      body: Center(
+        child: Text('Chat Screen'),
+      ),
       ///記述範囲
     );
   }
 }
+
