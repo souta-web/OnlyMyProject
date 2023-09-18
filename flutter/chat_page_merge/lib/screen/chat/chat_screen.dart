@@ -15,10 +15,13 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   final TextEditingController _textEditingController = TextEditingController();
   //switchボタンの状態管理変数
   bool _isTodo = false; //テキスト入力の左のやつ
-  late Uint8List? _mediaData = null;//メディアを格納する
+  late Uint8List? _mediaData = null; //メディアを格納する
 
   // チャットメッセージのリスト
   final List<dynamic> _messages = [];
+
+  // チャット描画クラスのインスタンス生成
+  final DataBaseRegister _dataBaseRegister = DataBaseRegister();
 
   //ほかのファイルの非同期処理関数をbuild内で呼び出して戻り値受け取れないからそれを可能にするための記述
   Future<Uint8List?> _getMedia() async {
@@ -50,9 +53,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
             ),
             IconButton(
               icon: Icon(Icons.data_usage),
-              onPressed: () async {
-
-              },
+              onPressed: () async {},
             ),
           ],
         ),
@@ -141,7 +142,18 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                                   );
 
                                   registerActionTable.registerActionTableFunc();*/
-                                  sendButtonPressed();
+                                  //
+
+                                  // エラーが出るのでコメントしておきます。
+                                  // タスクに取り掛かるときにコメントを外してください
+                                  // 下記のように呼び出す
+
+                                  // _messages.add(
+                                  //     _dataBaseRegister.sendButtonPressed(
+                                  //         chatText, // TODO: テキストフィールドに入力されたテキストを入れる
+                                  //         isTodo, // TODO: 上で初期化されたトグルの変数を入れる
+                                  //         controller, // TODO: テキストフィールドの変数を入れる
+                                  //         true)); // 現在はユーザーのみの送信なのでtrueに設定
                                 },
                               ),
                             ),
