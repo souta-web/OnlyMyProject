@@ -3,6 +3,7 @@ import '/utils/media_controller.dart';
 import 'dart:typed_data';
 import '/utils/register_chat_table.dart';
 import '/utils/register_action_table.dart';
+import '/utils/database_register.dart';
 
 class ChatScreenWidget extends StatefulWidget {
   @override
@@ -127,7 +128,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                                 color: Colors.white,
                                 onPressed: () {
                                   //↓辻作成の登録プログラム動作確認用。カトゥーンのほうでも動作確認出来たら消してください。
-                                  RegisterChatTable registerChatTable = RegisterChatTable( //インスタンス化、引数渡し
+                                  /*RegisterChatTable registerChatTable = RegisterChatTable( //インスタンス化、引数渡し
                                     chatSender: 'John',
                                     chatMessage: 'Hello!',
                                   );
@@ -136,10 +137,11 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
 
                                   RegisterActionTable registerActionTable = RegisterActionTable( //インスタンス化、引数渡し
                                     actionName: 'Emily',
-                                    actionStart: 10,
+                                    actionStart: DateTime.now().toString(),
                                   );
 
-                                  registerActionTable.registerActionTableFunc();
+                                  registerActionTable.registerActionTableFunc();*/
+                                  sendButtonPressed();
                                 },
                               ),
                             ),

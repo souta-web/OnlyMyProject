@@ -3,7 +3,7 @@ import 'database_helper.dart';
 class RegisterActionTable{
   final int? actionId;
   final String? actionName;
-  final int? actionStart;
+  final String? actionStart;
   final int? actionEnd;
   final int? actionDuration; //総時間
   final String? actionMessage;
@@ -34,8 +34,19 @@ class RegisterActionTable{
     print("これからデータベース登録");
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
     Map<String, dynamic> row = {
+      DatabaseHelper.columnActionId : actionId,
       DatabaseHelper.columnActionName : actionName,
       DatabaseHelper.columnActionStart : actionStart,
+      DatabaseHelper.columnActionEnd : actionEnd,
+      DatabaseHelper.columnActionDuration : actionDuration,
+      DatabaseHelper.columnActionMessage : actionMessage,
+      DatabaseHelper.columnActionMedia : actionMedia,
+      DatabaseHelper.columnActionNotes : actionNotes,
+      DatabaseHelper.columnActionScore : actionScore,
+      DatabaseHelper.columnActionState : actionState,
+      DatabaseHelper.columnActionPlace : actionPlace,
+      DatabaseHelper.columnActionMainTag : actionMainTag,
+      DatabaseHelper.columnActionSubTag : actionSubTag,
     };
 
     await dbHelper.insert_action_table(row);
