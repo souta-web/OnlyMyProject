@@ -37,10 +37,17 @@ packages:
     dependency: transitive
     description:
       name: collection
+<<<<<<< Updated upstream:flutter/others/timeline_action_draw/pubspec.lock
       sha256: ee67cb0715911d28db6bf4af1026078bd6f0128b07a5f66fb2ed94ec6783c09a
       url: "https://pub.dev"
     source: hosted
     version: "1.18.0"
+=======
+      sha256: f092b211a4319e98e5ff58223576de6c2803db36221657b46c82574721240687
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.17.2"
+>>>>>>> Stashed changes:flutter/original_test_chat_application_var1.0.2/pubspec.lock
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -324,10 +331,17 @@ packages:
     dependency: transitive
     description:
       name: test_api
+<<<<<<< Updated upstream:flutter/others/timeline_action_draw/pubspec.lock
       sha256: "5c2f730018264d276c20e4f1503fd1308dfbbae39ec8ee63c5236311ac06954b"
       url: "https://pub.dev"
     source: hosted
     version: "0.6.1"
+=======
+      sha256: "75760ffd7786fffdfb9597c35c5b27eaeec82be8edfb6d71d32651128ed7aab8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.6.0"
+>>>>>>> Stashed changes:flutter/original_test_chat_application_var1.0.2/pubspec.lock
   vector_math:
     dependency: transitive
     description:
