@@ -54,11 +54,16 @@ class DrawChatObjects {
     String sendTime = DateTime.now().toString(); //日付取得
     TextFormatter timeFormatter = TextFormatter();
     late String drawTime = timeFormatter.returnHourMinute(sendTime); //登録時間を表示用にする
+    // 送信時間を数値化してchat_action_idとaction_chat_idに登録
+    late String chatActionLinkId = timeFormatter.returnChatActionLinkId(sendTime);
     String _actionState = 'false';
+    
 
     if (chatText.isEmpty) {
       return;
     }
+
+
 
     // チャットをデータベースに登録する
     RegisterChatTable registerChatTable = RegisterChatTable(
@@ -66,7 +71,7 @@ class DrawChatObjects {
       chatMessage: chatText,
       chatTime: sendTime,
       chatTodo: isTodo.toString(),
-      chatActionId: drawTime,
+      chatActionId: chatActionLinkId,
     );
     registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
     
@@ -77,7 +82,7 @@ class DrawChatObjects {
         actionStart: sendTime,
         actionMainTag: mainTag,
         actionState: _actionState,
-        actionChatId: drawTime,
+        actionChatId: chatActionLinkId,
       );
       registerActionTable.registerActionTableFunc();
     }

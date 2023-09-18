@@ -1,5 +1,4 @@
 import 'database_helper.dart';
-import 'text_formatter.dart';
 import 'dart:typed_data';
 
 // アクション登録汎用クラス
@@ -18,9 +17,6 @@ class RegisterActionTable {
   final String? actionMainTag;
   final String? actionSubTag;
   final String? actionChatId;
-
-  // TextFormatterのインスタンス生成
-  TextFormatter linkIdFormatter = TextFormatter();
 
   RegisterActionTable({
     this.actionId,
@@ -43,9 +39,6 @@ class RegisterActionTable {
     // データベースに登録
     print("これからデータベースに登録");
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
-    // アクションの送信時間を数値化してaction_chat_idに登録
-    final String actionChatLinkId =
-        linkIdFormatter.returnChatActionLinkId(actionStart ?? "null");
     final Map<String, dynamic> actionRow = {
       DatabaseHelper.columnActionName: actionName, // アクション名
       DatabaseHelper.columnActionStart: actionStart, // 開始時刻
@@ -59,7 +52,7 @@ class RegisterActionTable {
       DatabaseHelper.columnActionPlace: actionPlace, // 場所
       DatabaseHelper.columnActionMainTag: actionMainTag, // メインタグ
       DatabaseHelper.columnActionSubTag: actionSubTag, // サブタグ
-      DatabaseHelper.columnActionChatId: actionChatLinkId, // チャットテーブルとアクションテーブル紐づけ用
+      DatabaseHelper.columnActionChatId: actionChatId, // チャットテーブルとアクションテーブル紐づけ用
     };
 
     await dbHelper.insert_action_table(actionRow);
