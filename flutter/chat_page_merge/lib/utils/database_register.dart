@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import '/screen/chat/chat_screen.dart'; // TODO: このimportは不要
 import '/utils/register_chat_table.dart';
 import '/utils/register_action_table.dart';
 import '/widget/chat_fukidashi.dart';
@@ -12,11 +10,11 @@ class DataBaseRegister {
 // できるだけ直接値を記述するのではなく変数を作ってその中に文字列は真偽値を入れて作成しましょう
 
 // この関数はチャットオブジェクトを表示する
-// TODO: dynamicの配列を動かすので関数の型はdynamicにしてください(型定義は必須)
+// 済 TODO: dynamicの配列を動かすので関数の型はdynamicにしてください(型定義は必須)
 // 引数にbool型のisTodo,String型のchatText,bool型のisUser,String型のmainTag,String型のstartTime,bool型のisActionFlagを設定する
 // この関数を動かすために絶対に必要なものだけrequiredをつける。それ以外にrequiredをつけると問題が発生するのですべてにrequiredをつけないでください。
 // つまり↑のコメントで提示してあるrequiredをつけるべき引数はisTodo,chatText,isUserです。
-  drawChatObjects({
+  dynamic drawChatObjects({
     required bool isTodo, // ←のように引数を定義
     required String chatText,
     required bool isUser,
@@ -32,29 +30,31 @@ class DataBaseRegister {
 
     // isTodoはトグルボタンの状態を受け取る
     // このif文はメッセージを送信したいので()の中はisUserで良い
-    // TODO: ()の中身をisUserに修正
-    if (isTodo) {
+    // 済 TODO: ()の中身をisUserに修正
+    if (isUser) {
       // 変数に代入してメッセージをを表示する
       ChatMessage message = ChatMessage(
-          text: 'OK',
-          isSentByUser:
-              false); // TODO: test: chatText、isSentByUser: isUserに変更する
+          text: chatText,
+          isSentByUser: isUser); // 済 TODO: test: chatText、isSentByUser: isUserに変更する
       return message; // 返り値でmessageを返す
     } else {
       // elseは返答を送信しているので同じものを記述
       // TODO: 上記と同じものを記述する、返り値も忘れずに。
       // ＊その場合返答はしないようになるので注意(送信のみのチャットになる)
-    }
+      ChatMessage message = ChatMessage(
+        text: chatText,
+        isSentByUser: isUser);
+      return;
+    } 
 
     // ↓のif文はトグルボタンがオンの時にアクションが表示される
     if (isTodo) {
       ChatTodo(
-          title: '行動開始', // TODO: 送信チャットをタイトルとして表示したいので、chatTextに変更
-          isSentByUser: false, // TODO: falseをisUserに変更
-          mainTag: '生活', // TODO: '生活'をmainTagに変更
-          startTime: DateTime.now()
-              .toString(), // TODO: DateTime.now().toString()をstartTimeに変更
-          actionFinished: false); // TODO: falseをisActionFlagに変更
+          title: chatText, // TODO: 送信チャットをタイトルとして表示したいので、chatTextに変更
+          isSentByUser: isUser, // TODO: falseをisUserに変更
+          mainTag: mainTag ?? '', // TODO: '生活'をmainTagに変更
+          startTime: startTime ?? '', // TODO: DateTime.now().toString()をstartTimeに変更
+          actionFinished: isActionFlag ?? false); // TODO: falseをisActionFlagに変更
     }
   }
 
@@ -62,7 +62,7 @@ class DataBaseRegister {
   // 引数にいろいろ定義
   // TextEditingControllerはテキストフィールドの型です
 
-  sendButtonPressed(String chatText, bool isTodo,
+  dynamic sendButtonPressed(String chatText, bool isTodo,
       TextEditingController controller, bool isUser) {
     // TODO: メインタグに文字列を格納する変数を作る(String型)
     // 例　String myMainTag = 'ゲーム';
