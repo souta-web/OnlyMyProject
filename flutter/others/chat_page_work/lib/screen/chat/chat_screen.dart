@@ -19,11 +19,8 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
 
   // チャットメッセージのリスト
   final List<dynamic> _messages = [
-    ChatMessage(
-      text: "テスト",
-      isSentByUser: true,
-      time: "4:44 AM",
-    )
+    ChatMessage(text: "テスト",isSentByUser: true,time: "4:44"),
+    ChatMessage(text: "テスト",isSentByUser: false,time: "5:44"),
   ];
 
   //ほかのファイルの非同期処理関数をbuild内で呼び出して戻り値受け取れないからそれを可能にするための記述
@@ -73,6 +70,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
               ),
             ),
             Container(
+                height:50,
                 color: Color.fromARGB(255, 103, 100, 100),
                 child: Column(children: [
                   Form(
@@ -84,26 +82,17 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                             //コールバック関数の定義
                             setState(() {
                               //スイッチ状態をトグルする
-                              _isTodo =
-                                  !_isTodo; //スイッチの状態をトグル（ONからOFF,OFFからONに切替）
+                              _isTodo = !_isTodo; //スイッチの状態をトグル（ONからOFF,OFFからONに切替）
                             });
                           },
                           child: Container(
-                            padding:
-                                EdgeInsets.only(bottom: 10, left: 10), //アイコン動く
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle, //円形
-                              color: _isTodo
-                                  ? Colors.green
-                                  : Colors.red, //スイッチの状態に応じて色の切替
-                            ),
+                            padding:const EdgeInsets.all(10), //アイコン動く
                             child: Image.asset(
-                              _isTodo
-                                  ? 'assets/images/chat_icon.png'
-                                  : 'assets/images/chat_icon_d.png', // UI_.pdf のアイコンに置き換え
-                              color: Colors.white,
-                              width: 16, //アイコンの幅
-                              height: 16, //アイコンの高さ
+                              _isTodo ? 'assets/images/textfield_action_submit_true.png'
+                                      : 'assets/images/textfield_action_submit_false.png', // UI_.pdf のアイコンに置き換え
+                              color: Colors.black,
+                              height:30,
+
                             ),
                           ),
                         ),
@@ -128,29 +117,31 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                           },
                         ),
                         Flexible(
-                            child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          margin: const EdgeInsets.symmetric(vertical: 5.0),
-                          height: 40.0,
-                          decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 222, 216, 216),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: TextField(
-                            controller: _textEditingController,
-                            keyboardType: TextInputType.multiline, //複数行のテキスト入力
-                            maxLines: 5,
-                            minLines: 1,
-                            cursorColor: Color.fromARGB(255, 75, 67, 93),
-                            decoration: InputDecoration(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            margin: const EdgeInsets.symmetric(vertical: 5.0),
+                            height: 40.0,
+                            decoration: BoxDecoration(
+                              color: Color.fromARGB(255, 222, 216, 216),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: TextField(
+                              controller: _textEditingController,
+                              keyboardType: TextInputType.multiline, //複数行のテキスト入力
+                              maxLines: 5,
+                              minLines: 1,
+                              cursorColor: Color.fromARGB(255, 75, 67, 93),
+                              decoration:const InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'メッセージを入力してください',
                                 //hintTextの位置
                                 contentPadding: EdgeInsets.symmetric(
                                   vertical: 11.0,
-                                )),
-                          ),
-                        )),
+                                )
+                              ),
+                            ),
+                          )
+                        ),
                         Material(
                           //送信ボタンを作成
                           color: Color.fromARGB(255, 103, 100, 100),

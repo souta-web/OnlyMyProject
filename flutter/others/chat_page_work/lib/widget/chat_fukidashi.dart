@@ -18,48 +18,63 @@ class ChatMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Row(
       // 送信者に応じてメッセージの位置を調整する
-      alignment: isSentByUser ? Alignment.centerRight : Alignment.centerLeft,
-      child: Column(
-        //縦配置
-        crossAxisAlignment: isSentByUser
-            ? CrossAxisAlignment.end
-            : CrossAxisAlignment.start, // 時間の位置を調整
-        children: [
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-            padding: EdgeInsets.all(10.0),
-            decoration: BoxDecoration(
-                // 送信者に応じてメッセージの背景色を設定する
-                color: isSentByUser
-                    ? Color.fromARGB(255, 255, 149, 21)
-                    : Color.fromARGB(255, 189, 187, 184),
-                // 角丸のボーダーを適用する
-                borderRadius: isSentByUser
-                    ? BorderRadius.only(
-                        topRight: Radius.circular(10),
-                        topLeft: Radius.circular(10),
-                        bottomLeft: Radius.circular(10),
-                      )
-                    : BorderRadius.only(
-                        topRight: Radius.circular(10),
-                        topLeft: Radius.circular(10),
-                        bottomRight: Radius.circular(10),
-                      )),
-            child: Text(
-              text,
-              style: TextStyle(fontSize: 16.0),
-            ),
+      mainAxisAlignment: isSentByUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+      children: [
+        _createTimeWidget(time,"left",isSentByUser),
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+          padding: EdgeInsets.all(10.0),
+          decoration: BoxDecoration(
+            // 送信者に応じてメッセージの背景色を設定する
+            color: isSentByUser
+                ? Color.fromARGB(255, 255, 149, 21)
+                : Color.fromARGB(255, 189, 187, 184),
+            // 角丸のボーダーを適用する
+            borderRadius: isSentByUser
+              ? BorderRadius.only(
+                  topRight: Radius.circular(10),
+                  topLeft: Radius.circular(10),
+                  bottomLeft: Radius.circular(10),
+                )
+              : BorderRadius.only(
+                  topRight: Radius.circular(10),
+                  topLeft: Radius.circular(10),
+                  bottomRight: Radius.circular(10),
+                )),
+          child: Text(
+            text,
+            style: TextStyle(fontSize: 16.0),
           ),
-          SizedBox(width: 5.0), // 吹き出しと時間の間にスペースを設定
-          Text(
-            // 時間情報を表示
-            time,
-            style: TextStyle(fontSize: 12.0, color: Colors.grey),
-          )
-        ],
-      ),
+        ),
+        _createTimeWidget(time,"right",isSentByUser),
+      ],
     );
+  }
+  Widget _createTimeWidget(String _time,String _thisPosition,bool _isUser) {
+    if (_thisPosition == "left") {
+      if(_isUser == true) {
+        return Text(
+          // 時間情報を表示
+          time,
+          style: TextStyle(fontSize: 12.0, color: Colors.grey),
+        );
+      }else{
+        return const SizedBox.shrink(); //空のウィジェットを返す
+      }
+    }else if(_thisPosition == "right") {
+      if(_isUser == false) {
+        return Text(
+          // 時間情報を表示
+          time,
+          style: TextStyle(fontSize: 12.0, color: Colors.grey),
+        );
+      }else{
+        return const SizedBox.shrink(); //空のウィジェットを返す
+      }
+    }else{
+      return const SizedBox.shrink(); //空のウィジェットを返す
+    }
   }
 }

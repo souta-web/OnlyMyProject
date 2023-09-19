@@ -76,6 +76,8 @@ flutter:
     - assets/images/data_icon_d.png
     - assets/images/account_icon.png
     - assets/images/play_circle.png
+    - assets/images/textfield_action_submit_true.png
+    - assets/images/textfield_action_submit_false.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
