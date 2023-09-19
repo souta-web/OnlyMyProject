@@ -26,6 +26,19 @@ class DataBaseRegister {
     if (chatText.isNotEmpty) {
       // isNotEmptyは空文字を許さないよっていう条件
       return;
+    } 
+
+    // if文の場所に問題があったので変えました
+    // ↓のif文はトグルボタンがオンの時にアクションが表示される
+    if (isTodo) {
+      ChatTodo message = ChatTodo(
+          title: chatText, // TODO: 送信チャットをタイトルとして表示したいので、chatTextに変更
+          isSentByUser: isUser, // TODO: falseをisUserに変更
+          mainTag: mainTag ?? '', // TODO: '生活'をmainTagに変更
+          startTime:
+              startTime ?? '', // TODO: DateTime.now().toString()をstartTimeに変更
+          actionFinished: isActionFlag ?? false); // TODO: falseをisActionFlagに変更
+      return message;
     }
 
     // isTodoはトグルボタンの状態を受け取る
@@ -35,27 +48,19 @@ class DataBaseRegister {
       // 変数に代入してメッセージをを表示する
       ChatMessage message = ChatMessage(
           text: chatText,
-          isSentByUser: isUser); // 済 TODO: test: chatText、isSentByUser: isUserに変更する
+          isSentByUser:
+              isUser); // 済 TODO: test: chatText、isSentByUser: isUserに変更する
       return message; // 返り値でmessageを返す
     } else {
       // elseは返答を送信しているので同じものを記述
       // TODO: 上記と同じものを記述する、返り値も忘れずに。
       // ＊その場合返答はしないようになるので注意(送信のみのチャットになる)
-      ChatMessage message = ChatMessage(
-        text: chatText,
-        isSentByUser: isUser);
-      return;
-    } 
-
-    // ↓のif文はトグルボタンがオンの時にアクションが表示される
-    if (isTodo) {
-      ChatTodo(
-          title: chatText, // TODO: 送信チャットをタイトルとして表示したいので、chatTextに変更
-          isSentByUser: isUser, // TODO: falseをisUserに変更
-          mainTag: mainTag ?? '', // TODO: '生活'をmainTagに変更
-          startTime: startTime ?? '', // TODO: DateTime.now().toString()をstartTimeに変更
-          actionFinished: isActionFlag ?? false); // TODO: falseをisActionFlagに変更
+      ChatMessage message = ChatMessage(text: chatText, isSentByUser: isUser);
+      return message;
     }
+
+    
+    
   }
 
   // 送信ボタンを押下したときに呼び出される関数
@@ -104,7 +109,7 @@ class DataBaseRegister {
     // コメントされてる範囲を囲んで ctrl + /
 
     // return drawChatObjects(
-    //   isTodo: , // TODO: isTodoを記述 
+    //   isTodo: , // TODO: isTodoを記述
     //   chatText: , // TODO: chatTextを記述
     //   isUser:  , // TODO: isUserを記述
     //   startTime: ,  // TODO: 送信時間用の変数記述
