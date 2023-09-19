@@ -30,6 +30,7 @@ class RegisterMediaTable {
     };
 
     await dbHelper.insert_media_table(mediaRow);
+    print('登録終わりました!');
 
     // デバッグ表示用プログラム
     final List<Map<String, dynamic>> allRows =

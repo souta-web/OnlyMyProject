@@ -17,11 +17,12 @@ class DrawMedia {
     if (pickedFiles != null && pickedFiles.isNotEmpty) {
       print(pickedFiles);
       for (XFile file in pickedFiles) {
-        final bytes =
+        final Uint8List bytes =
             await io.File(file.path).readAsBytes(); // ファイルを読み込んでバイナリーデータに変換
         imageList.add(Uint8List.fromList(bytes)); // バイナリーデータをリストに追加
       }
     }
+
     // 画像が1枚以上選択されている場合にのみデータベースに登録
     if (imageList.isNotEmpty) {
       RegisterMediaTable registerMediaTable = RegisterMediaTable(
