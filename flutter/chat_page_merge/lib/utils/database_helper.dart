@@ -6,12 +6,13 @@ import 'package:path_provider/path_provider.dart';
 
 class DatabaseHelper {
   // デバッグ時はDB名を変えてよい
-  static final _databaseName = "MyDatabase39.db"; // DB名
+  static final _databaseName = "MyDatabase40.db"; // DB名
   static final _databaseVersion = 1; // スキーマのバージョン指定
 
   static final chat_table = 'chat_table'; // チャット管理テーブル
   static final action_table = 'action_table'; //アクション(Todo)管理テーブル
   static final tag_table = 'tag_table'; // タグ管理テーブル
+  static final media_table = 'media_table'; // メディア管理用テーブル
 
   // カラム名とは項目名の事(辻)
   // チャットテーブルのカラム
@@ -22,7 +23,8 @@ class DatabaseHelper {
   static final columnChatMessage = 'chat_message'; // チャットのテキスト
   static final columnChatTime = 'chat_time'; //送信時間
   static final columnChatChannel = 'chat_channel'; //チャットチャンネル
-  static final columnChatActionId = 'chat_action_id'; //このチャットと紐づけられているアクションのidがここに入る
+  static final columnChatActionId =
+      'chat_action_id'; //このチャットと紐づけられているアクションのidがここに入る
 
   // アクションテーブルのカラム
   static final columnActionId = '_action_id'; //ID
@@ -34,18 +36,26 @@ class DatabaseHelper {
   static final columnActionMedia = 'action_media'; //添付メディア
   static final columnActionNotes = 'action_notes'; //説明文
   static final columnActionScore = 'action_score'; //充実度(1から5までの値で制限する)
-  static final columnActionState = 'action_state'; //状態(0=未完了,1=完了) (false=未完了,true=完了)
+  static final columnActionState =
+      'action_state'; //状態(0=未完了,1=完了) (false=未完了,true=完了)
   static final columnActionPlace = 'action_place'; //場所
   static final columnActionMainTag = 'action_main_tag'; //メインタグ
   static final columnActionSubTag = 'action_sub_tag'; //サブタグ
   static final columnActionChatId = 'action_chat_id'; //チャットテーブルとアクションテーブル紐づけ用
 
   // タグテーブルのカラム
-  static final columnTagId = 'tag_id'; // タグID
+  static final columnTagId = '_tag_id'; // タグID
   static final columnTagName = 'tag_name'; // タグ名
   static final columnTagColor = 'tag_color'; // タグの色
   static final columnTagRegisteredActionName =
       'tag_registered_action_name'; // 登録されたアクション名
+
+  // メディアテーブルのカラム
+  static final columnMediaId = '_media_id'; // メディアID
+  static final columnMedia1 = 'media_1';
+  static final columnMedia2 = 'media_2';
+  static final columnMedia3 = 'media_3';
+  static final columnMedia4 = 'media_4';
 
   // DatabaseHelper クラスを定義
   DatabaseHelper._privateConstructor();
@@ -137,6 +147,17 @@ class DatabaseHelper {
         $columnTagName TEXT ,
         $columnTagColor TEXT,
         $columnTagRegisteredActionName TEXT
+      )
+    ''');
+
+    // メディアテーブルの作成
+    await db.execute('''
+      CREATE TABLE $media_table (
+        $columnMediaId INTEGER PRIMARY KEY,
+        $columnMedia1 BLOB,
+        $columnMedia2 BLOB,
+        $columnMedia3 BLOB,
+        $columnMedia4 BLOB
       )
     ''');
   }
@@ -244,4 +265,41 @@ class DatabaseHelper {
     return await db!
         .delete(tag_table, where: '$columnTagId = ?', whereArgs: [_id]);
   }
+
+  // メディアテーブル用の関数
+  // 登録処理
+  Future<int> insert_media_table(Map<String, dynamic> row) async {
+    Database? db = await instance.database;
+    return await db!.insert(media_table, row);
+  }
+
+  // 照会処理
+  Future<List<Map<String, dynamic>>> queryAllRows_media_table() async {
+    Database? db = await instance.database;
+    return await db!.query(media_table);
+  }
+
+  // レコード数を確認
+  Future<int?> queryRowCount_media_table() async {
+    Database? db = await instance.database;
+    return Sqflite.firstIntValue(
+        await db!.rawQuery('SELECT COUNT(*) FROM $media_table'));
+  }
+
+  //　更新処理
+  Future<int> update_media_table(Map<String, dynamic> row, int id) async {
+    Database? db = await instance.database;
+    int id = row[columnMediaId];
+    return await db!
+        .update(media_table, row, where: '$columnMediaId = ?', whereArgs: [id]);
+  }
+
+  //　削除処理
+  Future<int> delete_media_table(int id) async {
+    Database? db = await instance.database;
+    return await db!
+        .delete(media_table, where: '$columnMediaId = ?', whereArgs: [id]);
+  }
 }
+
+
