@@ -9,7 +9,7 @@ class RegisterActionTable {
   final String? actionEnd;
   final String? actionDuration;
   final String? actionMessage;
-  final Uint8List? actionMedia;
+  late List<Uint8List>? actionMedia;
   final String? actionNotes;
   final int? actionScore;
   final String? actionState;
@@ -39,8 +39,18 @@ class RegisterActionTable {
     // データベースに登録
     print("これからデータベースに登録");
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
+
+    // List<Uint8List>をList<int>に変換
+    List<int>? mediaBytes = [];
+    if (actionMedia != null) {
+      mediaBytes = [];
+      for (Uint8List media in actionMedia!) {
+        mediaBytes.addAll(media);
+      }
+    }
+
     final Map<String, dynamic> actionRow = {
-      DatabaseHelper.columnActionId: actionId,  // アクションID
+      DatabaseHelper.columnActionId: actionId, // アクションID
       DatabaseHelper.columnActionName: actionName, // アクション名
       DatabaseHelper.columnActionStart: actionStart, // 開始時刻
       DatabaseHelper.columnActionEnd: actionEnd, // 終了時刻
@@ -59,7 +69,8 @@ class RegisterActionTable {
     await dbHelper.insert_action_table(actionRow);
 
     // デバッグ用データ表示プログラム
-    final List<Map<String, dynamic>> allRows = await dbHelper.queryAllRows_action_table();
+    final List<Map<String, dynamic>> allRows =
+        await dbHelper.queryAllRows_action_table();
     print('全てのデータを照会しました。');
     allRows.forEach(print);
   }

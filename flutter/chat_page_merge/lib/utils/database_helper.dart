@@ -3,16 +3,16 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
+import 'dart:typed_data';
 
 class DatabaseHelper {
   // デバッグ時はDB名を変えてよい
-  static final _databaseName = "MyDatabase40.db"; // DB名
+  static final _databaseName = "MyDatabase43.db"; // DB名
   static final _databaseVersion = 1; // スキーマのバージョン指定
 
   static final chat_table = 'chat_table'; // チャット管理テーブル
   static final action_table = 'action_table'; //アクション(Todo)管理テーブル
   static final tag_table = 'tag_table'; // タグ管理テーブル
-  static final media_table = 'media_table'; // メディア管理用テーブル
 
   // カラム名とは項目名の事(辻)
   // チャットテーブルのカラム
@@ -49,13 +49,6 @@ class DatabaseHelper {
   static final columnTagColor = 'tag_color'; // タグの色
   static final columnTagRegisteredActionName =
       'tag_registered_action_name'; // 登録されたアクション名
-
-  // メディアテーブルのカラム
-  static final columnMediaId = '_media_id'; // メディアID
-  static final columnMedia1 = 'media_1';
-  static final columnMedia2 = 'media_2';
-  static final columnMedia3 = 'media_3';
-  static final columnMedia4 = 'media_4';
 
   // DatabaseHelper クラスを定義
   DatabaseHelper._privateConstructor();
@@ -149,17 +142,6 @@ class DatabaseHelper {
         $columnTagRegisteredActionName TEXT
       )
     ''');
-
-    // メディアテーブルの作成
-    await db.execute('''
-      CREATE TABLE $media_table (
-        $columnMediaId INTEGER PRIMARY KEY,
-        $columnMedia1 BLOB,
-        $columnMedia2 BLOB,
-        $columnMedia3 BLOB,
-        $columnMedia4 BLOB
-      )
-    ''');
   }
 
   // チャット画面用の関数
@@ -201,6 +183,18 @@ class DatabaseHelper {
   // 登録処理
   Future<int> insert_action_table(Map<String, dynamic> row) async {
     Database? db = await instance.database;
+
+    /// バイナリーデータをバイト配列に変換
+    List<int>? mediaBytes;
+    if (row[columnActionMedia] != null) {
+      mediaBytes = [];
+      for (Uint8List media in row[columnActionMedia]) {
+        mediaBytes.addAll(media);
+      }
+    }
+
+    // バイナリーデータをバイト配列に変換してデータベースに挿入
+    row[columnActionMedia] = mediaBytes;
     return await db!.insert(action_table, row);
   }
 
@@ -265,41 +259,4 @@ class DatabaseHelper {
     return await db!
         .delete(tag_table, where: '$columnTagId = ?', whereArgs: [_id]);
   }
-
-  // メディアテーブル用の関数
-  // 登録処理
-  Future<int> insert_media_table(Map<String, dynamic> row) async {
-    Database? db = await instance.database;
-    return await db!.insert(media_table, row);
-  }
-
-  // 照会処理
-  Future<List<Map<String, dynamic>>> queryAllRows_media_table() async {
-    Database? db = await instance.database;
-    return await db!.query(media_table);
-  }
-
-  // レコード数を確認
-  Future<int?> queryRowCount_media_table() async {
-    Database? db = await instance.database;
-    return Sqflite.firstIntValue(
-        await db!.rawQuery('SELECT COUNT(*) FROM $media_table'));
-  }
-
-  //　更新処理
-  Future<int> update_media_table(Map<String, dynamic> row, int id) async {
-    Database? db = await instance.database;
-    int id = row[columnMediaId];
-    return await db!
-        .update(media_table, row, where: '$columnMediaId = ?', whereArgs: [id]);
-  }
-
-  //　削除処理
-  Future<int> delete_media_table(int id) async {
-    Database? db = await instance.database;
-    return await db!
-        .delete(media_table, where: '$columnMediaId = ?', whereArgs: [id]);
-  }
 }
-
-
