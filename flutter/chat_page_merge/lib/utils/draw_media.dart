@@ -25,6 +25,15 @@ class DrawMedia {
       }
       RegisterActionTable registerActionTable =
           RegisterActionTable(actionMedia: mediaList); // リスト全体を設定
+          
+      // List<Uint8List>をList<int>に変換
+      List<int>? mediaBytes = [];
+      if (registerActionTable.actionMedia != null) {
+        mediaBytes = [];
+        for (Uint8List media in registerActionTable.actionMedia!) {
+          mediaBytes.addAll(media);
+        }
+      }
       registerActionTable.registerActionTableFunc();
 
       // 画像表示のクラスのインスタンス生成

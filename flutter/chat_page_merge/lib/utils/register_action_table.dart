@@ -40,14 +40,7 @@ class RegisterActionTable {
     print("これからデータベースに登録");
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
 
-    // List<Uint8List>をList<int>に変換
-    List<int>? mediaBytes = [];
-    if (actionMedia != null) {
-      mediaBytes = [];
-      for (Uint8List media in actionMedia!) {
-        mediaBytes.addAll(media);
-      }
-    }
+    
 
     final Map<String, dynamic> actionRow = {
       DatabaseHelper.columnActionId: actionId, // アクションID
