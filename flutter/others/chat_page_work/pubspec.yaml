@@ -78,6 +78,7 @@ flutter:
     - assets/images/play_circle.png
     - assets/images/textfield_action_submit_true.png
     - assets/images/textfield_action_submit_false.png
+    - assets/images/stop_recording.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
