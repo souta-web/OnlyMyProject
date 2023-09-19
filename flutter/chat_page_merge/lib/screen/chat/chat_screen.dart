@@ -36,6 +36,8 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   final RestoreChatHistory _restoreChatHistory = RestoreChatHistory();
   final DrawMedia _drawMedia = DrawMedia();
 
+  final List<Uint8List> _mediaList = [];
+
   @override
   void initState() {
     super.initState();
@@ -143,9 +145,16 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                         color: Colors.white,
                         onPressed: () async {
                           _mediaData = await _getMedia();
-                          //現状は取得したメディアの処理がないためprintで取得確認
-                          print(_mediaData);
-                          _drawMedia.pickImages();
+                          if (_mediaData != null) {
+                            await _drawMedia.pickImages(_mediaList);
+                            //現状は取得したメディアの処理がないためprintで取得確認
+                            //print(_mediaData);
+                            print('メディアリスト： $_mediaList');
+                            setState(() {
+                              _messages
+                                  .add(_drawMedia.buildMediaList(_mediaList));
+                            });
+                          }
                         },
                       ),
                       Flexible(

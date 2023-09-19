@@ -14,6 +14,15 @@ class CreateMediaList extends StatelessWidget {
       itemCount: images.length, // リスト内のアイテム数
       itemBuilder: (BuildContext context, int index) {
         return Container(
+          margin: EdgeInsets.all(10.0), // 枠のマージンを設定
+          padding: EdgeInsets.all(10.0), // 枠のパディングを設定
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.black, // 枠線の色
+              width: 1.0, // 枠線の幅
+            ),
+            borderRadius: BorderRadius.circular(10.0), // 枠の角丸を設定
+          ),
           child: Image.memory(images[index]), // 画像データを表示
         );
       },

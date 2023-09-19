@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'register_action_table.dart';
-import '../widget/create_media_list.dart';
+import '/widget/create_media_list.dart';
 import 'dart:typed_data';
 import 'dart:io' as io;
 
@@ -9,13 +10,13 @@ class DrawMedia {
   final ImagePicker _imagePicker = ImagePicker(); // ImagePickerのインスタンス生成
 
   // 画像を選択してバイナリデータのリストを返す非同期メソッド
-  dynamic pickImages() async {
+  Future<void> pickImages(List<Uint8List> mediaList) async {
     final List<XFile>? pickedFiles =
         await _imagePicker.pickMultiImage(); // ユーザーに複数の画像を選択させる
 
     // ファイルが選択され、リストが空でない時の場合の処理
     if (pickedFiles != null && pickedFiles.isNotEmpty) {
-      List<Uint8List> mediaList = []; // バイナリデータを格納するリスト
+      mediaList.clear(); // 既存のmediaListをクリアする
 
       for (int i = 0; i < pickedFiles.length; i++) {
         final XFile file = pickedFiles[i];
@@ -25,21 +26,20 @@ class DrawMedia {
       }
       RegisterActionTable registerActionTable =
           RegisterActionTable(actionMedia: mediaList); // リスト全体を設定
-          
-      // List<Uint8List>をList<int>に変換
-      List<int>? mediaBytes = [];
-      if (registerActionTable.actionMedia != null) {
-        mediaBytes = [];
-        for (Uint8List media in registerActionTable.actionMedia!) {
-          mediaBytes.addAll(media);
-        }
-      }
-      registerActionTable.registerActionTableFunc();
 
-      // 画像表示のクラスのインスタンス生成
-      // 表示の仕方がよくわかりません
+      registerActionTable.registerActionTableFunc();
+      print('選択した画像の数: ${pickedFiles.length}');
+      print('追加された画像の数: ${mediaList.length}');
+    }
+  }
+
+  // メディアを表示するウィジェット
+  dynamic buildMediaList(List<Uint8List> mediaList) {
+    if (mediaList.isNotEmpty) {
       CreateMediaList createMediaList = CreateMediaList(images: mediaList);
       return createMediaList;
+    } else {
+      return SizedBox(); // メディアがない場合は空のウィジェットを返す
     }
   }
 }
