@@ -8,7 +8,7 @@ class DrawMedia {
   final ImagePicker _imagePicker = ImagePicker(); // ImagePickerのインスタンス生成
 
   // 画像を選択してバイナリデータのリストを返す非同期メソッド
-  Future<void> pickImages() async {
+  dynamic pickImages() async {
     final List<XFile>? pickedFiles =
         await _imagePicker.pickMultiImage(); // ユーザーに複数の画像を選択させる
 
