@@ -1,5 +1,6 @@
 import 'package:image_picker/image_picker.dart';
-import 'register_media_table.dart';
+import 'register_action_table.dart';
+import '../widget/create_media_list.dart';
 import 'dart:typed_data';
 import 'dart:io' as io;
 
@@ -14,18 +15,22 @@ class DrawMedia {
 
     // ファイルが選択され、リストが空でない時の場合の処理
     if (pickedFiles != null && pickedFiles.isNotEmpty) {
+      List<Uint8List> mediaList = []; // バイナリデータを格納するリスト
+
       for (int i = 0; i < pickedFiles.length; i++) {
         final XFile file = pickedFiles[i];
         final Uint8List bytes =
             await io.File(file.path).readAsBytes(); // ファイルを読み込んでバイナリーデータに変換
-        RegisterMediaTable registerMediaTable = RegisterMediaTable(
-          media1: i == 0 ? Uint8List.fromList(bytes) : null,
-          media2: i == 1 ? Uint8List.fromList(bytes) : null,
-          media3: i == 2 ? Uint8List.fromList(bytes) : null,
-          media4: i == 3 ? Uint8List.fromList(bytes) : null,
-        );
-        registerMediaTable.registerMediaTableFunc();
+        mediaList.add(bytes); // リストにバイナリデータを追加
       }
+      RegisterActionTable registerActionTable =
+          RegisterActionTable(actionMedia: mediaList); // リスト全体を設定
+      registerActionTable.registerActionTableFunc();
+
+      // 画像表示のクラスのインスタンス生成
+      // 表示の仕方がよくわかりません
+      CreateMediaList createMediaList = CreateMediaList(images: mediaList);
+      return createMediaList;
     }
   }
 }
