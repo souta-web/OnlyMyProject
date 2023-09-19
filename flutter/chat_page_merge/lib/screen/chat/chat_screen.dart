@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '/utils/media_controller.dart';
 import '/screen/chat/func/auto_scroll.dart';
 import '/screen/chat/func/restore_chat_history.dart';
+import '/utils/draw_media.dart';
 import 'dart:typed_data';
 
 class ChatScreenWidget extends StatefulWidget {
@@ -23,7 +24,8 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   // DrawChatObjectsをfinal修飾子で宣言
   final DrawChatObjects _chatObjects = DrawChatObjects();
 
-  late ScrollController _scrollController; // ScrollControllerをChatScreenWidget内で生成
+  late ScrollController
+      _scrollController; // ScrollControllerをChatScreenWidget内で生成
   // 自動スクロールクラスのインスタンス生成
   late AutoScroll _autoScroll;
 
@@ -32,6 +34,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
 
   // チャット履歴復元クラスのインスタンス生成
   final RestoreChatHistory _restoreChatHistory = RestoreChatHistory();
+  final DrawMedia _drawMedia = DrawMedia();
 
   @override
   void initState() {
@@ -142,6 +145,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                           _mediaData = await _getMedia();
                           //現状は取得したメディアの処理がないためprintで取得確認
                           print(_mediaData);
+                          _drawMedia.pickImages();
                         },
                       ),
                       Flexible(
@@ -155,7 +159,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                         ),
                         child: TextField(
                           controller: _textEditingController,
-                          focusNode: _focusNode,  // フォーカスノードを関連付ける
+                          focusNode: _focusNode, // フォーカスノードを関連付ける
                           keyboardType: TextInputType.multiline, //複数行のテキスト入力
                           maxLines: 5,
                           minLines: 1,

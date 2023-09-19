@@ -40,6 +40,7 @@ class RegisterActionTable {
     print("これからデータベースに登録");
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
     final Map<String, dynamic> actionRow = {
+      DatabaseHelper.columnActionId: actionId,  // アクションID
       DatabaseHelper.columnActionName: actionName, // アクション名
       DatabaseHelper.columnActionStart: actionStart, // 開始時刻
       DatabaseHelper.columnActionEnd: actionEnd, // 終了時刻
