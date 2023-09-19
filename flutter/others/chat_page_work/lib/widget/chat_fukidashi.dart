@@ -21,11 +21,14 @@ class ChatMessage extends StatelessWidget {
     return Row(
       // 送信者に応じてメッセージの位置を調整する
       mainAxisAlignment: isSentByUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        _createTimeWidget(time,"left",isSentByUser),
-        Container(
-          margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-          padding: EdgeInsets.all(10.0),
+        _createBlank(isSentByUser),
+        _createTimeWidget(time,isSentByUser),
+        Flexible(
+          child:Container(
+          margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0),
+          padding: const EdgeInsets.all(10.0),
           decoration: BoxDecoration(
             // 送信者に応じてメッセージの背景色を設定する
             color: isSentByUser
@@ -33,48 +36,48 @@ class ChatMessage extends StatelessWidget {
                 : Color.fromARGB(255, 189, 187, 184),
             // 角丸のボーダーを適用する
             borderRadius: isSentByUser
-              ? BorderRadius.only(
+              ? const BorderRadius.only(
                   topRight: Radius.circular(10),
                   topLeft: Radius.circular(10),
                   bottomLeft: Radius.circular(10),
                 )
-              : BorderRadius.only(
+              : const BorderRadius.only(
                   topRight: Radius.circular(10),
                   topLeft: Radius.circular(10),
                   bottomRight: Radius.circular(10),
                 )),
-          child: Text(
-            text,
-            style: TextStyle(fontSize: 16.0),
+            child: Text(
+              text,
+              style: TextStyle(fontSize: 16.0),
+            ),
           ),
         ),
-        _createTimeWidget(time,"right",isSentByUser),
+        _createTimeWidget(time,!isSentByUser),
+        _createBlank(!isSentByUser),
       ],
     );
   }
-  Widget _createTimeWidget(String _time,String _thisPosition,bool _isUser) {
-    if (_thisPosition == "left") {
-      if(_isUser == true) {
-        return Text(
+  Widget _createTimeWidget(String _time,bool _drawTime) {
+    if(_drawTime == true) {
+      return Container(
+        margin: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 5.0),
+        alignment: Alignment.bottomCenter,
+        child:Text(
           // 時間情報を表示
           time,
           style: TextStyle(fontSize: 12.0, color: Colors.grey),
-        );
-      }else{
-        return const SizedBox.shrink(); //空のウィジェットを返す
-      }
-    }else if(_thisPosition == "right") {
-      if(_isUser == false) {
-        return Text(
-          // 時間情報を表示
-          time,
-          style: TextStyle(fontSize: 12.0, color: Colors.grey),
-        );
-      }else{
-        return const SizedBox.shrink(); //空のウィジェットを返す
-      }
+        )
+      );
     }else{
-      return const SizedBox.shrink(); //空のウィジェットを返す
+      return const SizedBox(width: 10); //空のウィジェットを返す
+    }
+  }
+
+  Widget _createBlank(bool _useBlank) {
+    if (_useBlank == true) {
+      return const SizedBox(width: 50);
+    } else {
+      return const SizedBox();
     }
   }
 }
