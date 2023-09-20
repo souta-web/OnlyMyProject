@@ -132,20 +132,9 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                                     chatMessage: 'Hello!',
                                   );
 
-                                  registerChatTable.registerChatTableFunc(); //実際にデータベース登録
+                                  registerChatTable.registerChatTableFunc(); //実際にデータベース登録*/
 
-                                  RegisterActionTable registerActionTable = RegisterActionTable( //インスタンス化、引数渡し
-                                    actionName: 'Emily',
-                                    actionStart: DateTime.now().toString(),
-                                  );
-
-                                  registerActionTable.registerActionTableFunc();*/
-                                  //
-
-                                  // エラーが出るのでコメントしておきます。
-                                  // タスクに取り掛かるときにコメントを外してください
                                   // 下記のように呼び出す
-
                                   // setStateメソッドは画面更新をするメソッド
                                   // _messages.add以降はsetStateの中に入れる必要がある
                                   setState(() {

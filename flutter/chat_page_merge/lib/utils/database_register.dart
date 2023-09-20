@@ -10,7 +10,6 @@ class DataBaseRegister {
 // できるだけ直接値を記述するのではなく変数を作ってその中に文字列は真偽値を入れて作成しましょう
 
 // この関数はチャットオブジェクトを表示する
-// 済 TODO: dynamicの配列を動かすので関数の型はdynamicにしてください(型定義は必須)
 // 引数にbool型のisTodo,String型のchatText,bool型のisUser,String型のmainTag,String型のstartTime,bool型のisActionFlagを設定する
 // この関数を動かすために絶対に必要なものだけrequiredをつける。それ以外にrequiredをつけると問題が発生するのですべてにrequiredをつけないでください。
 // つまり↑のコメントで提示してあるrequiredをつけるべき引数はisTodo,chatText,isUserです。
@@ -49,7 +48,6 @@ class DataBaseRegister {
       return message; // 返り値でmessageを返す
     } else {
       // elseは返答を送信しているので同じものを記述
-      // TODO: 上記と同じものを記述する、返り値も忘れずに。
       // ＊その場合返答はしないようになるので注意(送信のみのチャットになる)
       ChatMessage message = ChatMessage(
         text: chatText, 
@@ -94,8 +92,6 @@ class DataBaseRegister {
 
     // 吹き出し及びアクションの表示
     // 吹き出しクラスの引数を受け取れるように変更する
-    // 今のままだとエラーが出るのでコメントアウトしときます
-    // 全てのタスクが終わってこの関数を動かすときにコメントアウトを削除してください
     // コメントアウト削除のショートカットキー
     // コメントされてる範囲を囲んで ctrl + /
     // mainTagを引数に追加して表示
