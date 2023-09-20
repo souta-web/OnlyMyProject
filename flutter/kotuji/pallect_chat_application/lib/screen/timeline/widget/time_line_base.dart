@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:original_test_chat_application/screen/timeline/func/action_registration_base.dart';
 import 'time_line_action_widget.dart';
 import 'time_line_action_data.dart';
-import '../func/action_registration_base.dart';
+//import '../func/action_registration_base.dart';
 
 class TimeLineBase extends StatefulWidget {
   TimeLineBase({required this.bodyWidth,required this.bodyHeight,});
@@ -53,6 +54,8 @@ class _TimeLineBase extends State<TimeLineBase> {
     } 
     print("actionDatas");
     print(_actionsDatas);
+    print("newdatas");
+    print(timeLineActionsData.newData);
   }
 
   Widget build(BuildContext context) {

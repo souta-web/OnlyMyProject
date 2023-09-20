@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../func/action_registration_base.dart';
+import 'time_line_action_data.dart';
 import 'time_line_base.dart';
 //import '../../setting/config_screen.dart';
 //import 'package:intl/intl.dart';//カレンダーのタイトルを月の形式にカスタマイズするのに必要
@@ -28,6 +29,8 @@ class _TimeLineCalender extends State<TimeLineCalender> {
 
   CalendarFormat _calendarFormat = CalendarFormat.month;
   CalendarFormat _weekFormat = CalendarFormat.week;
+
+  var timeLineActionsData = TimeLineActionsData();
 
   @override
   Widget build(BuildContext context) {
@@ -177,9 +180,8 @@ class _TimeLineCalender extends State<TimeLineCalender> {
               //print(formattedDate);
               //print(_selectedDay);
               print(settingDate);
-
-              //upDateData(settingDate);
-              
+              //late List<Map<String, dynamic>> timeLineActionsData.newData = settingDate;
+              //print(timeLineActionsData.newData);
             });
           }
         },

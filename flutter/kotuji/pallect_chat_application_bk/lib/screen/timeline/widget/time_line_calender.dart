@@ -177,6 +177,7 @@ class _TimeLineCalender extends State<TimeLineCalender> {
               //print(formattedDate);
               //print(_selectedDay);
               print(settingDate);
+              TimeLineBases.upDateData(settingDate);
 
               //upDateData(settingDate);
               

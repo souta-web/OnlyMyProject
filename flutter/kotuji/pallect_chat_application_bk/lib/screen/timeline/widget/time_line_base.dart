@@ -10,10 +10,10 @@ class TimeLineBase extends StatefulWidget {
   final double bodyHeight;
   final List<Map<String, dynamic>> newData; // 新しいデータを保持する変数を追加
   @override
-  _TimeLineBase createState() => _TimeLineBase();
+  TimeLineBases createState() => TimeLineBases();
 }
 
-class _TimeLineBase extends State<TimeLineBase> {
+class TimeLineBases extends State<TimeLineBase> {
   final double _timeDrawSpace = 50; //時間を表示する欄の横幅
   final double _oneHourHeight = 60; //これを変えたら1時間当たりの縦幅が変わる
   final double _timeTextHeight = 16; //時間テキストの縦幅 変えるとおかしくなる
@@ -215,4 +215,10 @@ class _TimeLineBase extends State<TimeLineBase> {
     int _Minutes = int.parse(_TimeList[1]) + _Hour;
     return _Minutes;
   }
+
+ void upDateData(List<Map<String, dynamic>> newData) {
+    setState(() {
+      _actionsDatas = widget.newData;
+    });
+ }
 }
