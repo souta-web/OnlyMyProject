@@ -146,13 +146,16 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                                   // タスクに取り掛かるときにコメントを外してください
                                   // 下記のように呼び出す
 
-                        
+                                  // setStateメソッドは画面更新をするメソッド
+                                  // _messages.add以降はsetStateの中に入れる必要がある
+                                  setState(() {
                                     _messages.add(
                                         _dataBaseRegister.sendButtonPressed(
                                             _textEditingController.text, // テキストフィールドに入力されたテキスト
                                             _isTodo, // 上で初期化されたトグルの変数を入れる
                                             _textEditingController, // テキストフィールドの変数を入れる
                                             true)); // 現在はユーザーのみの送信なのでtrueに設定
+                                  });
                                 },
                               ),
                             ),

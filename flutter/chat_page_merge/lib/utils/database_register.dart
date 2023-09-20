@@ -23,8 +23,7 @@ class DataBaseRegister {
     bool? isActionFlag,
   }) {
     // 今のままだと空文字でチャットが登録されてしまうのでif文でチェックをする
-    if (chatText.isNotEmpty) {
-      // isNotEmptyは空文字を許さないよっていう条件
+    if (chatText.isEmpty) {
       return;
     } 
 
@@ -99,11 +98,12 @@ class DataBaseRegister {
     // 全てのタスクが終わってこの関数を動かすときにコメントアウトを削除してください
     // コメントアウト削除のショートカットキー
     // コメントされてる範囲を囲んで ctrl + /
-
+    // mainTagを引数に追加して表示
     return drawChatObjects(
       isTodo: isTodo,
       chatText: chatText,
       isUser:  isUser,
+      mainTag: myMainTag,
       startTime: sendTime,
       isActionFlag: false
     );
