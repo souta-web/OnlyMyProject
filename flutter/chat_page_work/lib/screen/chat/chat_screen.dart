@@ -22,13 +22,25 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
     ChatMessage(
       text: "テスト",
       isSentByUser: true,
-      time: "4:44 AM",
     )
   ];
 
   //ほかのファイルの非同期処理関数をbuild内で呼び出して戻り値受け取れないからそれを可能にするための記述
   Future<Uint8List?> _getMedia() async {
     return await MediaController.getMedia();
+  }
+
+  // 新しいメッセージを追加する関数
+  void addNewMessage() {
+    _messages.add(
+      ChatMessage(
+        text: "新しいメッセージ",
+        isSentByUser: true,
+      ),
+    );
+
+    // UIを更新
+    setState(() {});
   }
 
   Widget build(BuildContext context) {
@@ -75,9 +87,10 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
             Container(
                 color: Color.fromARGB(255, 103, 100, 100),
                 child: Column(children: [
+                  //縦
                   Form(
                       child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                          //crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                         GestureDetector(
                           onTap: () {
@@ -89,8 +102,8 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                             });
                           },
                           child: Container(
-                            padding:
-                                EdgeInsets.only(bottom: 10, left: 10), //アイコン動く
+                            //padding:EdgeInsets.only(bottom: 10, left: 10), //アイコン動く
+                            alignment: Alignment.center, // 円形の位置を中央に配置
                             decoration: BoxDecoration(
                               shape: BoxShape.circle, //円形
                               color: _isTodo
@@ -101,9 +114,9 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                               _isTodo
                                   ? 'assets/images/chat_icon.png'
                                   : 'assets/images/chat_icon_d.png', // UI_.pdf のアイコンに置き換え
+                              width: 18.0, //大きさ調整
+                              height: 18.0,
                               color: Colors.white,
-                              width: 16, //アイコンの幅
-                              height: 16, //アイコンの高さ
                             ),
                           ),
                         ),
@@ -121,6 +134,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                           //メディア追加ボタン
                           icon: Icon(Icons.add),
                           color: Colors.white,
+                          alignment: Alignment.center, // 円形の位置を中央に配置
                           onPressed: () async {
                             _mediaData = await _getMedia();
                             //現状は取得したメディアの処理がないためprintで取得確認
@@ -169,6 +183,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                                   );
                                   registerChatTable
                                       .registerChatTableFunc(); //実際にデータベース登録
+                                  addNewMessage(); //新しいメッセージの追加
                                 },
                               ),
                             ),
