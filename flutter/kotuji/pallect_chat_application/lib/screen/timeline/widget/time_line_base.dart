@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'time_line_action_widget.dart';
+import 'time_line_action_data.dart';
 import '../func/action_registration_base.dart';
 
 class TimeLineBase extends StatefulWidget {
-  TimeLineBase({required this.bodyWidth,required this.bodyHeight,required this.newData,});
+  TimeLineBase({required this.bodyWidth,required this.bodyHeight,});
   //bodyのサイズを受け取る
   final double bodyWidth;
-  final double bodyHeight;
-  final List<Map<String, dynamic>> newData; // 新しいデータを保持する変数を追加
+  final double bodyHeight; // 新しいデータを保持する変数を追加
   @override
   _TimeLineBase createState() => _TimeLineBase();
 }
 
 class _TimeLineBase extends State<TimeLineBase> {
+  var timeLineActionsData = TimeLineActionsData();
   final double _timeDrawSpace = 50; //時間を表示する欄の横幅
   final double _oneHourHeight = 60; //これを変えたら1時間当たりの縦幅が変わる
   final double _timeTextHeight = 16; //時間テキストの縦幅 変えるとおかしくなる
@@ -31,29 +32,27 @@ class _TimeLineBase extends State<TimeLineBase> {
                                               {"startTime": "16:00","endTime": "18:00" ,"color": Colors.purple,"title": "勉強やる"},
                                               {"startTime": "17:00","endTime": "17:30" ,"color": Colors.white,"title": "test"},
                                               */];
+  
+  
                                               
   List<Widget> _actionWidgets = [];
   //占領されていないアクション表示のエリアを格納
   //例えば{"startTime":60,"endTime":1440}であれば1:00～24:00の間はどのアクションにも占領されていないことになる
   List<List<Map<String,int>>> _clearActionArea = [[{"startTime":0,"endTime":1440}]]; 
 
-  List<Map<String, dynamic>> get actionsDatas => _actionsDatas; // ここに追加
   @override
 
   void initState() {
     super.initState();
-    _actionsDatas = widget.newData;
+    _actionsDatas = timeLineActionsData.newData;
     _actionWidgets.add(_drawHorizontalLinesConstructure()); //これは表示領域のベースになるから変更してはいけない
     for (int i = 0; i < _actionsDatas.length;i++){
       _actionWidgets.add(_returnTimeLineActionWidget(_actionsDatas[i],_clearActionArea));
 
       _clearActionArea = removeRangeFromClearActionArea(_clearActionArea, ConversionTimeToMinutes(_actionsDatas[i]["startTime"]), ConversionTimeToMinutes(_actionsDatas[i]["endTime"]));
-    }
-    print("_clearActionAreaの中身:" + _clearActionArea.toString());   
+    } 
     print("actionDatas");
     print(_actionsDatas);
-    print("newDatas");
-    print(widget.newData);
   }
 
   Widget build(BuildContext context) {
@@ -213,7 +212,6 @@ class _TimeLineBase extends State<TimeLineBase> {
 
   void upDateData(List<Map<String, dynamic>> newData) {
     setState(() {
-      _actionsDatas = widget.newData;
     });
   }
 }
