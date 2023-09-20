@@ -32,12 +32,11 @@ class DataBaseRegister {
     // ↓のif文はトグルボタンがオンの時にアクションが表示される
     if (isTodo) {
       ChatTodo message = ChatTodo(
-          title: chatText, // TODO: 送信チャットをタイトルとして表示したいので、chatTextに変更
-          isSentByUser: isUser, // TODO: falseをisUserに変更
-          mainTag: mainTag ?? '', // TODO: '生活'をmainTagに変更
-          startTime:
-              startTime ?? '', // TODO: DateTime.now().toString()をstartTimeに変更
-          actionFinished: isActionFlag ?? false); // TODO: falseをisActionFlagに変更
+          title: chatText,
+          isSentByUser: isUser,
+          mainTag: mainTag ?? '',
+          startTime: startTime ?? '',
+          actionFinished: isActionFlag ?? false);
       return message;
     }
 
@@ -48,55 +47,57 @@ class DataBaseRegister {
       // 変数に代入してメッセージをを表示する
       ChatMessage message = ChatMessage(
           text: chatText,
-          isSentByUser:
-              isUser); // 済 TODO: test: chatText、isSentByUser: isUserに変更する
+          isSentByUser: isUser);
       return message; // 返り値でmessageを返す
     } else {
       // elseは返答を送信しているので同じものを記述
       // TODO: 上記と同じものを記述する、返り値も忘れずに。
       // ＊その場合返答はしないようになるので注意(送信のみのチャットになる)
-      ChatMessage message = ChatMessage(text: chatText, isSentByUser: isUser);
+      ChatMessage message = ChatMessage(
+        text: chatText, 
+        isSentByUser: isUser);
       return message;
     }
-
-    
-    
   }
 
   // 送信ボタンを押下したときに呼び出される関数
   // 引数にいろいろ定義
   // TextEditingControllerはテキストフィールドの型です
 
-  dynamic sendButtonPressed(String chatText, bool isTodo,
-      TextEditingController controller, bool isUser) {
+  dynamic sendButtonPressed(
+    String chatText, 
+    bool isTodo,
+    TextEditingController controller, 
+    bool isUser) {
     // TODO: メインタグに文字列を格納する変数を作る(String型)
     // 例　String myMainTag = 'ゲーム';
-
+      //String myMainTag = '生活';
     // TODO: 送信時間を格納する変数を作る(String型)　DateTime.now().toString()を使う
-
+      String sendTime = DateTime.now().toString();
     // TODO: アクションの状態を管理する変数を作る(bool型)、今はテストなので初期値はfalseでOKです
-
+      //bool actionFlag = false;
     // チャットをデータベースに登録する
     // ↓のようにインスタンス生成して下さい
     RegisterChatTable registerChatTable = RegisterChatTable(
-        chatSender: 'John', // TODO: 現状ユーザーのみの送信なので'true'に変更
-        chatTodo: isTodo ? 'todo' : 'meseeage', // TODO: 'todo'と'message'を削除
-        chatTodofinish: 12, // TODO: これは削除する
-        chatMessage: 'Hello!', // TODO: chatTextに変更
-        chatTime: DateTime.now().toString()); // TODO:　上で作成した変数を記述
+        chatSender: true,
+        chatTodo: isTodo,
+        chatMessage: chatText,
+        chatTime: sendTime);
     registerChatTable.registerChatTableFunc(); //ここは確定で呼び出す
 
     //トグルボタンがオンの時だけ呼び出す
     if (isTodo) {
-      // TODO: チャットテーブル登録と同じようにインスタンス生成する
-      RegisterActionTable(
+      RegisterActionTable registerActionTable = RegisterActionTable(
         // TODO: actionStartの次にactionMainTag,actionStateを作成
         // TODO: actionNameにはchatText、actionStartに↑で作成した送信時間の変数を記述
         // TODO: actionMainTagには↑で作ったmainTag用の変数をいれる
         // TODO: actionStateには↑で作ったアクションの状態を管理する変数を記述
-        actionName: 'Emily', actionStart: DateTime.now().toString(),
+        actionName: chatText, 
+        actionStart: sendTime,
+        //actionMainTag: myMainTag,
+        //actionState: actionFlag,
       );
-      //.registerActionTableFunc(); // TODO: インスタンス生成した変数.registerActionTableFunc()の形にする
+      registerActionTable.registerActionTableFunc(); // TODO: インスタンス生成した変数.registerActionTableFunc()の形にする
     }
     // テキストフィールドをクリア
     controller.clear();
@@ -108,12 +109,12 @@ class DataBaseRegister {
     // コメントアウト削除のショートカットキー
     // コメントされてる範囲を囲んで ctrl + /
 
-    // return drawChatObjects(
-    //   isTodo: , // TODO: isTodoを記述
-    //   chatText: , // TODO: chatTextを記述
-    //   isUser:  , // TODO: isUserを記述
-    //   startTime: ,  // TODO: 送信時間用の変数記述
-    //   isActionFlag: // TODO: ここはfalseで記述お願いします。
-    // );
+    return drawChatObjects(
+      isTodo: isTodo, // TODO: isTodoを記述
+      chatText: chatText, // TODO: chatTextを記述
+      isUser:  isUser, // TODO: isUserを記述
+      startTime: sendTime,  // TODO: 送信時間用の変数記述
+      isActionFlag: false// TODO: ここはfalseで記述お願いします。
+    );
   }
 }

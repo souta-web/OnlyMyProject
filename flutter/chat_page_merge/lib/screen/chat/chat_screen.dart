@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import '/utils/media_controller.dart';
 import 'dart:typed_data';
-import '/utils/register_chat_table.dart';
-import '/utils/register_action_table.dart';
 import '/utils/database_register.dart';
 
 class ChatScreenWidget extends StatefulWidget {
