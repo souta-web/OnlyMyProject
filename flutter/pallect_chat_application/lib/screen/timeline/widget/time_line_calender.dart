@@ -170,11 +170,16 @@ class _TimeLineCalender extends State<TimeLineCalender> {
               selectedMonth = selected.month;
               previousSelectedMonth = selectedMonth;
 
-              setSchedule(_selectedDay);
-              
+              String formattedDate = setSchedule(_selectedDay);
+              print(formattedDate);
+
+              List<Map<String, dynamic>> settingDate = setData(formattedDate);
               //print(formattedDate);
               //print(_selectedDay);
+              print(settingDate);
 
+              //upDateData(settingDate);
+              
             });
           }
         },
@@ -210,7 +215,7 @@ class _TimeLineCalender extends State<TimeLineCalender> {
     );
   }
 
-  void setSchedule(DateTime _selectedDay) {
+  String setSchedule(DateTime _selectedDay) {
     // 年、月、日を取得
     int year = _selectedDay.year;
     int month = _selectedDay.month;
@@ -223,8 +228,8 @@ class _TimeLineCalender extends State<TimeLineCalender> {
 
     // "yYYYYmMMdDD" の形式に結合して返す
     String formattedDate = 'y$yearStr' + 'm$monthStr' + 'd$dayStr';
-    setData(formattedDate);
     
-    //return formattedDate;
+    
+    return formattedDate;
   }
 }

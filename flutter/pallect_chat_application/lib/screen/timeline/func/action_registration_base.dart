@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+//import '../widget/time_line_base.dart';
 
 final List<List<Map<String, dynamic>>> y2023m09d18 = [
   [{"startTime": "0:00","endTime": "7:35","color": Colors.amber,"title": "睡眠計測する"}],
@@ -19,8 +20,6 @@ final Map<String, List<List<Map<String, dynamic>>>> schedulesByDate = {
 
 List<List<Map<String, dynamic>>> newDatas = [];
 
-
-
 List<Map<String, dynamic>> changeFormat(List<List<Map<String, dynamic>>> inputList) {
   List<Map<String, dynamic>> outputList = [];
   for (var subList in inputList) {
@@ -29,12 +28,15 @@ List<Map<String, dynamic>> changeFormat(List<List<Map<String, dynamic>>> inputLi
   return outputList;
 }
 
-void setData(String formattedDate) {
+List<Map<String, dynamic>> setData(String formattedDate) {
+  List<Map<String, dynamic>> convertedData = []; // 変数を初期化
+  
   if (schedulesByDate.containsKey(formattedDate)) {
     newDatas = schedulesByDate[formattedDate]!;
-    print(newDatas);
-    List<Map<String, dynamic>> convertedData = changeFormat(newDatas);
-    print(convertedData);
-    //upDateData(convertedData);
+    //print(newDatas);//成型前のデータ
+    convertedData = changeFormat(newDatas);
+    //print(convertedData);
   }
+  //print(convertedData);
+  return convertedData;
 }
