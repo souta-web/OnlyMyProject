@@ -146,8 +146,9 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                         onPressed: () async {
                           _mediaData = await _getMedia();
                           await _drawMedia.pickImages(_mediaList);
+
                           //現状は取得したメディアの処理がないためprintで取得確認
-                          //print(_mediaData);
+                          print(_mediaData);
                           print('メディアリスト： $_mediaList');
                           setState(() {
                             _messages.add(_drawMedia.buildMediaList(_mediaList));
