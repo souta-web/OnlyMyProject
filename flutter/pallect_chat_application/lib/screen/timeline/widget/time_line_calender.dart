@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import '../func/action_registration_base.dart';
+import 'time_line_base.dart';
+//import '../../setting/config_screen.dart';
 //import 'package:intl/intl.dart';//カレンダーのタイトルを月の形式にカスタマイズするのに必要
 
 
@@ -19,8 +22,9 @@ class _TimeLineCalender extends State<TimeLineCalender> {
   int selectedMonth = DateTime.now().month; // 現在の月を初期値として設定
   int previousSelectedMonth = DateTime.now().month;
   int selectedYear = DateTime.now().year; // 現在の年を初期値として設定
+  
   DateTime _focusedDay = DateTime.now();// 現在の日付を初期値として設定
-  DateTime? _selectedDay;
+  DateTime _selectedDay = DateTime.now();// 現在の日付を初期値として設定;
 
   CalendarFormat _calendarFormat = CalendarFormat.month;
   CalendarFormat _weekFormat = CalendarFormat.week;
@@ -49,7 +53,7 @@ class _TimeLineCalender extends State<TimeLineCalender> {
           ElevatedButton(style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
-              side: BorderSide(color: Color.fromARGB(255, 255, 81, 0)),
+              side: BorderSide(color: Color(0xFFFF9515)),
             ),
               backgroundColor: Colors.white,
               foregroundColor: Colors.black,
@@ -70,11 +74,17 @@ class _TimeLineCalender extends State<TimeLineCalender> {
   // カレンダーを表示するためのウィジェット
   Widget buildTableCalendar() {
     return Container(
-      color: Colors.amber,
+      color: Colors.white,
       child: TableCalendar(
         firstDay: DateTime.utc(2020, 1, 1),
         lastDay: DateTime.utc(2050, 12, 31),
         calendarFormat: _calendarFormat,
+        calendarStyle: CalendarStyle(
+          selectedDecoration: BoxDecoration(
+            color: Color(0xFFFF9515), // 選択された日付の背景色をここで指定
+            shape: BoxShape.circle, // 選択された日付を丸くする場合は必要
+          ),
+        ),
         daysOfWeekStyle: const DaysOfWeekStyle(
           weekdayStyle: TextStyle(fontSize: 14),//平日のフォント
           weekendStyle: TextStyle(fontSize: 14),//週末のフォント
@@ -122,7 +132,8 @@ class _TimeLineCalender extends State<TimeLineCalender> {
   // 一週間表示を表示するためのウィジェット
   Widget buildWeekCalendar() {
     return Container(
-      color: Colors.amber,
+      color: Colors.white,
+
       height: widget.weekHeight,
       child: TableCalendar(
         headerVisible: false,//年数等ヘッダーの不可視
@@ -135,6 +146,12 @@ class _TimeLineCalender extends State<TimeLineCalender> {
 	      ),
 	      daysOfWeekHeight: 20,//曜日の高さ
         availableGestures: AvailableGestures.horizontalSwipe, // 横方向のスワイプのみを有効にする
+        calendarStyle: CalendarStyle(
+          selectedDecoration: BoxDecoration(
+            color: Color(0xFFFF9515), // 選択された日付の背景色をここで指定
+            shape: BoxShape.circle, // 選択された日付を丸くする場合は必要
+          ),
+        ),
         headerStyle: HeaderStyle(
           //titleCentered: false,
           //formatButtonVisible: false,
@@ -152,6 +169,12 @@ class _TimeLineCalender extends State<TimeLineCalender> {
 
               selectedMonth = selected.month;
               previousSelectedMonth = selectedMonth;
+
+              setSchedule(_selectedDay);
+              
+              //print(formattedDate);
+              //print(_selectedDay);
+
             });
           }
         },
@@ -179,14 +202,29 @@ class _TimeLineCalender extends State<TimeLineCalender> {
               selectedMonth = focusedDay.month;
             });
           }
-          
-          
-          
-          
-          //print(focusedDay);
+          print(focusedDay);
+          print(_selectedDay);
         },
         focusedDay: _focusedDay,
       ),
     );
+  }
+
+  void setSchedule(DateTime _selectedDay) {
+    // 年、月、日を取得
+    int year = _selectedDay.year;
+    int month = _selectedDay.month;
+    int day = _selectedDay.day;
+
+    // 各要素を2桁の文字列に変換
+    String yearStr = year.toString();
+    String monthStr = month.toString().padLeft(2, '0');
+    String dayStr = day.toString().padLeft(2, '0');
+
+    // "yYYYYmMMdDD" の形式に結合して返す
+    String formattedDate = 'y$yearStr' + 'm$monthStr' + 'd$dayStr';
+    setData(formattedDate);
+    
+    //return formattedDate;
   }
 }

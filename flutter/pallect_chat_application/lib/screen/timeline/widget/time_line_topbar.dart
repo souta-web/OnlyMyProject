@@ -15,7 +15,7 @@ class _TimeLineTopBar extends State<TimeLineTopBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.amber,
+      color: Colors.white,
       width: widget.topBarWidth,
       height: widget.topBarHeight,
       child:Stack(

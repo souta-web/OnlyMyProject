@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'time_line_action_widget.dart';
+import '../func/action_registration_base.dart';
 
 class TimeLineBase extends StatefulWidget {
-  TimeLineBase({required this.bodyWidth,required this.bodyHeight});
+  TimeLineBase({required this.bodyWidth,required this.bodyHeight,required this.newData,});
   //bodyのサイズを受け取る
   final double bodyWidth;
   final double bodyHeight;
+  final List<Map<String, dynamic>> newData; // 新しいデータを保持する変数を追加
   @override
   _TimeLineBase createState() => _TimeLineBase();
 }
@@ -32,6 +34,8 @@ class _TimeLineBase extends State<TimeLineBase> {
   //占領されていないアクション表示のエリアを格納
   //例えば{"startTime":60,"endTime":1440}であれば1:00～24:00の間はどのアクションにも占領されていないことになる
   List<List<Map<String,int>>> _clearActionArea = [[{"startTime":0,"endTime":1440}]]; 
+
+  List<Map<String, dynamic>> get actionsDatas => _actionsDatas; // ここに追加
   @override
 
   void initState() {
@@ -42,7 +46,8 @@ class _TimeLineBase extends State<TimeLineBase> {
 
       _clearActionArea = removeRangeFromClearActionArea(_clearActionArea, ConversionTimeToMinutes(_actionsDatas[i]["startTime"]), ConversionTimeToMinutes(_actionsDatas[i]["endTime"]));
     }
-    print("_clearActionAreaの中身:" + _clearActionArea.toString());        
+    print("_clearActionAreaの中身:" + _clearActionArea.toString());   
+    //print(_actionsDatas);
   }
 
   Widget build(BuildContext context) {
@@ -53,7 +58,7 @@ class _TimeLineBase extends State<TimeLineBase> {
           width: _timeDrawSpace,
           height: _timeLineHeight,
           child:Container(
-            color: Colors.blue,
+            color: Colors.white,
             child:Column(
               children: [
                 for (var i = 1; i < 24; i++)
@@ -78,7 +83,8 @@ class _TimeLineBase extends State<TimeLineBase> {
           )
         ),
         //時間表示とタイムライン間の余白
-        SizedBox(
+        Container(
+          color: Colors.white,
           width: _timeLineActionDrawAreaMargin/2,
           height: _timeLineHeight,
         ),
@@ -104,7 +110,7 @@ class _TimeLineBase extends State<TimeLineBase> {
       width: _timeLineActionDrawAreaWidth,
       height: _timeLineHeight,
       child:Container(
-        color: Colors.blue,
+        color: Colors.white,
         child:Column(
           crossAxisAlignment: CrossAxisAlignment.start, // 左揃えに設定
           children: [
@@ -197,5 +203,11 @@ class _TimeLineBase extends State<TimeLineBase> {
     int _Hour = int.parse(_TimeList[0]) * 60;
     int _Minutes = int.parse(_TimeList[1]) + _Hour;
     return _Minutes;
+  }
+
+  void upDateData(List<Map<String, dynamic>> newData) {
+    setState(() {
+      _actionsDatas = newData;
+    });
   }
 }
