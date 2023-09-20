@@ -10,7 +10,7 @@ class RegisterActionTable{
   final String? actionMedia;
   final String? actionNotes; //説明文
   final int? actionScore;
-  final int? actionState; //状態(0=未完了,1=完了)
+  final bool? actionState; //状態(0=未完了,1=完了)
   final String? actionPlace;
   final String? actionMainTag;
   final String? actionSubTag;

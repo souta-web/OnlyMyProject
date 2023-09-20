@@ -42,7 +42,6 @@ class DataBaseRegister {
 
     // isTodoはトグルボタンの状態を受け取る
     // このif文はメッセージを送信したいので()の中はisUserで良い
-    // 済 TODO: ()の中身をisUserに修正
     if (isUser) {
       // 変数に代入してメッセージをを表示する
       ChatMessage message = ChatMessage(
@@ -69,13 +68,9 @@ class DataBaseRegister {
     bool isTodo,
     TextEditingController controller, 
     bool isUser) {
-    // TODO: メインタグに文字列を格納する変数を作る(String型)
-    // 例　String myMainTag = 'ゲーム';
-      //String myMainTag = '生活';
-    // TODO: 送信時間を格納する変数を作る(String型)　DateTime.now().toString()を使う
+      String myMainTag = '生活';
       String sendTime = DateTime.now().toString();
-    // TODO: アクションの状態を管理する変数を作る(bool型)、今はテストなので初期値はfalseでOKです
-      //bool actionFlag = false;
+      bool actionFlag = false;
     // チャットをデータベースに登録する
     // ↓のようにインスタンス生成して下さい
     RegisterChatTable registerChatTable = RegisterChatTable(
@@ -88,16 +83,12 @@ class DataBaseRegister {
     //トグルボタンがオンの時だけ呼び出す
     if (isTodo) {
       RegisterActionTable registerActionTable = RegisterActionTable(
-        // TODO: actionStartの次にactionMainTag,actionStateを作成
-        // TODO: actionNameにはchatText、actionStartに↑で作成した送信時間の変数を記述
-        // TODO: actionMainTagには↑で作ったmainTag用の変数をいれる
-        // TODO: actionStateには↑で作ったアクションの状態を管理する変数を記述
         actionName: chatText, 
         actionStart: sendTime,
-        //actionMainTag: myMainTag,
-        //actionState: actionFlag,
+        actionMainTag: myMainTag,
+        actionState: actionFlag,
       );
-      registerActionTable.registerActionTableFunc(); // TODO: インスタンス生成した変数.registerActionTableFunc()の形にする
+      registerActionTable.registerActionTableFunc();
     }
     // テキストフィールドをクリア
     controller.clear();
@@ -110,11 +101,11 @@ class DataBaseRegister {
     // コメントされてる範囲を囲んで ctrl + /
 
     return drawChatObjects(
-      isTodo: isTodo, // TODO: isTodoを記述
-      chatText: chatText, // TODO: chatTextを記述
-      isUser:  isUser, // TODO: isUserを記述
-      startTime: sendTime,  // TODO: 送信時間用の変数記述
-      isActionFlag: false// TODO: ここはfalseで記述お願いします。
+      isTodo: isTodo,
+      chatText: chatText,
+      isUser:  isUser,
+      startTime: sendTime,
+      isActionFlag: false
     );
   }
 }
