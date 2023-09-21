@@ -162,7 +162,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                         print(_mediaData);
                         print('メディアリスト： $_mediaList');
                         setState(() {
-                          _messages.add(_drawMedia.buildMediaList(_mediaList));
+                          //_messages.add(_drawMedia.buildMediaList(_mediaList));
                         });
                       },
                       iconSize: iconsSize,
