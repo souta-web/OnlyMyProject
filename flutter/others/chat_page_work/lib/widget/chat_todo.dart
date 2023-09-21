@@ -3,19 +3,18 @@ import 'package:flutter/material.dart';
 class ChatTodo extends StatefulWidget {
   final String title; // チャットメッセージのテキスト
   final bool isSentByUser; // 送信者がユーザー自身かどうかのフラグ
-  final String mainTag; //メインタグ
-  final Color mainTagColor; //メインタグの色
-  final String startTime; //送信時刻
+  final String? mainTag; //メインタグ
+  final Color? mainTagColor; //メインタグの色
+  final String startTime; //アクション開始時刻
   final bool actionFinished; //アクションの状態(true="完了",false="未完了")
 
   //クラスを呼び出すときに引数を必要とする(辻)
-  ChatTodo(
-      {required this.title,
-      required this.isSentByUser,
-      required this.mainTag,
-      required this.mainTagColor,
-      required this.startTime,
-      required this.actionFinished});
+  ChatTodo({required this.title,
+            required this.isSentByUser,
+            this.mainTag,
+            this.mainTagColor,
+            required this.startTime,
+            required this.actionFinished});
 
   //ウィジェットの状態を管理するStateオブジェクトを生成する
   @override
@@ -26,6 +25,8 @@ class ChatTodo extends StatefulWidget {
 class _ChatTodoState extends State<ChatTodo> {
 
   late bool _isActionFinish = widget.actionFinished;
+  late String _mainTag = widget.mainTag ?? "null";
+  late Color _mainTagColor = widget.mainTagColor ?? Colors.blueAccent;
 
   @override
   Widget build(BuildContext context) {
@@ -64,11 +65,11 @@ class _ChatTodoState extends State<ChatTodo> {
                     Container(
                       padding: EdgeInsets.only(left: 10,right:10,top: 3,bottom: 4),
                       decoration: BoxDecoration(
-                        color: Colors.lightBlue,
+                        color: _mainTagColor,
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child:Text(
-                        widget.mainTag,
+                        _mainTag,
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           fontSize: 11.0,
@@ -86,8 +87,8 @@ class _ChatTodoState extends State<ChatTodo> {
               child: Ink(
                 child: IconButton(
                   icon: CircleAvatar(
-                    backgroundImage:_isActionFinish ? AssetImage('assets/images/stop_recording.png'):
-                                                      AssetImage('assets/images/play_circle.png'),
+                    backgroundImage:_isActionFinish ? AssetImage('assets/images/play_circle.png'):
+                                                      AssetImage('assets/images/stop_recording.png'),
                     backgroundColor: Colors.transparent, // 背景色
                     radius: 25,
                   ),

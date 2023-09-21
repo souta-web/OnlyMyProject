@@ -36,11 +36,11 @@ class DrawChatObjects {
 
     if (isUser) {
       ChatMessage message =
-          ChatMessage(text: chatText, isSentByUser: isUser); // 応答側のメッセージ
+          ChatMessage(text: chatText, isSentByUser: isUser,time:startTime); // 応答側のメッセージ
       return message;
     } else {
       ChatMessage message =
-          ChatMessage(text: chatText, isSentByUser: isUser); // 返答側のメッセージ
+          ChatMessage(text: chatText, isSentByUser: isUser,time:startTime); // 返答側のメッセージ
       
       return message;
     }
