@@ -38,6 +38,8 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
 
   final List<Uint8List> _mediaList = [];
 
+  final double iconsSize = 30; //アイコンサイズ
+
   @override
   void initState() {
     super.initState();
@@ -124,63 +126,77 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
             ),
           ),
           Container(
-              color: Color.fromARGB(255, 103, 100, 100),
-              child: Column(children: [
-                Form(
-                    child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                      Switch(
-                        //テキスト入力欄の一番左のやつ
-                        value: _isTodo,
-                        onChanged: (value) {
-                          setState(() {
-                            _isTodo = value;
-                          });
-                        },
+            color: Color.fromARGB(255, 103, 100, 100),
+            child: Column(
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      child: Container(
+                        padding:const EdgeInsets.all(0), //アイコン動く
+                        child: Image.asset(
+                          _isTodo ? 'assets/images/textfield_action_submit_true.png'
+                                  : 'assets/images/textfield_action_submit_false.png', // UI_.pdf のアイコンに置き換え
+                          height:iconsSize,
+                          width:iconsSize
+                        ),
                       ),
-                      IconButton(
-                        //メディア追加ボタン
-                        icon: Icon(Icons.add),
-                        color: Colors.white,
-                        onPressed: () async {
-                          _mediaData = await _getMedia();
-                          await _drawMedia.pickImages(_mediaList);
+                      onTap: () {
+                        //コールバック関数の定義
+                        setState(() {
+                          //スイッチ状態をトグルする
+                          _isTodo = !_isTodo; //スイッチの状態をトグル（ONからOFF,OFFからONに切替）
+                        });
+                      },
+                    ),
+                    IconButton(
+                      //メディア追加ボタン
+                      icon: Icon(Icons.add),
+                      color: Colors.white,
+                      onPressed: () async {
+                        _mediaData = await _getMedia();
+                        await _drawMedia.pickImages(_mediaList);
 
-                          //現状は取得したメディアの処理がないためprintで取得確認
-                          print(_mediaData);
-                          print('メディアリスト： $_mediaList');
-                          setState(() {
-                            _messages.add(_drawMedia.buildMediaList(_mediaList));
-                          });
-                        },
-                      ),
-                      Flexible(
-                          child: Container(
+                        //現状は取得したメディアの処理がないためprintで取得確認
+                        print(_mediaData);
+                        print('メディアリスト： $_mediaList');
+                        setState(() {
+                          _messages.add(_drawMedia.buildMediaList(_mediaList));
+                        });
+                      },
+                      iconSize: iconsSize,
+                    ),
+                    Flexible(
+                      child:Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         margin: const EdgeInsets.symmetric(vertical: 5.0),
-                        height: 40.0,
+                        alignment: Alignment.center,
                         decoration: BoxDecoration(
                           color: Color.fromARGB(255, 222, 216, 216),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: TextField(
                           controller: _textEditingController,
-                          focusNode: _focusNode, // フォーカスノードを関連付ける
-                          keyboardType: TextInputType.multiline, //複数行のテキスト入力
+                          keyboardType: TextInputType.multiline,//複数行のテキスト入力
+                          style: const TextStyle(fontSize: 16), // テキストのフォントサイズを変更
                           maxLines: 5,
                           minLines: 1,
                           cursorColor: Color.fromARGB(255, 75, 67, 93),
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'メッセージを入力してください',
-                              //hintTextの位置
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 11.0,
-                              )),
+                          decoration:const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'メッセージを入力してください',
+                            //hintTextの位置
+                            contentPadding: EdgeInsets.symmetric(
+                              vertical: 5.0,
+                              horizontal: 0.0,
+                            ),
+                            isDense: true,
+                          ),
                         ),
-                      )),
-                      Material(
+                      ),
+                    ),
+                    Material(
                         //送信ボタンを作成
                         color: Color.fromARGB(255, 103, 100, 100),
                         child: Center(
@@ -199,14 +215,18 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                                   _autoScroll.scrollToBottom();
                                 });
                               },
+                              iconSize: iconsSize,
                             ),
                           ),
                         ),
                       )
-                    ])),
-              ])),
-        ],
-      ),
+                  ]
+                ),
+              ],
+            ),
+          ),
+        ]
+      )
     );
   }
 }
