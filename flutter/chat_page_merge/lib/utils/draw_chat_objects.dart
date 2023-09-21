@@ -18,6 +18,7 @@ class DrawChatObjects {
     String? mainTag,
     String? startTime,
     bool? isActionFinished,
+    <List<Uint8List>>? medeaList,
   }) {
     if (chatText.isEmpty) {
       return;
