@@ -1,10 +1,12 @@
-import 'package:flutter/material.dart';
+import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
 import '/widget/chat_fukidashi.dart';
 import '/widget/chat_todo.dart';
 import 'register_chat_table.dart';
 import 'register_action_table.dart';
 import 'text_formatter.dart';
+import 'multi_media.dart';
 
 // トグルボタンの状態によってオブジェクトを表示する
 class DrawChatObjects {
@@ -17,7 +19,8 @@ class DrawChatObjects {
     required bool isUser,
     String? mainTag,
     String? startTime,
-    bool? isActionFinished
+    bool? isActionFinished,
+    List<Uint8List>? medias,
   }) {
     if (chatText.isEmpty) {
       return;
@@ -29,19 +32,24 @@ class DrawChatObjects {
           title: chatText,
           isSentByUser: isUser,
           mainTag: mainTag ?? "null",
-          startTime: startTime ?? "null", //チャットオブジェクトを表示することが目的の関数なので、日時を取得してそれを表示させるのはふさわしくない。引数で受け取るようにする。(辻)
+          startTime: startTime ??
+              "null", //チャットオブジェクトを表示することが目的の関数なので、日時を取得してそれを表示させるのはふさわしくない。引数で受け取るようにする。(辻)
           actionFinished: isActionFinished ?? false);
       return message;
     }
 
     if (isUser) {
-      ChatMessage message =
-          ChatMessage(text: chatText, isSentByUser: isUser,time:startTime); // 応答側のメッセージ
+      ChatMessage message = ChatMessage(
+        text: chatText,
+        isSentByUser: isUser,
+        time: startTime,
+        medias: medias,
+      ); // 応答側のメッセージ
       return message;
     } else {
-      ChatMessage message =
-          ChatMessage(text: chatText, isSentByUser: isUser,time:startTime); // 返答側のメッセージ
-      
+      ChatMessage message = ChatMessage(
+          text: chatText, isSentByUser: isUser, time: startTime); // 返答側のメッセージ
+
       return message;
     }
   }
@@ -49,21 +57,21 @@ class DrawChatObjects {
   // 送信ボタンが押されたときに呼び出される
   //引数にisUser追加(辻)
   dynamic sendButtonPressed(String chatText, bool isTodo,
-      TextEditingController controller, bool isUser) {
+      TextEditingController controller, bool isUser, List<Uint8List>? imageBytes) {
     const String mainTag = '生活';
     String sendTime = DateTime.now().toString(); //日付取得
     TextFormatter timeFormatter = TextFormatter();
-    late String drawTime = timeFormatter.returnHourMinute(sendTime); //登録時間を表示用にする
+    late String drawTime =
+        timeFormatter.returnHourMinute(sendTime); //登録時間を表示用にする
     // 送信時間を数値化してchat_action_idとaction_chat_idに登録
-    late String chatActionLinkId = timeFormatter.returnChatActionLinkId(sendTime);
+    late String chatActionLinkId =
+        timeFormatter.returnChatActionLinkId(sendTime);
     String _actionState = 'false';
-    
+    MultiMedia _multiMedia = MultiMedia(); // メディアクラスのインスタンス生成
 
     if (chatText.isEmpty) {
       return;
     }
-
-
 
     // チャットをデータベースに登録する
     RegisterChatTable registerChatTable = RegisterChatTable(
@@ -74,7 +82,14 @@ class DrawChatObjects {
       chatActionId: chatActionLinkId,
     );
     registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
-    
+
+    // 画像をUint8Listのリストに変換
+    //imageBytes = await _multiMedia.convertImagesToUint8List();
+
+    RegisterActionTable _registerActionTable =
+        RegisterActionTable(actionMedia: imageBytes);
+    _registerActionTable.registerActionTableFunc();
+
     // トグルボタンがオンの時アクションを登録する
     if (isTodo) {
       RegisterActionTable registerActionTable = RegisterActionTable(
@@ -83,6 +98,7 @@ class DrawChatObjects {
         actionMainTag: mainTag,
         actionState: _actionState,
         actionChatId: chatActionLinkId,
+        //actionMedia: imageBytes,
       );
       registerActionTable.registerActionTableFunc();
     }
@@ -97,6 +113,7 @@ class DrawChatObjects {
         isUser: isUser,
         mainTag: mainTag,
         startTime: drawTime,
-        isActionFinished: false);
+        isActionFinished: false,
+        medias: imageBytes);
   }
 }

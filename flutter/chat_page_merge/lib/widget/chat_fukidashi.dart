@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 // 辻が作った吹き出し
@@ -9,7 +11,7 @@ class ChatMessage extends StatelessWidget {
   final bool isSentByUser;
 
   // 画像を追加
-  final Widget? media;
+  final List<Uint8List>? medias;
 
   //時間
   final String? time;
@@ -19,7 +21,7 @@ class ChatMessage extends StatelessWidget {
     required this.text,
     required this.isSentByUser,
     this.time,
-    this.media,
+    this.medias,
   });
 
   @override
@@ -56,10 +58,17 @@ class ChatMessage extends StatelessWidget {
                   topLeft: Radius.circular(10),
                   bottomRight: Radius.circular(10),
                 )),
-            child: Text(
-              text,
-              style: TextStyle(fontSize: 16.0),
-            ),
+            child: Column (
+              children: [
+                if (medias != null) 
+                  for (var imageBytes in medias!) 
+                    _createImageWidget(imageBytes), // 画像表示
+                Text(
+                text,
+                style: TextStyle(fontSize: 16.0),
+                ),
+              ],
+            ), 
           ),
         ),
         _createTimeWidget(_time,!isSentByUser),
@@ -89,5 +98,14 @@ class ChatMessage extends StatelessWidget {
     } else {
       return const SizedBox();
     }
+  }
+
+  Widget _createImageWidget(Uint8List imageBytes) {
+    return Image.memory(
+      imageBytes,
+      fit: BoxFit.contain, // 画像のフィット設定
+      height: 150, // 画像の高さ設定
+      width: 150, // 画像の幅設定
+    );
   }
 }
