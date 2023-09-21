@@ -50,7 +50,7 @@ class DrawChatObjects {
   //引数にisUser追加(辻)
   dynamic sendButtonPressed(String chatText, bool isTodo,
       TextEditingController controller, bool isUser) {
-    const String mainTag = '#趣味';
+    const String mainTag = '生活';
     String sendTime = DateTime.now().toString(); //日付取得
     TextFormatter timeFormatter = TextFormatter();
     late String drawTime = timeFormatter.returnHourMinute(sendTime); //登録時間を表示用にする
