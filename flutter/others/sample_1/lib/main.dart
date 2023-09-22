@@ -1,73 +1,63 @@
 import 'package:flutter/material.dart';
+import 'list_class.dart';
+import 'button_3.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Timeline Example',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Vertical Buttons'),
+        ),
+        body: BodyWidget(),
       ),
-      home: TimelineScreen(),
     );
   }
 }
 
-class TimelineScreen extends StatelessWidget {
+class BodyWidget extends StatefulWidget {
+  @override
+  _BodyWidgetState createState() => _BodyWidgetState();
+}
+
+class _BodyWidgetState extends State<BodyWidget> {
+
+  late ListA listA = ListA();
+  late Button3 button3;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Timeline'),
-      ),
-      body: Center(
-        child: CustomPaint(
-          size: Size(200, 800), // カスタム描画領域のサイズ
-          painter: TimelinePainter(), // カスタムペインターを指定
-        ),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          ElevatedButton(
+            onPressed: () {
+              // ボタン1が押された時の処理
+              List<String> _data = listA.list_A;
+              print("list_a:$_data");
+            },
+            child: Text('list_a出力'),
+          ),
+          SizedBox(height: 20), // ボタンとボタンの間にスペースを空ける
+          ElevatedButton(
+            onPressed: () {
+              // ボタン2が押された時の処理
+              listA.count += 1;
+              listA.list_A.add(listA.count.toString());
+            },
+            child: Text('list_a追加'),
+          ),
+          SizedBox(height: 20), // ボタンとボタンの間にスペースを空ける
+          button3 = Button3(listA),
+        ],
       ),
     );
-  }
-}
-
-class TimelinePainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.black
-      ..strokeWidth = 1.0;
-
-    // タイムラインの時間と縦線を描画
-    for (int hour = 1; hour <= 24; hour++) {
-      final y = (hour / 12) * size.height;
-      final double startX = 0;
-      final endX = size.width;
-      canvas.drawLine(Offset(startX, y), Offset(endX, y), paint);
-
-      final textPainter = TextPainter(
-        text: TextSpan(
-          text: hour.toString(),
-          style: TextStyle(color: Colors.black, fontSize: 14),
-        ),
-        textAlign: TextAlign.center,
-        textDirection: TextDirection.ltr,
-      );
-
-      textPainter.layout(
-        minWidth: size.width, // テキストの位置を調整
-        maxWidth: size.width,
-      );
-
-      textPainter.paint(canvas, Offset(endX + 5, y - textPainter.height / 2));
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
   }
 }

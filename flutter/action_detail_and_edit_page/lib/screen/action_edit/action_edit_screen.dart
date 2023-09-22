@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '/screen/action_edit/widget/field_widgets.dart';
+import '/screen/action_edit/func/save_button_pressed.dart';
 
 class ActionEditPage extends StatefulWidget {
   @override
@@ -7,12 +8,19 @@ class ActionEditPage extends StatefulWidget {
 }
 
 class _ActionEditPage extends State<ActionEditPage> {
-
+  SaveButtonPressed saveButtonPressed = SaveButtonPressed();
+  late String title;
+  late List<String> tagList;
+  late String startTime;
+  late String endTime;
+  late int score;
+  late String note;
   @override
-
+  
   void initState() {
     super.initState();
     // 初期化の処理をここに記述する
+    
   }
 
   Widget build(BuildContext context) {
@@ -24,6 +32,13 @@ class _ActionEditPage extends State<ActionEditPage> {
           IconButton(
             icon: Icon(Icons.grading),
             onPressed: () {
+              saveButtonPressed.dataOutPut(title,
+                                           tagList,
+                                           startTime,
+                                           endTime,
+                                           score,
+                                           note
+              );
             },
           ),
         ],

@@ -16,9 +16,8 @@ class _ActionEditPagePrimaryWidget extends State<ActionEditPagePrimaryWidget> {
   final TextEditingController _textEditingController_explain = TextEditingController();
   final TextfieldTagsController _textEditingController_tag = TextfieldTagsController(); //タグフィールドのコントローラー
 
-  late double _distanceToField = widget.bodyWidth; // TextFieldのサイズ？
   late double _deviceWidth = MediaQuery.of(context).size.width; //画面の横幅を取得
-  late List<String> _tagList = ["料理","勉強"];
+  late List<String> tagList = ["料理","勉強"];
   
   @override
 
@@ -31,7 +30,7 @@ class _ActionEditPagePrimaryWidget extends State<ActionEditPagePrimaryWidget> {
       child:Column(
         children: [
           _createTitleArea(_deviceWidth),
-          _createTagArea(_deviceWidth,_tagList),
+          _createTagArea(_deviceWidth,tagList),
         ]
       )
     );
@@ -76,11 +75,10 @@ class _ActionEditPagePrimaryWidget extends State<ActionEditPagePrimaryWidget> {
     );
   }
 
-  Widget _createTagArea(_bodyWidth,_tagList) {
+  Widget _createTagArea(_bodyWidth,tagList) {
     const double _thisHeight = 150.0;
     const bool _createCLEARTAGS = false;
     final double _fieldWidth = _bodyWidth;
-    const bool _drawThisIcon = true;
     return SizedBox(
       width: _bodyWidth, 
       height: _thisHeight,
@@ -88,7 +86,7 @@ class _ActionEditPagePrimaryWidget extends State<ActionEditPagePrimaryWidget> {
         children: [
           TextFieldTags(
             textfieldTagsController: _textEditingController_tag, // コントローラーの設定
-            initialTags: _tagList, // 最初に表示するタグのリスト
+            initialTags: tagList, // 最初に表示するタグのリスト
             textSeparators: const [' ', ','], // タグの区切り文字
             //letterCase: LetterCase.normal, // タグの文字の大文字・小文字の設定
             validator: (String tag) { //ユーザーがフィールドに文字を入力してエンターなどで入力確定したときに呼び出される
