@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:textfield_tags/textfield_tags.dart';
+import 'field_datas.dart';
+import 'package:table_calendar/table_calendar.dart';
+
 
 class ActionEditPagePrimaryWidget extends StatefulWidget {
   ActionEditPagePrimaryWidget({required this.bodyWidth,required this.bodyHeight});
@@ -17,7 +20,11 @@ class _ActionEditPagePrimaryWidget extends State<ActionEditPagePrimaryWidget> {
   final TextfieldTagsController _textEditingController_tag = TextfieldTagsController(); //タグフィールドのコントローラー
 
   late double _deviceWidth = MediaQuery.of(context).size.width; //画面の横幅を取得
-  late List<String> tagList = ["料理","勉強"];
+
+  //変数関係
+  late FieldDatas fieldDatas = FieldDatas();
+
+
   
   @override
 
@@ -30,7 +37,8 @@ class _ActionEditPagePrimaryWidget extends State<ActionEditPagePrimaryWidget> {
       child:Column(
         children: [
           _createTitleArea(_deviceWidth),
-          _createTagArea(_deviceWidth,tagList),
+          _createTagArea(_deviceWidth,fieldDatas.tags),
+          _createCalenderArea(),
         ]
       )
     );
@@ -193,16 +201,5 @@ class _ActionEditPagePrimaryWidget extends State<ActionEditPagePrimaryWidget> {
     } else {
       return const SizedBox.shrink(); //空のウィジェットを返す
     }
-  }
-
-  Widget _createHorizontalLine() {
-    const double _thisHeight = 1.5;
-    return const Divider(
-      color: Colors.black, // 線の色を指定 (省略可能)
-      height: _thisHeight, // 線の高さを指定 (省略可能)
-      thickness: 1.5, // 線の太さを指定 (省略可能)
-      indent: 0.0, // 線の開始位置からのオフセットを指定 (省略可能)
-      endIndent: 0.0, // 線の終了位置からのオフセットを指定 (省略可能)
-    );
   }
 }
