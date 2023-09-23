@@ -17,7 +17,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   //switchボタンの状態管理変数
   bool _isTodo = false; //テキスト入力の左のやつ
   late Uint8List? _mediaData = null; //メディアを格納する
-
+  late List<Uint8List> imageData = [];
   // チャットメッセージのリスト
   final List<dynamic> _messages = [];
 
@@ -36,7 +36,8 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   final RestoreChatHistory _restoreChatHistory = RestoreChatHistory();
   final MultiMedia _multimedia = MultiMedia();
 
-  final List<Uint8List> _mediaList = [];
+  // バイナリーデータに変換するためのリスト
+  final List<Uint8List> _imageList = [];
 
   final double iconsSize = 30; //アイコンサイズ
 
@@ -152,13 +153,14 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                     color: Colors.white,
                     onPressed: () async {
                       _mediaData = await _getMedia();
-                      //await _Multimedia.pickImages();
+                      imageData =
+                          await _multimedia.pickAndConvertImages(List.from(_imageList));
 
                       //現状は取得したメディアの処理がないためprintで取得確認
                       print(_mediaData);
-                      print('メディアリスト： $_mediaList');
+                      print('メディアリスト： $_imageList');
                       setState(() {
-                        _multimedia.pickImages();
+                        _imageList.addAll(imageData);
                       });
                     },
                     iconSize: iconsSize,
@@ -208,7 +210,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                                   _isTodo,
                                   _textEditingController,
                                   true,
-                                  _mediaList));
+                                  _imageList));
                               _autoScroll.scrollToBottom();
                             });
                           },

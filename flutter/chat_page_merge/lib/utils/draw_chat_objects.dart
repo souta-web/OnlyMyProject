@@ -3,10 +3,10 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import '/widget/chat_fukidashi.dart';
 import '/widget/chat_todo.dart';
+import '/widget/create_images.dart';
 import 'register_chat_table.dart';
 import 'register_action_table.dart';
 import 'text_formatter.dart';
-import 'multi_media.dart';
 
 // トグルボタンの状態によってオブジェクトを表示する
 class DrawChatObjects {
@@ -20,10 +20,17 @@ class DrawChatObjects {
     String? mainTag,
     String? startTime,
     bool? isActionFinished,
-    List<Uint8List>? medias,
+    List<Uint8List>? imageList,
   }) {
+    imageList ??= [];
     if (chatText.isEmpty) {
       return;
+    }
+
+    if (isTodo) {
+      // 画像を実体化して表示
+      CreateImages createImages = CreateImages(images: imageList);
+      return createImages;
     }
 
     if (isTodo) {
@@ -40,11 +47,8 @@ class DrawChatObjects {
 
     if (isUser) {
       ChatMessage message = ChatMessage(
-        text: chatText,
-        isSentByUser: isUser,
-        time: startTime,
-        medias: medias,
-      ); // 応答側のメッセージ
+          text: chatText, isSentByUser: isUser, time: startTime); // 応答側のメッセージ
+
       return message;
     } else {
       ChatMessage message = ChatMessage(
@@ -56,18 +60,19 @@ class DrawChatObjects {
 
   // 送信ボタンが押されたときに呼び出される
   //引数にisUser追加(辻)
-  dynamic sendButtonPressed(String chatText, bool isTodo,
-      TextEditingController controller, bool isUser, List<Uint8List>? imageBytes) {
+  dynamic sendButtonPressed(
+      String chatText,
+      bool isTodo,
+      TextEditingController controller,
+      bool isUser,
+      List<Uint8List>? imageBytes) {
     const String mainTag = '生活';
     String sendTime = DateTime.now().toString(); //日付取得
     TextFormatter timeFormatter = TextFormatter();
-    late String drawTime =
-        timeFormatter.returnHourMinute(sendTime); //登録時間を表示用にする
+    late String drawTime = timeFormatter.returnHourMinute(sendTime); //登録時間を表示用にする
     // 送信時間を数値化してchat_action_idとaction_chat_idに登録
-    late String chatActionLinkId =
-        timeFormatter.returnChatActionLinkId(sendTime);
+    late String chatActionLinkId = timeFormatter.returnChatActionLinkId(sendTime);
     String _actionState = 'false';
-    MultiMedia _multiMedia = MultiMedia(); // メディアクラスのインスタンス生成
 
     if (chatText.isEmpty) {
       return;
@@ -83,8 +88,7 @@ class DrawChatObjects {
     );
     registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
 
-    // 画像をUint8Listのリストに変換
-    //imageBytes = await _multiMedia.convertImagesToUint8List();
+    print('imageBytes: $imageBytes');
 
     RegisterActionTable _registerActionTable =
         RegisterActionTable(actionMedia: imageBytes);
@@ -98,7 +102,7 @@ class DrawChatObjects {
         actionMainTag: mainTag,
         actionState: _actionState,
         actionChatId: chatActionLinkId,
-        //actionMedia: imageBytes,
+        actionMedia: imageBytes,
       );
       registerActionTable.registerActionTableFunc();
     }
@@ -114,6 +118,6 @@ class DrawChatObjects {
         mainTag: mainTag,
         startTime: drawTime,
         isActionFinished: false,
-        medias: imageBytes);
+        imageList: imageBytes);
   }
 }
