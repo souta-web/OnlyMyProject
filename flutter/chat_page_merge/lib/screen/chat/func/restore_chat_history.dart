@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 import '/utils/database_helper.dart';
@@ -7,6 +9,7 @@ import '/utils/text_formatter.dart';
 // アプリ起動時のチャット履歴復元を行う
 class RestoreChatHistory {
   final List<Widget> _messages = []; // チャットメッセージを格納するリスト
+  final List<Uint8List> _mediaList = []; // 画像データを格納するリスト
 
   // データベースからチャット履歴を取得し、それをウィジェットとして_messagesリストに追加するためのメソッド
   Future<void> fetchChatHistory() async {
@@ -16,7 +19,8 @@ class RestoreChatHistory {
     final List<Map<String, dynamic>> actionHistory =
         await dbHelper.queryAllRows_action_table(); // データベースからアクションを取得する
 
-    DrawChatObjects drawChatObjects = DrawChatObjects(); // チャットメッセージをウィジェットに変換する
+    DrawChatObjects drawChatObjects =
+        DrawChatObjects(); // チャットメッセージをウィジェットに変換する
     TextFormatter timeFormatter = TextFormatter();
 
     // カラムから取得する必要があるデータを格納する変数を宣言
@@ -26,6 +30,7 @@ class RestoreChatHistory {
     late String _mainTag;
     late String _startTime;
     late bool _isActionFinished;
+    late Uint8List _mediaData;
 
     // チャット履歴を処理してウィジェットを生成し、_messagesと_actionsに追加する
     for (var chat in chatHistory) {
@@ -44,6 +49,11 @@ class RestoreChatHistory {
         );
         _mainTag = actionData['action_main_tag'] ?? "null";
         _isActionFinished = actionData['action_end'] == "true" ? true : false;
+
+        // BLOBをUint8Listに変換
+        final List<int>? mediaBytes = actionData['action_media'];
+        _mediaData = Uint8List.fromList(mediaBytes ?? []); // 空のUint
+        _mediaList.add(_mediaData);  // 画像データをリストに追加
         print('actionData: $actionData');
       }
 
@@ -54,15 +64,16 @@ class RestoreChatHistory {
         mainTag: _mainTag,
         startTime: drawTime,
         isActionFinished: _isActionFinished,
+        imageList: _mediaList
       );
 
       // ウィジェットが正常に生成された場合、リストに追加
       if (chatObject != null) {
         if (_isTodo) {
-          _messages.add(chatObject);
+          _messages.addAll(chatObject);
         } else {
           // チャットの場合、_messagesリストに追加
-          _messages.add(chatObject);
+          _messages.addAll(chatObject);
         }
       }
     }

@@ -7,7 +7,7 @@ import 'dart:typed_data';
 
 class DatabaseHelper {
   // デバッグ時はDB名を変えてよい
-  static final _databaseName = "MyDatabase47.db"; // DB名
+  static final _databaseName = "MyDatabase48.db"; // DB名
   static final _databaseVersion = 1; // スキーマのバージョン指定
 
   static final chat_table = 'chat_table'; // チャット管理テーブル
@@ -23,8 +23,7 @@ class DatabaseHelper {
   static final columnChatMessage = 'chat_message'; // チャットのテキスト
   static final columnChatTime = 'chat_time'; //送信時間
   static final columnChatChannel = 'chat_channel'; //チャットチャンネル
-  static final columnChatActionId =
-      'chat_action_id'; //このチャットと紐づけられているアクションのidがここに入る
+  static final columnChatActionId = 'chat_action_id'; //このチャットと紐づけられているアクションのidがここに入る
 
   // アクションテーブルのカラム
   static final columnActionId = '_action_id'; //ID
@@ -36,8 +35,7 @@ class DatabaseHelper {
   static final columnActionMedia = 'action_media'; //添付メディア
   static final columnActionNotes = 'action_notes'; //説明文
   static final columnActionScore = 'action_score'; //充実度(1から5までの値で制限する)
-  static final columnActionState =
-      'action_state'; //状態(0=未完了,1=完了) (false=未完了,true=完了)
+  static final columnActionState = 'action_state'; //状態(0=未完了,1=完了) (false=未完了,true=完了)
   static final columnActionPlace = 'action_place'; //場所
   static final columnActionMainTag = 'action_main_tag'; //メインタグ
   static final columnActionSubTag = 'action_sub_tag'; //サブタグ
@@ -47,8 +45,7 @@ class DatabaseHelper {
   static final columnTagId = '_tag_id'; // タグID
   static final columnTagName = 'tag_name'; // タグ名
   static final columnTagColor = 'tag_color'; // タグの色
-  static final columnTagRegisteredActionName =
-      'tag_registered_action_name'; // 登録されたアクション名
+  static final columnTagRegisteredActionName = 'tag_registered_action_name'; // 登録されたアクション名
 
   // DatabaseHelper クラスを定義
   DatabaseHelper._privateConstructor();

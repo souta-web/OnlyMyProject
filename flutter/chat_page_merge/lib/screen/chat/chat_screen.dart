@@ -77,7 +77,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
       print(_messages);
     });
 
-    //アプリ起動時に自動スクロール
+    // アプリ起動時に自動スクロール
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _autoScroll.scrollToBottom();
     });
