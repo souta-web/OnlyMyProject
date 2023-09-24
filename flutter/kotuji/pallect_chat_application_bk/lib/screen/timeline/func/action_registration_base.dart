@@ -72,9 +72,9 @@ class TimeLineActionsData {
     return convertedData;
   }
 
-class PublicPrint{
+class PreUpdateDefaultData{//updateDefaultDataを外部から使えるようにする
 
-  void publicFunction(data) {
+  void publicUpdateDefaultData(data) {
     final privateInstance = TimeLineActionsData();
     //data=[{"startTime": "0:00","endTime": "1:45" ,"color": Colors.amber,"title": "default2"},];
 

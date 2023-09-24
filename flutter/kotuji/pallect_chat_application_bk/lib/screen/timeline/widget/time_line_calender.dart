@@ -181,14 +181,11 @@ class _TimeLineCalender extends State<TimeLineCalender> {
               List<Map<String, dynamic>> settingDate = setData(formattedDate);
               print(settingDate);//挿入したいリスト
 
-              printSchedule(settingDate);
-              
-              //addSchedule(settingDate);
-              //printSchedule();
-              //TimeLineBases.upDateData(settingDate);
+              callUpdateDefaultData(settingDate);//リストを挿入
 
-              //upDateData(settingDate);
-              
+              print("callReset");
+              callResetActionsDatas();
+              print("callResetEnd");
             });
           }
         },
@@ -241,22 +238,16 @@ class _TimeLineCalender extends State<TimeLineCalender> {
     
     return formattedDate;
   }
-/*
-  void addSchedule(newdata){
-    final publicInstance = PublicTimeLineBase();
-    publicInstance.publicFunction(newdata); // パブリックな関数を呼び出す
-    print("addSchedule");
+
+   void callUpdateDefaultData(data){//updateDefaultDataを呼び出す為にPreUpdateDefaultDataを呼び出す
+    final publicInstance = PreUpdateDefaultData();
+    publicInstance.publicUpdateDefaultData(data); // パブリックな関数を呼び出す
+    print("callUpdateDefaultData");
   }
 
-  void printSchedule(){
-    final publicInstance = PublicPrint();
+  void callResetActionsDatas(){//resetActionsDatasを呼び出す為にPreResetActionsDatasを呼び出す
+    final publicInstance = PreResetActionsDatas();
     publicInstance.publicFunction(); // パブリックな関数を呼び出す
-    print("printSchedule");
-  }
-  */
-   void printSchedule(data){
-    final publicInstance = PublicPrint();
-    publicInstance.publicFunction(data); // パブリックな関数を呼び出す
-    print("printSchedule");
+    print("callResetActionsDatas");
   }
 }

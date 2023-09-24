@@ -4,11 +4,11 @@ import '../func/action_registration_base.dart';
 //import 'time_line_data_manager.dart';
 
 class TimeLineBase extends StatefulWidget {
-  TimeLineBase({required this.bodyWidth,required this.bodyHeight,required this.newData,});
+  TimeLineBase({required this.bodyWidth,required this.bodyHeight,});
   //bodyのサイズを受け取る
   final double bodyWidth;
   final double bodyHeight;
-  final List<Map<String, dynamic>> newData; // 新しいデータを保持する変数を追加
+  //final List<Map<String, dynamic>> newData; // 新しいデータを保持する変数を追加
   @override
   _TimeLineBase createState() => _TimeLineBase();
 }
@@ -39,8 +39,7 @@ class _TimeLineBase extends State<TimeLineBase> {
   void initState() {
     super.initState();
     actionsDatas = timeLineActionsData.defaultData;
-    //actionsDatas = widget.newData;
-    //actionsDatas = ();
+
     _actionWidgets.add(_drawHorizontalLinesConstructure()); //これは表示領域のベースになるから変更してはいけない
     for (int i = 0; i < actionsDatas.length;i++){
       _actionWidgets.add(_returnTimeLineActionWidget(actionsDatas[i],_clearActionArea));
@@ -51,7 +50,7 @@ class _TimeLineBase extends State<TimeLineBase> {
     print("actionDatas");
     print(actionsDatas);
     print("newDatas");
-    print(widget.newData);
+    //print(widget.newData);
     //dataManager.upDateData(widget.newData);
   }
 
@@ -209,39 +208,24 @@ class _TimeLineBase extends State<TimeLineBase> {
     int _Minutes = int.parse(_TimeList[1]) + _Hour;
     return _Minutes;
   }
-/*
- void upDateData(List<Map<String, dynamic>> changeData) {
-  //setState(() {
-    actionsDatas = changeData;
-  //});
-  print("_upDateData");
-  print(actionsDatas);
-  }
 
-  void printAction(){
-    print("printAction");
-    print(actionsDatas);
-    print("printNewdata");
-    print(widget.newData);
+  void resetActionsDatas() {
+    //setState(() {
+      print("Called");
+      actionsDatas = timeLineActionsData.defaultData;
+      print("actionsDatas");
+      print(actionsDatas);
+      print("timeLineActionsData.defaultData");
+      print(timeLineActionsData.defaultData);
+    //});
   }
 }
 
-class PublicTimeLineBase{
-  late _TimeLineBase listA = _TimeLineBase();
-  
-  void publicFunction(List<Map<String, dynamic>> changeNewdata) {
-    final privateInstance = _TimeLineBase();
-      privateInstance.upDateData(changeNewdata);
-      print("PublicTimeLineBase");
-  }
-}
-
-class PublicPrint{
-
+class PreResetActionsDatas{//updateDefaultDataを外部から使えるようにする
   void publicFunction() {
     final privateInstance = _TimeLineBase();
-      privateInstance.printAction();
-      print("PublicPrint");
+      privateInstance.resetActionsDatas();
+      print("Call");
+      //print(data);
   }
-  */
 }

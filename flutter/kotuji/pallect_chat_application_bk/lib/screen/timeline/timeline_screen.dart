@@ -44,8 +44,8 @@ class TimeLineBody extends StatelessWidget {
         //var instance = _TimeLineCalender();
         DateTime _toDay = DateTime.now();// 現在の日付を初期値として設定;
         //String formattedDate = setSchedule(_toDay);
-        final _newData = [{"startTime": "0:00","endTime": "1:00" ,"color": Colors.amber,"title": "default"},
-                          {"startTime": "1:00","endTime": "2:00" ,"color": Colors.amber,"title": "default"},];
+        //final _newData = [{"startTime": "0:00","endTime": "1:00" ,"color": Colors.amber,"title": "default"},
+                          //{"startTime": "1:00","endTime": "2:00" ,"color": Colors.amber,"title": "default"},];
         final double _topBarHeight = _bodyHeight/8;
         final double _weeekCalenderHeight = 72;//週のカレンダーサイズ
         final double _calenderHeight = 340+56;//カレンダーサイズ 340未満だと警戒表示される
@@ -57,7 +57,7 @@ class TimeLineBody extends StatelessWidget {
                 child:Column(
                   children: [
                     SizedBox(height:_topBarHeight+(_topBarHeight-_weeekCalenderHeight)+10),//TimeLineTopBarと一週間表示分下に下げる（重なっている部分は省く）+00は調整用
-                    TimeLineBase(bodyWidth: _bodyWidth,bodyHeight: _timeLineHeight,newData:_newData),
+                    TimeLineBase(bodyWidth: _bodyWidth,bodyHeight: _timeLineHeight,),
                   ],
                 )
                 
