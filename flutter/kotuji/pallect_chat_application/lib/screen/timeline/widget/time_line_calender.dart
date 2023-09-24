@@ -189,8 +189,8 @@ class _TimeLineCalender extends State<TimeLineCalender> {
               print("_newDatas");
               print(newDataA);
 
-              List<String> _data = actionsDatasA._actionDatas;
-              print("list_a:$_data");
+              //List<String> _data = actionsDatasA._actionDatas;
+              //print("list_a:$_data");
               //_actionsDatas = settingDate;
               //print(timeLineActionsData.newData);
             });

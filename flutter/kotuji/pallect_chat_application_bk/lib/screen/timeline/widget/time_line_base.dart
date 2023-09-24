@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'time_line_action_widget.dart';
 import '../func/action_registration_base.dart';
-import 'time_line_data_manager.dart';
+//import 'time_line_data_manager.dart';
 
 class TimeLineBase extends StatefulWidget {
   TimeLineBase({required this.bodyWidth,required this.bodyHeight,required this.newData,});
@@ -14,6 +14,7 @@ class TimeLineBase extends StatefulWidget {
 }
 
 class _TimeLineBase extends State<TimeLineBase> {
+  var timeLineActionsData = TimeLineActionsData();
   final double _timeDrawSpace = 50; //時間を表示する欄の横幅
   final double _oneHourHeight = 60; //これを変えたら1時間当たりの縦幅が変わる
   final double _timeTextHeight = 16; //時間テキストの縦幅 変えるとおかしくなる
@@ -22,7 +23,7 @@ class _TimeLineBase extends State<TimeLineBase> {
   late double _timeLineHeight = _oneHourHeight * 24 - (_horizontalLineThickness * 48); //タイムライン画面の合計縦幅
   late double _timeLineActionDrawAreaWidth = widget.bodyWidth - _timeDrawSpace - _timeLineActionDrawAreaMargin; //アクション表示領域の横幅
   
-  final TimeLineDataManager dataManager = TimeLineDataManager();
+  //final TimeLineDataManager dataManager = TimeLineDataManager();
   
   //↓この配列に要素を追加したらその分だけ表示数を増やせる。(開始時刻が早い順に並んでいないとうまく動かないかも)
   late List<Map<String, dynamic>> actionsDatas = [];
@@ -37,7 +38,8 @@ class _TimeLineBase extends State<TimeLineBase> {
 
   void initState() {
     super.initState();
-    actionsDatas = widget.newData;
+    actionsDatas = timeLineActionsData.defaultData;
+    //actionsDatas = widget.newData;
     //actionsDatas = ();
     _actionWidgets.add(_drawHorizontalLinesConstructure()); //これは表示領域のベースになるから変更してはいけない
     for (int i = 0; i < actionsDatas.length;i++){
@@ -50,7 +52,7 @@ class _TimeLineBase extends State<TimeLineBase> {
     print(actionsDatas);
     print("newDatas");
     print(widget.newData);
-    dataManager.upDateData(widget.newData);
+    //dataManager.upDateData(widget.newData);
   }
 
   Widget build(BuildContext context) {
@@ -207,7 +209,7 @@ class _TimeLineBase extends State<TimeLineBase> {
     int _Minutes = int.parse(_TimeList[1]) + _Hour;
     return _Minutes;
   }
-
+/*
  void upDateData(List<Map<String, dynamic>> changeData) {
   //setState(() {
     actionsDatas = changeData;
@@ -225,6 +227,8 @@ class _TimeLineBase extends State<TimeLineBase> {
 }
 
 class PublicTimeLineBase{
+  late _TimeLineBase listA = _TimeLineBase();
+  
   void publicFunction(List<Map<String, dynamic>> changeNewdata) {
     final privateInstance = _TimeLineBase();
       privateInstance.upDateData(changeNewdata);
@@ -239,4 +243,5 @@ class PublicPrint{
       privateInstance.printAction();
       print("PublicPrint");
   }
+  */
 }

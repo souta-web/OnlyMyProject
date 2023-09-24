@@ -180,8 +180,10 @@ class _TimeLineCalender extends State<TimeLineCalender> {
 
               List<Map<String, dynamic>> settingDate = setData(formattedDate);
               print(settingDate);//挿入したいリスト
+
+              printSchedule(settingDate);
               
-              addSchedule(settingDate);
+              //addSchedule(settingDate);
               //printSchedule();
               //TimeLineBases.upDateData(settingDate);
 
@@ -239,7 +241,7 @@ class _TimeLineCalender extends State<TimeLineCalender> {
     
     return formattedDate;
   }
-
+/*
   void addSchedule(newdata){
     final publicInstance = PublicTimeLineBase();
     publicInstance.publicFunction(newdata); // パブリックな関数を呼び出す
@@ -249,6 +251,12 @@ class _TimeLineCalender extends State<TimeLineCalender> {
   void printSchedule(){
     final publicInstance = PublicPrint();
     publicInstance.publicFunction(); // パブリックな関数を呼び出す
+    print("printSchedule");
+  }
+  */
+   void printSchedule(data){
+    final publicInstance = PublicPrint();
+    publicInstance.publicFunction(data); // パブリックな関数を呼び出す
     print("printSchedule");
   }
 }
