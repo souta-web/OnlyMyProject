@@ -29,6 +29,8 @@ class _TimeLineCalender extends State<TimeLineCalender> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   CalendarFormat _weekFormat = CalendarFormat.week;
 
+  
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -170,14 +172,18 @@ class _TimeLineCalender extends State<TimeLineCalender> {
               selectedMonth = selected.month;
               previousSelectedMonth = selectedMonth;
 
-              String formattedDate = setSchedule(_selectedDay);
-              print(formattedDate);
-
-              List<Map<String, dynamic>> settingDate = setData(formattedDate);
               //print(formattedDate);
               //print(_selectedDay);
-              print(settingDate);
-              TimeLineBases.upDateData(settingDate);
+
+              String formattedDate = setSchedule(_selectedDay);
+              print(formattedDate);//リスト名に直した日付
+
+              List<Map<String, dynamic>> settingDate = setData(formattedDate);
+              print(settingDate);//挿入したいリスト
+              
+              addSchedule(settingDate);
+              //printSchedule();
+              //TimeLineBases.upDateData(settingDate);
 
               //upDateData(settingDate);
               
@@ -229,7 +235,20 @@ class _TimeLineCalender extends State<TimeLineCalender> {
 
     // "yYYYYmMMdDD" の形式に結合して返す
     String formattedDate = 'y$yearStr' + 'm$monthStr' + 'd$dayStr';
+    print("setSchedule");
     
     return formattedDate;
+  }
+
+  void addSchedule(newdata){
+    final publicInstance = PublicTimeLineBase();
+    publicInstance.publicFunction(newdata); // パブリックな関数を呼び出す
+    print("addSchedule");
+  }
+
+  void printSchedule(){
+    final publicInstance = PublicPrint();
+    publicInstance.publicFunction(); // パブリックな関数を呼び出す
+    print("printSchedule");
   }
 }

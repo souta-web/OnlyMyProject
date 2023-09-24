@@ -41,15 +41,11 @@ class TimeLineBody extends StatelessWidget {
         // constraintsはbodyのサイズを表すBoxConstraintsです。
         final _bodyWidth = constraints.maxWidth; //bodyの横幅取得
         final _bodyHeight = constraints.maxHeight; //bodyの縦幅を取得
-        final _newData = [{"startTime": "0:00","endTime": "1:45" ,"color": Colors.amber,"title": "ポケモンスリープしない"},
-                                              {"startTime": "1:00","endTime": "2:45" ,"color": Colors.red,"title": "ご飯食べる"},
-                                              {"startTime": "2:00","endTime": "8:00" ,"color": Colors.blue,"title": "学校に行く"},
-                                              {"startTime": "5:00","endTime": "9:00" ,"color": Colors.pink,"title": "寝る"},
-                                              {"startTime": "5:00","endTime": "6:00" ,"color": Colors.purple,"title": "BGM聞く"},
-                                              {"startTime": "15:00","endTime": "18:00" ,"color": Colors.purple,"title": "ブルアカやる"},
-                                              {"startTime": "16:00","endTime": "18:00" ,"color": Colors.purple,"title": "勉強やる"},
-                                              {"startTime": "17:00","endTime": "17:30" ,"color": Colors.white,"title": "test"},
-                                              ];
+        //var instance = _TimeLineCalender();
+        DateTime _toDay = DateTime.now();// 現在の日付を初期値として設定;
+        //String formattedDate = setSchedule(_toDay);
+        final _newData = [{"startTime": "0:00","endTime": "1:00" ,"color": Colors.amber,"title": "default"},
+                          {"startTime": "1:00","endTime": "2:00" ,"color": Colors.amber,"title": "default"},];
         final double _topBarHeight = _bodyHeight/8;
         final double _weeekCalenderHeight = 72;//週のカレンダーサイズ
         final double _calenderHeight = 340+56;//カレンダーサイズ 340未満だと警戒表示される

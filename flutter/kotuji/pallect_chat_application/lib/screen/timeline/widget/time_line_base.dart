@@ -10,10 +10,10 @@ class TimeLineBase extends StatefulWidget {
   final double bodyWidth;
   final double bodyHeight; // 新しいデータを保持する変数を追加
   @override
-  _TimeLineBase createState() => _TimeLineBase();
+  TimeLineBases createState() => TimeLineBases();
 }
 
-class _TimeLineBase extends State<TimeLineBase> {
+class TimeLineBases extends State<TimeLineBase> {
   var timeLineActionsData = TimeLineActionsData();
   final double _timeDrawSpace = 50; //時間を表示する欄の横幅
   final double _oneHourHeight = 60; //これを変えたら1時間当たりの縦幅が変わる
@@ -23,19 +23,8 @@ class _TimeLineBase extends State<TimeLineBase> {
   late double _timeLineHeight = _oneHourHeight * 24 - (_horizontalLineThickness * 48); //タイムライン画面の合計縦幅
   late double _timeLineActionDrawAreaWidth = widget.bodyWidth - _timeDrawSpace - _timeLineActionDrawAreaMargin; //アクション表示領域の横幅
   //↓この配列に要素を追加したらその分だけ表示数を増やせる。(開始時刻が早い順に並んでいないとうまく動かないかも)
-  List<Map<String, dynamic>> _actionsDatas = [
-    /*{"startTime": "0:00","endTime": "1:45" ,"color": Colors.amber,"title": "ポケモンスリープする"},
-                                              {"startTime": "1:00","endTime": "2:45" ,"color": Colors.red,"title": "ご飯食べる"},
-                                              {"startTime": "2:00","endTime": "8:00" ,"color": Colors.blue,"title": "学校に行く"},
-                                              {"startTime": "5:00","endTime": "9:00" ,"color": Colors.pink,"title": "寝る"},
-                                              {"startTime": "5:00","endTime": "6:00" ,"color": Colors.purple,"title": "BGM聞く"},
-                                              {"startTime": "15:00","endTime": "18:00" ,"color": Colors.purple,"title": "ブルアカやる"},
-                                              {"startTime": "16:00","endTime": "18:00" ,"color": Colors.purple,"title": "勉強やる"},
-                                              {"startTime": "17:00","endTime": "17:30" ,"color": Colors.white,"title": "test"},
-                                              */];
-  
-  
-                                              
+  late List<Map<String, dynamic>> _actionsDatas =  [{"startTime": "0:00","endTime": "1:45" ,"color": Colors.amber,"title": "ポケモンスリープする"},];
+                                               
   List<Widget> _actionWidgets = [];
   //占領されていないアクション表示のエリアを格納
   //例えば{"startTime":60,"endTime":1440}であれば1:00～24:00の間はどのアクションにも占領されていないことになる
@@ -52,10 +41,10 @@ class _TimeLineBase extends State<TimeLineBase> {
 
       _clearActionArea = removeRangeFromClearActionArea(_clearActionArea, ConversionTimeToMinutes(_actionsDatas[i]["startTime"]), ConversionTimeToMinutes(_actionsDatas[i]["endTime"]));
     } 
-    print("actionDatas");
-    print(_actionsDatas);
-    print("newdatas");
-    print(timeLineActionsData.newData);
+    //print("actionDatas");
+    //print(_actionsDatas);
+    //print("newdatas");
+    //print(timeLineActionsData.newData);
   }
 
   Widget build(BuildContext context) {
