@@ -70,10 +70,10 @@ class RestoreChatHistory {
       // ウィジェットが正常に生成された場合、リストに追加
       if (chatObject != null) {
         if (_isTodo) {
-          _messages.addAll(chatObject);
+          _messages.add(chatObject);
         } else {
           // チャットの場合、_messagesリストに追加
-          _messages.addAll(chatObject);
+          _messages.add(chatObject);
         }
       }
     }

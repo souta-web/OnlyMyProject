@@ -38,9 +38,9 @@ class DrawChatObjects {
           title: chatText,
           isSentByUser: isUser,
           mainTag: mainTag ?? "null",
-          startTime: startTime ?? "null", //チャットオブジェクトを表示することが目的の関数なので、日時を取得してそれを表示させるのはふさわしくない。引数で受け取るようにする。(辻)
-          actionFinished: isActionFinished ?? false
-          );
+          startTime: startTime ??
+              "null", //チャットオブジェクトを表示することが目的の関数なので、日時を取得してそれを表示させるのはふさわしくない。引数で受け取るようにする。(辻)
+          actionFinished: isActionFinished ?? false);
       return [createImages, message];
     }
 
@@ -97,7 +97,9 @@ class DrawChatObjects {
         actionMainTag: mainTag,
         actionState: _actionState,
         actionChatId: chatActionLinkId,
-        actionMedia:imageBytes != null && imageBytes.isNotEmpty ? imageBytes : null, // 画像が選択された場合のみ実行
+        actionMedia: imageBytes != null && imageBytes.isNotEmpty
+            ? imageBytes
+            : null, // 画像が選択された場合のみ実行
       );
       registerActionTable.registerActionTableFunc();
     }
@@ -107,13 +109,13 @@ class DrawChatObjects {
     // 吹き出し及びアクションの表示
     // 吹き出しクラスの引数を受け取れるように変更
     return createChatObjects(
-        isTodo: isTodo,
-        chatText: chatText,
-        isUser: isUser,
-        mainTag: mainTag,
-        startTime: drawTime,
-        isActionFinished: false,
-        imageList: isTodo ? [] : null,  // 画像はトグルがオンの時のみ渡す
-        );
+      isTodo: isTodo,
+      chatText: chatText,
+      isUser: isUser,
+      mainTag: mainTag,
+      startTime: drawTime,
+      isActionFinished: false,
+      imageList: imageBytes, // 画像はトグルがオンの時のみ渡す
+    );
   }
 }
