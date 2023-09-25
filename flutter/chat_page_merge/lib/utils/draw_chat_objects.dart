@@ -26,13 +26,8 @@ class DrawChatObjects {
     if (chatText.isEmpty) {
       return;
     }
-
-    // TODO: トグルがオンの時画像とアクションを同時に送信できるようにする
-    // TODO: 画像の送信は任意で決められるようにする。アクションは絶対生成
-    if (isTodo) {
-      // 画像を実体化して表示
-      CreateImages createImages = CreateImages(images: imageList);
-
+   
+    if (isTodo) {   
       // アクションを作成する
       ChatTodo message = ChatTodo(
           title: chatText,
@@ -41,13 +36,17 @@ class DrawChatObjects {
           startTime: startTime ??
               "null", //チャットオブジェクトを表示することが目的の関数なので、日時を取得してそれを表示させるのはふさわしくない。引数で受け取るようにする。(辻)
           actionFinished: isActionFinished ?? false);
-      return [createImages, message];
+      return message;
     }
-
+    // TODO: ウィジェットをテキスト、画像を載せられる形式にしたい
     if (isUser) {
       ChatMessage message = ChatMessage(
           text: chatText, isSentByUser: isUser, time: startTime); // 応答側のメッセージ
-
+      if (isTodo) {
+        // 画像を実体化して表示
+        CreateImages createImages = CreateImages(images: imageList);
+        return createImages;
+      }
       return message;
     } else {
       ChatMessage message = ChatMessage(
@@ -68,11 +67,9 @@ class DrawChatObjects {
     const String mainTag = '生活';
     String sendTime = DateTime.now().toString(); //日付取得
     TextFormatter timeFormatter = TextFormatter();
-    late String drawTime =
-        timeFormatter.returnHourMinute(sendTime); //登録時間を表示用にする
+    late String drawTime = timeFormatter.returnHourMinute(sendTime); //登録時間を表示用にする
     // 送信時間を数値化してchat_action_idとaction_chat_idに登録
-    late String chatActionLinkId =
-        timeFormatter.returnChatActionLinkId(sendTime);
+    late String chatActionLinkId = timeFormatter.returnChatActionLinkId(sendTime);
     String _actionState = 'false';
 
     if (chatText.isEmpty) {

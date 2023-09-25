@@ -19,7 +19,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   late Uint8List? _mediaData = null; //メディアを格納する
   late List<Uint8List> imageData = [];
   // チャットメッセージのリスト
-  final List<dynamic> _messages = [];
+  final List<Widget> _messages = [];
 
   // DrawChatObjectsをfinal修飾子で宣言
   final DrawChatObjects _chatObjects = DrawChatObjects();
@@ -153,8 +153,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                     color: Colors.white,
                     onPressed: () async {
                       _mediaData = await _getMedia();
-                      imageData =
-                          await _multimedia.pickAndConvertImages(List.from(_imageList));
+                      imageData = await _multimedia.pickAndConvertImages(List.from(_imageList));
 
                       //現状は取得したメディアの処理がないためprintで取得確認
                       print(_mediaData);
