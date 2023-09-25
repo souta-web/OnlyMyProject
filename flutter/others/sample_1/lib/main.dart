@@ -33,7 +33,6 @@ class _BodyWidgetState extends State<BodyWidget> {
   late ListA listA = ListA();
   late Button3 button3;
   late List<String> _data = listA.list_A;
-  @override
 
   void button3Pressed() {
     // ボタン3が押された時の処理
@@ -42,6 +41,8 @@ class _BodyWidgetState extends State<BodyWidget> {
     print("list_a:$_data");
     setState(() {});
   }
+
+  @override
 
   Widget build(BuildContext context) {
     return Center(
