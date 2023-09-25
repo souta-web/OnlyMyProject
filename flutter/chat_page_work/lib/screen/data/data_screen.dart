@@ -11,15 +11,17 @@ class DataScreenWidget extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.settings),
             onPressed: () {
-              Navigator.pushNamed(context, '/config');//routeに追加したconfigに遷移
+              Navigator.pushNamed(context, '/config'); //routeに追加したconfigに遷移
             },
           ),
         ],
       ),
+
       ///記述範囲
       body: Center(
         child: Text('Data Screen'),
       ),
+
       ///記述範囲
     );
   }
