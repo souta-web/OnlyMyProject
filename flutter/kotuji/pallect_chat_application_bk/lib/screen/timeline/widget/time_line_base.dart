@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'time_line_action_widget.dart';
 import '../func/action_registration_base.dart';
-import 'time_line_data_manager.dart';
+//import 'time_line_data_manager.dart';
 
 class TimeLineBase extends StatefulWidget {
-  TimeLineBase({required this.bodyWidth,required this.bodyHeight,required this.newData,});
+  TimeLineBase({required this.bodyWidth,required this.bodyHeight,});
   //bodyのサイズを受け取る
   final double bodyWidth;
   final double bodyHeight;
-  final List<Map<String, dynamic>> newData; // 新しいデータを保持する変数を追加
+  //final List<Map<String, dynamic>> newData; // 新しいデータを保持する変数を追加
   @override
-  TimeLineBases createState() => TimeLineBases();
+  _TimeLineBase createState() => _TimeLineBase();
 }
 
-class TimeLineBases extends State<TimeLineBase> {
+class _TimeLineBase extends State<TimeLineBase> {
+  var timeLineActionsData = TimeLineActionsData();
   final double _timeDrawSpace = 50; //時間を表示する欄の横幅
   final double _oneHourHeight = 60; //これを変えたら1時間当たりの縦幅が変わる
   final double _timeTextHeight = 16; //時間テキストの縦幅 変えるとおかしくなる
@@ -22,43 +23,35 @@ class TimeLineBases extends State<TimeLineBase> {
   late double _timeLineHeight = _oneHourHeight * 24 - (_horizontalLineThickness * 48); //タイムライン画面の合計縦幅
   late double _timeLineActionDrawAreaWidth = widget.bodyWidth - _timeDrawSpace - _timeLineActionDrawAreaMargin; //アクション表示領域の横幅
   
-  final TimeLineDataManager dataManager = TimeLineDataManager();
+  //final TimeLineDataManager dataManager = TimeLineDataManager();
   
   //↓この配列に要素を追加したらその分だけ表示数を増やせる。(開始時刻が早い順に並んでいないとうまく動かないかも)
-  List<Map<String, dynamic>> _actionsDatas = [
-    /*{"startTime": "0:00","endTime": "1:45" ,"color": Colors.amber,"title": "ポケモンスリープする"},
-                                              {"startTime": "1:00","endTime": "2:45" ,"color": Colors.red,"title": "ご飯食べる"},
-                                              {"startTime": "2:00","endTime": "8:00" ,"color": Colors.blue,"title": "学校に行く"},
-                                              {"startTime": "5:00","endTime": "9:00" ,"color": Colors.pink,"title": "寝る"},
-                                              {"startTime": "5:00","endTime": "6:00" ,"color": Colors.purple,"title": "BGM聞く"},
-                                              {"startTime": "15:00","endTime": "18:00" ,"color": Colors.purple,"title": "ブルアカやる"},
-                                              {"startTime": "16:00","endTime": "18:00" ,"color": Colors.purple,"title": "勉強やる"},
-                                              {"startTime": "17:00","endTime": "17:30" ,"color": Colors.white,"title": "test"},
-                                              */];
+  late List<Map<String, dynamic>> actionsDatas = [];
                                               
   List<Widget> _actionWidgets = [];
   //占領されていないアクション表示のエリアを格納
   //例えば{"startTime":60,"endTime":1440}であれば1:00～24:00の間はどのアクションにも占領されていないことになる
   List<List<Map<String,int>>> _clearActionArea = [[{"startTime":0,"endTime":1440}]]; 
 
-  List<Map<String, dynamic>> get actionsDatas => _actionsDatas; // ここに追加
+  //List<Map<String, dynamic>> get actionsDatas => actionsDatas; // ここに追加
   @override
 
   void initState() {
     super.initState();
-    _actionsDatas = widget.newData;
-    _actionWidgets.add(_drawHorizontalLinesConstructure()); //これは表示領域のベースになるから変更してはいけない
-    for (int i = 0; i < _actionsDatas.length;i++){
-      _actionWidgets.add(_returnTimeLineActionWidget(_actionsDatas[i],_clearActionArea));
+    actionsDatas = timeLineActionsData.defaultData;
 
-      _clearActionArea = removeRangeFromClearActionArea(_clearActionArea, ConversionTimeToMinutes(_actionsDatas[i]["startTime"]), ConversionTimeToMinutes(_actionsDatas[i]["endTime"]));
+    _actionWidgets.add(_drawHorizontalLinesConstructure()); //これは表示領域のベースになるから変更してはいけない
+    for (int i = 0; i < actionsDatas.length;i++){
+      _actionWidgets.add(_returnTimeLineActionWidget(actionsDatas[i],_clearActionArea));
+
+      _clearActionArea = removeRangeFromClearActionArea(_clearActionArea, ConversionTimeToMinutes(actionsDatas[i]["startTime"]), ConversionTimeToMinutes(actionsDatas[i]["endTime"]));
     }
     print("_clearActionAreaの中身:" + _clearActionArea.toString());   
     print("actionDatas");
-    print(_actionsDatas);
+    print(actionsDatas);
     print("newDatas");
-    print(widget.newData);
-    dataManager.upDateData(widget.newData);
+    //print(widget.newData);
+    //dataManager.upDateData(widget.newData);
   }
 
   Widget build(BuildContext context) {
@@ -216,9 +209,23 @@ class TimeLineBases extends State<TimeLineBase> {
     return _Minutes;
   }
 
- void upDateData(List<Map<String, dynamic>> newData) {
-    setState(() {
-      _actionsDatas = widget.newData;
-    });
- }
+  void resetActionsDatas() {
+    //setState(() {
+      print("Called");
+      actionsDatas = timeLineActionsData.defaultData;
+      print("actionsDatas");
+      print(actionsDatas);
+      print("timeLineActionsData.defaultData");
+      print(timeLineActionsData.defaultData);
+    //});
+  }
+}
+
+class PreResetActionsDatas{//updateDefaultDataを外部から使えるようにする
+  void publicFunction() {
+    final privateInstance = _TimeLineBase();
+      privateInstance.resetActionsDatas();
+      print("Call");
+      //print(data);
+  }
 }

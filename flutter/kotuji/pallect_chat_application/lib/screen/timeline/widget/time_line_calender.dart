@@ -30,7 +30,10 @@ class _TimeLineCalender extends State<TimeLineCalender> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   CalendarFormat _weekFormat = CalendarFormat.week;
 
-  var timeLineActionsData = TimeLineActionsData();
+  late TimeLineActionsData newDataA = TimeLineActionsData();
+
+  late TimeLineBases actionsDatasA = TimeLineBases();
+//  late TimeLineActionsData
 
   @override
   Widget build(BuildContext context) {
@@ -181,6 +184,14 @@ class _TimeLineCalender extends State<TimeLineCalender> {
               //print(_selectedDay);
               print(settingDate);
               //late List<Map<String, dynamic>> timeLineActionsData.newData = settingDate;
+              print("_actionsDatas");
+              print(actionsDatasA);
+              print("_newDatas");
+              print(newDataA);
+
+              //List<String> _data = actionsDatasA._actionDatas;
+              //print("list_a:$_data");
+              //_actionsDatas = settingDate;
               //print(timeLineActionsData.newData);
             });
           }

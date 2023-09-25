@@ -29,6 +29,8 @@ class _TimeLineCalender extends State<TimeLineCalender> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   CalendarFormat _weekFormat = CalendarFormat.week;
 
+  
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -170,17 +172,20 @@ class _TimeLineCalender extends State<TimeLineCalender> {
               selectedMonth = selected.month;
               previousSelectedMonth = selectedMonth;
 
-              String formattedDate = setSchedule(_selectedDay);
-              print(formattedDate);
-
-              List<Map<String, dynamic>> settingDate = setData(formattedDate);
               //print(formattedDate);
               //print(_selectedDay);
-              print(settingDate);
-              TimeLineBases.upDateData(settingDate);
 
-              //upDateData(settingDate);
-              
+              String formattedDate = setSchedule(_selectedDay);
+              print(formattedDate);//リスト名に直した日付
+
+              List<Map<String, dynamic>> settingDate = setData(formattedDate);
+              print(settingDate);//挿入したいリスト
+
+              callUpdateDefaultData(settingDate);//リストを挿入
+
+              print("callReset");
+              callResetActionsDatas();
+              print("callResetEnd");
             });
           }
         },
@@ -229,7 +234,20 @@ class _TimeLineCalender extends State<TimeLineCalender> {
 
     // "yYYYYmMMdDD" の形式に結合して返す
     String formattedDate = 'y$yearStr' + 'm$monthStr' + 'd$dayStr';
+    print("setSchedule");
     
     return formattedDate;
+  }
+
+   void callUpdateDefaultData(data){//updateDefaultDataを呼び出す為にPreUpdateDefaultDataを呼び出す
+    final publicInstance = PreUpdateDefaultData();
+    publicInstance.publicUpdateDefaultData(data); // パブリックな関数を呼び出す
+    print("callUpdateDefaultData");
+  }
+
+  void callResetActionsDatas(){//resetActionsDatasを呼び出す為にPreResetActionsDatasを呼び出す
+    final publicInstance = PreResetActionsDatas();
+    publicInstance.publicFunction(); // パブリックな関数を呼び出す
+    print("callResetActionsDatas");
   }
 }

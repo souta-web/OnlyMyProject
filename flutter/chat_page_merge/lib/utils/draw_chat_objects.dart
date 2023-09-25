@@ -26,14 +26,8 @@ class DrawChatObjects {
     if (chatText.isEmpty) {
       return;
     }
-
-    if (isTodo) {
-      // 画像を実体化して表示
-      CreateImages createImages = CreateImages(images: imageList);
-      return createImages;
-    }
-
-    if (isTodo) {
+   
+    if (isTodo) {   
       // アクションを作成する
       ChatTodo message = ChatTodo(
           title: chatText,
@@ -44,11 +38,15 @@ class DrawChatObjects {
           actionFinished: isActionFinished ?? false);
       return message;
     }
-
+    // TODO: ウィジェットをテキスト、画像を載せられる形式にしたい
     if (isUser) {
       ChatMessage message = ChatMessage(
           text: chatText, isSentByUser: isUser, time: startTime); // 応答側のメッセージ
-
+      if (isTodo) {
+        // 画像を実体化して表示
+        CreateImages createImages = CreateImages(images: imageList);
+        return createImages;
+      }
       return message;
     } else {
       ChatMessage message = ChatMessage(
@@ -88,12 +86,6 @@ class DrawChatObjects {
     );
     registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
 
-    print('imageBytes: $imageBytes');
-
-    RegisterActionTable _registerActionTable =
-        RegisterActionTable(actionMedia: imageBytes);
-    _registerActionTable.registerActionTableFunc();
-
     // トグルボタンがオンの時アクションを登録する
     if (isTodo) {
       RegisterActionTable registerActionTable = RegisterActionTable(
@@ -102,7 +94,9 @@ class DrawChatObjects {
         actionMainTag: mainTag,
         actionState: _actionState,
         actionChatId: chatActionLinkId,
-        actionMedia: imageBytes,
+        actionMedia: imageBytes != null && imageBytes.isNotEmpty
+            ? imageBytes
+            : null, // 画像が選択された場合のみ実行
       );
       registerActionTable.registerActionTableFunc();
     }
@@ -112,12 +106,13 @@ class DrawChatObjects {
     // 吹き出し及びアクションの表示
     // 吹き出しクラスの引数を受け取れるように変更
     return createChatObjects(
-        isTodo: isTodo,
-        chatText: chatText,
-        isUser: isUser,
-        mainTag: mainTag,
-        startTime: drawTime,
-        isActionFinished: false,
-        imageList: imageBytes);
+      isTodo: isTodo,
+      chatText: chatText,
+      isUser: isUser,
+      mainTag: mainTag,
+      startTime: drawTime,
+      isActionFinished: false,
+      imageList: imageBytes, // 画像はトグルがオンの時のみ渡す
+    );
   }
 }

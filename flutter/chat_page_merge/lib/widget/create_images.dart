@@ -16,7 +16,7 @@ class CreateImages extends StatelessWidget {
           decoration: BoxDecoration ( 
             border: Border.all(
             color: Colors.orange, // 枠の色を設定
-            width: 2.0, // 枠の太さを設定
+            width: 8.0, // 枠の太さを設定
             ),
             borderRadius: BorderRadius.circular(8.0), // 枠の角丸を設定
           ),
