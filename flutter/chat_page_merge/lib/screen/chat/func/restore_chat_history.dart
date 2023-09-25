@@ -1,14 +1,12 @@
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
-
 import '/utils/database_helper.dart';
 import '/utils/draw_chat_objects.dart';
 import '/utils/text_formatter.dart';
 
 // アプリ起動時のチャット履歴復元を行う
 class RestoreChatHistory {
-  final List<Widget> _messages = []; // チャットメッセージを格納するリスト
+  final List<dynamic> _messages = []; // チャットメッセージを格納するリスト
   final List<Uint8List> _mediaList = []; // 画像データを格納するリスト
 
   // データベースからチャット履歴を取得し、それをウィジェットとして_messagesリストに追加するためのメソッド
@@ -81,7 +79,7 @@ class RestoreChatHistory {
 
   // _messagesリストを返す。これを呼び出すことで取得したチャット履歴の
   // ウィジェットが外部からアクセス可能になる
-  List<Widget> getMessages() {
+  List<dynamic> getMessages() {
     return _messages;
   }
 }
