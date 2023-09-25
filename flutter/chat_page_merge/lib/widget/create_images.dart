@@ -6,9 +6,13 @@ import 'dart:typed_data';
 class CreateImages extends StatelessWidget {
   final String text;
   final List<Uint8List> images;
-  CreateImages({required this.text, required this.images});
 
-@override
+  CreateImages({
+    required this.text, 
+    required this.images,
+    });
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.centerRight,

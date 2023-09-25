@@ -19,7 +19,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   late Uint8List? _mediaData = null; //メディアを格納する
   late List<Uint8List> imageData = [];
   // チャットメッセージのリスト
-  final List<Widget> _messages = [];
+  final List<dynamic> _messages = [];
 
   // DrawChatObjectsをfinal修飾子で宣言
   final DrawChatObjects _chatObjects = DrawChatObjects();
@@ -70,7 +70,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   // チャット履歴を読み込むメソッド
   void _loadChatHistory() async {
     await _restoreChatHistory.fetchChatHistory();
-    final List<Widget> chatMessages = _restoreChatHistory.getMessages();
+    final List<dynamic> chatMessages = _restoreChatHistory.getMessages();
 
     setState(() {
       _messages.addAll(chatMessages);

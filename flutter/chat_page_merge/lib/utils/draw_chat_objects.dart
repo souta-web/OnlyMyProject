@@ -24,10 +24,11 @@ class DrawChatObjects {
   }) {
     imageList ??= [];
     if (chatText.isEmpty) {
-      return;
+      return null;
     }
-   
-    if (isTodo) {   
+
+    // トグルがオンの時に実行
+    if (isTodo) {
       // アクションを作成する
       ChatTodo message = ChatTodo(
           title: chatText,
@@ -38,15 +39,21 @@ class DrawChatObjects {
           actionFinished: isActionFinished ?? false);
       return message;
     }
-    // TODO: ウィジェットをテキスト、画像を載せられる形式にしたい
+
+    // チャットモードの時
     if (isUser) {
-      // 画像を実体化して表示
-        CreateImages createImages = CreateImages(images: imageList, text: chatText);
+      if (imageList.isNotEmpty) {
+        // 画像を実体化して表示
+        CreateImages createImages =
+            CreateImages(text: chatText, images: imageList);
         return createImages;
-      // if (isTodo) {
-        
-      // }
-      // return message;
+      } else {
+        // チャットメッセージの表示
+        ChatMessage message = ChatMessage(
+            text: chatText, isSentByUser: isUser, time: startTime); // 返答側のメッセージ
+
+        return message;
+      }
     } else {
       ChatMessage message = ChatMessage(
           text: chatText, isSentByUser: isUser, time: startTime); // 返答側のメッセージ
@@ -66,13 +73,15 @@ class DrawChatObjects {
     const String mainTag = '生活';
     String sendTime = DateTime.now().toString(); //日付取得
     TextFormatter timeFormatter = TextFormatter();
-    late String drawTime = timeFormatter.returnHourMinute(sendTime); //登録時間を表示用にする
+    late String drawTime =
+        timeFormatter.returnHourMinute(sendTime); //登録時間を表示用にする
     // 送信時間を数値化してchat_action_idとaction_chat_idに登録
-    late String chatActionLinkId = timeFormatter.returnChatActionLinkId(sendTime);
+    late String chatActionLinkId =
+        timeFormatter.returnChatActionLinkId(sendTime);
     String _actionState = 'false';
 
     if (chatText.isEmpty) {
-      return;
+      return null;
     }
 
     // チャットをデータベースに登録する
@@ -84,6 +93,12 @@ class DrawChatObjects {
       chatActionId: chatActionLinkId,
     );
     registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
+    if (imageBytes != null) {
+      RegisterActionTable registerActionTable =
+          RegisterActionTable(actionMedia: imageBytes // 画像が選択された場合のみ実行)
+              );
+      registerActionTable.registerActionTableFunc();
+    }
 
     // トグルボタンがオンの時アクションを登録する
     if (isTodo) {
@@ -93,9 +108,6 @@ class DrawChatObjects {
         actionMainTag: mainTag,
         actionState: _actionState,
         actionChatId: chatActionLinkId,
-        actionMedia: imageBytes != null && imageBytes.isNotEmpty
-            ? imageBytes
-            : null, // 画像が選択された場合のみ実行
       );
       registerActionTable.registerActionTableFunc();
     }
@@ -111,7 +123,7 @@ class DrawChatObjects {
       mainTag: mainTag,
       startTime: drawTime,
       isActionFinished: false,
-      imageList: imageBytes, // 画像はトグルがオンの時のみ渡す
+      imageList: imageBytes,
     );
   }
 }
