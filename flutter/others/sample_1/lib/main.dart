@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'list_class.dart';
 import 'button_3.dart';
+import 'button_2.dart';
 import 'draw_list_index.dart';
 
 void main() {
@@ -32,6 +33,7 @@ class _BodyWidgetState extends State<BodyWidget> {
 
   late ListA listA = ListA();
   late Button3 button3;
+  late Button2 button2;
   late List<String> _data = listA.list_A;
 
   void button3Pressed() {
@@ -58,16 +60,7 @@ class _BodyWidgetState extends State<BodyWidget> {
             child: Text('list_a出力のみ'),
           ),
           SizedBox(height: 20), // ボタンとボタンの間にスペースを空ける
-          ElevatedButton(
-            onPressed: () {
-              // ボタン2が押された時の処理
-              listA.count += 1;
-              listA.list_A.add(listA.count.toString());
-              print("list_a:$_data");
-              setState(() {});
-            },
-            child: Text('list_a追加'),
-          ),
+          button2 = Button2(listA),
           SizedBox(height: 20), // ボタンとボタンの間にスペースを空ける
           button3 = Button3(listA,button3Pressed),
           SizedBox(height: 20), // ボタンとボタンの間にスペースを空ける

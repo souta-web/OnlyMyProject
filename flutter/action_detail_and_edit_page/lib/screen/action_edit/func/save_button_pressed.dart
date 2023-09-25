@@ -1,4 +1,5 @@
 import 'package:logger/logger.dart';
+//引数の値をデバッグ用のログとして出力
 class SaveButtonPressed {
   void  dataOutPut( String title,
                     List<String> tagList,
