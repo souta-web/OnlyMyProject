@@ -1,7 +1,7 @@
 福山さん次のタスク
 データベースのデータを更新できる関数を持つクラスをchat_table用とaction_tableようにそれぞれ作成する。
 入力値のフォーマットは既存のregister_chat_table.dartとregister_action_table.dartのような形。
-関数内部での処理フローは
+関数内部での処理フローは次の通りです。
 1.更新するデータの内容を引数で受け取る。(既存のものほぼのコピペで〇)
 2.database_helper.dartで既に作成してあるupdate_chat_tableとupdate_action_tableに渡すことのできる形に、引数の値を整形する。これもregister_chat_table.dartとregister_action_table.dartのほぼコピペ
 3.update_chat_tableとupdate_action_tableにそれぞれ渡す。
