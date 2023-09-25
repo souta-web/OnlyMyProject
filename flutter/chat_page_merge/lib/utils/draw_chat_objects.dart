@@ -40,14 +40,13 @@ class DrawChatObjects {
     }
     // TODO: ウィジェットをテキスト、画像を載せられる形式にしたい
     if (isUser) {
-      ChatMessage message = ChatMessage(
-          text: chatText, isSentByUser: isUser, time: startTime); // 応答側のメッセージ
-      if (isTodo) {
-        // 画像を実体化して表示
-        CreateImages createImages = CreateImages(images: imageList);
+      // 画像を実体化して表示
+        CreateImages createImages = CreateImages(images: imageList, text: chatText);
         return createImages;
-      }
-      return message;
+      // if (isTodo) {
+        
+      // }
+      // return message;
     } else {
       ChatMessage message = ChatMessage(
           text: chatText, isSentByUser: isUser, time: startTime); // 返答側のメッセージ
