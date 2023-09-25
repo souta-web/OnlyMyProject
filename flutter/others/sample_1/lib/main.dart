@@ -32,7 +32,17 @@ class _BodyWidgetState extends State<BodyWidget> {
 
   late ListA listA = ListA();
   late Button3 button3;
+  late List<String> _data = listA.list_A;
   @override
+
+  void button3Pressed() {
+    // ボタン3が押された時の処理
+    listA.count -= 1;
+    listA.list_A.removeLast();
+    print("list_a:$_data");
+    setState(() {});
+  }
+
   Widget build(BuildContext context) {
     return Center(
       child: Column(
@@ -41,11 +51,10 @@ class _BodyWidgetState extends State<BodyWidget> {
           ElevatedButton(
             onPressed: () {
               // ボタン1が押された時の処理
-              List<String> _data = listA.list_A;
               print("list_a:$_data");
               setState(() {});
             },
-            child: Text('list_a出力'),
+            child: Text('list_a出力のみ'),
           ),
           SizedBox(height: 20), // ボタンとボタンの間にスペースを空ける
           ElevatedButton(
@@ -53,12 +62,13 @@ class _BodyWidgetState extends State<BodyWidget> {
               // ボタン2が押された時の処理
               listA.count += 1;
               listA.list_A.add(listA.count.toString());
+              print("list_a:$_data");
               setState(() {});
             },
             child: Text('list_a追加'),
           ),
           SizedBox(height: 20), // ボタンとボタンの間にスペースを空ける
-          button3 = Button3(listA),
+          button3 = Button3(listA,button3Pressed),
           SizedBox(height: 20), // ボタンとボタンの間にスペースを空ける
           DrawListIndex(listA),
         ],
