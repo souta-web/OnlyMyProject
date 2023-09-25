@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'list_class.dart';
 import 'button_3.dart';
+import 'draw_list_index.dart';
 
 void main() {
   runApp(MyApp());
@@ -42,6 +43,7 @@ class _BodyWidgetState extends State<BodyWidget> {
               // ボタン1が押された時の処理
               List<String> _data = listA.list_A;
               print("list_a:$_data");
+              setState(() {});
             },
             child: Text('list_a出力'),
           ),
@@ -51,11 +53,14 @@ class _BodyWidgetState extends State<BodyWidget> {
               // ボタン2が押された時の処理
               listA.count += 1;
               listA.list_A.add(listA.count.toString());
+              setState(() {});
             },
             child: Text('list_a追加'),
           ),
           SizedBox(height: 20), // ボタンとボタンの間にスペースを空ける
           button3 = Button3(listA),
+          SizedBox(height: 20), // ボタンとボタンの間にスペースを空ける
+          DrawListIndex(listA),
         ],
       ),
     );

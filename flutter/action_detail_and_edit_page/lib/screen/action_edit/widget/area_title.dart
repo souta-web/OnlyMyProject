@@ -14,7 +14,7 @@ class TitleArea extends StatefulWidget {
 class _TitleArea extends State<TitleArea> {
     final double _thisHeight = 70.0;
     static const Color _hintTextColor = Colors.red;
-    final double _thisTextFieldMargin = 5.0;
+    static const double _thisTextFieldMargin = 5.0;
 
   @override
   Widget build(BuildContext context) {

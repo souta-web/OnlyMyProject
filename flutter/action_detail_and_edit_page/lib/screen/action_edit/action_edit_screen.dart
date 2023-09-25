@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '/screen/action_edit/widget/field_widgets.dart';
+import 'widget/screen_body.dart';
 import '/screen/action_edit/func/save_button_pressed.dart';
 
 class ActionEditPage extends StatefulWidget {

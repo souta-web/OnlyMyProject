@@ -18,6 +18,7 @@ class _Button3State extends State<Button3> {
         // ボタン3が押された時の処理
         widget.listA.count -= 1;
         widget.listA.list_A.removeLast();
+        setState(() {});
       },
       child: Text('list_a削除'),
     );

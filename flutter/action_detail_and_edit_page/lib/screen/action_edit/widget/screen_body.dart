@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 import 'field_datas.dart';
+import '/widget/create_horizontal_line.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 
@@ -38,7 +39,7 @@ class _ActionEditPagePrimaryWidget extends State<ActionEditPagePrimaryWidget> {
         children: [
           _createTitleArea(_deviceWidth),
           _createTagArea(_deviceWidth,fieldDatas.tags),
-          _createCalenderArea(),
+          //_createCalenderArea(),
         ]
       )
     );
@@ -75,7 +76,7 @@ class _ActionEditPagePrimaryWidget extends State<ActionEditPagePrimaryWidget> {
                 },
               ),
             ),
-            _createHorizontalLine(),
+            HorizontalLine(),
           ],
         )
       )
@@ -138,7 +139,7 @@ class _ActionEditPagePrimaryWidget extends State<ActionEditPagePrimaryWidget> {
               });
             },
           ),
-          _createHorizontalLine(),
+          HorizontalLine(),
           _createClearTagsButton(_createCLEARTAGS),
         ],
       ),
