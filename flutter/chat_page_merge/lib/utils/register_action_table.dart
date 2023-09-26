@@ -40,7 +40,11 @@ class RegisterActionTable {
     print("これからデータベースに登録");
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
 
-    
+    // Uint8ListをList<int>に変換
+    List<int>? actionMediaBytes;
+    if (actionMedia != null) {
+      actionMediaBytes = actionMedia!.map((uint8List) => uint8List.toList()).expand((byteList) => byteList).toList();
+    }
 
     final Map<String, dynamic> actionRow = {
       DatabaseHelper.columnActionId: actionId, // アクションID
@@ -49,7 +53,7 @@ class RegisterActionTable {
       DatabaseHelper.columnActionEnd: actionEnd, // 終了時刻
       DatabaseHelper.columnActionDuration: actionDuration, // 総時間
       DatabaseHelper.columnActionMessage: actionMessage, // 開始メッセージ
-      DatabaseHelper.columnActionMedia: actionMedia, // 添付メディア
+      DatabaseHelper.columnActionMedia: actionMediaBytes, // 添付メディア
       DatabaseHelper.columnActionNotes: actionNotes, // 説明文
       DatabaseHelper.columnActionScore: actionScore, // 充実度(1から5までの値で制限する)
       DatabaseHelper.columnActionState: actionState, // 状態
@@ -62,8 +66,7 @@ class RegisterActionTable {
     await dbHelper.insert_action_table(actionRow);
 
     // デバッグ用データ表示プログラム
-    final List<Map<String, dynamic>> allRows =
-        await dbHelper.queryAllRows_action_table();
+    final List<Map<String, dynamic>> allRows = await dbHelper.queryAllRows_action_table();
     print('全てのデータを照会しました。');
     allRows.forEach(print);
   }

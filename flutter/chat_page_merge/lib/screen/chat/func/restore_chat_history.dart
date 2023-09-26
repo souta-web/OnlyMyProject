@@ -49,21 +49,23 @@ class RestoreChatHistory {
         _isActionFinished = actionData['action_end'] == "true" ? true : false;
 
         // BLOBをUint8Listに変換
-        final List<int>? mediaBytes = actionData['action_media'];
-        _mediaData = Uint8List.fromList(mediaBytes ?? []); // 空のUint
-        _mediaList.add(_mediaData);  // 画像データをリストに追加
-        print('actionData: $actionData');
+        final List<int>? _mediaBytes = actionData['action_media'];
+        _mediaData = Uint8List.fromList(_mediaBytes ?? []); // 空のUint
+        print('mediaBytes: $_mediaBytes');
+        _mediaList.add(_mediaData); // 画像データをリストに追加
+        print('mediaData: $_mediaData');
       }
 
+      print("actionHistory: $actionHistory");
+
       final dynamic chatObject = drawChatObjects.createChatObjects(
-        isTodo: _isTodo,
-        chatText: _chatText,
-        isUser: _isUser,
-        mainTag: _mainTag,
-        startTime: drawTime,
-        isActionFinished: _isActionFinished,
-        imageList: _mediaList
-      );
+          isTodo: _isTodo,
+          chatText: _chatText,
+          isUser: _isUser,
+          mainTag: _mainTag,
+          startTime: drawTime,
+          isActionFinished: _isActionFinished,
+          imageList: _mediaList);
 
       // ウィジェットが正常に生成された場合、リストに追加
       if (chatObject != null) {

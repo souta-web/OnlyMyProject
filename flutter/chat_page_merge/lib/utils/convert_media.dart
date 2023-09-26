@@ -1,15 +1,14 @@
 import 'package:image_picker/image_picker.dart';
 import 'dart:typed_data';
 
-class MultiMedia {
+class ConvertMedia {
   // 画像を選択し、バイナリーデータに変換する関数
   Future<List<Uint8List>> pickAndConvertImages(
       List<Uint8List> imageBytesList) async {
     final ImagePicker picker = ImagePicker(); // ImagePickerのインスタンス生成
 
     try {
-      final List<XFile>? pickedImages =
-          await picker.pickMultiImage(); // 画像を複数選択できるようにする
+      final List<XFile>? pickedImages = await picker.pickMultiImage(); // 画像を複数選択できるようにする
       if (pickedImages != null) {
         // 選択された画像を1つのバイナリデータリストにまとめる
         late List<Uint8List> allImageBytes = [];

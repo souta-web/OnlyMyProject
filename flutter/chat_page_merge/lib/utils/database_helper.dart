@@ -7,7 +7,7 @@ import 'dart:typed_data';
 
 class DatabaseHelper {
   // デバッグ時はDB名を変えてよい
-  static final _databaseName = "MyDatabase51.db"; // DB名
+  static final _databaseName = "MyDatabase53.db"; // DB名
   static final _databaseVersion = 1; // スキーマのバージョン指定
 
   static final chat_table = 'chat_table'; // チャット管理テーブル
@@ -181,18 +181,15 @@ class DatabaseHelper {
   Future<int> insert_action_table(Map<String, dynamic> row) async {
     Database? db = await instance.database;
 
-    /// バイナリーデータをバイト配列に変換
-    List<int>? mediaBytes;
-    if (row[columnActionMedia] != null) {
-      mediaBytes = [];
-      for (Uint8List media in row[columnActionMedia]) {
-        mediaBytes.addAll(media);
-      }
-    }
+  // バイナリーデータをバイト配列に変換
+  Uint8List? mediaBytes;
+  if (row[columnActionMedia] != null) {
+    mediaBytes = Uint8List.fromList(row[columnActionMedia]);
+  }
 
-    // バイナリーデータをバイト配列に変換してデータベースに挿入
-    row[columnActionMedia] = mediaBytes;
-    return await db!.insert(action_table, row);
+  // バイナリーデータをバイト配列に変換してデータベースに挿入
+  row[columnActionMedia] = mediaBytes;
+  return await db!.insert(action_table, row);
   }
 
   // 照会処理

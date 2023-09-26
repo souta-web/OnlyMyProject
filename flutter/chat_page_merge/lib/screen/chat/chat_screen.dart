@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '/utils/media_controller.dart';
 import '/screen/chat/func/auto_scroll.dart';
 import '/screen/chat/func/restore_chat_history.dart';
-import '/utils/multi_media.dart';
+import '../../utils/convert_media.dart';
 import 'dart:typed_data';
 
 class ChatScreenWidget extends StatefulWidget {
@@ -17,7 +17,8 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   //switchボタンの状態管理変数
   bool _isTodo = false; //テキスト入力の左のやつ
   late Uint8List? _mediaData = null; //メディアを格納する
-  late List<Uint8List> imageData = [];
+
+  late List<Uint8List> imageData = []; // メディアを格納するリスト
   // チャットメッセージのリスト
   final List<dynamic> _messages = [];
 
@@ -34,7 +35,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
 
   // チャット履歴復元クラスのインスタンス生成
   final RestoreChatHistory _restoreChatHistory = RestoreChatHistory();
-  final MultiMedia _multimedia = MultiMedia();
+  final ConvertMedia _convertMedia = ConvertMedia();
 
   // バイナリーデータに変換するためのリスト
   final List<Uint8List> _imageList = [];
@@ -73,6 +74,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
     final List<dynamic> chatMessages = _restoreChatHistory.getMessages();
 
     setState(() {
+      print('chatMessages: $chatMessages');
       _messages.addAll(chatMessages);
       print(_messages);
     });
@@ -153,11 +155,10 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                     color: Colors.white,
                     onPressed: () async {
                       _mediaData = await _getMedia();
-                      imageData = await _multimedia.pickAndConvertImages(List.from(_imageList));
-
+                      imageData = await _convertMedia.pickAndConvertImages(List.from(_imageList));
                       //現状は取得したメディアの処理がないためprintで取得確認
                       print(_mediaData);
-                      print('メディアリスト： $_imageList');
+                      print('imageData: $imageData');
                       setState(() {
                         _imageList.addAll(imageData);
                       });
