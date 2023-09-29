@@ -30,6 +30,7 @@ class _TagArea extends State<TagArea> {
     const double _thisHeight = 150.0;
     const bool _createCLEARTAGS = false;
     final double _fieldWidth = widget.deviceWidth;
+    final double _drawOnlyTagAreaWidth = _fieldWidth/2;
     return SizedBox(
       width: widget.deviceWidth, 
       height: _thisHeight,
@@ -59,7 +60,7 @@ class _TagArea extends State<TagArea> {
                       // テキストフィールドの装飾
                       isDense: true, //若干変わる
                       hintText: widget.textFieldTagsController.hasTags ? '' : "タグを追加してください。", // ヒントテキスト
-                      prefixIconConstraints:BoxConstraints(maxWidth: _fieldWidth),
+                      prefixIconConstraints:BoxConstraints(maxWidth: _drawOnlyTagAreaWidth),
                       enabledBorder: InputBorder.none,
                       focusedBorder: InputBorder.none,
                       prefixIcon: tags.isNotEmpty
@@ -74,12 +75,17 @@ class _TagArea extends State<TagArea> {
                         )
                       : null,
                     ),
-                    onChanged: (value) {
+                    onChanged: onChanged,// テキストが変更されたときのコールバック
+                    onSubmitted: (String tag) {
                       // テキストが変更されたときの処理
-                      tagList.add(tags.toString());
-                      widget.fieldDatas.tags = tags;
-                    }, // テキストが変更されたときのコールバック
-                    onSubmitted: onSubmitted, // 送信ボタンが押されたときのコールバック
+                      
+                      tags.add(tag);
+                      //↓タグのバック処理
+                      tagList.add(tag);
+                      widget.fieldDatas.tags.clear();
+                      widget.fieldDatas.tags.addAll(tagList);
+                      print(widget.fieldDatas.tags);
+                    },// 送信ボタンが押されたときのコールバック
                   ),
                 );
               });
