@@ -70,7 +70,7 @@ class DrawChatObjects {
       TextEditingController controller,
       bool isUser,
       List<Uint8List>? imageBytes) {
-    const String mainTag = '生活';
+    String mainTag = '生活';
     String sendTime = DateTime.now().toString(); //日付取得
     TextFormatter timeFormatter = TextFormatter();
     late String drawTime =
@@ -95,8 +95,7 @@ class DrawChatObjects {
     _registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
     if (imageBytes != null) {
       RegisterActionTable _registerActionTable =
-          RegisterActionTable(actionMedia: imageBytes // 画像が選択された場合のみ実行)
-              );
+          RegisterActionTable(actionName: chatText, actionMedia: imageBytes);
       _registerActionTable.registerActionTableFunc();
       //print('メディアの登録ができました。$imageBytes');
     }
