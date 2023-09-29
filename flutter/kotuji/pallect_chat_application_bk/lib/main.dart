@@ -28,7 +28,7 @@ class MyApp extends ConsumerWidget {
         '/main': (BuildContext context) => MainScreen(),
         '/config': (BuildContext context) => ConfigScreenWidget(),
         '/chat': (BuildContext context) => ChatScreenWidget(),
-        '/timelime': (BuildContext context) => TimelineScreenWidget(),
+        '/timeline': (BuildContext context) => TimelineScreenWidget(),
         '/data': (BuildContext context) => DataScreenWidget(),
       },
     );
@@ -41,7 +41,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
   List<BottomNavigationBarItem> _bottomNavBarItems = [
     BottomNavigationBarItem(
       icon: Image.asset('assets/images/chat_icon.png', width: 30, height: 30),

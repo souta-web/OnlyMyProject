@@ -186,6 +186,9 @@ class _TimeLineCalender extends State<TimeLineCalender> {
               print("callReset");
               callResetActionsDatas();
               print("callResetEnd");
+
+              //Navigator.pushNamed(context, '/timeline');//routeに追加したconfigに遷移
+              //Navigator.pushNamed(context, '/main', arguments: 1);
             });
           }
         },
