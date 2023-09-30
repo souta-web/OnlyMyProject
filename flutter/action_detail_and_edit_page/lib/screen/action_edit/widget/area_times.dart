@@ -1,6 +1,7 @@
 import 'package:action_detail_and_edit_page/screen/action_edit/widget/field_datas.dart';
 import 'package:flutter/material.dart';
 import '/widget/create_horizontal_line.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class TimeArea extends StatefulWidget {
   final double deviceWidth;
@@ -17,6 +18,7 @@ class _TimeArea extends State<TimeArea> {
   final double _thisHeight = 70.0;
   static const Color _hintTextColor = Colors.red;
   static const double _thisTextFieldMargin = 5.0;
+  DateTime _date = DateTime.now();
 
   
   void initState() {
@@ -40,7 +42,7 @@ class _TimeArea extends State<TimeArea> {
               child:TextField(
                 controller: widget.textEditingControllerTime,
                 decoration: const InputDecoration(
-                  hintText: 'タイトル(hintText)', //ヒントテキスト
+                  hintText: '時間', //ヒントテキスト
                   hintStyle: TextStyle(
                     color: _hintTextColor,
                   ),
@@ -54,6 +56,9 @@ class _TimeArea extends State<TimeArea> {
                   // テキストが変更されたときの処理
                   widget.fieldDatas.title = widget.textEditingControllerTime.text;
                 },
+                onTap: (){
+
+                },
               ),
             ),
             HorizontalLine(),
@@ -61,5 +66,20 @@ class _TimeArea extends State<TimeArea> {
         )
       )
     );
+  }
+
+  //カレンダー表示のための初期化的な奴らしい。今はよくわからん
+  void onPressedRaisedButton() async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _date,
+      firstDate: new DateTime(2018),
+      lastDate: new DateTime.now().add(new Duration(days: 360))
+    );
+
+    if (picked != null) {
+      // 日時反映
+      setState(() => _date = picked);
+    }
   }
 }

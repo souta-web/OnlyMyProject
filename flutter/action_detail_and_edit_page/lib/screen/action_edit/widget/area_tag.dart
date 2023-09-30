@@ -27,7 +27,7 @@ class _TagArea extends State<TagArea> {
 
   @override
   Widget build(BuildContext context) {
-    const double _thisHeight = 150.0;
+    const double _thisHeight = 60.0;
     const bool _createCLEARTAGS = false;
     final double _fieldWidth = widget.deviceWidth;
     final double _drawOnlyTagAreaWidth = _fieldWidth/2;
