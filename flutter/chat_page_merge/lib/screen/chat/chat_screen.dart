@@ -1,4 +1,4 @@
-import '/utils/draw_chat_objects.dart';
+import 'func/draw_chat_objects.dart';
 import 'package:flutter/material.dart';
 import '/utils/media_controller.dart';
 import '/screen/chat/func/auto_scroll.dart';

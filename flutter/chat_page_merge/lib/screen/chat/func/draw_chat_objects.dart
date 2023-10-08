@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import '/widget/chat_fukidashi.dart';
 import '/widget/chat_todo.dart';
 import '/widget/create_images.dart';
-import 'register_chat_table.dart';
-import 'register_action_table.dart';
-import 'text_formatter.dart';
+import '../../../utils/register_chat_table.dart';
+import '../../../utils/register_action_table.dart';
+import '../../../utils/text_formatter.dart';
 
 // トグルボタンの状態によってオブジェクトを表示する
 class DrawChatObjects {

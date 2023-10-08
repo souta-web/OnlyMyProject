@@ -1,6 +1,7 @@
 import 'package:image_picker/image_picker.dart';
 import 'dart:typed_data';
 
+// 画像をバイナリーデータに変換するクラス
 class ConvertMedia {
   // 画像を選択し、バイナリーデータに変換する関数
   Future<List<Uint8List>> pickAndConvertImages(

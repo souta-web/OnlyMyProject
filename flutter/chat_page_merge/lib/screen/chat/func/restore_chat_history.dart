@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import '/utils/database_helper.dart';
-import '/utils/draw_chat_objects.dart';
+import 'draw_chat_objects.dart';
 import '/utils/text_formatter.dart';
 
 // アプリ起動時のチャット履歴復元を行う
