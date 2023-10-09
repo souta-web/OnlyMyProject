@@ -64,8 +64,7 @@ class RestoreChatHistory {
           isUser: _isUser,
           mainTag: _mainTag,
           startTime: drawTime,
-          isActionFinished: _isActionFinished,
-          imageList: _mediaList);
+          isActionFinished: _isActionFinished,);
 
       // ウィジェットが正常に生成された場合、リストに追加
       if (chatObject != null) {
