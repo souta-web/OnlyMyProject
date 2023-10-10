@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import '/widget/chat_fukidashi.dart';
 import '/widget/chat_todo.dart';
 import '/widget/create_images.dart';
-import 'register_chat_table.dart';
-import 'register_action_table.dart';
-import 'text_formatter.dart';
+import '/utils/register_chat_table.dart';
+import '/utils/register_action_table.dart';
+import '/utils/register_media_table.dart';
+import '/utils/text_formatter.dart';
 
 // トグルボタンの状態によってオブジェクトを表示する
 class DrawChatObjects {
@@ -95,10 +96,14 @@ class DrawChatObjects {
     _registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
     
     if (imageBytes != null) {
-      RegisterActionTable _registerActionTable =
-          RegisterActionTable(actionName: chatText, actionMedia: imageBytes);
-      _registerActionTable.registerActionTableFunc();
-      //print('メディアの登録ができました。$imageBytes');
+      RegisterMediaTable _registerMediaTable = RegisterMediaTable(
+        media01: imageBytes[0],
+        media02: imageBytes[1],
+        media03: imageBytes[2],
+        media04: imageBytes[3],
+      );
+      _registerMediaTable.registerMediaTableFunc();
+      print('メディアの登録ができました');
     }
 
     // トグルボタンがオンの時アクションを登録する
@@ -111,6 +116,7 @@ class DrawChatObjects {
         actionChatId: chatActionLinkId,
       );
       registerActionTable.registerActionTableFunc();
+      
     }
 
     controller.clear(); //テキストフィールドのクリア
