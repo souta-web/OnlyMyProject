@@ -10,14 +10,13 @@ class RegisterMediaTable {
   late Uint8List? media03;
   late Uint8List? media04;
 
-  RegisterMediaTable({
-    this.mediaTableName,
+  RegisterMediaTable(
+    {this.mediaTableName,
     this.mediaTableId,
     this.media01,
     this.media02,
     this.media03,
-    this.media04,
-  });
+    this.media04});
 
   // メディア登録を行う
   void registerMediaTableFunc() async {

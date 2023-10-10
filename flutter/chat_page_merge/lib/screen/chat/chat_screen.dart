@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '/utils/media_controller.dart';
 import '/screen/chat/func/auto_scroll.dart';
 import '/screen/chat/func/restore_chat_history.dart';
-import '../../utils/convert_media.dart';
+import '/utils/convert_media.dart';
 import 'dart:typed_data';
 
 class ChatScreenWidget extends StatefulWidget {
@@ -155,10 +155,11 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                     color: Colors.white,
                     onPressed: () async {
                       _mediaData = await _getMedia();
-                      imageData = await _convertMedia.pickAndConvertImages(List.from(_imageList));
+                      imageData = await _convertMedia
+                          .pickAndConvertImages(List.from(_imageList));
                       //現状は取得したメディアの処理がないためprintで取得確認
                       print(_mediaData);
-                      print('imageData: $imageData');
+                      // print('imageData: $imageData');
                       setState(() {
                         _imageList.addAll(imageData);
                       });
@@ -205,6 +206,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                           onPressed: () {
                             setState(() {
                               //表示させたい内容はreturnで帰ってきて_messagesに渡されるので、引数にする必要はない。
+                              print('送信ボタンが押されました');
                               _messages.add(_chatObjects.sendButtonPressed(
                                   _textEditingController.text,
                                   _isTodo,
