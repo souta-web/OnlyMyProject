@@ -4,26 +4,26 @@ import '/widget/create_horizontal_line.dart';
 
 class TitleArea extends StatefulWidget {
   final double deviceWidth;
-  final TextEditingController textEditingControllerTitle;
   final FieldDatas fieldDatas;
 
-  TitleArea({required this.deviceWidth,required this.textEditingControllerTitle,required this.fieldDatas});
+  TitleArea({required this.deviceWidth,required this.fieldDatas});
 
   @override
   _TitleArea createState() => _TitleArea();
 }
 
 class _TitleArea extends State<TitleArea> {
+  final TextEditingController _textEditingControllerTitle = TextEditingController();
   final double _thisHeight = 70.0;
   static const Color _hintTextColor = Colors.red;
   static const double _thisTextFieldMargin = 5.0;
-
+  final TextStyle fontData = TextStyle(fontSize: 24);
   
   void initState() {
     super.initState();
     // 初期化の処理をここに記述する
     final String defaultText = widget.fieldDatas.title.toString();
-    widget.textEditingControllerTitle.text = defaultText;
+    _textEditingControllerTitle.text = defaultText;
   }
     
 
@@ -38,7 +38,7 @@ class _TitleArea extends State<TitleArea> {
             Container(
               margin: const EdgeInsets.symmetric(horizontal:_thisTextFieldMargin), //ウィジェットの外側の余白
               child:TextField(
-                controller: widget.textEditingControllerTitle,
+                controller: _textEditingControllerTitle,
                 decoration: const InputDecoration(
                   hintText: 'タイトル(hintText)', //ヒントテキスト
                   hintStyle: TextStyle(
@@ -47,12 +47,10 @@ class _TitleArea extends State<TitleArea> {
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none,
                 ),
-                style: const TextStyle(
-                  fontSize: 24,
-                ),
+                style: fontData,
                 onChanged: (value) {
                   // テキストが変更されたときの処理
-                  widget.fieldDatas.title = widget.textEditingControllerTitle.text;
+                  widget.fieldDatas.title = _textEditingControllerTitle.text;
                 },
               ),
             ),

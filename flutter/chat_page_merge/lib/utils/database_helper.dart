@@ -134,7 +134,7 @@ class DatabaseHelper {
     await db.execute('''
       CREATE TABLE $tag_table (
         $columnTagId INTEGER PRIMARY KEY,
-        $columnTagName TEXT ,
+        $columnTagName TEXT,
         $columnTagColor TEXT,
         $columnTagRegisteredActionName TEXT
       )

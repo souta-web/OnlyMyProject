@@ -93,6 +93,7 @@ class DrawChatObjects {
       chatActionId: chatActionLinkId,
     );
     _registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
+    
     if (imageBytes != null) {
       RegisterActionTable _registerActionTable =
           RegisterActionTable(actionName: chatText, actionMedia: imageBytes);
