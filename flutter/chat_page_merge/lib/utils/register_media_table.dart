@@ -5,18 +5,12 @@ import 'dart:typed_data';
 class RegisterMediaTable {
   final String? mediaTableName;
   final int? mediaTableId;
-  late Uint8List? media01;
-  late Uint8List? media02;
-  late Uint8List? media03;
-  late Uint8List? media04;
-
-  RegisterMediaTable(
-    {this.mediaTableName,
+  final List<Uint8List?>? mediaList; // 画像をリストとして管理
+  RegisterMediaTable({
+    this.mediaTableName,
     this.mediaTableId,
-    this.media01,
-    this.media02,
-    this.media03,
-    this.media04});
+    this.mediaList,
+  });
 
   // メディア登録を行う
   void registerMediaTableFunc() async {
@@ -24,12 +18,23 @@ class RegisterMediaTable {
     print('これからデータベースに登録');
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
 
-    // バイナリデータをバイト配列に変換
-    final Uint8List? media01Bytes = media01 != null ? Uint8List.fromList(media01!) : null;
-    final Uint8List? media02Bytes = media02 != null ? Uint8List.fromList(media02!) : null;
-    final Uint8List? media03Bytes = media03 != null ? Uint8List.fromList(media03!) : null;
-    final Uint8List? media04Bytes = media04 != null ? Uint8List.fromList(media04!) : null;
+    if (mediaList != null) {
+      return;
+    }
 
+    // バイナリデータをバイト配列に変換
+    final List<Uint8List?> byteArrays = mediaList?.map((imageData) {
+      if (imageData != null) {
+        return Uint8List.fromList(imageData);
+      } else {
+        return null;
+      }
+    }).toList() ?? [];
+
+    final Uint8List? media01Bytes = byteArrays.length > 0 ? byteArrays[0] : null;
+    final Uint8List? media02Bytes = byteArrays.length > 1 ? byteArrays[1] : null;
+    final Uint8List? media03Bytes = byteArrays.length > 2 ? byteArrays[2] : null;
+    final Uint8List? media04Bytes = byteArrays.length > 3 ? byteArrays[3] : null;
     final Map<String, dynamic> mediaRow = {
       DatabaseHelper.columnMediaTableName: mediaTableName, // どのテーブルの画像が登録されているかを記録する
       DatabaseHelper.columnMediaTableId: mediaTableId, // フィールドに登録される画像が↑のテーブルのどのidにあるかを記録する
@@ -42,7 +47,8 @@ class RegisterMediaTable {
     await dbHelper.insert_media_table(mediaRow);
 
     // デバッグ用データ表示プログラム
-    final List<Map<String, dynamic>> allRows = await dbHelper.queryAllRows_media_table();
+    final List<Map<String, dynamic>> allRows =
+        await dbHelper.queryAllRows_media_table();
     print('全てのデータを照会しました。');
     allRows.forEach(print);
   }

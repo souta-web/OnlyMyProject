@@ -94,7 +94,7 @@ class DrawChatObjects {
       chatActionId: chatActionLinkId,
     );
     _registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
-    if (imageBytes != null && imageBytes.length <= 4) {
+    if (imageBytes != null) {
       RegisterMediaTable _registerMediaTable = RegisterMediaTable(
         media01: imageBytes[0],
         media02: imageBytes[1],
