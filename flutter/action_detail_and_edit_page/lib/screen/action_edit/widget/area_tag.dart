@@ -33,7 +33,7 @@ class _TagArea extends State<TagArea> {
     final double _drawOnlyTagAreaWidth = _fieldWidth/2;
     return SizedBox(
       width: widget.deviceWidth, 
-      height: _thisHeight,
+      //height: _thisHeight,
       child: Column(
         children: [
           TextFieldTags(

@@ -31,7 +31,7 @@ class _TitleArea extends State<TitleArea> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: widget.deviceWidth,
-      height: _thisHeight,
+      //height: _thisHeight, //高さ指定いらないかも
       child: Container(
         child:Column(
           children: [

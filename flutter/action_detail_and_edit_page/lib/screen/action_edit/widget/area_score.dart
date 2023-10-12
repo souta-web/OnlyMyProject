@@ -15,36 +15,63 @@ class ScoreArea extends StatefulWidget {
 class _ScoreArea extends State<ScoreArea> {
   final TextEditingController _textEditingControllerScore = TextEditingController();
   final double _thisHeight = 70.0;
-  static const double _thisTextFieldMargin = 5.0;
   final TextStyle fontData = TextStyle(fontSize: 24);
+  
   
   void initState() {
     super.initState();
     // 初期化の処理をここに記述する
-    final String defaultText = widget.fieldDatas.score.toString();
-    _textEditingControllerScore.text = defaultText;
+    
   }
     
 
   @override
   Widget build(BuildContext context) {
+    late int thisScore = widget.fieldDatas.score;
     return SizedBox(
       width: widget.deviceWidth,
-      height: _thisHeight,
+      //height: _thisHeight,
       child: Container(
         child:Column(
           children: [
-            Expanded(
-              child:Container(
-                //margin: const EdgeInsets.symmetric(horizontal:_thisTextFieldMargin), //ウィジェットの外側の余白
-                color: Colors.yellow,
-                child: Text("test"),
-              ),
+            Row(
+              children: [
+                Text(
+                  "スコア：",
+                  style: fontData,
+                ),
+                CreateScoreButton(1,thisScore),
+                CreateScoreButton(2,thisScore),
+                CreateScoreButton(3,thisScore),
+                CreateScoreButton(4,thisScore),
+                CreateScoreButton(5,thisScore),
+              ],
             ),
             HorizontalLine(),
           ],
         )
       )
     );
+  }
+
+  //星のボタンを作る
+  Widget CreateScoreButton(int _activeBorder,int _thisActionScore) {
+    return IconButton(
+      icon: JudgeScoreButtonState(_activeBorder,_thisActionScore)? Icon(Icons.star) : Icon(Icons.star_border),
+      onPressed: () {
+        // ボタンが押された際の動作を記述する
+        widget.fieldDatas.score = _activeBorder;
+        setState(() {});
+      },
+    );
+  }
+
+  //アイコンボタンの状態を判定する
+  bool JudgeScoreButtonState(int _activeBorder,int _thisActionScore) {
+    if (_activeBorder <= _thisActionScore) {
+      return true;
+    }else{
+      return false;
+    }
   }
 }
