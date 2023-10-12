@@ -96,10 +96,7 @@ class DrawChatObjects {
     _registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
     if (imageBytes != null) {
       RegisterMediaTable _registerMediaTable = RegisterMediaTable(
-        media01: imageBytes[0],
-        media02: imageBytes[1],
-        media03: imageBytes[2],
-        media04: imageBytes[3],
+        mediaList: imageBytes,
       );
       _registerMediaTable.registerMediaTableFunc();
       print('メディアの登録ができました');
