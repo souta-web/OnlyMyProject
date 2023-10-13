@@ -24,7 +24,6 @@ class _ScoreArea extends State<ScoreArea> {
     
   }
     
-
   @override
   Widget build(BuildContext context) {
     late int thisScore = widget.fieldDatas.score;

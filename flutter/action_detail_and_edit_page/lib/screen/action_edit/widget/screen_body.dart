@@ -5,6 +5,7 @@ import 'area_title.dart';
 import 'area_tag.dart';
 import 'area_times.dart';
 import 'area_score.dart';
+import 'area_note.dart';
 //import 'package:table_calendar/table_calendar.dart';
 
 
@@ -29,6 +30,7 @@ class _ActionEditPagePrimaryWidget extends State<ActionEditPagePrimaryWidget> {
   late TagArea tagArea;
   late TimeArea timeArea;
   late ScoreArea scoreArea;
+  late 
 
   @override
   void initState() {
@@ -44,6 +46,7 @@ class _ActionEditPagePrimaryWidget extends State<ActionEditPagePrimaryWidget> {
           tagArea = TagArea(deviceWidth: _deviceWidth,textFieldTagsController: _textFieldTagsController,fieldDatas: widget.fieldDatas,),
           timeArea = TimeArea(deviceWidth: _deviceWidth,fieldDatas: widget.fieldDatas,),
           scoreArea = ScoreArea(deviceWidth: _deviceWidth,fieldDatas: widget.fieldDatas,),
+          ntoeArea = ntoeArea(deviceWidth: _deviceWidth,fieldDatas: widget.fieldDatas,),
         ]
       )
     );
