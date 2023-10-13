@@ -154,7 +154,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                     icon: Icon(Icons.add),
                     color: Colors.white,
                     onPressed: () async {
-                      _mediaData = await _getMedia();
+                      //_mediaData = await _getMedia();
                       imageData = await _convertMedia
                           .pickAndConvertImages(List.from(_imageList));
                       //現状は取得したメディアの処理がないためprintで取得確認
