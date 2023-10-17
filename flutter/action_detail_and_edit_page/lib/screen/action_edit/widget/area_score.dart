@@ -13,10 +13,7 @@ class ScoreArea extends StatefulWidget {
 }
 
 class _ScoreArea extends State<ScoreArea> {
-  final TextEditingController _textEditingControllerScore = TextEditingController();
-  final double _thisHeight = 70.0;
   final TextStyle fontData = TextStyle(fontSize: 24);
-  
   
   void initState() {
     super.initState();

@@ -3,7 +3,7 @@ import 'package:textfield_tags/textfield_tags.dart';
 import 'field_datas.dart';
 import 'area_title.dart';
 import 'area_tag.dart';
-import 'area_times.dart';
+import 'area_date_and_time.dart';
 import 'area_score.dart';
 import 'area_note.dart';
 //import 'package:table_calendar/table_calendar.dart';
@@ -28,9 +28,9 @@ class _ActionEditPagePrimaryWidget extends State<ActionEditPagePrimaryWidget> {
   //変数関係
   late TitleArea titleArea;
   late TagArea tagArea;
-  late TimeArea timeArea;
+  late DateAndTimeArea dateAndTimeArea;
   late ScoreArea scoreArea;
-  late 
+  late NoteArea noteArea;
 
   @override
   void initState() {
@@ -44,9 +44,9 @@ class _ActionEditPagePrimaryWidget extends State<ActionEditPagePrimaryWidget> {
         children: [
           titleArea = TitleArea(deviceWidth: _deviceWidth,fieldDatas: widget.fieldDatas,),
           tagArea = TagArea(deviceWidth: _deviceWidth,textFieldTagsController: _textFieldTagsController,fieldDatas: widget.fieldDatas,),
-          timeArea = TimeArea(deviceWidth: _deviceWidth,fieldDatas: widget.fieldDatas,),
+          dateAndTimeArea = DateAndTimeArea(deviceWidth: _deviceWidth,fieldDatas: widget.fieldDatas,),
           scoreArea = ScoreArea(deviceWidth: _deviceWidth,fieldDatas: widget.fieldDatas,),
-          ntoeArea = ntoeArea(deviceWidth: _deviceWidth,fieldDatas: widget.fieldDatas,),
+          noteArea = NoteArea(deviceWidth: _deviceWidth,fieldDatas: widget.fieldDatas,),
         ]
       )
     );
