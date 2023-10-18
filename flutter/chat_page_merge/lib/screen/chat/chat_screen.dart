@@ -18,29 +18,29 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   bool _isTodo = false; //テキスト入力の左のやつ
   late Uint8List? _mediaData = null; //メディアを格納する
 
-  late List<Uint8List> imageData = []; // メディアを格納するリスト
+  
   // チャットメッセージのリスト
   final List<dynamic> _messages = [];
 
+  final double iconsSize = 30; //アイコンサイズ
+
+  // ↓が加藤が作った変数
   // DrawChatObjectsをfinal修飾子で宣言
   final DrawChatObjects _chatObjects = DrawChatObjects();
-
-  late ScrollController
-      _scrollController; // ScrollControllerをChatScreenWidget内で生成
+  late ScrollController _scrollController; // ScrollControllerをChatScreenWidget内で生成
   // 自動スクロールクラスのインスタンス生成
   late AutoScroll _autoScroll;
-
   // フォーカスノードのインスタンス生成
   final FocusNode _focusNode = FocusNode();
-
   // チャット履歴復元クラスのインスタンス生成
   final RestoreChatHistory _restoreChatHistory = RestoreChatHistory();
+  // 画像をバイナリデータに変換するクラスのインスタンス生成
   final ConvertMedia _convertMedia = ConvertMedia();
-
+  late List<Uint8List> _mediaDataList = []; // メディアを格納するリスト
   // バイナリーデータに変換するためのリスト
-  final List<Uint8List> _imageList = [];
+  final List<Uint8List> _bytesList = [];
 
-  final double iconsSize = 30; //アイコンサイズ
+  
 
   @override
   void initState() {
@@ -155,13 +155,13 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                     color: Colors.white,
                     onPressed: () async {
                       //_mediaData = await _getMedia();
-                      imageData = await _convertMedia
-                          .pickAndConvertImages(List.from(_imageList));
+                      _mediaDataList = await _convertMedia
+                          .pickAndConvertImages(List.from(_bytesList));
                       //現状は取得したメディアの処理がないためprintで取得確認
                       print(_mediaData);
-                      // print('imageData: $imageData');
+                      // print('_mediaDataList: $_mediaDataList');
                       setState(() {
-                        _imageList.addAll(imageData);
+                        _bytesList.addAll(_mediaDataList);
                       });
                     },
                     iconSize: iconsSize,
@@ -212,7 +212,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                                   _isTodo,
                                   _textEditingController,
                                   true,
-                                  _imageList));
+                                  _bytesList));
                               _autoScroll.scrollToBottom();
                             });
                           },
