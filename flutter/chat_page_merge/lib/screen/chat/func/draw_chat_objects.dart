@@ -98,6 +98,8 @@ class DrawChatObjects {
       chatActionId: chatActionLinkId,
     );
     _registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
+
+    // 画像をメディアテーブルに保存
     if (imageBytes != null) {
       RegisterMediaTable _registerMediaTable = RegisterMediaTable(
         mediaList: imageBytes,
