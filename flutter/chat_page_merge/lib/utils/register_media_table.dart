@@ -58,7 +58,5 @@ class RegisterMediaTable {
         await dbHelper.queryAllRows_media_table();
     print('全てのデータを照会しました。');
     allRows.forEach(print);
-
-    mediaRow.clear();
   }
 }

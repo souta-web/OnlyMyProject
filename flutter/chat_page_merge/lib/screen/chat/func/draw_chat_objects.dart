@@ -21,9 +21,9 @@ class DrawChatObjects {
     String? mainTag,
     String? startTime,
     bool? isActionFinished,
-    List<Uint8List>? imageBytesList,
+    List<Uint8List>? imageList,
   }) {
-    imageBytesList ??= [];
+    imageList ??= [];
     if (chatText.isEmpty) {
       return null;
     }
@@ -43,10 +43,10 @@ class DrawChatObjects {
 
     // チャットモードの時
     if (isUser) {
-      if (imageBytesList.isNotEmpty) {
+      if (imageList.isNotEmpty) {
         // 画像を実体化して表示
         CreateImages createImages =
-            CreateImages(text: chatText, images: imageBytesList);
+            CreateImages(text: chatText, images: imageList);
         return createImages;
       } else {
         // チャットメッセージの表示
@@ -74,16 +74,21 @@ class DrawChatObjects {
     String mainTag = '生活';
     String sendTime = DateTime.now().toString(); //日付取得
     TextFormatter timeFormatter = TextFormatter();
-    late String drawTime = timeFormatter.returnHourMinute(sendTime); //登録時間を表示用にする
+    late String drawTime =
+        timeFormatter.returnHourMinute(sendTime); //登録時間を表示用にする
     // 送信時間を数値化してchat_action_idとaction_chat_idに登録
-    late String chatActionLinkId = timeFormatter.returnChatActionLinkId(sendTime);
+    late String chatActionLinkId =
+        timeFormatter.returnChatActionLinkId(sendTime);
     String _actionState = 'false';
-    late List<Uint8List> newImageBytesList = imageBytes ?? [];  // 新しい画像をリストを作成
-  
+    
+
     if (chatText.isEmpty) {
       return null;
     }
 
+    // 画像データのコピーを保持するための新しいリスト
+    // imageBytesリストから画像データをコピーして保持する
+    final List<Uint8List> copiedImages = List.from(imageBytes ?? []);
     // チャットをデータベースに登録する
     RegisterChatTable _registerChatTable = RegisterChatTable(
       chatSender: 'true',
@@ -93,12 +98,15 @@ class DrawChatObjects {
       chatActionId: chatActionLinkId,
     );
     _registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
-    // 画像をデータベースに登録する
     if (imageBytes != null) {
       RegisterMediaTable _registerMediaTable = RegisterMediaTable(
-        mediaList: newImageBytesList,
+        mediaList: imageBytes,
       );
       _registerMediaTable.registerMediaTableFunc();
+      print('メディアの登録ができました');
+
+      // 前回の画像が保持されないようにクリアする
+      imageBytes.clear();
     }
 
     // トグルボタンがオンの時アクションを登録する
@@ -124,7 +132,7 @@ class DrawChatObjects {
       mainTag: mainTag,
       startTime: drawTime,
       isActionFinished: false,
-      imageBytesList: newImageBytesList,  // 新しい画像リストを設定
+      imageList: copiedImages,
     );
   }
 }
