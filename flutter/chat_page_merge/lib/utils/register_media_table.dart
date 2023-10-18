@@ -51,6 +51,7 @@ class RegisterMediaTable {
     };
 
     await dbHelper.insert_media_table(mediaRow);
+    print('メディアの登録ができました');
 
     // デバッグ用データ表示プログラム
     final List<Map<String, dynamic>> allRows =
