@@ -1,5 +1,7 @@
 import 'dart:typed_data';
 
+//import 'package:flutter/material.dart';
+
 import '/utils/database_helper.dart';
 import 'draw_chat_objects.dart';
 import '/utils/text_formatter.dart';
@@ -7,7 +9,6 @@ import '/utils/text_formatter.dart';
 // アプリ起動時のチャット履歴復元を行う
 class RestoreChatHistory {
   final List<dynamic> _messages = []; // チャットメッセージを格納するリスト
-  final List<Uint8List> _mediaList = []; // 画像データを格納するリスト
 
   // データベースからチャット履歴を取得し、それをウィジェットとして_messagesリストに追加するためのメソッド
   Future<void> fetchChatHistory() async {
@@ -16,6 +17,8 @@ class RestoreChatHistory {
         await dbHelper.queryAllRows_chat_table(); // データベースからチャット履歴を取得する
     final List<Map<String, dynamic>> actionHistory =
         await dbHelper.queryAllRows_action_table(); // データベースからアクションを取得する
+    final List<Map<String, dynamic>> mediaHistory =
+        await dbHelper.queryAllRows_media_table(); // データベースから画像を取得する
 
     DrawChatObjects drawChatObjects =
         DrawChatObjects(); // チャットメッセージをウィジェットに変換する
@@ -28,7 +31,7 @@ class RestoreChatHistory {
     late String _mainTag;
     late String _startTime;
     late bool _isActionFinished;
-    late Uint8List _mediaData;
+    late List<Uint8List> _mediaData;
 
     // チャット履歴を処理してウィジェットを生成し、_messagesと_actionsに追加する
     for (var chat in chatHistory) {
@@ -47,24 +50,37 @@ class RestoreChatHistory {
         );
         _mainTag = actionData['action_main_tag'] ?? "null";
         _isActionFinished = actionData['action_end'] == "true" ? true : false;
-
-        // BLOBをUint8Listに変換
-        final List<int>? _mediaBytes = actionData['action_media'];
-        _mediaData = Uint8List.fromList(_mediaBytes ?? []); // 空のUint
-        print('mediaBytes: $_mediaBytes');
-        _mediaList.add(_mediaData); // 画像データをリストに追加
-        print('mediaData: $_mediaData');
       }
 
-      print("actionHistory: $actionHistory");
+      // メディア情報を初期化
+      _mediaData = [];
 
+      // メディア情報を取得
+      if (mediaHistory.isNotEmpty) {
+        late Map<String, dynamic> mediaRow = mediaHistory.firstWhere((media) {
+          return media['media_table_name'] != 'chat_table' &&
+              media['media_table_id'] != chat['chat_id'];
+        }, orElse: () => <String, dynamic>{});
+
+        if (mediaRow != <String, dynamic>{}) {
+          for (int i = 1; i <= 4; i++) {
+            final String columnName = 'media_0$i';
+            if (mediaRow.containsKey(columnName)) {
+              final media = Uint8List.fromList(mediaRow[columnName]);
+              _mediaData.add(media);
+            }
+          }
+        }
+      }
       final dynamic chatObject = drawChatObjects.createChatObjects(
-          isTodo: _isTodo,
-          chatText: _chatText,
-          isUser: _isUser,
-          mainTag: _mainTag,
-          startTime: drawTime,
-          isActionFinished: _isActionFinished,);
+        isTodo: _isTodo,
+        chatText: _chatText,
+        isUser: _isUser,
+        mainTag: _mainTag,
+        startTime: drawTime,
+        isActionFinished: _isActionFinished,
+        imageList: _mediaData,
+      );
 
       // ウィジェットが正常に生成された場合、リストに追加
       if (chatObject != null) {

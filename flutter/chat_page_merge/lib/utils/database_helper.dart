@@ -53,7 +53,7 @@ class DatabaseHelper {
 
   // メディアテーブルのカラム
   static final columnMediaTableName = 'media_table_name'; // どのテーブルの画像が登録されているかを記録する
-  static final columnMediaTableId = '_media_id'; // フィールドに登録される画像が↑のテーブルのどのidにあるかを記録する
+  static final columnMediaTableId = '_media_table_id'; // フィールドに登録される画像が↑のテーブルのどのidにあるかを記録する
   static final columnMediaColumnIndex = 'media_column_index'; // 画像のインデックス
   static final columnMedia01 = 'media_01'; // メディア保存用カラム
   static final columnMedia02 = 'media_02'; // メディア保存用カラム
