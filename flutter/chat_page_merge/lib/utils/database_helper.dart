@@ -7,7 +7,7 @@ import 'dart:typed_data';
 
 class DatabaseHelper {
   // デバッグ時はDB名を変えてよい
-  static final _databaseName = "MyDatabase56.db"; // DB名
+  static final _databaseName = "MyDatabase57.db"; // DB名
   static final _databaseVersion = 1; // スキーマのバージョン指定
 
   static final chat_table = 'chat_table'; // チャット管理テーブル
@@ -54,6 +54,7 @@ class DatabaseHelper {
   // メディアテーブルのカラム
   static final columnMediaTableName = 'media_table_name'; // どのテーブルの画像が登録されているかを記録する
   static final columnMediaTableId = '_media_id'; // フィールドに登録される画像が↑のテーブルのどのidにあるかを記録する
+  static final columnMediaColumnIndex = 'media_column_index'; // 画像のインデックス
   static final columnMedia01 = 'media_01'; // メディア保存用カラム
   static final columnMedia02 = 'media_02'; // メディア保存用カラム
   static final columnMedia03 = 'media_03'; // メディア保存用カラム
@@ -109,7 +110,8 @@ class DatabaseHelper {
     //それぞれのidの型を指定する必要がある($id 型)の形で指定
     //データベースを再生成するときは１行下のプログラム実行しないといけない
     //await db.execute('DROP TABLE IF EXISTS my_table');
-    await db.execute('''
+    await db.execute(
+        '''
       CREATE TABLE $chat_table (
         $columnChatId INTEGER PRIMARY KEY,
         $columnChatSender TEXT,
@@ -123,7 +125,8 @@ class DatabaseHelper {
     ''');
 
     // アクションテーブルの作成
-    await db.execute('''
+    await db.execute(
+        '''
       CREATE TABLE $action_table (
         $columnActionId INTEGER PRIMARY KEY,
         $columnActionName TEXT,
@@ -143,7 +146,8 @@ class DatabaseHelper {
     ''');
 
     // タグテーブルの作成
-    await db.execute('''
+    await db.execute(
+        '''
       CREATE TABLE $tag_table (
         $columnTagId INTEGER PRIMARY KEY,
         $columnTagName TEXT,
@@ -153,10 +157,12 @@ class DatabaseHelper {
     ''');
 
     // メディアテーブルの作成
-    await db.execute('''
+    await db.execute(
+        '''
       CREATE TABLE $media_table (
         $columnMediaTableName TEXT,
         $columnMediaTableId INTEGER,
+        $columnMediaColumnIndex INTEGER,
         $columnMedia01 BLOB,
         $columnMedia02 BLOB,
         $columnMedia03 BLOB,
