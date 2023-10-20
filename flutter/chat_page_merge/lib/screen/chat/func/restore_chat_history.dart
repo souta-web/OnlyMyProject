@@ -1,7 +1,5 @@
 import 'dart:typed_data';
 
-//import 'package:flutter/material.dart';
-
 import '/utils/database_helper.dart';
 import 'draw_chat_objects.dart';
 import '/utils/text_formatter.dart';
@@ -31,7 +29,7 @@ class RestoreChatHistory {
     late String _mainTag;
     late String _startTime;
     late bool _isActionFinished;
-    late List<Uint8List> _mediaData;
+    late List<Uint8List?> _mediaList = List<Uint8List?>.filled(4, null);
 
     // チャット履歴を処理してウィジェットを生成し、_messagesと_actionsに追加する
     for (var chat in chatHistory) {
@@ -52,26 +50,18 @@ class RestoreChatHistory {
         _isActionFinished = actionData['action_end'] == "true" ? true : false;
       }
 
-      // メディア情報を初期化
-      _mediaData = [];
-
-      // メディア情報を取得
-      if (mediaHistory.isNotEmpty) {
-        late Map<String, dynamic> mediaRow = mediaHistory.firstWhere((media) {
-          return media['media_table_name'] == 'chat_table' &&
-              media['media_table_id'] == chat['chat_id'];
-        }, orElse: () => <String, dynamic>{});
-
-        if (mediaRow != <String, dynamic>{}) {
-          for (int i = 1; i <= 4; i++) {
-            final String columnName = 'media_0$i';
-            if (mediaRow.containsKey(columnName)) {
-              final media = Uint8List.fromList(mediaRow[columnName]);
-              _mediaData.add(media);
-            }
-          }
-        }
+      // メディアテーブルからデータを取得し、media01～media04を取得
+      if (mediaHistory != <String, dynamic>{} && mediaHistory.isNotEmpty) {
+        final Map<String, dynamic> mediaData = mediaHistory.firstWhere(
+          (media) => media['media_table_name'] != media['_media_table_id'],
+          orElse: () => <String, dynamic>{},
+        );
+        _mediaList[0] = mediaData['media_01'] as Uint8List?;
+        _mediaList[1] = mediaData['media_02'] as Uint8List?;
+        _mediaList[2] = mediaData['media_03'] as Uint8List?;
+        _mediaList[3] = mediaData['media_04'] as Uint8List?;
       }
+
       final dynamic chatObject = drawChatObjects.createChatObjects(
         isTodo: _isTodo,
         chatText: _chatText,
@@ -79,7 +69,7 @@ class RestoreChatHistory {
         mainTag: _mainTag,
         startTime: drawTime,
         isActionFinished: _isActionFinished,
-        imageList: _mediaData,
+        imageList:  _mediaList.whereType<Uint8List>().toList(),
       );
 
       // ウィジェットが正常に生成された場合、リストに追加
