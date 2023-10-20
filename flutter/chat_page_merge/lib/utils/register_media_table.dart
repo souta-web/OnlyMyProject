@@ -24,16 +24,19 @@ class RegisterMediaTable {
     }
 
     for (int i = 0; i < mediaList!.length; i++) {
-      final Uint8List imageData = mediaList![i];  // リストから画像を取得
+      final Uint8List imageData = mediaList![i]; // リストから画像を取得
 
       // 画像が空でないことを確認
       if (imageData.isNotEmpty) {
         final Map<String, dynamic> mediaRow = {
-          DatabaseHelper.columnMediaTableName: mediaTableName, // どのテーブルの画像が登録されているかを記録する
-          DatabaseHelper.columnMediaTableId: mediaTableId, // フィールドに登録される画像が↑のテーブルのどのidにあるかを記録する
+          DatabaseHelper.columnMediaTableName:
+              mediaTableName, // どのテーブルの画像が登録されているかを記録する
+          DatabaseHelper.columnMediaTableId:
+              mediaTableId, // フィールドに登録される画像が↑のテーブルのどのidにあるかを記録する
           'media_column_index': i, // 画像のインデックスを追加
         };
-        
+
+
         // 画像のインデックスに応じて適切なデータベースカラムに画像を追加
         switch (i) {
           case 0:

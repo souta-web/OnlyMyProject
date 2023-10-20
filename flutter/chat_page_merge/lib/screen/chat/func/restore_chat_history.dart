@@ -58,8 +58,8 @@ class RestoreChatHistory {
       // メディア情報を取得
       if (mediaHistory.isNotEmpty) {
         late Map<String, dynamic> mediaRow = mediaHistory.firstWhere((media) {
-          return media['media_table_name'] != 'chat_table' &&
-              media['media_table_id'] != chat['chat_id'];
+          return media['media_table_name'] == 'chat_table' &&
+              media['media_table_id'] == chat['chat_id'];
         }, orElse: () => <String, dynamic>{});
 
         if (mediaRow != <String, dynamic>{}) {

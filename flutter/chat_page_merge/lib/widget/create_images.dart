@@ -8,16 +8,16 @@ class CreateImages extends StatelessWidget {
   final List<Uint8List> images;
 
   CreateImages({
-    required this.text, 
+    required this.text,
     required this.images,
-    });
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.centerRight,
       child: Container(
-        width: MediaQuery.of(context).size.width / 2, // 画面の右半分に制限
+        width: MediaQuery.of(context).size.width / 2,
         margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
         padding: const EdgeInsets.all(10.0),
         decoration: BoxDecoration(
@@ -29,33 +29,41 @@ class CreateImages extends StatelessWidget {
           ),
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start, // テキストを左寄せに配置
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
               text,
               style: TextStyle(fontSize: 16.0),
             ),
-            SizedBox(height: 10.0), // テキストと画像の間隔を設定
-            Container(
-              child: GridView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // 2列に表示
-                  crossAxisSpacing: 10.0, // 画像間の水平間隔
-                  mainAxisSpacing: 10.0, // 画像間の垂直間隔
+            SizedBox(height: 10.0),
+            if (images.length == 1)
+              Image.memory(
+                images[0],
+                width: 150,
+                height: 150,
+                fit: BoxFit.cover,
+              )
+            else
+              Container(
+                child: GridView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10.0,
+                    mainAxisSpacing: 10.0,
+                  ),
+                  itemCount: images.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Image.memory(
+                      images[index],
+                      width: 150,
+                      height: 150,
+                      fit: BoxFit.cover,
+                    );
+                  },
                 ),
-                itemCount: images.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Image.memory(
-                    images[index],
-                    width: 150,
-                    height: 150,
-                    fit: BoxFit.cover,
-                  );
-                },
               ),
-            ),
           ],
         ),
       ),
