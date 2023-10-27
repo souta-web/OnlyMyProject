@@ -44,8 +44,8 @@ class _DDonutChartSampleState extends State<DDonutChartSample> {
     ];
 
     // 合計を計算
-    final total =
-        donutChartData.map((data) => data.value).reduce((a, b) => a + b);
+    //final total =
+    //donutChartData.map((data) => data.value).reduce((a, b) => a + b);
 
     // データを割合から時間に変換
     final hoursData = rawData.map((data) {
