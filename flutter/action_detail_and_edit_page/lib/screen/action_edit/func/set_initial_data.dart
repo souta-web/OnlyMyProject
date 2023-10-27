@@ -1,4 +1,6 @@
 import '/screen/action_edit/widget/field_datas.dart';
+
+//編集画面の編集可能エリアの初期化処理
 class SetInitialData {
   final FieldDatas fieldDatas;
 

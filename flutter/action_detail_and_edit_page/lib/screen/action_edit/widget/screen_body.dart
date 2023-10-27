@@ -13,7 +13,7 @@ class ActionEditPagePrimaryWidget extends StatefulWidget {
   ActionEditPagePrimaryWidget({required this.bodyWidth,required this.bodyHeight,required this.fieldDatas});
   final double bodyWidth;
   final double bodyHeight;
-  final FieldDatas fieldDatas;
+  final FieldDatas fieldDatas; //編集画面の編集可能エリアフィールドの変数が格納されているインスタンス済みクラス。
   @override
   _ActionEditPagePrimaryWidget createState() => _ActionEditPagePrimaryWidget();
 }
@@ -25,7 +25,7 @@ class _ActionEditPagePrimaryWidget extends State<ActionEditPagePrimaryWidget> {
   late double _deviceWidth = MediaQuery.of(context).size.width; //画面の横幅を取得
 
   
-  //変数関係
+  //編集可能エリアのクラスのインスタンス化
   late TitleArea titleArea;
   late TagArea tagArea;
   late DateAndTimeArea dateAndTimeArea;
@@ -35,9 +35,9 @@ class _ActionEditPagePrimaryWidget extends State<ActionEditPagePrimaryWidget> {
   @override
   void initState() {
     super.initState();
-    
   }
   
+  //編集エリアを縦に並べる
   Widget build(BuildContext context) {
     return Container(
       child:Column(

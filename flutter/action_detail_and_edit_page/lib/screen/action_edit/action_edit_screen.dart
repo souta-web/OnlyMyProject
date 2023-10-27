@@ -4,6 +4,8 @@ import 'widget/screen_body.dart';
 import '/screen/action_edit/func/save_button_pressed.dart';
 import 'func/set_initial_data.dart';
 
+
+//アクション編集ページが読み込まれたときに、一番最初に呼び出されるプログラム
 class ActionEditPage extends StatefulWidget {
   @override
   _ActionEditPage createState() => _ActionEditPage();
@@ -47,6 +49,7 @@ class _ActionEditPage extends State<ActionEditPage> {
   }
 }
 
+//編集ページのボディ部分
 class ActionEditPageBody extends StatefulWidget {
   final FieldDatas fieldDatas;
 

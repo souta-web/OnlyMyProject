@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '/widget/create_horizontal_line.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 
+//タグエリア
 class TagArea extends StatefulWidget {
   final double deviceWidth;
   final TextfieldTagsController textFieldTagsController;

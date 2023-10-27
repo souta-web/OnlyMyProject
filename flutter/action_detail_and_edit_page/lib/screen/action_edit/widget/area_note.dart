@@ -2,6 +2,7 @@ import 'package:action_detail_and_edit_page/screen/action_edit/widget/field_data
 import 'package:flutter/material.dart';
 import '/widget/create_horizontal_line.dart';
 
+//詳細編集フィールド
 class NoteArea extends StatefulWidget {
   final double deviceWidth;
   final FieldDatas fieldDatas;

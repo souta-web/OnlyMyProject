@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '/widget/create_horizontal_line.dart';
 //import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
+//時間と日付用の編集エリア
 class DateAndTimeArea extends StatefulWidget {
   final double deviceWidth;
   final FieldDatas fieldDatas;

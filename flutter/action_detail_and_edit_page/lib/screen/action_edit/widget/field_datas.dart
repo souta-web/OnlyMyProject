@@ -1,3 +1,5 @@
+//編集ページで使う編集される値の宣言。
+//これをインスタンス化して使うと、いろいろなクラスで共有して使える
 class FieldDatas {
   late String title = "";
   late List<String> tags = [""];
