@@ -3,11 +3,10 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
-import 'dart:typed_data';
 
 class DatabaseHelper {
   // デバッグ時はDB名を変えてよい
-  static final _databaseName = "MyDatabase58.db"; // DB名
+  static final _databaseName = "MyDatabase60.db"; // DB名
   static final _databaseVersion = 1; // スキーマのバージョン指定
 
   static final chat_table = 'chat_table'; // チャット管理テーブル
@@ -54,7 +53,7 @@ class DatabaseHelper {
   // メディアテーブルのカラム
   static final columnMediaTableName = 'media_table_name'; // どのテーブルの画像が登録されているかを記録する
   static final columnMediaTableId = '_media_table_id'; // フィールドに登録される画像が↑のテーブルのどのidにあるかを記録する
-  static final columnMediaColumnIndex = 'media_column_index'; // 画像のインデックス
+  static final columnMediaIndex = 'media_column_index'; // 画像のインデックス
   static final columnMedia01 = 'media_01'; // メディア保存用カラム
   static final columnMedia02 = 'media_02'; // メディア保存用カラム
   static final columnMedia03 = 'media_03'; // メディア保存用カラム
@@ -162,7 +161,7 @@ class DatabaseHelper {
       CREATE TABLE $media_table (
         $columnMediaTableName TEXT,
         $columnMediaTableId INTEGER,
-        $columnMediaColumnIndex INTEGER,
+        $columnMediaIndex INTEGER,
         $columnMedia01 BLOB,
         $columnMedia02 BLOB,
         $columnMedia03 BLOB,
@@ -212,14 +211,6 @@ class DatabaseHelper {
   Future<int> insert_action_table(Map<String, dynamic> row) async {
     Database? db = await instance.database;
 
-    // バイナリーデータをバイト配列に変換
-    Uint8List? mediaBytes;
-    if (row[columnActionMedia] != null) {
-      mediaBytes = Uint8List.fromList(row[columnActionMedia]);
-    }
-
-    // バイナリーデータをバイト配列に変換してデータベースに挿入
-    row[columnActionMedia] = mediaBytes;
     return await db!.insert(action_table, row);
   }
 
