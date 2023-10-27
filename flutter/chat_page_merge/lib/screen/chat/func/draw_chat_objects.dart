@@ -43,17 +43,17 @@ class DrawChatObjects {
 
     // チャットモードの時
     if (isUser) {
-      if (imageList.isNotEmpty) {
-        // 画像を実体化して表示
-        CreateImages createImages =
-            CreateImages(text: chatText, images: imageList);
-        return createImages;
-      } else {
+      if (imageList.isEmpty) {
         // チャットメッセージの表示
         ChatMessage message = ChatMessage(
             text: chatText, isSentByUser: isUser, time: startTime); // 返答側のメッセージ
 
         return message;
+      } else {
+        // 画像を実体化して表示
+        CreateImages createImages =
+            CreateImages(text: chatText, images: imageList);
+        return createImages;
       }
     } else {
       ChatMessage message = ChatMessage(
@@ -100,13 +100,12 @@ class DrawChatObjects {
     _registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
 
     // 画像をメディアテーブルに保存
-    if (imageBytes != null) {
+    if (imageBytes != null && imageBytes.isNotEmpty) {
       RegisterMediaTable _registerMediaTable = RegisterMediaTable(
         mediaList: imageBytes,
       );
       _registerMediaTable.registerMediaTableFunc();
-      print('メディアの登録ができました');
-
+    
       // 前回の画像が保持されないようにクリアする
       imageBytes.clear();
     }
