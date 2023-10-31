@@ -29,7 +29,7 @@ class RestoreChatHistory {
     late String _mainTag;
     late String _startTime;
     late bool _isActionFinished;
-    late List<Uint8List?> _mediaList = List<Uint8List?>.filled(4, null);
+    late List<Uint8List>? _mediaList;
 
     // チャット履歴を処理してウィジェットを生成し、_messagesと_actionsに追加する
     for (var chat in chatHistory) {
@@ -38,6 +38,13 @@ class RestoreChatHistory {
       _chatText = chat['chat_message'] ?? "null";
       _isUser = chat['chat_sender'] == "true" ? true : false;
       _startTime = chat['chat_time'] ?? "null";
+
+      _mediaList = [
+        mediaHistory[0]['media01'],
+        mediaHistory[1]['media02'],
+        mediaHistory[2]['media03'],
+        mediaHistory[3]['media04'],
+      ];
 
       late String drawTime = timeFormatter.returnHourMinute(_startTime);
       // アクションテーブルからデータを取得し、mainTag,isActionFinished を取得
@@ -50,17 +57,7 @@ class RestoreChatHistory {
         _isActionFinished = actionData['action_end'] == "true" ? true : false;
       }
 
-      // メディアテーブルからデータを取得し、media01～media04を取得
-      if (mediaHistory != <String, dynamic>{} && mediaHistory.isNotEmpty) {
-        final Map<String, dynamic> mediaData = mediaHistory.firstWhere(
-          (media) => media['media_table_name'] != media['_media_table_id'],
-          orElse: () => <String, dynamic>{},
-        );
-        _mediaList[0] = mediaData['media_01'] as Uint8List?;
-        _mediaList[1] = mediaData['media_02'] as Uint8List?;
-        _mediaList[2] = mediaData['media_03'] as Uint8List?;
-        _mediaList[3] = mediaData['media_04'] as Uint8List?;
-      }
+      // メディアテーブルからデータを取得し、media01～04までのデータを取得する
 
       final dynamic chatObject = drawChatObjects.createChatObjects(
         isTodo: _isTodo,
@@ -69,7 +66,7 @@ class RestoreChatHistory {
         mainTag: _mainTag,
         startTime: drawTime,
         isActionFinished: _isActionFinished,
-        imageList:  _mediaList.whereType<Uint8List>().toList(),
+        imageList: _mediaList,
       );
 
       // ウィジェットが正常に生成された場合、リストに追加
