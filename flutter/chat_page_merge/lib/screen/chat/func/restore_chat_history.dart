@@ -39,13 +39,6 @@ class RestoreChatHistory {
       _isUser = chat['chat_sender'] == "true" ? true : false;
       _startTime = chat['chat_time'] ?? "null";
 
-      _mediaList = [
-        mediaHistory[0]['media01'],
-        mediaHistory[1]['media02'],
-        mediaHistory[2]['media03'],
-        mediaHistory[3]['media04'],
-      ];
-
       late String drawTime = timeFormatter.returnHourMinute(_startTime);
       // アクションテーブルからデータを取得し、mainTag,isActionFinished を取得
       if (actionHistory != <String, dynamic>{} && actionHistory.isNotEmpty) {
@@ -56,6 +49,17 @@ class RestoreChatHistory {
         _mainTag = actionData['action_main_tag'] ?? "null";
         _isActionFinished = actionData['action_end'] == "true" ? true : false;
       }
+
+      // メディアテーブルからデータを取得する
+      // データの取得はmediaHistoryから行う
+      _mediaList = [];
+      for (int i = 0; i < _mediaList.length; i++) {
+        final Uint8List? media = mediaHistory[i+1]['media_0$i'];
+        if (media != null) {
+          _mediaList.add(media);
+        }
+      }
+
 
       // メディアテーブルからデータを取得し、media01～04までのデータを取得する
 
