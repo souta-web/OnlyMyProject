@@ -53,10 +53,8 @@ class DatabaseHelper {
   // メディアテーブルのカラム
   static final columnMediaTableName = 'media_table_name'; // どのテーブルの画像が登録されているかを記録する
   static final columnMediaTableId = '_media_table_id'; // フィールドに登録される画像が↑のテーブルのどのidにあるかを記録する
-  static final columnMedia01 = 'media_01'; // メディア保存用カラム
-  static final columnMedia02 = 'media_02'; // メディア保存用カラム
-  static final columnMedia03 = 'media_03'; // メディア保存用カラム
-  static final columnMedia04 = 'media_04'; // メディア保存用カラム
+  static final columnMedia = 'media'; // メディア保存用カラム
+  
 
   // DatabaseHelper クラスを定義
   DatabaseHelper._privateConstructor();
@@ -111,12 +109,12 @@ class DatabaseHelper {
     await db.execute(
         '''
       CREATE TABLE $chat_table (
-        $columnChatId INTEGER PRIMARY KEY,
-        $columnChatSender TEXT,
-        $columnChatTodo TEXT,
+        $columnChatId INTEGER PRIMARY,
+        $columnChatSender TEXT NOT NULL,
+        $columnChatTodo TEXT NOT NULL,
         $columnChatTodofinish TEXT,
         $columnChatMessage TEXT,
-        $columnChatTime TEXT,
+        $columnChatTime TEXT NOT NULL,
         $columnChatChannel TEXT,
         $columnChatActionId TEXT
       )
@@ -128,14 +126,14 @@ class DatabaseHelper {
       CREATE TABLE $action_table (
         $columnActionId INTEGER PRIMARY KEY,
         $columnActionName TEXT,
-        $columnActionStart TEXT,
+        $columnActionStart TEXT NOT NULL,
         $columnActionEnd TEXT,
         $columnActionDuration TEXT,
         $columnActionMessage TEXT,
         $columnActionMedia BLOB,
         $columnActionNotes TEXT,
         $columnActionScore INTEGER CHECK ($columnActionScore >= 1 AND $columnActionScore <= 5), 
-        $columnActionState TEXT,
+        $columnActionState TEXT NOT NULL,
         $columnActionPlace TEXT,
         $columnActionMainTag TEXT,
         $columnActionSubTag TEXT,
@@ -160,11 +158,7 @@ class DatabaseHelper {
       CREATE TABLE $media_table (
         $columnMediaTableName TEXT,
         $columnMediaTableId INTEGER,
-        $columnMedia01 BLOB,
-        $columnMedia02 BLOB,
-        $columnMedia03 BLOB,
-        $columnMedia04 BLOB,
-        PRIMARY KEY($columnMediaTableName, $columnMediaTableId)
+        $columnMedia BLOB NOT NULL
       )
     ''');
   }
