@@ -54,7 +54,8 @@ class DatabaseHelper {
   static final columnMediaTableName = 'media_table_name'; // どのテーブルの画像が登録されているかを記録する
   static final columnMediaTableId = '_media_table_id'; // フィールドに登録される画像が↑のテーブルのどのidにあるかを記録する
   static final columnMedia = 'media'; // メディア保存用カラム
-  
+  static final columnMediaChatId = '_media_chat_id'; // 添付メッセージID
+  static final columnLinkActionId = '_link_action_id';  // 関連アクションID
 
   // DatabaseHelper クラスを定義
   DatabaseHelper._privateConstructor();
@@ -106,8 +107,7 @@ class DatabaseHelper {
     //それぞれのidの型を指定する必要がある($id 型)の形で指定
     //データベースを再生成するときは１行下のプログラム実行しないといけない
     //await db.execute('DROP TABLE IF EXISTS my_table');
-    await db.execute(
-        '''
+    await db.execute('''
       CREATE TABLE $chat_table (
         $columnChatId INTEGER PRIMARY,
         $columnChatSender TEXT NOT NULL,
@@ -121,8 +121,7 @@ class DatabaseHelper {
     ''');
 
     // アクションテーブルの作成
-    await db.execute(
-        '''
+    await db.execute('''
       CREATE TABLE $action_table (
         $columnActionId INTEGER PRIMARY KEY,
         $columnActionName TEXT,
@@ -142,8 +141,7 @@ class DatabaseHelper {
     ''');
 
     // タグテーブルの作成
-    await db.execute(
-        '''
+    await db.execute('''
       CREATE TABLE $tag_table (
         $columnTagId INTEGER PRIMARY KEY,
         $columnTagName TEXT,
@@ -153,12 +151,15 @@ class DatabaseHelper {
     ''');
 
     // メディアテーブルの作成
-    await db.execute(
-        '''
+    await db.execute('''
       CREATE TABLE $media_table (
         $columnMediaTableName TEXT,
         $columnMediaTableId INTEGER,
-        $columnMedia BLOB NOT NULL
+        $columnMedia BLOB NOT NULL,
+        $columnMediaChatId INTEGER,
+        $columnLinkActionId INTEGER,
+        FOREIGN KEY ($columnMediaChatId) REFERENCES $chat_table($columnChatId),
+        FOREIGN KEY ($columnLinkActionId) REFERENCES $action_table($columnActionId)
       )
     ''');
   }
