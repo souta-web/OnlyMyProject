@@ -13,6 +13,9 @@ class DatabaseHelper {
   static final action_table = 'action_table'; //アクション(Todo)管理テーブル
   static final tag_table = 'tag_table'; // タグ管理テーブル
   static final media_table = 'media_table'; // メディア保存テーブル
+  static final tag_setting_table = 'tag_setting_table'; // タグ設定テーブル
+  static final action_time_table = 'action_time_table'; // アクションタイムテーブル
+  static final chat_time_table = 'chat_time_table'; // チャットタイムテーブル
 
   // カラム名とは項目名の事(辻)
   // チャットテーブルのカラム
@@ -51,11 +54,41 @@ class DatabaseHelper {
       'tag_registered_action_name'; // 登録されたアクション名
 
   // メディアテーブルのカラム
-  static final columnMediaTableName = 'media_table_name'; // どのテーブルの画像が登録されているかを記録する
-  static final columnMediaTableId = '_media_table_id'; // フィールドに登録される画像が↑のテーブルのどのidにあるかを記録する
+  static final columnMediaTableName =
+      'media_table_name'; // どのテーブルの画像が登録されているかを記録する
+  static final columnMediaTableId =
+      '_media_table_id'; // フィールドに登録される画像が↑のテーブルのどのidにあるかを記録する
   static final columnMedia = 'media'; // メディア保存用カラム
   static final columnMediaChatId = '_media_chat_id'; // 添付メッセージID
-  static final columnLinkActionId = '_link_action_id';  // 関連アクションID
+  static final columnLinkActionId = '_link_action_id'; // 関連アクションID
+
+  // タグ設定テーブルのカラム
+  static final columnTagActionId = '_tag_action_id'; // アクションID
+  static final columnSetTagId = '_set_tag_id'; // タグID
+  static final columnMainTagFlag = 'main_tag_flag'; // メインタグかどうか
+
+  // アクションタイムテーブルのカラム
+  static final columnActionTimeId = '_action_time_id'; // アクションタイムID
+  static final columnSetActionId = '_set_action_id'; // アクションID
+  static final columnJudgeTime = 'judge_time'; // 開始時刻か終了時刻か
+  static final columnActionYear = 'action_year'; // 年
+  static final columnActionMonth = 'action_month'; // 月
+  static final columnActionDay = 'action_day'; // 日
+  static final columnActionHours = 'action_hours'; // 時
+  static final columnActionMinute = 'action_minute'; // 分
+  static final columnActionSeconds = 'action_seconds'; // 秒
+  static final columnLessActionSeconds = 'less_action_seconds'; // 秒未満
+
+  // チャットタイムテーブルのカラム
+  static final columnChatTimeId = '_chat_time_id'; // チャットタイムID
+  static final columnSetChatId = '_set_chat_id'; // チャットID
+  static final columnChatYear = 'chat_year'; // 年
+  static final columnChatMonth = 'chat_month'; // 月
+  static final columnChatDay = 'chat_day'; // 日
+  static final columnChatHours = 'chat_hours'; // 時
+  static final columnChatMinute = 'chat_minute'; // 分
+  static final columnChatSeconds = 'chat_seconds'; // 秒
+  static final columnLessChatSeconds = 'less_chat_seconds'; // 秒未満
 
   // DatabaseHelper クラスを定義
   DatabaseHelper._privateConstructor();
@@ -92,7 +125,10 @@ class DatabaseHelper {
     return await openDatabase(path,
         version: _databaseVersion,
         // テーブル作成メソッドの呼び出し
-        onCreate: _onCreate);
+        onCreate: _onCreate, onConfigure: (db) {
+      // 外部キーを有効にする
+      db.execute('PRAGMA foreign_keys = ON');
+    });
   }
 
   _addcolumn() async {
@@ -154,7 +190,7 @@ class DatabaseHelper {
     await db.execute('''
       CREATE TABLE $media_table (
         $columnMediaTableName TEXT,
-        $columnMediaTableId INTEGER,
+        $columnMediaTableId INTEGER PRIMARY KEY,
         $columnMedia BLOB NOT NULL,
         $columnMediaChatId INTEGER,
         $columnLinkActionId INTEGER,
@@ -162,6 +198,48 @@ class DatabaseHelper {
         FOREIGN KEY ($columnLinkActionId) REFERENCES $action_table($columnActionId)
       )
     ''');
+
+    // タグ設定テーブルの作成
+    await db.execute('''
+      CREATE TABLE $tag_setting_table (
+        $columnTagActionId INTEGER PRIMARY KEY,
+        $columnSetTagId INTEGER PRIMARY KEY,
+        $columnMainTagFlag INTEGER,
+        FOREIGN KEY ($columnTagActionId) REFERENCES $action_table($columnActionId),
+        FOREIGN KEY ($columnSetTagId) REFERENCES $tag_table($columnTagId)
+      )
+  ''');
+
+    // アクションタイムテーブルの作成
+    await db.execute('''
+      CREATE TABLE $action_time_table (
+        $columnActionTimeId INTEGER PRIMARY KEY,
+        $columnSetActionId INTEGER NOT NULL,
+        $columnJudgeTime TEXT NOT NULL,
+        $columnActionYear INTEGER NOT NULL,
+        $columnActionMonth INTEGER NOT NULL,
+        $columnActionDay INTEGER NOT NULL,
+        $columnActionHours INTEGER NOT NULL,
+        $columnActionSeconds INTEGER NOT NULL,
+        $columnLessActionSeconds TEXT NOT NULL,
+        FOREIGN KEY ($columnSetActionId) REFERENCES $action_table($columnActionId)
+      )
+  ''');
+
+    // チャットタイムテーブルの作成
+    await db.execute('''
+      CREATE TABLE $chat_time_table (
+        $columnChatTimeId INTEGER PRIMARY KEY,
+        $columnSetChatId INTEGER NOT NULL,
+        $columnChatYear INTEGER NOT NULL,
+        $columnChatMonth INTEGER NOT NULL,
+        $columnChatDay INTEGER NOT NULL,
+        $columnChatHours INTEGER NOT NULL,
+        $columnChatSeconds INTEGER NOT NULL,
+        $columnLessChatSeconds TEXT NOT NULL,
+        FOREIGN KEY ($columnSetChatId) REFERENCES $chat_table($columnChatId)
+      )
+  ''');
   }
 
   // チャット画面用の関数
