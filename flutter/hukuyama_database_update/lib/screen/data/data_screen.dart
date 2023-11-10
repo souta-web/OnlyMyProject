@@ -1,16 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
+import '/utils/database_helper.dart';
+import '/screen/data/maintag_graph_data.dart';
 
 class DataScreenWidget extends StatelessWidget {
-
-  // 棒グラフの棒の横幅
-  static double barWidth = 20.0;
-  // グラフタイトルのラベル書式
-  final TextStyle labelStyle = TextStyle(fontSize: 16, fontWeight: FontWeight.w800);
-
-  // ダミーデータ
-  final timedate = <double>[30, 25, 20, 15, 10];
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +20,35 @@ class DataScreenWidget extends StatelessWidget {
         ],
       ),
       body: Center(
-        
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            ElevatedButton(
+              child: Text("tag_insert"),
+              onPressed:(){_insert();},
+            ),
+            ElevatedButton(
+              child: Text("tag_name"),
+              onPressed:(){queryAllRows_tagName();},
+            ),
+          ]
+        )
       ),
     );
   }
 }
 
+final dbHelper = DatabaseHelper.instance;
+
+void _insert() async {
+  Map<String, dynamic> row = {
+    DatabaseHelper.columnTagName:'料理',
+    DatabaseHelper.columnTagColor:"Red",
+    DatabaseHelper.columnTagRegisteredActionName:"夜ご飯"
+  };
+    final tagInsert = await dbHelper.insert_tag_table(row);
+    print(tagInsert);
+}
  
 
  

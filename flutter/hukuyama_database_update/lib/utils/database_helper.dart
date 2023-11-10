@@ -239,7 +239,7 @@ class DatabaseHelper {
   Future<int?> queryRowCount_tag_table() async {
     Database? db = await instance.database;
     return Sqflite.firstIntValue(
-        await db!.rawQuery('SELECT COUNT(*) FROM $tag_table'))!;
+        await db!.rawQuery('SELECT COUNT(*) FROM $tag_table'));
   }
 
   // 更新処理
