@@ -39,8 +39,7 @@ class DatabaseHelper {
   static final columnActionMedia = 'action_media'; //添付メディア
   static final columnActionNotes = 'action_notes'; //説明文
   static final columnActionScore = 'action_score'; //充実度(1から5までの値で制限する)
-  static final columnActionState =
-      'action_state'; //状態(0=未完了,1=完了) (false=未完了,true=完了)
+  static final columnActionState = 'action_state'; //状態(0=未完了,1=完了) (false=未完了,true=完了)
   static final columnActionPlace = 'action_place'; //場所
   static final columnActionMainTag = 'action_main_tag'; //メインタグ
   static final columnActionSubTag = 'action_sub_tag'; //サブタグ
@@ -380,5 +379,110 @@ class DatabaseHelper {
     Database? db = await instance.database;
     return await db!
         .delete(media_table, where: '$columnMediaTableId = ?', whereArgs: [id]);
+  }
+
+  // タグ設定テーブル用の関数
+  // 登録処理
+  Future<int> insert_tag_setting_table(Map<String, dynamic> row) async {
+    Database? db = await instance.database;
+    return await db!.insert(chat_table, row);
+  }
+
+  // 照会処理
+  Future<List<Map<String, dynamic>>> queryAllRows_tag_setting_table() async {
+    Database? db = await instance.database;
+    return await db!.query(chat_table);
+  }
+
+  // レコード数を確認
+  Future<int?> queryRowCount_tag_setting_table() async {
+    Database? db = await instance.database;
+    return Sqflite.firstIntValue(
+        await db!.rawQuery('SELECT COUNT(*) FROM $chat_table'));
+  }
+
+  //　更新処理
+  Future<int> update_tag_setting_table(Map<String, dynamic> row, int id) async {
+    Database? db = await instance.database;
+    int id = row[columnChatId];
+    return await db!
+        .update(chat_table, row, where: '$columnChatId = ?', whereArgs: [id]);
+  }
+
+  //　削除処理
+  Future<int> delete_tag_setting_table(int id) async {
+    Database? db = await instance.database;
+    return await db!
+        .delete(chat_table, where: '$columnChatId = ?', whereArgs: [id]);
+  }
+
+  // アクションタイムテーブル用の関数
+  // 登録処理
+  Future<int> insert_action_time_table(Map<String, dynamic> row) async {
+    Database? db = await instance.database;
+    return await db!.insert(chat_table, row);
+  }
+
+  // 照会処理
+  Future<List<Map<String, dynamic>>> queryAllRows_action_time_table() async {
+    Database? db = await instance.database;
+    return await db!.query(chat_table);
+  }
+
+  // レコード数を確認
+  Future<int?> queryRowCount_action_time_table() async {
+    Database? db = await instance.database;
+    return Sqflite.firstIntValue(
+        await db!.rawQuery('SELECT COUNT(*) FROM $chat_table'));
+  }
+
+  //　更新処理
+  Future<int> update_action_time_table(Map<String, dynamic> row, int id) async {
+    Database? db = await instance.database;
+    int id = row[columnChatId];
+    return await db!
+        .update(chat_table, row, where: '$columnChatId = ?', whereArgs: [id]);
+  }
+
+  //　削除処理
+  Future<int> delete_action_time_table(int id) async {
+    Database? db = await instance.database;
+    return await db!
+        .delete(chat_table, where: '$columnChatId = ?', whereArgs: [id]);
+  }
+
+  // チャットタイムテーブル用の関数
+  // 登録処理
+  Future<int> insert_chat_time_table(Map<String, dynamic> row) async {
+    Database? db = await instance.database;
+    return await db!.insert(chat_table, row);
+  }
+
+  // 照会処理
+  Future<List<Map<String, dynamic>>> queryAllRows_chat_time_table() async {
+    Database? db = await instance.database;
+    return await db!.query(chat_table);
+  }
+
+  // レコード数を確認
+  Future<int?> queryRowCount_chat_time_table() async {
+    Database? db = await instance.database;
+    return Sqflite.firstIntValue(
+        await db!.rawQuery('SELECT COUNT(*) FROM $chat_table'));
+  }
+
+  //　更新処理
+  Future<int> update_chat_time_table(Map<String, dynamic> row, int id) async {
+    Database? db = await instance.database;
+    int id = row[columnChatId];
+    return await db!
+        .update(chat_table, row, where: '$columnChatId = ?', whereArgs: [id]);
+  }
+
+  //　削除処理
+  Future<int> delete_chat_time_table(int id) async {
+    Database? db = await instance.database;
+    return await db!
+        .delete(chat_table, where: '$columnChatId = ?', whereArgs: [id]);
   }
 }
