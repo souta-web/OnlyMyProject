@@ -7,11 +7,12 @@ import 'time_line_base.dart';
 
 
 class TimeLineCalender extends StatefulWidget {
-  TimeLineCalender({required this.calenderWidth,required this.calenderHeight,required this.weekHeight,});
+  TimeLineCalender({required this.calenderWidth,required this.calenderHeight,required this.weekHeight,required this.timelineActionsData});
   //bodyのサイズを受け取る
   final double calenderWidth;
   final double calenderHeight;
   final double weekHeight;
+  final TimeLineActionsData timelineActionsData;
 
   @override
   _TimeLineCalender createState() => _TimeLineCalender();
@@ -172,9 +173,6 @@ class _TimeLineCalender extends State<TimeLineCalender> {
               selectedMonth = selected.month;
               previousSelectedMonth = selectedMonth;
 
-              //print(formattedDate);
-              //print(_selectedDay);
-
               String formattedDate = setSchedule(_selectedDay);
               print(formattedDate);//リスト名に直した日付
 
@@ -183,12 +181,19 @@ class _TimeLineCalender extends State<TimeLineCalender> {
 
               callUpdateDefaultData(settingDate);//リストを挿入
 
+              widget.timelineActionsData.defaultData = settingDate;
+              print("widget");
+              print(widget.timelineActionsData.defaultData);
+
               print("callReset");
               callResetActionsDatas();
               print("callResetEnd");
 
               //Navigator.pushNamed(context, '/timeline');//routeに追加したconfigに遷移
               //Navigator.pushNamed(context, '/main', arguments: 1);
+            });
+            setState(() {
+              
             });
           }
         },

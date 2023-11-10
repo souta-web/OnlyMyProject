@@ -23,9 +23,9 @@ class TimeLineActionsData {
 }
 
   final List<List<Map<String, dynamic>>> y2023m10d18 = [
-    [{"startTime": "0:00", "endTime": "7:35", "color": Colors.amber, "title": "睡眠計測する"}],
-    [{"startTime": "7:10", "endTime": "7:25", "color": Colors.amber, "title": "朝食食べる"}],
-    [{"startTime": "7:25", "endTime": "8:30", "color": Colors.amber, "title": "バイトに行く"}],
+    [{"startTime": "0:00", "endTime": "7:35", "color": Colors.blue, "title": "睡眠計測する"}],
+    [{"startTime": "7:10", "endTime": "7:25", "color": Colors.blue, "title": "朝食食べる"}],
+    [{"startTime": "7:25", "endTime": "8:30", "color": Colors.blue, "title": "バイトに行く"}],
   ];
 
   final List<List<Map<String, dynamic>>> y2023m10d19 = [
@@ -41,9 +41,9 @@ class TimeLineActionsData {
   ];
 
   final List<List<Map<String, dynamic>>> y2023m10d21 = [
-    [{"startTime": "0:00", "endTime": "7:35", "color": Colors.red, "title": "ポケモンスリープしない"}],
-    [{"startTime": "7:10", "endTime": "7:25", "color": Colors.red, "title": "朝ごはん食べる"}],
-    [{"startTime": "7:25", "endTime": "8:30", "color": Colors.red, "title": "登校する"}],
+    [{"startTime": "0:00", "endTime": "7:35", "color": Colors.purple, "title": "ポケモンスリープしない"}],
+    [{"startTime": "7:10", "endTime": "7:25", "color": Colors.purple, "title": "朝ごはん食べる"}],
+    [{"startTime": "7:25", "endTime": "8:30", "color": Colors.purple, "title": "登校する"}],
   ];
 
   final Map<String, List<List<Map<String, dynamic>>>> schedulesByDate = {

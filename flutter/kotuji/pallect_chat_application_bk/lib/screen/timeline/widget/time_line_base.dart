@@ -4,17 +4,19 @@ import '../func/action_registration_base.dart';
 //import 'time_line_data_manager.dart';
 
 class TimeLineBase extends StatefulWidget {
-  TimeLineBase({required this.bodyWidth,required this.bodyHeight,});
+  TimeLineBase({required this.bodyWidth,required this.bodyHeight,required this.timelineActionsData});
   //bodyのサイズを受け取る
   final double bodyWidth;
   final double bodyHeight;
-  //final List<Map<String, dynamic>> newData; // 新しいデータを保持する変数を追加
+  final TimeLineActionsData timelineActionsData;
+
   @override
   _TimeLineBase createState() => _TimeLineBase();
 }
 
 class _TimeLineBase extends State<TimeLineBase> {
-  var timeLineActionsData = TimeLineActionsData();
+  //var timeLineActionsData = TimeLineActionsData();
+  //final TimeLineActionsData timeLineActionsData = TimeLineActionsData();
   final double _timeDrawSpace = 50; //時間を表示する欄の横幅
   final double _oneHourHeight = 60; //これを変えたら1時間当たりの縦幅が変わる
   final double _timeTextHeight = 16; //時間テキストの縦幅 変えるとおかしくなる
@@ -22,6 +24,7 @@ class _TimeLineBase extends State<TimeLineBase> {
   final double _timeLineActionDrawAreaMargin = 30; //時間とアクション表示領域の余白＆表示領域左の余白
   late double _timeLineHeight = _oneHourHeight * 24 - (_horizontalLineThickness * 48); //タイムライン画面の合計縦幅
   late double _timeLineActionDrawAreaWidth = widget.bodyWidth - _timeDrawSpace - _timeLineActionDrawAreaMargin; //アクション表示領域の横幅
+  
   
   //final TimeLineDataManager dataManager = TimeLineDataManager();
   
@@ -33,12 +36,11 @@ class _TimeLineBase extends State<TimeLineBase> {
   //例えば{"startTime":60,"endTime":1440}であれば1:00～24:00の間はどのアクションにも占領されていないことになる
   List<List<Map<String,int>>> _clearActionArea = [[{"startTime":0,"endTime":1440}]]; 
 
-  //List<Map<String, dynamic>> get actionsDatas => actionsDatas; // ここに追加
   @override
 
   void initState() {
     super.initState();
-    actionsDatas = timeLineActionsData.defaultData;
+    actionsDatas = widget.timelineActionsData.defaultData;
 
     _actionWidgets.add(_drawHorizontalLinesConstructure()); //これは表示領域のベースになるから変更してはいけない
     for (int i = 0; i < actionsDatas.length;i++){
@@ -46,14 +48,18 @@ class _TimeLineBase extends State<TimeLineBase> {
 
       _clearActionArea = removeRangeFromClearActionArea(_clearActionArea, ConversionTimeToMinutes(actionsDatas[i]["startTime"]), ConversionTimeToMinutes(actionsDatas[i]["endTime"]));
     }
-    print("_clearActionAreaの中身:" + _clearActionArea.toString());   
+    print("_clearActionAreaの中身:" + _clearActionArea.toString());
     print("actionDatas");
     print(actionsDatas);
-    print("newDatas");
-    //print(widget.newData);
-    //dataManager.upDateData(widget.newData);
+    print("timeLineActionsData.defaultData");
   }
-
+/////
+  void updateActionsDatas(List<Map<String, dynamic>> newActionsData) {
+  setState(() {
+    actionsDatas = newActionsData;
+  });
+}
+///////
   Widget build(BuildContext context) {
     return Row (
       children: [
@@ -212,12 +218,36 @@ class _TimeLineBase extends State<TimeLineBase> {
   void resetActionsDatas() {
     //setState(() {
       print("Called");
-      actionsDatas = timeLineActionsData.defaultData;
+      print("actionsDatas");
+      print(actionsDatas);
+      
+      //actionsDatas = timeLineActionsData.defaultData;
+
       print("actionsDatas");
       print(actionsDatas);
       print("timeLineActionsData.defaultData");
-      print(timeLineActionsData.defaultData);
+      print(widget.timelineActionsData.defaultData);
     //});
+//actionsDatas = widget.timelineActionsData.defaultData;
+// 外部のソースまたは関数
+void updateTimelineData() {
+  // _TimeLineBaseのインスタンスを作成
+  _TimeLineBase timeline = _TimeLineBase();
+
+  // 新しいデータを定義
+  List<Map<String, dynamic>> newActionsData = widget.timelineActionsData.defaultData;
+
+  // 新しいデータと共にupdateActionsDatasメソッドを呼び出します
+  timeline.updateActionsDatas(newActionsData);
+
+  // オプションで、タイムラインインスタンスに対して他のメソッドを呼び出したり、追加のアクションを実行したりできます。
+}
+    //_actionWidgets.add(_drawHorizontalLinesConstructure()); //これは表示領域のベースになるから変更してはいけない
+    for (int i = 0; i < actionsDatas.length;i++){
+      _actionWidgets.add(_returnTimeLineActionWidget(actionsDatas[i],_clearActionArea));
+
+      _clearActionArea = removeRangeFromClearActionArea(_clearActionArea, ConversionTimeToMinutes(actionsDatas[i]["startTime"]), ConversionTimeToMinutes(actionsDatas[i]["endTime"]));
+    }
   }
 }
 

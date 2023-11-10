@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'widget/time_line_base.dart';
 import 'widget/time_line_topbar.dart';
 import 'widget/time_line_calender.dart';
+import './func/action_registration_base.dart';
 
 class TimelineScreenWidget extends StatefulWidget {
 
@@ -41,6 +42,7 @@ class TimeLineBody extends StatelessWidget {
         // constraintsはbodyのサイズを表すBoxConstraintsです。
         final _bodyWidth = constraints.maxWidth; //bodyの横幅取得
         final _bodyHeight = constraints.maxHeight; //bodyの縦幅を取得
+        final TimeLineActionsData timeLineActionsData = TimeLineActionsData();
         //var instance = _TimeLineCalender();
         DateTime _toDay = DateTime.now();// 現在の日付を初期値として設定;
         //String formattedDate = setSchedule(_toDay);
@@ -57,14 +59,14 @@ class TimeLineBody extends StatelessWidget {
                 child:Column(
                   children: [
                     SizedBox(height:_topBarHeight+(_topBarHeight-_weeekCalenderHeight)+10),//TimeLineTopBarと一週間表示分下に下げる（重なっている部分は省く）+00は調整用
-                    TimeLineBase(bodyWidth: _bodyWidth,bodyHeight: _timeLineHeight,),
+                    TimeLineBase(bodyWidth: _bodyWidth,bodyHeight: _timeLineHeight,timelineActionsData:timeLineActionsData),
                   ],
                 )
                 
               )
             ),
-            TimeLineTopBar(topBarWidth:_bodyWidth,topBarHeight:_topBarHeight),
-            TimeLineCalender(calenderWidth:_bodyWidth,calenderHeight:_calenderHeight,weekHeight:_weeekCalenderHeight),
+            TimeLineTopBar(topBarWidth:_bodyWidth,topBarHeight:_topBarHeight,timelineActionsData:timeLineActionsData),
+            TimeLineCalender(calenderWidth:_bodyWidth,calenderHeight:_calenderHeight,weekHeight:_weeekCalenderHeight,timelineActionsData:timeLineActionsData),
           ]
         );
       },
