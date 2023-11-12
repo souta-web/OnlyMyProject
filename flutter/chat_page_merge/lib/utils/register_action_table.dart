@@ -1,5 +1,4 @@
 import 'database_helper.dart';
-import 'dart:typed_data';
 
 // アクション登録汎用クラス
 class RegisterActionTable {
@@ -7,9 +6,7 @@ class RegisterActionTable {
   final String? actionName;
   final String? actionStart;
   final String? actionEnd;
-  final String? actionDuration;
   final String? actionMessage;
-  late List<Uint8List>? actionMedia;
   final String? actionNotes;
   final int? actionScore;
   final String? actionState;
@@ -23,9 +20,7 @@ class RegisterActionTable {
     this.actionName,
     this.actionStart,
     this.actionEnd,
-    this.actionDuration,
     this.actionMessage,
-    this.actionMedia,
     this.actionNotes,
     this.actionScore,
     this.actionState,
@@ -40,20 +35,12 @@ class RegisterActionTable {
     print("これからデータベースに登録");
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
 
-    // Uint8ListをList<int>に変換
-    List<int>? actionMediaBytes;
-    if (actionMedia != null) {
-      actionMediaBytes = actionMedia!.map((uint8List) => uint8List.toList()).expand((byteList) => byteList).toList();
-    }
-
     final Map<String, dynamic> actionRow = {
       DatabaseHelper.columnActionId: actionId, // アクションID
       DatabaseHelper.columnActionName: actionName, // アクション名
       DatabaseHelper.columnActionStart: actionStart, // 開始時刻
       DatabaseHelper.columnActionEnd: actionEnd, // 終了時刻
-      DatabaseHelper.columnActionDuration: actionDuration, // 総時間
       DatabaseHelper.columnActionMessage: actionMessage, // 開始メッセージ
-      DatabaseHelper.columnActionMedia: actionMediaBytes, // 添付メディア
       DatabaseHelper.columnActionNotes: actionNotes, // 説明文
       DatabaseHelper.columnActionScore: actionScore, // 充実度(1から5までの値で制限する)
       DatabaseHelper.columnActionState: actionState, // 状態
@@ -66,7 +53,8 @@ class RegisterActionTable {
     await dbHelper.insert_action_table(actionRow);
 
     // デバッグ用データ表示プログラム
-    final List<Map<String, dynamic>> allRows = await dbHelper.queryAllRows_action_table();
+    final List<Map<String, dynamic>> allRows =
+        await dbHelper.queryAllRows_action_table();
     print('全てのデータを照会しました。');
     allRows.forEach(print);
   }

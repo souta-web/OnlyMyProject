@@ -34,9 +34,7 @@ class DatabaseHelper {
   static final columnActionName = 'action_name'; //アクション名
   static final columnActionStart = 'action_start'; //開始時刻
   static final columnActionEnd = 'action_end'; //終了時刻
-  static final columnActionDuration = 'action_duration'; //総時間
   static final columnActionMessage = 'action_message'; //開始メッセージ
-  static final columnActionMedia = 'action_media'; //添付メディア
   static final columnActionNotes = 'action_notes'; //説明文
   static final columnActionScore = 'action_score'; //充実度(1から5までの値で制限する)
   static final columnActionState = 'action_state'; //状態(0=未完了,1=完了) (false=未完了,true=完了)
@@ -162,9 +160,7 @@ class DatabaseHelper {
         $columnActionName TEXT,
         $columnActionStart TEXT NOT NULL,
         $columnActionEnd TEXT,
-        $columnActionDuration TEXT,
         $columnActionMessage TEXT,
-        $columnActionMedia BLOB,
         $columnActionNotes TEXT,
         $columnActionScore INTEGER CHECK ($columnActionScore >= 1 AND $columnActionScore <= 5), 
         $columnActionState TEXT NOT NULL,
