@@ -381,104 +381,104 @@ class DatabaseHelper {
   // 登録処理
   Future<int> insert_tag_setting_table(Map<String, dynamic> row) async {
     Database? db = await instance.database;
-    return await db!.insert(chat_table, row);
+    return await db!.insert(tag_setting_table, row);
   }
 
   // 照会処理
   Future<List<Map<String, dynamic>>> queryAllRows_tag_setting_table() async {
     Database? db = await instance.database;
-    return await db!.query(chat_table);
+    return await db!.query(tag_setting_table);
   }
 
   // レコード数を確認
   Future<int?> queryRowCount_tag_setting_table() async {
     Database? db = await instance.database;
     return Sqflite.firstIntValue(
-        await db!.rawQuery('SELECT COUNT(*) FROM $chat_table'));
+        await db!.rawQuery('SELECT COUNT(*) FROM $tag_setting_table'));
   }
 
   //　更新処理
   Future<int> update_tag_setting_table(Map<String, dynamic> row, int id) async {
     Database? db = await instance.database;
-    int id = row[columnChatId];
+    int id = row[columnTagActionId];
     return await db!
-        .update(chat_table, row, where: '$columnChatId = ?', whereArgs: [id]);
+        .update(tag_setting_table, row, where: '$columnTagActionId = ?', whereArgs: [id]);
   }
 
   //　削除処理
   Future<int> delete_tag_setting_table(int id) async {
     Database? db = await instance.database;
     return await db!
-        .delete(chat_table, where: '$columnChatId = ?', whereArgs: [id]);
+        .delete(tag_setting_table, where: '$columnTagActionId = ?', whereArgs: [id]);
   }
 
   // アクションタイムテーブル用の関数
   // 登録処理
   Future<int> insert_action_time_table(Map<String, dynamic> row) async {
     Database? db = await instance.database;
-    return await db!.insert(chat_table, row);
+    return await db!.insert(action_time_table, row);
   }
 
   // 照会処理
   Future<List<Map<String, dynamic>>> queryAllRows_action_time_table() async {
     Database? db = await instance.database;
-    return await db!.query(chat_table);
+    return await db!.query(action_time_table);
   }
 
   // レコード数を確認
   Future<int?> queryRowCount_action_time_table() async {
     Database? db = await instance.database;
     return Sqflite.firstIntValue(
-        await db!.rawQuery('SELECT COUNT(*) FROM $chat_table'));
+        await db!.rawQuery('SELECT COUNT(*) FROM $action_time_table'));
   }
 
   //　更新処理
   Future<int> update_action_time_table(Map<String, dynamic> row, int id) async {
     Database? db = await instance.database;
-    int id = row[columnChatId];
+    int id = row[columnActionTimeId];
     return await db!
-        .update(chat_table, row, where: '$columnChatId = ?', whereArgs: [id]);
+        .update(action_time_table, row, where: '$columnActionTimeId = ?', whereArgs: [id]);
   }
 
   //　削除処理
   Future<int> delete_action_time_table(int id) async {
     Database? db = await instance.database;
     return await db!
-        .delete(chat_table, where: '$columnChatId = ?', whereArgs: [id]);
+        .delete(action_time_table, where: '$columnActionTimeId = ?', whereArgs: [id]);
   }
 
   // チャットタイムテーブル用の関数
   // 登録処理
   Future<int> insert_chat_time_table(Map<String, dynamic> row) async {
     Database? db = await instance.database;
-    return await db!.insert(chat_table, row);
+    return await db!.insert(chat_time_table, row);
   }
 
   // 照会処理
   Future<List<Map<String, dynamic>>> queryAllRows_chat_time_table() async {
     Database? db = await instance.database;
-    return await db!.query(chat_table);
+    return await db!.query(chat_time_table);
   }
 
   // レコード数を確認
   Future<int?> queryRowCount_chat_time_table() async {
     Database? db = await instance.database;
     return Sqflite.firstIntValue(
-        await db!.rawQuery('SELECT COUNT(*) FROM $chat_table'));
+        await db!.rawQuery('SELECT COUNT(*) FROM $chat_time_table'));
   }
 
   //　更新処理
   Future<int> update_chat_time_table(Map<String, dynamic> row, int id) async {
     Database? db = await instance.database;
-    int id = row[columnChatId];
+    int id = row[columnChatTimeId];
     return await db!
-        .update(chat_table, row, where: '$columnChatId = ?', whereArgs: [id]);
+        .update(chat_time_table, row, where: '$columnChatTimeId = ?', whereArgs: [id]);
   }
 
   //　削除処理
   Future<int> delete_chat_time_table(int id) async {
     Database? db = await instance.database;
     return await db!
-        .delete(chat_table, where: '$columnChatId = ?', whereArgs: [id]);
+        .delete(chat_time_table, where: '$columnChatTimeId = ?', whereArgs: [id]);
   }
 }
