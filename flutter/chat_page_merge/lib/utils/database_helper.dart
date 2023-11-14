@@ -37,7 +37,8 @@ class DatabaseHelper {
   static final columnActionMessage = 'action_message'; //開始メッセージ
   static final columnActionNotes = 'action_notes'; //説明文
   static final columnActionScore = 'action_score'; //充実度(1から5までの値で制限する)
-  static final columnActionState = 'action_state'; //状態(0=未完了,1=完了) (false=未完了,true=完了)
+  static final columnActionState =
+      'action_state'; //状態(0=未完了,1=完了) (false=未完了,true=完了)
   static final columnActionPlace = 'action_place'; //場所
   static final columnActionMainTag = 'action_main_tag'; //メインタグ
   static final columnActionSubTag = 'action_sub_tag'; //サブタグ
@@ -47,8 +48,7 @@ class DatabaseHelper {
   static final columnTagId = '_tag_id'; // タグID
   static final columnTagName = 'tag_name'; // タグ名
   static final columnTagColor = 'tag_color'; // タグの色
-  static final columnTagRegisteredActionName =
-      'tag_registered_action_name'; // 登録されたアクション名
+  static final columnTagIcon = 'tag_icon';  // アイコン
 
   // メディアテーブルのカラム
   static final columnMediaTableName =
@@ -67,12 +67,12 @@ class DatabaseHelper {
   // アクションタイムテーブルのカラム
   static final columnActionTimeId = '_action_time_id'; // アクションタイムID
   static final columnSetActionId = '_set_action_id'; // アクションID
-  static final columnJudgeTime = 'judge_time'; // 開始時刻か終了時刻か
+  static final columnActionJudgeTime = 'action_judge_time'; // 開始時刻か終了時刻か
   static final columnActionYear = 'action_year'; // 年
   static final columnActionMonth = 'action_month'; // 月
   static final columnActionDay = 'action_day'; // 日
   static final columnActionHours = 'action_hours'; // 時
-  static final columnActionMinute = 'action_minute'; // 分
+  static final columnActionMinutes = 'action_minutes'; // 分
   static final columnActionSeconds = 'action_seconds'; // 秒
   static final columnLessActionSeconds = 'less_action_seconds'; // 秒未満
 
@@ -83,7 +83,7 @@ class DatabaseHelper {
   static final columnChatMonth = 'chat_month'; // 月
   static final columnChatDay = 'chat_day'; // 日
   static final columnChatHours = 'chat_hours'; // 時
-  static final columnChatMinute = 'chat_minute'; // 分
+  static final columnChatMinutes = 'chat_minutes'; // 分
   static final columnChatSeconds = 'chat_seconds'; // 秒
   static final columnLessChatSeconds = 'less_chat_seconds'; // 秒未満
 
@@ -176,8 +176,8 @@ class DatabaseHelper {
       CREATE TABLE $tag_table (
         $columnTagId INTEGER PRIMARY KEY,
         $columnTagName TEXT,
-        $columnTagColor TEXT,
-        $columnTagRegisteredActionName TEXT
+        $columnTagColor INTEGER,
+        $columnTagIcon TEXT ICON NAME
       )
     ''');
 
@@ -199,7 +199,7 @@ class DatabaseHelper {
       CREATE TABLE $tag_setting_table (
         $columnTagActionId INTEGER PRIMARY KEY,
         $columnSetTagId INTEGER PRIMARY KEY,
-        $columnMainTagFlag INTEGER,
+        $columnMainTagFlag TEXT,
         FOREIGN KEY ($columnTagActionId) REFERENCES $action_table($columnActionId),
         FOREIGN KEY ($columnSetTagId) REFERENCES $tag_table($columnTagId)
       )
@@ -210,13 +210,14 @@ class DatabaseHelper {
       CREATE TABLE $action_time_table (
         $columnActionTimeId INTEGER PRIMARY KEY,
         $columnSetActionId INTEGER NOT NULL,
-        $columnJudgeTime TEXT NOT NULL,
+        $columnActionJudgeTime TEXT NOT NULL,
         $columnActionYear INTEGER NOT NULL,
         $columnActionMonth INTEGER NOT NULL,
         $columnActionDay INTEGER NOT NULL,
         $columnActionHours INTEGER NOT NULL,
+        $columnActionMinutes INTEGER NOT NULL,
         $columnActionSeconds INTEGER NOT NULL,
-        $columnLessActionSeconds TEXT NOT NULL,
+        $columnLessActionSeconds REAL NOT NULL,
         FOREIGN KEY ($columnSetActionId) REFERENCES $action_table($columnActionId)
       )
   ''');
@@ -230,8 +231,9 @@ class DatabaseHelper {
         $columnChatMonth INTEGER NOT NULL,
         $columnChatDay INTEGER NOT NULL,
         $columnChatHours INTEGER NOT NULL,
+        $columnChatMinutes INTEGER NOT NULL,
         $columnChatSeconds INTEGER NOT NULL,
-        $columnLessChatSeconds TEXT NOT NULL,
+        $columnLessChatSeconds REAL NOT NULL,
         FOREIGN KEY ($columnSetChatId) REFERENCES $chat_table($columnChatId)
       )
   ''');
@@ -401,15 +403,15 @@ class DatabaseHelper {
   Future<int> update_tag_setting_table(Map<String, dynamic> row, int id) async {
     Database? db = await instance.database;
     int id = row[columnTagActionId];
-    return await db!
-        .update(tag_setting_table, row, where: '$columnTagActionId = ?', whereArgs: [id]);
+    return await db!.update(tag_setting_table, row,
+        where: '$columnTagActionId = ?', whereArgs: [id]);
   }
 
   //　削除処理
   Future<int> delete_tag_setting_table(int id) async {
     Database? db = await instance.database;
-    return await db!
-        .delete(tag_setting_table, where: '$columnTagActionId = ?', whereArgs: [id]);
+    return await db!.delete(tag_setting_table,
+        where: '$columnTagActionId = ?', whereArgs: [id]);
   }
 
   // アクションタイムテーブル用の関数
@@ -436,15 +438,15 @@ class DatabaseHelper {
   Future<int> update_action_time_table(Map<String, dynamic> row, int id) async {
     Database? db = await instance.database;
     int id = row[columnActionTimeId];
-    return await db!
-        .update(action_time_table, row, where: '$columnActionTimeId = ?', whereArgs: [id]);
+    return await db!.update(action_time_table, row,
+        where: '$columnActionTimeId = ?', whereArgs: [id]);
   }
 
   //　削除処理
   Future<int> delete_action_time_table(int id) async {
     Database? db = await instance.database;
-    return await db!
-        .delete(action_time_table, where: '$columnActionTimeId = ?', whereArgs: [id]);
+    return await db!.delete(action_time_table,
+        where: '$columnActionTimeId = ?', whereArgs: [id]);
   }
 
   // チャットタイムテーブル用の関数
@@ -471,14 +473,14 @@ class DatabaseHelper {
   Future<int> update_chat_time_table(Map<String, dynamic> row, int id) async {
     Database? db = await instance.database;
     int id = row[columnChatTimeId];
-    return await db!
-        .update(chat_time_table, row, where: '$columnChatTimeId = ?', whereArgs: [id]);
+    return await db!.update(chat_time_table, row,
+        where: '$columnChatTimeId = ?', whereArgs: [id]);
   }
 
   //　削除処理
   Future<int> delete_chat_time_table(int id) async {
     Database? db = await instance.database;
-    return await db!
-        .delete(chat_time_table, where: '$columnChatTimeId = ?', whereArgs: [id]);
+    return await db!.delete(chat_time_table,
+        where: '$columnChatTimeId = ?', whereArgs: [id]);
   }
 }

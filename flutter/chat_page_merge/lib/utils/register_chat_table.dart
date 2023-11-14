@@ -24,7 +24,7 @@ class RegisterChatTable {
     
     // row to insert
     //データベースに登録
-    print("これからデータベース登録");
+    print("これからチャットテーブルに登録");
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
     Map<String, dynamic> row = {
       DatabaseHelper.columnChatId: chatId,

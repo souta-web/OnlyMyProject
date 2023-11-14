@@ -17,7 +17,7 @@ class RegisterMediaTable {
   // メディア登録を行う関数
   void registerMediaTableFunc() async {
     // データベースに登録
-    print('これからメディアデータベースに登録');
+    print('これからメディアテーブルに登録');
     final DatabaseHelper dbHelper =
         DatabaseHelper.instance; // DatabaseHelperのインスタンス生成
 
@@ -47,8 +47,7 @@ class RegisterMediaTable {
     await dbHelper.insert_media_table(mediaRow); // メディアテーブル登録関数の実行
 
     // デバッグ用データ表示プログラム
-    final List<Map<String, dynamic>> allRows =
-        await dbHelper.queryAllRows_media_table();
+    final List<Map<String, dynamic>> allRows = await dbHelper.queryAllRows_media_table();
     print('全てのデータを照会しました。');
     allRows.forEach(print);
   }

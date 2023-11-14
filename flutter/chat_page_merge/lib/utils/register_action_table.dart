@@ -32,7 +32,7 @@ class RegisterActionTable {
 
   void registerActionTableFunc() async {
     // データベースに登録
-    print("これからデータベースに登録");
+    print("これからアクションテーブルに登録");
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
 
     final Map<String, dynamic> actionRow = {
@@ -53,8 +53,7 @@ class RegisterActionTable {
     await dbHelper.insert_action_table(actionRow);
 
     // デバッグ用データ表示プログラム
-    final List<Map<String, dynamic>> allRows =
-        await dbHelper.queryAllRows_action_table();
+    final List<Map<String, dynamic>> allRows = await dbHelper.queryAllRows_action_table();
     print('全てのデータを照会しました。');
     allRows.forEach(print);
   }
