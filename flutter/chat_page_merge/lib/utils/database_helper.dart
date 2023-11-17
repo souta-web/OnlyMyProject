@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 
 class DatabaseHelper {
   // デバッグ時はDB名を変えてよい
-  static final _databaseName = "MyDatabase62.db"; // DB名
+  static final _databaseName = "MyDatabase63.db"; // DB名
   static final _databaseVersion = 1; // スキーマのバージョン指定
 
   static final chat_table = 'chat_table'; // チャット管理テーブル
@@ -123,7 +123,7 @@ class DatabaseHelper {
         // テーブル作成メソッドの呼び出し
         onCreate: _onCreate, onConfigure: (db) {
       // 外部キーを有効にする
-      db.execute('PRAGMA foreign_keys = ON');
+      db.execute('PRAGMA foreign_keys = true');
     });
   }
 
