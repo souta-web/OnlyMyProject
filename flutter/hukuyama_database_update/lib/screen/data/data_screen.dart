@@ -42,12 +42,12 @@ final dbHelper = DatabaseHelper.instance;
 
 void _insert() async {
   Map<String, dynamic> row = {
-    DatabaseHelper.columnTagName:'料理',
-    DatabaseHelper.columnTagColor:"Red",
-    DatabaseHelper.columnTagRegisteredActionName:"夜ご飯"
+    DatabaseHelper.columnTagName:"睡眠",
+    DatabaseHelper.columnTagColor:"Yellow",
+    DatabaseHelper.columnTagRegisteredActionName:"就寝"
   };
     final tagInsert = await dbHelper.insert_tag_table(row);
-    print(tagInsert);
+    print("登録");
 }
  
 

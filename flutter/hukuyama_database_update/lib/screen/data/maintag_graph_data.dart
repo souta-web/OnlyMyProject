@@ -32,16 +32,24 @@ class MaintagGraphData {
 }
 
 final dbHelper = DatabaseHelper.instance;
-String tabTable = DatabaseHelper.tag_table;
-String actionTable = DatabaseHelper.action_table;
-String chatTable = DatabaseHelper.chat_table;
 
-Future<List<Map<String, dynamic>>> queryAllRows_tagName() async {
-  Database? db = await dbHelper.database;
-  return await db!.query(tabTable, where:"$columnTagName = ?", whereArgs: [tagName]);
+void queryAllRows_tagName() async {
+Database? db = await dbHelper.database;
+
+List<Map> result1 = await db!.rawQuery
+('SELECT _tag_id, tag_registered_action_name FROM tag_table WHERE tag_name = "睡眠"');
+print(result1);
+
 }
 
 
+
+//List<Map> result2 = await db!.rawQuery
+// ('SELECT action_name FROM action_table WHERE _action_id < 5');
+// print(result2);
+
+// List<Map> result = [...result1, ...result2];
+//   print(result);
 
 
 
