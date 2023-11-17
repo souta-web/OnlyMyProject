@@ -22,39 +22,26 @@ class DatabaseHelper {
   static final columnChatId = '_chat_id'; // カラム名：ID
   static final columnChatSender = 'chat_sender'; // 送信者情報(true=ユーザー:fasle=AI)
   static final columnChatTodo = 'chat_todo'; //todoかどうか(true=todo:false=message)
-  static final columnChatTodofinish = 'chat_todofinish';
   static final columnChatMessage = 'chat_message'; // チャットのテキスト
-  static final columnChatTime = 'chat_time'; //送信時間
-  static final columnChatChannel = 'chat_channel'; //チャットチャンネル
-  static final columnChatActionId =
-      'chat_action_id'; //このチャットと紐づけられているアクションのidがここに入る
+  static final columnChatActionId = 'chat_action_id'; // 開始アクションID(外部キー)
+  static final columnChatMessageId = 'chat_message_id'; // 送信先メッセージID
 
   // アクションテーブルのカラム
   static final columnActionId = '_action_id'; //ID
-  static final columnActionName = 'action_name'; //アクション名
-  static final columnActionStart = 'action_start'; //開始時刻
-  static final columnActionEnd = 'action_end'; //終了時刻
-  static final columnActionMessage = 'action_message'; //開始メッセージ
+  static final columnActionTitle = 'action_title'; //アクションタイトル
+  static final columnActionState = 'action_state';  // 進行状態
   static final columnActionNotes = 'action_notes'; //説明文
   static final columnActionScore = 'action_score'; //充実度(1から5までの値で制限する)
-  static final columnActionState = 'action_state'; //状態(0=未完了,1=完了) (false=未完了,true=完了)
-  static final columnActionPlace = 'action_place'; //場所
-  static final columnActionMainTag = 'action_main_tag'; //メインタグ
-  static final columnActionSubTag = 'action_sub_tag'; //サブタグ
-  static final columnActionChatId = 'action_chat_id'; //チャットテーブルとアクションテーブル紐づけ用
 
   // タグテーブルのカラム
   static final columnTagId = '_tag_id'; // タグID
   static final columnTagName = 'tag_name'; // タグ名
   static final columnTagColor = 'tag_color'; // タグの色
-  static final columnTagIcon = 'tag_icon';  // アイコン
+  static final columnTagIcon = 'tag_icon'; // アイコン
 
   // メディアテーブルのカラム
-  static final columnMediaTableName =
-      'media_table_name'; // どのテーブルの画像が登録されているかを記録する
-  static final columnMediaTableId =
-      '_media_table_id'; // フィールドに登録される画像が↑のテーブルのどのidにあるかを記録する
-  static final columnMedia = 'media'; // メディア保存用カラム
+  static final columnMediaTableId = '_media_table_id'; // フィールドに登録される画像が↑のテーブルのどのidにあるかを記録する
+  static final columnMedia = 'media'; // メディア
   static final columnMediaChatId = '_media_chat_id'; // 添付メッセージID
   static final columnLinkActionId = '_link_action_id'; // 関連アクションID
 
@@ -140,39 +127,34 @@ class DatabaseHelper {
     //データベースを再生成するときは１行下のプログラム実行しないといけない
     //await db.execute('DROP TABLE IF EXISTS my_table');
     // チャットタイムテーブルの作成
-    await db.execute('''
+    await db.execute(
+        '''
       CREATE TABLE $chat_table (
         $columnChatId INTEGER PRIMARY KEY,
         $columnChatSender TEXT NOT NULL,
         $columnChatTodo TEXT NOT NULL,
-        $columnChatTodofinish TEXT,
         $columnChatMessage TEXT,
-        $columnChatTime TEXT NOT NULL,
-        $columnChatChannel TEXT,
-        $columnChatActionId TEXT
+        $columnChatActionId TEXT,
+        $columnChatMessageId INTEGER
+        FOREIGN KEY($columnChatActionId) REFERENCES $action_table($columnActionId)
       )
     ''');
 
     // アクションテーブルの作成
-    await db.execute('''
+    await db.execute(
+        '''
       CREATE TABLE $action_table (
         $columnActionId INTEGER PRIMARY KEY,
-        $columnActionName TEXT,
-        $columnActionStart TEXT NOT NULL,
-        $columnActionEnd TEXT,
-        $columnActionMessage TEXT,
-        $columnActionNotes TEXT,
-        $columnActionScore INTEGER CHECK ($columnActionScore >= 1 AND $columnActionScore <= 5), 
+        $columnActionTitle TEXT,
         $columnActionState TEXT NOT NULL,
-        $columnActionPlace TEXT,
-        $columnActionMainTag TEXT,
-        $columnActionSubTag TEXT,
-        $columnActionChatId TEXT
+        $columnActionNotes TEXT,
+        $columnActionScore INTEGER CHECK ($columnActionScore >= 1 AND $columnActionScore <= 5)
       )
     ''');
 
     // タグテーブルの作成
-    await db.execute('''
+    await db.execute(
+        '''
       CREATE TABLE $tag_table (
         $columnTagId INTEGER PRIMARY KEY,
         $columnTagName TEXT,
@@ -182,9 +164,9 @@ class DatabaseHelper {
     ''');
 
     // メディアテーブルの作成
-    await db.execute('''
+    await db.execute(
+        '''
       CREATE TABLE $media_table (
-        $columnMediaTableName TEXT,
         $columnMediaTableId INTEGER PRIMARY KEY,
         $columnMedia BLOB NOT NULL,
         $columnMediaChatId INTEGER,
@@ -195,7 +177,8 @@ class DatabaseHelper {
     ''');
 
     // タグ設定テーブルの作成
-    await db.execute('''
+    await db.execute(
+        '''
       CREATE TABLE $tag_setting_table (
         $columnTagActionId INTEGER,
         $columnSetTagId INTEGER,
@@ -207,7 +190,8 @@ class DatabaseHelper {
   ''');
 
     // アクションタイムテーブルの作成
-    await db.execute('''
+    await db.execute(
+        '''
       CREATE TABLE $action_time_table (
         $columnActionTimeId INTEGER PRIMARY KEY,
         $columnSetActionId INTEGER NOT NULL,
@@ -224,7 +208,8 @@ class DatabaseHelper {
   ''');
 
     // チャットタイムテーブルの作成
-    await db.execute('''
+    await db.execute(
+        '''
       CREATE TABLE $chat_time_table (
         $columnChatTimeId INTEGER PRIMARY KEY,
         $columnSetChatId INTEGER NOT NULL,
