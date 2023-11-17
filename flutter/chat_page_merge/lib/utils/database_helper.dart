@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 
 class DatabaseHelper {
   // デバッグ時はDB名を変えてよい
-  static final _databaseName = "MyDatabase63.db"; // DB名
+  static final _databaseName = "MyDatabase67.db"; // DB名
   static final _databaseVersion = 1; // スキーマのバージョン指定
 
   static final chat_table = 'chat_table'; // チャット管理テーブル
@@ -23,7 +23,7 @@ class DatabaseHelper {
   static final columnChatSender = 'chat_sender'; // 送信者情報(true=ユーザー:fasle=AI)
   static final columnChatTodo = 'chat_todo'; //todoかどうか(true=todo:false=message)
   static final columnChatMessage = 'chat_message'; // チャットのテキスト
-  static final columnChatActionId = 'chat_action_id'; // 開始アクションID(外部キー)
+  static final columnStartActionId = 'start_action_id'; // 開始アクションID(外部キー)
   static final columnChatMessageId = 'chat_message_id'; // 送信先メッセージID
 
   // アクションテーブルのカラム
@@ -134,9 +134,9 @@ class DatabaseHelper {
         $columnChatSender TEXT NOT NULL,
         $columnChatTodo TEXT NOT NULL,
         $columnChatMessage TEXT,
-        $columnChatActionId TEXT,
+        $columnStartActionId INTEGER,
         $columnChatMessageId INTEGER,
-        FOREIGN KEY($columnChatActionId) REFERENCES $action_table($columnActionId)
+        FOREIGN KEY($columnStartActionId) REFERENCES $action_table($columnActionId)
       )
     ''');
 

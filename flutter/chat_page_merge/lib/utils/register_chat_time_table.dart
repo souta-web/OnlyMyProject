@@ -29,6 +29,13 @@ class RegisterChatTimeTable {
     print('これからチャットタイムテーブルに登録');
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
 
+    // チャットテーブルから有効なチャットIDを取得
+    // アクションテーブルから有効なアクションIDを取得
+    final List<Map<String, dynamic>> chatRows =
+        await dbHelper.queryAllRows_chat_table();
+    if (chatRows.isEmpty) return;
+    final int chatId = chatRows[0]['_chat_id'];
+
     final Map<String, dynamic> chatTimeRow = {
       DatabaseHelper.columnChatTimeId: chatTimeId,
       DatabaseHelper.columnSetChatId: chatId,
