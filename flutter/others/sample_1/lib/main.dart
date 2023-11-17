@@ -36,14 +36,6 @@ class _BodyWidgetState extends State<BodyWidget> {
   late Button2 button2;
   late List<String> _data = listA.list_A;
 
-  void button3Pressed() {
-    // ボタン3が押された時の処理
-    listA.count -= 1;
-    listA.list_A.removeLast();
-    print("list_a:$_data");
-    setState(() {});
-  }
-
   @override
 
   Widget build(BuildContext context) {
@@ -62,7 +54,7 @@ class _BodyWidgetState extends State<BodyWidget> {
           SizedBox(height: 20), // ボタンとボタンの間にスペースを空ける
           button2 = Button2(listA),
           SizedBox(height: 20), // ボタンとボタンの間にスペースを空ける
-          button3 = Button3(listA,button3Pressed),
+          button3 = Button3(listA),
           SizedBox(height: 20), // ボタンとボタンの間にスペースを空ける
           DrawListIndex(listA),
         ],

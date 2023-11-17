@@ -21,7 +21,7 @@ class _Button2State extends State<Button2> {
         print("list_a:" + widget.listA.list_A.toString());
         setState(() {});
       },
-      child: Text('Button2:list_a追加'),
+      child: Text('Button2:list_a追加' + widget.listA.list_A.toString()),
     );
   }
 }

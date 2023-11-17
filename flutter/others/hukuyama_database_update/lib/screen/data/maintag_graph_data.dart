@@ -36,9 +36,12 @@ String tabTable = DatabaseHelper.tag_table;
 String actionTable = DatabaseHelper.action_table;
 String chatTable = DatabaseHelper.chat_table;
 
-Future<List<Map<String, dynamic>>> queryAllRows_tagName() async {
+void queryAllRows_tagName() async {
   Database? db = await dbHelper.database;
-  return await db!.query(tabTable, where:"$columnTagName = ?", whereArgs: [tagName]);
+
+  List<Map> result = await db!.rawQuery('SELECT _tag_id*2 FROM tag_table');
+
+  print(result);
 }
 
 
