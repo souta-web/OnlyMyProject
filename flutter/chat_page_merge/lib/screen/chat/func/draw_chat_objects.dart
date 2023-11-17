@@ -136,6 +136,8 @@ class DrawChatObjects {
     registerTagTable.registerTagTableFunc();
 
     RegisterTagSettingTable registerTagSettingTable = RegisterTagSettingTable(
+      actionId: 0,
+      tagId: 0,
       mainTagFlag: 'false',
     );
     registerTagSettingTable.registerTagSettingTableFunc();
