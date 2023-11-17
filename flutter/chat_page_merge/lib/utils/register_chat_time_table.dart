@@ -30,7 +30,6 @@ class RegisterChatTimeTable {
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
 
     // チャットテーブルから有効なチャットIDを取得
-    // アクションテーブルから有効なアクションIDを取得
     final List<Map<String, dynamic>> chatRows =
         await dbHelper.queryAllRows_chat_table();
     if (chatRows.isEmpty) return;
