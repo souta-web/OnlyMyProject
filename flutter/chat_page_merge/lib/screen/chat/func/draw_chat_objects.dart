@@ -96,31 +96,30 @@ class DrawChatObjects {
     RegisterChatTable _registerChatTable = RegisterChatTable(
       chatSender: 'true',
       chatMessage: chatText,
-      chatTime: sendTime,
+      //chatTime: sendTime,
       chatTodo: isTodo.toString(),
       chatActionId: chatActionLinkId,
     );
     _registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
 
-    // 画像をメディアテーブルに保存
-    if (imageBytes != null && imageBytes.isNotEmpty) {
-      RegisterMediaTable _registerMediaTable = RegisterMediaTable(
-        mediaList: imageBytes,
-      );
-      _registerMediaTable.registerMediaTableFunc();
+    // // 画像をメディアテーブルに保存
+    // if (imageBytes != null && imageBytes.isNotEmpty) {
+    //   RegisterMediaTable _registerMediaTable = RegisterMediaTable(
+    //     mediaList: imageBytes,
+    //   );
+    //   _registerMediaTable.registerMediaTableFunc();
 
-      // 前回の画像が保持されないようにクリアする
-      imageBytes.clear();
-    }
+    //   // 前回の画像が保持されないようにクリアする
+    //   imageBytes.clear();
+    // }
 
     // トグルボタンがオンの時アクションを登録する
     if (isTodo) {
       RegisterActionTable registerActionTable = RegisterActionTable(
-        actionName: chatText,
-        actionStart: sendTime,
-        actionMainTag: mainTag,
+        actionTitle: chatText,
         actionState: _actionState,
-        actionChatId: chatActionLinkId,
+        actionNotes: "あいうえお",
+        actionScore: 5,
       );
       registerActionTable.registerActionTableFunc();
     }

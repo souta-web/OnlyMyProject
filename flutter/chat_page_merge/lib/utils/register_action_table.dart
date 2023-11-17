@@ -3,31 +3,17 @@ import 'database_helper.dart';
 // アクション登録汎用クラス
 class RegisterActionTable {
   final int? actionId;
-  final String? actionName;
-  final String? actionStart;
-  final String? actionEnd;
-  final String? actionMessage;
+  final String? actionTitle;
+  final String? actionState;
   final String? actionNotes;
   final int? actionScore;
-  final String? actionState;
-  final String? actionPlace;
-  final String? actionMainTag;
-  final String? actionSubTag;
-  final String? actionChatId;
 
   RegisterActionTable({
     this.actionId,
-    this.actionName,
-    this.actionStart,
-    this.actionEnd,
-    this.actionMessage,
+    this.actionTitle,
+    this.actionState,
     this.actionNotes,
     this.actionScore,
-    this.actionState,
-    this.actionPlace,
-    this.actionMainTag,
-    this.actionSubTag,
-    this.actionChatId,
   });
 
   void registerActionTableFunc() async {
@@ -37,17 +23,10 @@ class RegisterActionTable {
 
     final Map<String, dynamic> actionRow = {
       DatabaseHelper.columnActionId: actionId, // アクションID
-      DatabaseHelper.columnActionName: actionName, // アクション名
-      DatabaseHelper.columnActionStart: actionStart, // 開始時刻
-      DatabaseHelper.columnActionEnd: actionEnd, // 終了時刻
-      DatabaseHelper.columnActionMessage: actionMessage, // 開始メッセージ
+      DatabaseHelper.columnActionTitle: actionTitle,  // アクションタイトル
+      DatabaseHelper.columnActionState: actionState, // 進行状態
       DatabaseHelper.columnActionNotes: actionNotes, // 説明文
       DatabaseHelper.columnActionScore: actionScore, // 充実度(1から5までの値で制限する)
-      DatabaseHelper.columnActionState: actionState, // 状態
-      DatabaseHelper.columnActionPlace: actionPlace, // 場所
-      DatabaseHelper.columnActionMainTag: actionMainTag, // メインタグ
-      DatabaseHelper.columnActionSubTag: actionSubTag, // サブタグ
-      DatabaseHelper.columnActionChatId: actionChatId, // チャットテーブルとアクションテーブル紐づけ用
     };
 
     await dbHelper.insert_action_table(actionRow);

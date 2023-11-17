@@ -135,7 +135,7 @@ class DatabaseHelper {
         $columnChatTodo TEXT NOT NULL,
         $columnChatMessage TEXT,
         $columnChatActionId TEXT,
-        $columnChatMessageId INTEGER
+        $columnChatMessageId INTEGER,
         FOREIGN KEY($columnChatActionId) REFERENCES $action_table($columnActionId)
       )
     ''');

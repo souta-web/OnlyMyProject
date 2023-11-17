@@ -4,24 +4,21 @@ class RegisterChatTable {
   final int? chatId; //idはデータ登録時に自動で割り当てられるため、引数で渡す必要は基本的にはない
   final String? chatSender;
   final String? chatTodo;
-  final String? chatTodofinish;
   final String? chatMessage;
-  final String? chatTime;
-  final String? chatChannel;
+
   final String? chatActionId;
+  final int? chatMessageId;
 
   RegisterChatTable(
       {this.chatId,
       this.chatSender,
       this.chatTodo,
-      this.chatTodofinish,
       this.chatMessage,
-      this.chatTime,
-      this.chatChannel,
-      this.chatActionId});
+      this.chatActionId,
+      this.chatMessageId,
+  });
 
   void registerChatTableFunc() async {
-    
     // row to insert
     //データベースに登録
     print("これからチャットテーブルに登録");
@@ -30,17 +27,16 @@ class RegisterChatTable {
       DatabaseHelper.columnChatId: chatId,
       DatabaseHelper.columnChatSender: chatSender,
       DatabaseHelper.columnChatTodo: chatTodo,
-      DatabaseHelper.columnChatTodofinish: chatTodofinish,
       DatabaseHelper.columnChatMessage: chatMessage,
-      DatabaseHelper.columnChatTime: chatTime,
-      DatabaseHelper.columnChatChannel: chatChannel,
       DatabaseHelper.columnChatActionId: chatActionId,
+      DatabaseHelper.columnChatMessageId: chatMessageId,
     };
 
     await dbHelper.insert_chat_table(row);
 
     //↓デバッグ用のデータ表示プログラム
-    final List<Map<String, dynamic>> allRows = await dbHelper.queryAllRows_chat_table();
+    final List<Map<String, dynamic>> allRows =
+        await dbHelper.queryAllRows_chat_table();
     print('全てのデータを照会しました。');
     allRows.forEach(print);
   }
