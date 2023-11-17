@@ -7,6 +7,10 @@ import '/widget/create_images.dart';
 import '/utils/register_chat_table.dart';
 import '/utils/register_action_table.dart';
 import '/utils/register_media_table.dart';
+import '/utils/register_tag_table.dart';
+import '/utils/register_tag_setting_table.dart';
+import '/utils/register_action_time_table.dart';
+import '/utils/register_chat_time_table.dart';
 import '/utils/text_formatter.dart';
 
 // トグルボタンの状態によってオブジェクトを表示する
@@ -80,7 +84,6 @@ class DrawChatObjects {
     late String chatActionLinkId =
         timeFormatter.returnChatActionLinkId(sendTime);
     String _actionState = 'false';
-    
 
     if (chatText.isEmpty) {
       return null;
@@ -105,7 +108,7 @@ class DrawChatObjects {
         mediaList: imageBytes,
       );
       _registerMediaTable.registerMediaTableFunc();
-    
+
       // 前回の画像が保持されないようにクリアする
       imageBytes.clear();
     }
@@ -123,6 +126,19 @@ class DrawChatObjects {
     }
 
     controller.clear(); //テキストフィールドのクリア
+
+    // テスト用に各登録プログラムを記述
+    RegisterTagTable registerTagTable = RegisterTagTable(
+      tagName: 'トイレ',
+      tagColor: 1,
+      tagIcon: 'トイレアイコン',
+    );
+    registerTagTable.registerTagTableFunc();
+
+    RegisterTagSettingTable registerTagSettingTable = RegisterTagSettingTable(
+      mainTagFlag: 'false',
+    );
+    registerTagSettingTable.registerTagSettingTableFunc();
 
     // 吹き出し及びアクションの表示
     // 吹き出しクラスの引数を受け取れるように変更

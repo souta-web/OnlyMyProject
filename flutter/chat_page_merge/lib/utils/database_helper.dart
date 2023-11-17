@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 
 class DatabaseHelper {
   // デバッグ時はDB名を変えてよい
-  static final _databaseName = "MyDatabase61.db"; // DB名
+  static final _databaseName = "MyDatabase62.db"; // DB名
   static final _databaseVersion = 1; // スキーマのバージョン指定
 
   static final chat_table = 'chat_table'; // チャット管理テーブル
@@ -37,8 +37,7 @@ class DatabaseHelper {
   static final columnActionMessage = 'action_message'; //開始メッセージ
   static final columnActionNotes = 'action_notes'; //説明文
   static final columnActionScore = 'action_score'; //充実度(1から5までの値で制限する)
-  static final columnActionState =
-      'action_state'; //状態(0=未完了,1=完了) (false=未完了,true=完了)
+  static final columnActionState = 'action_state'; //状態(0=未完了,1=完了) (false=未完了,true=完了)
   static final columnActionPlace = 'action_place'; //場所
   static final columnActionMainTag = 'action_main_tag'; //メインタグ
   static final columnActionSubTag = 'action_sub_tag'; //サブタグ
@@ -140,9 +139,10 @@ class DatabaseHelper {
     //それぞれのidの型を指定する必要がある($id 型)の形で指定
     //データベースを再生成するときは１行下のプログラム実行しないといけない
     //await db.execute('DROP TABLE IF EXISTS my_table');
+    // チャットタイムテーブルの作成
     await db.execute('''
       CREATE TABLE $chat_table (
-        $columnChatId INTEGER PRIMARY,
+        $columnChatId INTEGER PRIMARY KEY,
         $columnChatSender TEXT NOT NULL,
         $columnChatTodo TEXT NOT NULL,
         $columnChatTodofinish TEXT,
@@ -177,7 +177,7 @@ class DatabaseHelper {
         $columnTagId INTEGER PRIMARY KEY,
         $columnTagName TEXT,
         $columnTagColor INTEGER,
-        $columnTagIcon TEXT ICON NAME
+        $columnTagIcon TEXT
       )
     ''');
 
@@ -197,9 +197,10 @@ class DatabaseHelper {
     // タグ設定テーブルの作成
     await db.execute('''
       CREATE TABLE $tag_setting_table (
-        $columnTagActionId INTEGER PRIMARY KEY,
-        $columnSetTagId INTEGER PRIMARY KEY,
+        $columnTagActionId INTEGER,
+        $columnSetTagId INTEGER,
         $columnMainTagFlag TEXT,
+        PRIMARY KEY($columnTagActionId, $columnSetTagId),
         FOREIGN KEY ($columnTagActionId) REFERENCES $action_table($columnActionId),
         FOREIGN KEY ($columnSetTagId) REFERENCES $tag_table($columnTagId)
       )
