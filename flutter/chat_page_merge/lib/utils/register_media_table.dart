@@ -3,13 +3,13 @@ import 'dart:typed_data';
 
 // メディア登録用汎用クラス
 class RegisterMediaTable {
-  final int? mediaTableId; // フィールドに登録される画像が↑のテーブルのどのidにあるかを記録する
+  final int? mediaId; // メディアID
   final Uint8List? media; // メディアを管理
   final int? mediaChatId; // 添付メッセージID
   final int? linkActionId; // 関連アクションID
 
   RegisterMediaTable({
-    this.mediaTableId,
+    this.mediaId,
     this.media,
     this.mediaChatId,
     this.linkActionId,
@@ -34,11 +34,8 @@ class RegisterMediaTable {
     if (actionRows.isEmpty) return;
     final int linkActionId = actionRows[1]['_action_id'];
 
-    late Map<String, dynamic> mediaRow; // lateでグローバル変数としてmediaRowを定義、
-    // mediaRowの中にDatabaseHelper.columnMediaTableName,DatabaseHelper.columnMediaTableIdを設定
-
-    mediaRow = {
-      DatabaseHelper.columnMediaTableId: mediaTableId,
+    final Map<String, dynamic> mediaRow = {
+      DatabaseHelper.columnMediaId: mediaId,
       DatabaseHelper.columnMedia: media,
       DatabaseHelper.columnMediaChatId: mediaChatId,
       DatabaseHelper.columnLinkActionId: linkActionId,
