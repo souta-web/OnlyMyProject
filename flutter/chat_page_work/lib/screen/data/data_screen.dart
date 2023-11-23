@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 //import 'package:nosato_chat_page_work/screen/data/donuts_chart_widget.dart';
 //import 'package:nosato_chat_page_work/screen/data/ddonut_chart_widget.dart';
 import 'package:nosato_chat_page_work/screen/data/width_chart_widget.dart';
+//import 'package:nosato_chat_page_work/screen/data/2width_chart_widget.dart';
 
 class DataScreenWidget extends StatelessWidget {
   @override
@@ -22,6 +23,7 @@ class DataScreenWidget extends StatelessWidget {
         ],
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           // 他のデータ表示ウィジェット
           //各グラフを表示
@@ -29,9 +31,15 @@ class DataScreenWidget extends StatelessWidget {
           //DynamicPieChart(), //円フラフ
           //DonutChartSample(), //ドーナツ状の円グラフ
           //DDonutChartSample(), //ドーナツ状の時刻グラフ
-          HorizontalBarChart(), //横棒
+          HorizontalBarChart(data: mainTagData), //横棒
         ],
       ),
     );
   }
 }
+
+final List<BarChartData> mainTagData = [
+  BarChartData('MainTag1', 120),
+  BarChartData('MainTag2', 90),
+  // 他のメインタグのデータも同様に追加
+];
