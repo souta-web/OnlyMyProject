@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 
 class DatabaseHelper {
   // デバッグ時はDB名を変えてよい
-  static final _databaseName = "MyDatabase63.db"; // DB名
+  static final _databaseName = "MyDatabase67.db"; // DB名
   static final _databaseVersion = 1; // スキーマのバージョン指定
 
   static final chat_table = 'chat_table'; // チャット管理テーブル
@@ -23,7 +23,7 @@ class DatabaseHelper {
   static final columnChatSender = 'chat_sender'; // 送信者情報(true=ユーザー:fasle=AI)
   static final columnChatTodo = 'chat_todo'; //todoかどうか(true=todo:false=message)
   static final columnChatMessage = 'chat_message'; // チャットのテキスト
-  static final columnChatActionId = 'chat_action_id'; // 開始アクションID(外部キー)
+  static final columnStartActionId = 'start_action_id'; // 開始アクションID(外部キー)
   static final columnChatMessageId = 'chat_message_id'; // 送信先メッセージID
 
   // アクションテーブルのカラム
@@ -40,7 +40,7 @@ class DatabaseHelper {
   static final columnTagIcon = 'tag_icon'; // アイコン
 
   // メディアテーブルのカラム
-  static final columnMediaTableId = '_media_table_id'; // フィールドに登録される画像が↑のテーブルのどのidにあるかを記録する
+  static final columnMediaId = '_media_id'; // メディアID
   static final columnMedia = 'media'; // メディア
   static final columnMediaChatId = '_media_chat_id'; // 添付メッセージID
   static final columnLinkActionId = '_link_action_id'; // 関連アクションID
@@ -134,9 +134,9 @@ class DatabaseHelper {
         $columnChatSender TEXT NOT NULL,
         $columnChatTodo TEXT NOT NULL,
         $columnChatMessage TEXT,
-        $columnChatActionId TEXT,
+        $columnStartActionId INTEGER,
         $columnChatMessageId INTEGER,
-        FOREIGN KEY($columnChatActionId) REFERENCES $action_table($columnActionId)
+        FOREIGN KEY($columnStartActionId) REFERENCES $action_table($columnActionId)
       )
     ''');
 
@@ -167,7 +167,7 @@ class DatabaseHelper {
     await db.execute(
         '''
       CREATE TABLE $media_table (
-        $columnMediaTableId INTEGER PRIMARY KEY,
+        $columnMediaId INTEGER PRIMARY KEY,
         $columnMedia BLOB NOT NULL,
         $columnMediaChatId INTEGER,
         $columnLinkActionId INTEGER,
@@ -353,16 +353,16 @@ class DatabaseHelper {
   //　更新処理
   Future<int> update_media_table(Map<String, dynamic> row, int id) async {
     Database? db = await instance.database;
-    int id = row[columnMediaTableId];
+    int id = row[columnMediaId];
     return await db!.update(media_table, row,
-        where: '$columnMediaTableId = ?', whereArgs: [id]);
+        where: '$columnMediaId = ?', whereArgs: [id]);
   }
 
   //　削除処理
   Future<int> delete_media_table(int id) async {
     Database? db = await instance.database;
     return await db!
-        .delete(media_table, where: '$columnMediaTableId = ?', whereArgs: [id]);
+        .delete(media_table, where: '$columnMediaId = ?', whereArgs: [id]);
   }
 
   // タグ設定テーブル用の関数

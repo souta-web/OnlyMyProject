@@ -6,7 +6,7 @@ import '/widget/chat_todo.dart';
 import '/widget/create_images.dart';
 import '/utils/register_chat_table.dart';
 import '/utils/register_action_table.dart';
-import '/utils/register_media_table.dart';
+//import '/utils/register_media_table.dart';
 import '/utils/register_tag_table.dart';
 import '/utils/register_tag_setting_table.dart';
 import '/utils/register_action_time_table.dart';
@@ -81,8 +81,8 @@ class DrawChatObjects {
     late String drawTime =
         timeFormatter.returnHourMinute(sendTime); //登録時間を表示用にする
     // 送信時間を数値化してchat_action_idとaction_chat_idに登録
-    late String chatActionLinkId =
-        timeFormatter.returnChatActionLinkId(sendTime);
+    // late String chatActionLinkId =
+    //     timeFormatter.returnChatActionLinkId(sendTime);
     String _actionState = 'false';
 
     if (chatText.isEmpty) {
@@ -96,22 +96,34 @@ class DrawChatObjects {
     RegisterChatTable _registerChatTable = RegisterChatTable(
       chatSender: 'true',
       chatMessage: chatText,
-      //chatTime: sendTime,
       chatTodo: isTodo.toString(),
-      chatActionId: chatActionLinkId,
+      chatMessageId: 0,
     );
     _registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
 
     // // 画像をメディアテーブルに保存
     // if (imageBytes != null && imageBytes.isNotEmpty) {
     //   RegisterMediaTable _registerMediaTable = RegisterMediaTable(
-    //     mediaList: imageBytes,
+    //     media: imageBytes[0],
     //   );
     //   _registerMediaTable.registerMediaTableFunc();
 
     //   // 前回の画像が保持されないようにクリアする
     //   imageBytes.clear();
     // }
+
+    // チャットタイムテーブルデバッグ用
+    RegisterChatTimeTable registerChatTimeTable = RegisterChatTimeTable(
+        chatId: 0,
+        chatYear: 2023,
+        chatMonth: 11,
+        chatDay: 17,
+        chatHours: 21,
+        chatMinutes: 00,
+        chatSeconds: 00,
+        lessChatSeconds: 0.5,
+      );
+    registerChatTimeTable.registerChatTimeTableFunc();
 
     // トグルボタンがオンの時アクションを登録する
     if (isTodo) {
@@ -122,6 +134,25 @@ class DrawChatObjects {
         actionScore: 5,
       );
       registerActionTable.registerActionTableFunc();
+
+      // アクションタイムテーブルデバッグ用
+      RegisterActionTimeTable registerActionTimeTable = RegisterActionTimeTable(
+        actionId: 0,
+        actionJudgeTime: 'true',
+        actionYear: 2023,
+        actionMonth: 11,
+        actionDay: 17,
+        actionHours: 21,
+        actionMinutes: 00,
+        actionSeconds: 00,
+        lessActionSeconds: 0.5,
+      );
+      registerActionTimeTable.registerActionTimeTableFunc();
+      // タグ設定テーブルデバッグ用
+      RegisterTagSettingTable registerTagSettingTable = RegisterTagSettingTable(
+      mainTagFlag: 'false',
+      );
+      registerTagSettingTable.registerTagSettingTableFunc();
     }
 
     controller.clear(); //テキストフィールドのクリア
@@ -133,13 +164,6 @@ class DrawChatObjects {
       tagIcon: 'トイレアイコン',
     );
     registerTagTable.registerTagTableFunc();
-
-    RegisterTagSettingTable registerTagSettingTable = RegisterTagSettingTable(
-      actionId: 0,
-      tagId: 0,
-      mainTagFlag: 'false',
-    );
-    registerTagSettingTable.registerTagSettingTableFunc();
 
     // 吹き出し及びアクションの表示
     // 吹き出しクラスの引数を受け取れるように変更

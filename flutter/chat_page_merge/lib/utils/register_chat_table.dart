@@ -5,17 +5,16 @@ class RegisterChatTable {
   final String? chatSender;
   final String? chatTodo;
   final String? chatMessage;
-
-  final String? chatActionId;
+  final int? startActionId;
   final int? chatMessageId;
 
-  RegisterChatTable(
-      {this.chatId,
-      this.chatSender,
-      this.chatTodo,
-      this.chatMessage,
-      this.chatActionId,
-      this.chatMessageId,
+  RegisterChatTable({
+    this.chatId,
+    this.chatSender,
+    this.chatTodo,
+    this.chatMessage,
+    this.startActionId,
+    this.chatMessageId,
   });
 
   void registerChatTableFunc() async {
@@ -23,12 +22,19 @@ class RegisterChatTable {
     //データベースに登録
     print("これからチャットテーブルに登録");
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
+
+    // アクションテーブルから有効なアクションIDを取得
+    final List<Map<String, dynamic>> actionRows =
+        await dbHelper.queryAllRows_action_table();
+    if (actionRows.isEmpty) return;
+    final int actionId = actionRows[0]['_action_id'];
+
     Map<String, dynamic> row = {
       DatabaseHelper.columnChatId: chatId,
       DatabaseHelper.columnChatSender: chatSender,
       DatabaseHelper.columnChatTodo: chatTodo,
       DatabaseHelper.columnChatMessage: chatMessage,
-      DatabaseHelper.columnChatActionId: chatActionId,
+      DatabaseHelper.columnStartActionId: actionId,
       DatabaseHelper.columnChatMessageId: chatMessageId,
     };
 

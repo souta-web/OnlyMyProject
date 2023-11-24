@@ -31,6 +31,12 @@ class RegisterActionTimeTable {
     print('これからアクションタイムテーブルに登録');
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
 
+    // アクションテーブルから有効なアクションIDを取得
+    final List<Map<String, dynamic>> actionRows =
+        await dbHelper.queryAllRows_action_table();
+    if (actionRows.isEmpty) return;
+    final int actionId = actionRows[1]['_action_id'];
+
     final Map<String, dynamic> actionTimeRow = {
       DatabaseHelper.columnActionTimeId: actionTimeId,
       DatabaseHelper.columnSetActionId: actionId,
