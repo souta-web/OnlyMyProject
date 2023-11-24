@@ -60,12 +60,18 @@ class TextWidgetA extends StatelessWidget {
     print('Built TextWidgetA');
 
     return Center(
-        child: Text(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children:[
+          Text(
             'Counter A: ${context.watch<Counter>().countA}',
             style: const TextStyle(
                 fontSize: 20
             )
-        )
+          ),
+        TextWidgetD(),
+        ],  
+      ),
     );
   }
 }
@@ -101,6 +107,25 @@ class TextWidgetC extends StatelessWidget {
             style: const TextStyle(
                 fontSize: 20
             )
+        )
+    );
+  }
+}
+
+class TextWidgetD extends StatelessWidget {
+  const TextWidgetD({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    print('Built TextWidgetD');
+
+    return Center(
+        child:SizedBox(
+          width: context.read<Counter>().countA.toDouble() * 3,  // 幅を指定
+          child: Card(
+            color: Colors.green,
+            child: Text('Hello World!'),
+          ),
         )
     );
   }
