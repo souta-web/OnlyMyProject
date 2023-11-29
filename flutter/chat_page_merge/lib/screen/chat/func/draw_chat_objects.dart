@@ -101,16 +101,16 @@ class DrawChatObjects {
     );
     _registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
 
-    late RegisterMediaTable registerMediaTable = RegisterMediaTable();
     // 画像をメディアテーブルに保存
     if (imageBytes != null && imageBytes.isNotEmpty) {
       for (Uint8List imageByte in imageBytes) {
-        registerMediaTable = RegisterMediaTable(
+        RegisterMediaTable registerMediaTable = RegisterMediaTable(
           media: imageByte,
         );
+        //print("メディアデータ:$imageBytes");
         registerMediaTable.registerMediaTableFunc();
       }
-
+      
       // 前回の画像が保持されないようにクリアする
       imageBytes.clear();
     }
