@@ -10,7 +10,7 @@ class SaveImageToLocalDirectory {
     List<String> savedImagePaths = [];
 
     // ローカルディレクトリのパスを設定
-    String directoryPath = '/path/to/your/local/directory/';
+    String directoryPath = '/path/to/kajit/local/directory/';
 
     // ディレクトリが存在しない場合は作成
     Directory directory = Directory(directoryPath);

@@ -6,11 +6,11 @@ import '/widget/chat_todo.dart';
 import '/widget/create_images.dart';
 import '/utils/register_chat_table.dart';
 import '/utils/register_action_table.dart';
-//import '/utils/register_media_table.dart';
-import '/utils/register_tag_table.dart';
+import '/utils/register_media_table.dart';
+//import '/utils/register_tag_table.dart';
 import '/utils/register_tag_setting_table.dart';
 import '/utils/register_action_time_table.dart';
-import '/utils/register_chat_time_table.dart';
+//import '/utils/register_chat_time_table.dart';
 import '/utils/text_formatter.dart';
 
 // トグルボタンの状態によってオブジェクトを表示する
@@ -101,29 +101,32 @@ class DrawChatObjects {
     );
     _registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
 
-    // // 画像をメディアテーブルに保存
-    // if (imageBytes != null && imageBytes.isNotEmpty) {
-    //   RegisterMediaTable _registerMediaTable = RegisterMediaTable(
-    //     media: imageBytes[0],
-    //   );
-    //   _registerMediaTable.registerMediaTableFunc();
+    late RegisterMediaTable registerMediaTable = RegisterMediaTable();
+    // 画像をメディアテーブルに保存
+    if (imageBytes != null && imageBytes.isNotEmpty) {
+      for (Uint8List imageByte in imageBytes) {
+        registerMediaTable = RegisterMediaTable(
+          media: imageByte,
+        );
+        registerMediaTable.registerMediaTableFunc();
+      }
 
-    //   // 前回の画像が保持されないようにクリアする
-    //   imageBytes.clear();
-    // }
+      // 前回の画像が保持されないようにクリアする
+      imageBytes.clear();
+    }
 
     // チャットタイムテーブルデバッグ用
-    RegisterChatTimeTable registerChatTimeTable = RegisterChatTimeTable(
-        chatId: 0,
-        chatYear: 2023,
-        chatMonth: 11,
-        chatDay: 17,
-        chatHours: 21,
-        chatMinutes: 00,
-        chatSeconds: 00,
-        lessChatSeconds: 0.5,
-      );
-    registerChatTimeTable.registerChatTimeTableFunc();
+    // RegisterChatTimeTable registerChatTimeTable = RegisterChatTimeTable(
+    //   chatId: 0,
+    //   chatYear: 2023,
+    //   chatMonth: 11,
+    //   chatDay: 17,
+    //   chatHours: 21,
+    //   chatMinutes: 00,
+    //   chatSeconds: 00,
+    //   lessChatSeconds: 0.5,
+    // );
+    // registerChatTimeTable.registerChatTimeTableFunc();
 
     // トグルボタンがオンの時アクションを登録する
     if (isTodo) {
@@ -150,7 +153,7 @@ class DrawChatObjects {
       registerActionTimeTable.registerActionTimeTableFunc();
       // タグ設定テーブルデバッグ用
       RegisterTagSettingTable registerTagSettingTable = RegisterTagSettingTable(
-      mainTagFlag: 'false',
+        mainTagFlag: 'false',
       );
       registerTagSettingTable.registerTagSettingTableFunc();
     }
@@ -158,12 +161,12 @@ class DrawChatObjects {
     controller.clear(); //テキストフィールドのクリア
 
     // テスト用に各登録プログラムを記述
-    RegisterTagTable registerTagTable = RegisterTagTable(
-      tagName: 'トイレ',
-      tagColor: 1,
-      tagIcon: 'トイレアイコン',
-    );
-    registerTagTable.registerTagTableFunc();
+    // RegisterTagTable registerTagTable = RegisterTagTable(
+    //   tagName: 'トイレ',
+    //   tagColor: 1,
+    //   tagIcon: 'トイレアイコン',
+    // );
+    // registerTagTable.registerTagTableFunc();
 
     // 吹き出し及びアクションの表示
     // 吹き出しクラスの引数を受け取れるように変更

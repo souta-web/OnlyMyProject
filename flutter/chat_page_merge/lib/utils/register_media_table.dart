@@ -32,7 +32,7 @@ class RegisterMediaTable {
     final List<Map<String, dynamic>> actionRows =
         await dbHelper.queryAllRows_action_table();
     if (actionRows.isEmpty) return;
-    final int linkActionId = actionRows[1]['_action_id'];
+    final int linkActionId = actionRows[0]['_action_id'];
 
     final Map<String, dynamic> mediaRow = {
       DatabaseHelper.columnMediaId: mediaId,

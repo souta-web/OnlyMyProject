@@ -1,3 +1,4 @@
+
 import 'func/draw_chat_objects.dart';
 import 'package:flutter/material.dart';
 import '/utils/media_controller.dart';
@@ -18,7 +19,6 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   bool _isTodo = false; //テキスト入力の左のやつ
   late Uint8List? _mediaData = null; //メディアを格納する
 
-  
   // チャットメッセージのリスト
   final List<dynamic> _messages = [];
 
@@ -27,7 +27,8 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   // ↓が加藤が作った変数
   // DrawChatObjectsをfinal修飾子で宣言
   final DrawChatObjects _chatObjects = DrawChatObjects();
-  late ScrollController _scrollController; // ScrollControllerをChatScreenWidget内で生成
+  late ScrollController
+      _scrollController; // ScrollControllerをChatScreenWidget内で生成
   // 自動スクロールクラスのインスタンス生成
   late AutoScroll _autoScroll;
   // フォーカスノードのインスタンス生成
@@ -39,8 +40,6 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   late List<Uint8List> _mediaDataList = []; // メディアを格納するリスト
   // バイナリーデータに変換するためのリスト
   final List<Uint8List> _bytesList = [];
-
-  
 
   @override
   void initState() {
@@ -157,6 +156,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
                       //_mediaData = await _getMedia();
                       _mediaDataList = await _convertMedia
                           .pickAndConvertImages(List.from(_bytesList));
+                    
                       //現状は取得したメディアの処理がないためprintで取得確認
                       print(_mediaData);
                       // print('_mediaDataList: $_mediaDataList');
