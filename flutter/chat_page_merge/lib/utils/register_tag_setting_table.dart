@@ -25,7 +25,7 @@ class RegisterTagSettingTable {
       print('アクションテーブルに有効な行がありません');
       return;
     }
-    final int actionId = actionRows[1]['_action_id'];
+    final int actionId = actionRows.isNotEmpty ? actionRows[0]['_action_id'] : 0; // リストが空の時は0を代入する
 
     // タグテーブルから有効なタグIDを取得
     final List<Map<String, dynamic>> tagRows =
@@ -35,7 +35,7 @@ class RegisterTagSettingTable {
       print('タグテーブルに有効な行がありません');
       return;
     }
-    final int tagId = tagRows[1]['_tag_id'];
+    final int tagId = tagRows.isNotEmpty ? tagRows[0]['_tag_id'] : 0; // リストが空の時は0を代入する
     final Map<String, dynamic> tagSettingRow = {
       DatabaseHelper.columnTagActionId: actionId,
       DatabaseHelper.columnSetTagId: tagId,

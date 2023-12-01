@@ -101,16 +101,16 @@ class DrawChatObjects {
     );
     _registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
 
-    late RegisterMediaTable registerMediaTable = RegisterMediaTable();
+    
     // 画像をメディアテーブルに保存
     if (imageBytes != null && imageBytes.isNotEmpty) {
       for (Uint8List imageByte in imageBytes) {
-        registerMediaTable = RegisterMediaTable(
+        RegisterMediaTable registerMediaTable = RegisterMediaTable(
           media: imageByte,
         );
-        //print("メディアデータ:$imageBytes");
+        print("メディアデータ:$imageBytes");
+        registerMediaTable.registerMediaTableFunc();
       }
-      registerMediaTable.registerMediaTableFunc();
       // 前回の画像が保持されないようにクリアする
       imageBytes.clear();
     }
@@ -162,9 +162,9 @@ class DrawChatObjects {
 
     // テスト用に各登録プログラムを記述
     // RegisterTagTable registerTagTable = RegisterTagTable(
-    //   tagName: 'トイレ',
+    //   tagName: mainTag,
     //   tagColor: 1,
-    //   tagIcon: 'トイレアイコン',
+    //   tagIcon: 'デバッグ中',
     // );
     // registerTagTable.registerTagTableFunc();
 
