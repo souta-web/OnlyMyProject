@@ -31,13 +31,13 @@ class MaintagGraphData {
   }
 }
 
-final dbHelper = DatabaseHelper.instance;
 
-void queryAllRows_tagName() async {
+Future <void> query_insert() async {
+final dbHelper = DatabaseHelper.instance;
 Database? db = await dbHelper.database;
 
 List<Map> result1 = await db!.rawQuery
-('SELECT * FROM (SELECT * FROM tag_table LEFT JOIN action_table ON tag_table._tag_id = action_table._action_id) AS A GROUP BY _tag_id HAVING _tag_id % 2 = 0');
+('SELECT * FROM tag_table');
 print(result1);
 }
 
@@ -84,6 +84,15 @@ print(result1);
 //サブクエリ使用
 //SELECT * FROM (SELECT * FROM tag_table LEFT JOIN action_table ON tag_table._tag_id = action_table._action_id) AS A GROUP BY _tag_id HAVING _tag_id % 2 = 0
 
+//DELETE
+//DELETE FROM tag_table
+
+//INSERT
+//INSERT INTO tag_table (tag_name, tag_color, tag_registered_action_name) VALUES ("遊び", "orange", "映画")
+//INSERT INTO chat_table (chat_sender, chat_todo, chat_todofinish, chat_message, chat_time, chat_channel, chat_action_id)
+//VALUES ("true", "false", "2023-11-29 21:00", "Hello", "2023-11-29 18:00", "channel", "11")
+//INSERT INTO action_table (action_name, action_start, action_end, action_duration, action_message, action_media, action_notes, action_score, action_state, action_place, action_main_tag, action_sub_tag, action_chat_id)
+//VALUES ("夜ご飯", "2023-11-29 17:00", "2023-11-29 18:00", "1h", "start", "rice", "今日の夜ご飯", "4", "true", "家", "ご飯", "なし", "2")
 
 
 

@@ -29,14 +29,18 @@ class DataScreenWidget extends StatelessWidget {
             ),
             ElevatedButton(
               child: Text("tag_name"),
-              onPressed:(){queryAllRows_tagName();},
+              onPressed:(){query_insert();},
             ),
           ]
+          // Future<void> myFunction() async {
+          //   await query_insert();
+          // }
         )
       ),
     );
   }
 }
+
 
 final dbHelper = DatabaseHelper.instance;
 
