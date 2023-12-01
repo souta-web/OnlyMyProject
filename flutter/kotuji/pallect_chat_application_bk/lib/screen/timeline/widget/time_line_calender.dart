@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../func/action_registration_base.dart';
-import 'time_line_base.dart';
+//import 'time_line_base.dart';
 //import '../../setting/config_screen.dart';
 //import 'package:intl/intl.dart';//カレンダーのタイトルを月の形式にカスタマイズするのに必要
 
@@ -24,13 +24,12 @@ class _TimeLineCalender extends State<TimeLineCalender> {
   int previousSelectedMonth = DateTime.now().month;
   int selectedYear = DateTime.now().year; // 現在の年を初期値として設定
   
+  //DateTime _toDay = DateTime.now();// 現在の日付を初期値として設定
   DateTime _focusedDay = DateTime.now();// 現在の日付を初期値として設定
   DateTime _selectedDay = DateTime.now();// 現在の日付を初期値として設定;
 
   CalendarFormat _calendarFormat = CalendarFormat.month;
   CalendarFormat _weekFormat = CalendarFormat.week;
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -113,6 +112,16 @@ class _TimeLineCalender extends State<TimeLineCalender> {
               _focusedDay = focused;
 
               selectedMonth = selected.month;
+
+              //あとで関数にしたい
+              String formattedDate = setSchedule(_selectedDay);
+              print(formattedDate);//リスト名に直した日付
+
+              List<Map<String, dynamic>> settingDate = setData(formattedDate);
+
+              callUpdateDefaultData(settingDate);//リストを挿入
+
+              widget.timelineActionsData.defaultData = settingDate;//defaultDataを更新
             });
           }
           showButtons = false;
@@ -173,27 +182,15 @@ class _TimeLineCalender extends State<TimeLineCalender> {
               selectedMonth = selected.month;
               previousSelectedMonth = selectedMonth;
 
+//あとで関数にしたい
               String formattedDate = setSchedule(_selectedDay);
               print(formattedDate);//リスト名に直した日付
 
               List<Map<String, dynamic>> settingDate = setData(formattedDate);
-              print(settingDate);//挿入したいリスト
 
               callUpdateDefaultData(settingDate);//リストを挿入
 
-              widget.timelineActionsData.defaultData = settingDate;
-              print("widget");
-              print(widget.timelineActionsData.defaultData);
-
-              print("callReset");
-              callResetActionsDatas();
-              print("callResetEnd");
-
-              //Navigator.pushNamed(context, '/timeline');//routeに追加したconfigに遷移
-              //Navigator.pushNamed(context, '/main', arguments: 1);
-            });
-            setState(() {
-              
+              widget.timelineActionsData.defaultData = settingDate;//defaultDataを更新
             });
           }
         },
@@ -250,12 +247,11 @@ class _TimeLineCalender extends State<TimeLineCalender> {
    void callUpdateDefaultData(data){//updateDefaultDataを呼び出す為にPreUpdateDefaultDataを呼び出す
     final publicInstance = PreUpdateDefaultData();
     publicInstance.publicUpdateDefaultData(data); // パブリックな関数を呼び出す
-    print("callUpdateDefaultData");
   }
-
+/*
   void callResetActionsDatas(){//resetActionsDatasを呼び出す為にPreResetActionsDatasを呼び出す
     final publicInstance = PreResetActionsDatas();
     publicInstance.publicFunction(); // パブリックな関数を呼び出す
-    print("callResetActionsDatas");
   }
+  */
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'time_line_action_widget.dart';
 import '../func/action_registration_base.dart';
+import 'package:provider/provider.dart';
 //import 'time_line_data_manager.dart';
 
 class TimeLineBase extends StatefulWidget {
@@ -15,7 +16,7 @@ class TimeLineBase extends StatefulWidget {
 }
 
 class _TimeLineBase extends State<TimeLineBase> {
-  //var timeLineActionsData = TimeLineActionsData();
+  var timeLineActionsData = TimeLineActionsData();
   //final TimeLineActionsData timeLineActionsData = TimeLineActionsData();
   final double _timeDrawSpace = 50; //時間を表示する欄の横幅
   final double _oneHourHeight = 60; //これを変えたら1時間当たりの縦幅が変わる
@@ -40,68 +41,78 @@ class _TimeLineBase extends State<TimeLineBase> {
 
   void initState() {
     super.initState();
+    resetActionsDatas();
+  }
+
+   @override
+  void dispose() {
+    // 不要になったらリスナーを削除する
+    Provider.of<TimeLineActionsData>(context, listen: false).removeListener(resetActionsDatas);
+    super.dispose();
+  }
+  
+  void resetActionsDatas() {
     actionsDatas = widget.timelineActionsData.defaultData;
 
     _actionWidgets.add(_drawHorizontalLinesConstructure()); //これは表示領域のベースになるから変更してはいけない
     for (int i = 0; i < actionsDatas.length;i++){
       _actionWidgets.add(_returnTimeLineActionWidget(actionsDatas[i],_clearActionArea));
-
       _clearActionArea = removeRangeFromClearActionArea(_clearActionArea, ConversionTimeToMinutes(actionsDatas[i]["startTime"]), ConversionTimeToMinutes(actionsDatas[i]["endTime"]));
     }
     print("_clearActionAreaの中身:" + _clearActionArea.toString());
-    print("actionDatas");
-    print(actionsDatas);
-    print("timeLineActionsData.defaultData");
   }
-/////
-  void updateActionsDatas(List<Map<String, dynamic>> newActionsData) {
-  setState(() {
-    actionsDatas = newActionsData;
-  });
-}
-///////
-  Widget build(BuildContext context) {
-    return Row (
-      children: [
-        //時間表示範囲
-        SizedBox(
-          width: _timeDrawSpace,
-          height: _timeLineHeight,
-          child:Container(
-            color: Colors.white,
-            child:Column(
-              children: [
-                for (var i = 1; i < 24; i++)
-                  Column(
+//変更検知
+   Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => widget.timelineActionsData, // TimeLineActionsDataを提供
+      child: Consumer<TimeLineActionsData>(
+        builder: (context, timelineActionsData, _) {
+            resetActionsDatas(); // データ変更を検知し、resetActionsDatas()を実行
+          return Row(
+            children: [
+              //時間表示範囲
+              SizedBox(
+                width: _timeDrawSpace,
+                height: _timeLineHeight,
+                child:Container(
+                  color: Colors.white,
+                  child:Column(
                     children: [
-                      SizedBox(
-                        width:_timeDrawSpace,
-                        height:_oneHourHeight-_timeTextHeight-(_horizontalLineThickness*2),
-                      ),
-                      Text(
-                        '$i:00',
-                        textAlign: TextAlign.right,
-                        style: TextStyle(
-                          color: Colors.black, // テキストの色を黒に変更
-                          fontSize: (14/16) * _timeTextHeight,    // テキストのフォントサイズ
+                      for (var i = 1; i < 24; i++)
+                        Column(
+                          children: [
+                            SizedBox(
+                              width:_timeDrawSpace,
+                              height:_oneHourHeight-_timeTextHeight-(_horizontalLineThickness*2),
+                            ),
+                            Text(
+                              '$i:00',
+                              textAlign: TextAlign.right,
+                              style: TextStyle(
+                                color: Colors.black, // テキストの色を黒に変更
+                                fontSize: (14/16) * _timeTextHeight,    // テキストのフォントサイズ
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
                     ],
-                  ),
-              ],
-            )
-          )
-        ),
-        //時間表示とタイムライン間の余白
-        Container(
-          color: Colors.white,
-          width: _timeLineActionDrawAreaMargin/2,
-          height: _timeLineHeight,
-        ),
-        Stack(
-          children:_actionWidgets
-        )
-      ],
+                  ) 
+                )
+              ),
+              //時間表示とタイムライン間の余白
+              Container(
+                color: Colors.white,
+                width: _timeLineActionDrawAreaMargin/2,
+                height: _timeLineHeight,
+              ),
+              Stack(
+                children:_actionWidgets
+              )
+            ],
+          );
+        },
+        //
+      ),
     );
   }
   
@@ -214,48 +225,29 @@ class _TimeLineBase extends State<TimeLineBase> {
     int _Minutes = int.parse(_TimeList[1]) + _Hour;
     return _Minutes;
   }
-
-  void resetActionsDatas() {
-    //setState(() {
-      print("Called");
-      print("actionsDatas");
-      print(actionsDatas);
-      
-      //actionsDatas = timeLineActionsData.defaultData;
-
-      print("actionsDatas");
-      print(actionsDatas);
-      print("timeLineActionsData.defaultData");
-      print(widget.timelineActionsData.defaultData);
-    //});
-//actionsDatas = widget.timelineActionsData.defaultData;
-// 外部のソースまたは関数
-void updateTimelineData() {
-  // _TimeLineBaseのインスタンスを作成
-  _TimeLineBase timeline = _TimeLineBase();
-
-  // 新しいデータを定義
-  List<Map<String, dynamic>> newActionsData = widget.timelineActionsData.defaultData;
-
-  // 新しいデータと共にupdateActionsDatasメソッドを呼び出します
-  timeline.updateActionsDatas(newActionsData);
-
-  // オプションで、タイムラインインスタンスに対して他のメソッドを呼び出したり、追加のアクションを実行したりできます。
-}
-    //_actionWidgets.add(_drawHorizontalLinesConstructure()); //これは表示領域のベースになるから変更してはいけない
-    for (int i = 0; i < actionsDatas.length;i++){
-      _actionWidgets.add(_returnTimeLineActionWidget(actionsDatas[i],_clearActionArea));
-
-      _clearActionArea = removeRangeFromClearActionArea(_clearActionArea, ConversionTimeToMinutes(actionsDatas[i]["startTime"]), ConversionTimeToMinutes(actionsDatas[i]["endTime"]));
-    }
-  }
 }
 
-class PreResetActionsDatas{//updateDefaultDataを外部から使えるようにする
-  void publicFunction() {
-    final privateInstance = _TimeLineBase();
-      privateInstance.resetActionsDatas();
-      print("Call");
-      //print(data);
+//右下のボタン作成
+class WidgetFloatingActionButton extends StatefulWidget {
+
+  @override
+  _WidgetFloatingActionButton createState() => _WidgetFloatingActionButton();
+}
+
+class _WidgetFloatingActionButton extends State<WidgetFloatingActionButton> {
+
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        // ボタンが押されたときの処理を記述
+        setState(() {
+          print("tap");
+        });
+      },
+      child: Icon(Icons.add),
+      backgroundColor: Colors.blue, // FABの背景色を変更
+    );
   }
 }
