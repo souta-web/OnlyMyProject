@@ -35,7 +35,7 @@ dependencies:
   path: any
   flutter_riverpod: ^2.0.0-dev.9
   table_calendar: ^3.0.1
-  provider: '5.0.0'
+  provider: ^6.0.3
   
   
 

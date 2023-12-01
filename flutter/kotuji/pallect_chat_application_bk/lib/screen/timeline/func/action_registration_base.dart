@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class TimeLineActionsData {
+class TimeLineActionsData extends ChangeNotifier {
   static final TimeLineActionsData _instance = TimeLineActionsData._internal();
 
   factory TimeLineActionsData() {
@@ -14,43 +14,59 @@ class TimeLineActionsData {
   ];
 
   void updateDefaultData(List<Map<String, dynamic>> nextData) {
-    print("defaultData1");
-    print(defaultData);//変更前の値を保持
     defaultData = nextData;  // クラスレベルのdefaultDataを更新
-    print("defaultData2");
-    print(defaultData);
+    notifyListeners();
   }
 }
 
-  final List<List<Map<String, dynamic>>> y2023m10d18 = [
-    [{"startTime": "0:00", "endTime": "7:35", "color": Colors.blue, "title": "睡眠計測する"}],
-    [{"startTime": "7:10", "endTime": "7:25", "color": Colors.blue, "title": "朝食食べる"}],
-    [{"startTime": "7:25", "endTime": "8:30", "color": Colors.blue, "title": "バイトに行く"}],
+  final List<List<Map<String, dynamic>>> y2023m12d01 = [
+    [{"startTime": "0:00", "endTime": "7:35", "color": Colors.pink, "title": "睡眠"}],
+    [{"startTime": "0:00", "endTime": "7:35", "color": Colors.green, "title": "睡眠計測"}],
+    [{"startTime": "7:10", "endTime": "7:25", "color": Colors.red, "title": "朝食"}],
+    [{"startTime": "7:25", "endTime": "8:30", "color": Colors.red, "title": "通学"}],
+    [{"startTime": "9:00", "endTime": "12:30", "color": Colors.blue, "title": "午前授業"}],
+    [{"startTime": "13:00", "endTime": "13:20", "color": Colors.amber, "title": "昼食"}],
+    [{"startTime": "13:30", "endTime": "16:40", "color": Colors.blue, "title": "午後授業"}],
+    [{"startTime": "17:00", "endTime": "18:30", "color": Colors.red, "title": "帰宅"}],
+    [{"startTime": "19:00", "endTime": "19:30", "color": Colors.amber, "title": "夕飯"}],
+    [{"startTime": "23:00", "endTime": "24:00", "color": Colors.green, "title": "睡眠計測"}],
   ];
 
-  final List<List<Map<String, dynamic>>> y2023m10d19 = [
-    [{"startTime": "0:00", "endTime": "7:35", "color": Colors.red, "title": "ポケモンスリープする"}],
-    [{"startTime": "7:10", "endTime": "7:25", "color": Colors.red, "title": "朝ごはん食べる"}],
-    [{"startTime": "7:25", "endTime": "8:30", "color": Colors.red, "title": "登校する"}],
+  final List<List<Map<String, dynamic>>> y2023m12d02 = [
+    [{"startTime": "0:00", "endTime": "7:35", "color": Colors.green, "title": "睡眠計測"}],
+    [{"startTime": "7:10", "endTime": "7:25", "color": Colors.amber, "title": "朝食"}],
+    [{"startTime": "7:25", "endTime": "8:30", "color": Colors.red, "title": "通学"}],
+    [{"startTime": "9:00", "endTime": "12:30", "color": Colors.blue, "title": "午前授業"}],
+    [{"startTime": "13:00", "endTime": "13:20", "color": Colors.amber, "title": "昼食"}],
+    [{"startTime": "20:00", "endTime": "20:30", "color": Colors.amber, "title": "夕飯"}],
   ];
 
-  final List<List<Map<String, dynamic>>> y2023m10d20 = [
-    [{"startTime": "0:00", "endTime": "7:35", "color": Colors.amber, "title": "睡眠計測しない"}],
-    [{"startTime": "7:10", "endTime": "7:25", "color": Colors.amber, "title": "朝食食べる"}],
-    [{"startTime": "7:25", "endTime": "8:30", "color": Colors.amber, "title": "バイトに行く"}],
+  final List<List<Map<String, dynamic>>> y2023m12d03 = [
+    [{"startTime": "2:30", "endTime": "9:00", "color": Colors.green, "title": "睡眠計測"}],
+    [{"startTime": "9:00", "endTime": "10:00", "color": Colors.amber, "title": "朝食"}],
+    [{"startTime": "13:00", "endTime": "13:20", "color": Colors.amber, "title": "昼食"}],
+    [{"startTime": "19:00", "endTime": "19:30", "color": Colors.amber, "title": "夕飯"}],
+    [{"startTime": "23:00", "endTime": "24:00", "color": Colors.green, "title": "睡眠計測"}],
   ];
 
-  final List<List<Map<String, dynamic>>> y2023m10d21 = [
-    [{"startTime": "0:00", "endTime": "7:35", "color": Colors.purple, "title": "ポケモンスリープしない"}],
-    [{"startTime": "7:10", "endTime": "7:25", "color": Colors.purple, "title": "朝ごはん食べる"}],
-    [{"startTime": "7:25", "endTime": "8:30", "color": Colors.purple, "title": "登校する"}],
+  final List<List<Map<String, dynamic>>> y2023m12d04 = [
+    [{"startTime": "0:00", "endTime": "7:35", "color": Colors.green, "title": "睡眠計測"}],
+    [{"startTime": "7:10", "endTime": "7:25", "color": Colors.amber, "title": "朝食"}],
+    [{"startTime": "12:00", "endTime": "12:20", "color": Colors.amber, "title": "昼食"}],
+    [{"startTime": "12:25", "endTime": "13:30", "color": Colors.red, "title": "通学"}],
+    [{"startTime": "13:30", "endTime": "16:40", "color": Colors.blue, "title": "午後授業"}],
+    [{"startTime": "17:00", "endTime": "18:30", "color": Colors.red, "title": "帰宅"}],
+    [{"startTime": "19:00", "endTime": "19:30", "color": Colors.amber, "title": "夕飯"}],
+    [{"startTime": "23:00", "endTime": "24:00", "color": Colors.green, "title": "睡眠計測"}],
   ];
+
+
 
   final Map<String, List<List<Map<String, dynamic>>>> schedulesByDate = {
-    'y2023m10d18':y2023m10d18,
-    'y2023m10d19':y2023m10d19,
-    'y2023m10d20':y2023m10d20,
-    'y2023m10d21':y2023m10d21,
+    'y2023m12d01':y2023m12d01,
+    'y2023m12d02':y2023m12d02,
+    'y2023m12d03':y2023m12d03,
+    'y2023m12d04':y2023m12d04,
   };
 
   List<List<Map<String, dynamic>>> newDatas = [];
@@ -79,7 +95,5 @@ class PreUpdateDefaultData{//updateDefaultDataを外部から使えるように�
     //data=[{"startTime": "0:00","endTime": "1:45" ,"color": Colors.amber,"title": "default2"},];
 
       privateInstance.updateDefaultData(data);
-      print("Public!!");
-      print(data);
   }
 }
