@@ -14,13 +14,18 @@ class HorizontalBarChart extends StatelessWidget {
 
   HorizontalBarChart({required this.data});
 
+  double dataHeight(BuildContext context) {
+    //画面の高さに基づいて動的に計算
+    double screenHeight = MediaQuery.of(context).size.height; //画面の高さを取得
+    return screenHeight * 0.6; //画面の高さの60%
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      //height: 400.0, // グラフの高さ
       padding: EdgeInsets.all(20.0),
       child: CustomPaint(
-        size: Size(double.infinity, 400), // グラフのサイズ(2個目の高さ)
+        size: Size(double.infinity, dataHeight(context)), // グラフのサイズ(2個目の高さ)
         //size: Size(double.infinity, 400)の400部分を定数化せずに計算式とかにしてやってみる
         painter: HorizontalBarChartPainter(data), //バー描画のためのカスタムペインター
       ),
