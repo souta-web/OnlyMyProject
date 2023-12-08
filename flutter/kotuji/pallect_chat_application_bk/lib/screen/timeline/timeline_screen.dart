@@ -54,17 +54,14 @@ class TimeLineBody extends StatelessWidget {
         late double _timeLineHeight = _bodyHeight - _topBarHeight;
         return Stack(
           children:[ 
-            Expanded(
-              child:SingleChildScrollView(
+            SingleChildScrollView(
                 child:Column(
                   children: [
                     SizedBox(height:_topBarHeight+(_topBarHeight-_weeekCalenderHeight)+10),//TimeLineTopBarと一週間表示分下に下げる（重なっている部分は省く）+00は調整用
                     TimeLineBase(bodyWidth: _bodyWidth,bodyHeight: _timeLineHeight,timelineActionsData:timeLineActionsData),
                   ],
                 )
-                
-              )
-            ),
+              ),
             TimeLineTopBar(topBarWidth:_bodyWidth,topBarHeight:_topBarHeight,timelineActionsData:timeLineActionsData),
             TimeLineCalender(calenderWidth:_bodyWidth,calenderHeight:_calenderHeight,weekHeight:_weeekCalenderHeight,timelineActionsData:timeLineActionsData),
           ]
