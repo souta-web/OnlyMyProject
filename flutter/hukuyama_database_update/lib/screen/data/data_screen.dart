@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 import '/utils/database_helper.dart';
-import '/screen/data/maintag_graph_data.dart';
+import 'package:sqflite/sqflite.dart';
+import '/utils/database_register.dart';
 
-class DataScreenWidget extends StatelessWidget {
-
+class DataScreenWidget extends StatefulWidget {
   @override
+  _DataScreenWidget createState() => _DataScreenWidget();
+}
+
+class _DataScreenWidget extends State<DataScreenWidget> {
+  @override
+  void initState() {
+    super.initState();
+    query_insert(); // 初期化時にデータを取得
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -23,18 +33,15 @@ class DataScreenWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            // ElevatedButton(
+            //   child: Text("tag_insert"),
+            //   onPressed:(){_insert();},
+            // ),
             ElevatedButton(
-              child: Text("tag_insert"),
-              onPressed:(){_insert();},
-            ),
-            ElevatedButton(
-              child: Text("tag_name"),
-              onPressed:(){query_insert();},
+              child: Text("data_check"),
+              onPressed:(){data_check();},
             ),
           ]
-          // Future<void> myFunction() async {
-          //   await query_insert();
-          // }
         )
       ),
     );
@@ -44,15 +51,27 @@ class DataScreenWidget extends StatelessWidget {
 
 final dbHelper = DatabaseHelper.instance;
 
-void _insert() async {
-  Map<String, dynamic> row = {
-    DatabaseHelper.columnTagName:2,
-    DatabaseHelper.columnTagColor:35,
-    DatabaseHelper.columnTagRegisteredActionName:"就寝"
-  };
-    final tagInsert = await dbHelper.insert_tag_table(row);
-    print("登録");
+void data_check() async {
+  Database? db = await dbHelper.database;
+  
+  List<Map> result = await db!.rawQuery
+  //追加したテーブルの確認
+  ('SELECT * FROM tag_table');
+  print(result);
 }
+
+
+
+
+// void _insert() async {
+//   Map<String, dynamic> row = {
+//     DatabaseHelper.columnTagName:"料理",
+//     DatabaseHelper.columnTagColor:"Red",
+//     DatabaseHelper.columnTagRegisteredActionName:"夜ご飯"
+//   };
+//     final tagInsert = await dbHelper.insert_tag_table(row);
+//     print("登録");
+// }
  
 
  
