@@ -47,11 +47,13 @@ class _TimeLineBase extends State<TimeLineBase> {
    @override
   void dispose() {
     // 不要になったらリスナーを削除する
-    Provider.of<TimeLineActionsData>(context, listen: false).removeListener(resetActionsDatas);
+    Provider.of<TimeLineActionsData>(context, listen: false);
     super.dispose();
   }
   
   void resetActionsDatas() {
+    List<List<Map<String,int>>> _clearActionArea = [[{"startTime":0,"endTime":1440}]]; 
+
     actionsDatas = widget.timelineActionsData.defaultData;
 
     _actionWidgets.add(_drawHorizontalLinesConstructure()); //これは表示領域のベースになるから変更してはいけない
