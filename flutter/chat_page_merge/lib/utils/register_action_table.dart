@@ -2,11 +2,12 @@ import 'database_helper.dart';
 
 // アクション登録汎用クラス
 class RegisterActionTable {
-  final int? actionId;
-  final String? actionTitle;
-  final String? actionState;
-  final String? actionNotes;
-  final int? actionScore;
+  final int? actionId;  // アクションID
+  final String? actionTitle;  // アクションタイトル
+  final String? actionState;  // 進行状態
+  final String? actionNotes;  // 説明文
+  final int? actionScore; // 充実度
+  final int? startChatId; // 開始チャットID
 
   RegisterActionTable({
     this.actionId,
@@ -14,6 +15,7 @@ class RegisterActionTable {
     this.actionState,
     this.actionNotes,
     this.actionScore,
+    this.startChatId,
   });
 
   void registerActionTableFunc() async {
@@ -27,6 +29,7 @@ class RegisterActionTable {
       DatabaseHelper.columnActionState: actionState, // 進行状態
       DatabaseHelper.columnActionNotes: actionNotes, // 説明文
       DatabaseHelper.columnActionScore: actionScore, // 充実度(1から5までの値で制限する)
+      DatabaseHelper.columnStartChatId: startChatId,  // 開始チャットID
     };
 
     await dbHelper.insert_action_table(actionRow);

@@ -2,15 +2,15 @@ import 'database_helper.dart';
 
 // チャットタイムテーブル登録汎用クラス
 class RegisterChatTimeTable {
-  final int? chatTimeId;
-  final int? chatId;
-  final int? chatYear;
-  final int? chatMonth;
-  final int? chatDay;
-  final int? chatHours;
-  final int? chatMinutes;
-  final int? chatSeconds;
-  final double? lessChatSeconds;
+  final int? chatTimeId;  // チャットタイムID
+  final int? chatId;  // チャットID
+  final int? chatYear;  // 年
+  final int? chatMonth; // 月
+  final int? chatDay; // 日
+  final int? chatHours; // 時
+  final int? chatMinutes; // 分
+  final int? chatSeconds; // 秒
+  final double? lessChatSeconds;  // 秒未満
 
   RegisterChatTimeTable({
     this.chatTimeId,

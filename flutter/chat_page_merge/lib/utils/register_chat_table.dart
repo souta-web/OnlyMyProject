@@ -2,18 +2,16 @@ import 'database_helper.dart';
 
 class RegisterChatTable {
   final int? chatId; //idはデータ登録時に自動で割り当てられるため、引数で渡す必要は基本的にはない
-  final String? chatSender;
-  final String? chatTodo;
-  final String? chatMessage;
-  final int? startActionId;
-  final int? chatMessageId;
+  final String? chatSender; // 送信者
+  final String? chatTodo; // 送信モード
+  final String? chatMessage; // メッセージ内容
+  final int? chatMessageId; // 送信先メッセージID
 
   RegisterChatTable({
     this.chatId,
     this.chatSender,
     this.chatTodo,
     this.chatMessage,
-    this.startActionId,
     this.chatMessageId,
   });
 
@@ -28,28 +26,21 @@ class RegisterChatTable {
         await dbHelper.queryAllRows_action_table();
 
     print('アクションテーブルから取得したデータ： $actionRows');
-    if (actionRows.isEmpty) {
-      print('アクションテーブルに有効な行がありません');
-      return;
-    }
-    final int? actionId = actionRows.isNotEmpty
-        ? actionRows[0]['_action_id']
-        : null; // リストが空の時は0を代入する
-    print('アクションID: $actionId');
+
     Map<String, dynamic> row = {
       DatabaseHelper.columnChatId: chatId,
       DatabaseHelper.columnChatSender: chatSender,
       DatabaseHelper.columnChatTodo: chatTodo,
       DatabaseHelper.columnChatMessage: chatMessage,
-      DatabaseHelper.columnStartActionId: actionId,
       DatabaseHelper.columnChatMessageId: chatMessageId,
     };
 
     await dbHelper.insert_chat_table(row);
 
     //↓デバッグ用のデータ表示プログラム
-    final List<Map<String, dynamic>> allRows = await dbHelper.queryAllRows_chat_table();
-    print('全てのデータを照会しました。');
+    final List<Map<String, dynamic>> allRows =
+        await dbHelper.queryAllRows_chat_table();
+    print('チャットテーブルから全てのデータを照会しました。');
     allRows.forEach(print);
   }
 }

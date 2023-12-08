@@ -10,7 +10,7 @@ import '/utils/register_media_table.dart';
 //import '/utils/register_tag_table.dart';
 import '/utils/register_tag_setting_table.dart';
 import '/utils/register_action_time_table.dart';
-//import '/utils/register_chat_time_table.dart';
+import '/utils/register_chat_time_table.dart';
 import '/utils/text_formatter.dart';
 
 // トグルボタンの状態によってオブジェクトを表示する
@@ -101,7 +101,6 @@ class DrawChatObjects {
     );
     _registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
 
-    
     // 画像をメディアテーブルに保存
     if (imageBytes != null && imageBytes.isNotEmpty) {
       for (Uint8List imageByte in imageBytes) {
@@ -115,18 +114,27 @@ class DrawChatObjects {
       imageBytes.clear();
     }
 
+    // 時間を記録する変数たちを定義
+    final int chatYear = DateTime.now().year;
+    final int chatMonth = DateTime.now().month;
+    final int chatDay = DateTime.now().day;
+    final int chatHours = DateTime.now().hour;
+    final int chatMinutes = DateTime.now().minute;
+    final int chatSeconds = DateTime.now().second;
+    final double lessChatSeconds = DateTime.now().microsecond.toDouble();
+
     // チャットタイムテーブルデバッグ用
-    // RegisterChatTimeTable registerChatTimeTable = RegisterChatTimeTable(
-    //   chatId: 0,
-    //   chatYear: 2023,
-    //   chatMonth: 11,
-    //   chatDay: 17,
-    //   chatHours: 21,
-    //   chatMinutes: 00,
-    //   chatSeconds: 00,
-    //   lessChatSeconds: 0.5,
-    // );
-    // registerChatTimeTable.registerChatTimeTableFunc();
+    RegisterChatTimeTable registerChatTimeTable = RegisterChatTimeTable(
+      chatId: null,
+      chatYear: chatYear,
+      chatMonth: chatMonth,
+      chatDay: chatDay,
+      chatHours: chatHours,
+      chatMinutes: chatMinutes,
+      chatSeconds: chatSeconds,
+      lessChatSeconds: lessChatSeconds,
+    );
+    registerChatTimeTable.registerChatTimeTableFunc();
 
     // トグルボタンがオンの時アクションを登録する
     if (isTodo) {
@@ -135,27 +143,37 @@ class DrawChatObjects {
         actionState: _actionState,
         actionNotes: "あいうえお",
         actionScore: 5,
+        startChatId: null,
       );
       registerActionTable.registerActionTableFunc();
 
+      // 時間を記録する変数たちを定義
+      final int actionYear = DateTime.now().year;
+      final int actionMonth = DateTime.now().month;
+      final int actionDay = DateTime.now().day;
+      final int actionHours = DateTime.now().hour;
+      final int actionMinutes = DateTime.now().minute;
+      final int actionSeconds = DateTime.now().second;
+      final double lessActionSeconds = DateTime.now().microsecond.toDouble();
+
       // アクションタイムテーブルデバッグ用
       RegisterActionTimeTable registerActionTimeTable = RegisterActionTimeTable(
-        actionId: 0,
-        actionJudgeTime: 'true',
-        actionYear: 2023,
-        actionMonth: 11,
-        actionDay: 17,
-        actionHours: 21,
-        actionMinutes: 00,
-        actionSeconds: 00,
-        lessActionSeconds: 0.5,
+        actionId: null,
+        actionJudgeTime: isTodo.toString(),
+        actionYear: actionYear,
+        actionMonth: actionMonth,
+        actionDay: actionDay,
+        actionHours: actionHours,
+        actionMinutes: actionMinutes,
+        actionSeconds: actionSeconds,
+        lessActionSeconds: lessActionSeconds,
       );
       registerActionTimeTable.registerActionTimeTableFunc();
-      // タグ設定テーブルデバッグ用
-      RegisterTagSettingTable registerTagSettingTable = RegisterTagSettingTable(
-        mainTagFlag: 'false',
-      );
-      registerTagSettingTable.registerTagSettingTableFunc();
+      // // タグ設定テーブルデバッグ用
+      // RegisterTagSettingTable registerTagSettingTable = RegisterTagSettingTable(
+      //   mainTagFlag: 'false',
+      // );
+      // registerTagSettingTable.registerTagSettingTableFunc();
     }
 
     controller.clear(); //テキストフィールドのクリア

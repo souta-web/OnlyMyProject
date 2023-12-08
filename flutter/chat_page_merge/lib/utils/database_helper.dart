@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 
 class DatabaseHelper {
   // デバッグ時はDB名を変えてよい
-  static final _databaseName = "debugDatabase03.db"; // DB名
+  static final _databaseName = "debugDatabase11.db"; // DB名
   static final _databaseVersion = 1; // スキーマのバージョン指定
 
   static final chat_table = 'chat_table'; // チャット管理テーブル
@@ -23,7 +23,6 @@ class DatabaseHelper {
   static final columnChatSender = 'chat_sender'; // 送信者情報(true=ユーザー:fasle=AI)
   static final columnChatTodo = 'chat_todo'; //todoかどうか(true=todo:false=message)
   static final columnChatMessage = 'chat_message'; // チャットのテキスト
-  static final columnStartActionId = 'start_action_id'; // 開始アクションID(外部キー)
   static final columnChatMessageId = 'chat_message_id'; // 送信先メッセージID
 
   // アクションテーブルのカラム
@@ -32,6 +31,7 @@ class DatabaseHelper {
   static final columnActionState = 'action_state'; // 進行状態
   static final columnActionNotes = 'action_notes'; //説明文
   static final columnActionScore = 'action_score'; //充実度(1から5までの値で制限する)
+  static final columnStartChatId = 'start_chat_id'; // 開始チャットID
 
   // タグテーブルのカラム
   static final columnTagId = '_tag_id'; // タグID
@@ -127,16 +127,14 @@ class DatabaseHelper {
       //それぞれのidの型を指定する必要がある($id 型)の形で指定
       //データベースを再生成するときは１行下のプログラム実行しないといけない
       //await db.execute('DROP TABLE IF EXISTS my_table');
-      // チャットタイムテーブルの作成
+      // チャットテーブルの作成
       await db.execute('''
       CREATE TABLE $chat_table (
         $columnChatId INTEGER PRIMARY KEY,
         $columnChatSender TEXT NOT NULL,
         $columnChatTodo TEXT NOT NULL,
         $columnChatMessage TEXT,
-        $columnStartActionId INTEGER,
-        $columnChatMessageId INTEGER,
-        FOREIGN KEY($columnStartActionId) REFERENCES $action_table($columnActionId)
+        $columnChatMessageId INTEGER
       )
     ''');
 
@@ -147,7 +145,8 @@ class DatabaseHelper {
         $columnActionTitle TEXT,
         $columnActionState TEXT NOT NULL,
         $columnActionNotes TEXT,
-        $columnActionScore INTEGER CHECK ($columnActionScore >= 1 AND $columnActionScore <= 5)
+        $columnActionScore INTEGER CHECK ($columnActionScore >= 1 AND $columnActionScore <= 5),
+        $columnStartChatId INTEGER
       )
     ''');
 
