@@ -8,7 +8,7 @@ import '/utils/register_chat_table.dart';
 import '/utils/register_action_table.dart';
 import '/utils/register_media_table.dart';
 //import '/utils/register_tag_table.dart';
-import '/utils/register_tag_setting_table.dart';
+//import '/utils/register_tag_setting_table.dart';
 import '/utils/register_action_time_table.dart';
 import '/utils/register_chat_time_table.dart';
 import '/utils/text_formatter.dart';
@@ -115,17 +115,17 @@ class DrawChatObjects {
     }
 
     // 時間を記録する変数たちを定義
-    final int chatYear = DateTime.now().year;
-    final int chatMonth = DateTime.now().month;
-    final int chatDay = DateTime.now().day;
-    final int chatHours = DateTime.now().hour;
-    final int chatMinutes = DateTime.now().minute;
-    final int chatSeconds = DateTime.now().second;
-    final double lessChatSeconds = DateTime.now().microsecond.toDouble();
+    final int chatYear = DateTime.now().year; // 年を取得
+    final int chatMonth = DateTime.now().month; // 月を取得
+    final int chatDay = DateTime.now().day; // 日を取得
+    final int chatHours = DateTime.now().hour;  // 時を取得
+    final int chatMinutes = DateTime.now().minute;  // 分を取得
+    final int chatSeconds = DateTime.now().second;  //　秒を取得
+    final double lessChatSeconds = DateTime.now().microsecond.toDouble(); // 秒未満を取得
 
     // チャットタイムテーブルデバッグ用
     RegisterChatTimeTable registerChatTimeTable = RegisterChatTimeTable(
-      chatId: null,
+      chatId: 1,
       chatYear: chatYear,
       chatMonth: chatMonth,
       chatDay: chatDay,
@@ -148,13 +148,13 @@ class DrawChatObjects {
       registerActionTable.registerActionTableFunc();
 
       // 時間を記録する変数たちを定義
-      final int actionYear = DateTime.now().year;
-      final int actionMonth = DateTime.now().month;
-      final int actionDay = DateTime.now().day;
-      final int actionHours = DateTime.now().hour;
-      final int actionMinutes = DateTime.now().minute;
-      final int actionSeconds = DateTime.now().second;
-      final double lessActionSeconds = DateTime.now().microsecond.toDouble();
+      final int actionYear = DateTime.now().year; // 年を取得
+      final int actionMonth = DateTime.now().month; // 月を取得
+      final int actionDay = DateTime.now().day; // 日を取得
+      final int actionHours = DateTime.now().hour;  // 時を取得
+      final int actionMinutes = DateTime.now().minute;  // 分を取得
+      final int actionSeconds = DateTime.now().second;  // 秒を取得
+      final double lessActionSeconds = DateTime.now().microsecond.toDouble(); // 秒未満を取得
 
       // アクションタイムテーブルデバッグ用
       RegisterActionTimeTable registerActionTimeTable = RegisterActionTimeTable(

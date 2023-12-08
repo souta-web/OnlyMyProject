@@ -2,15 +2,15 @@ import 'database_helper.dart';
 
 // チャットタイムテーブル登録汎用クラス
 class RegisterChatTimeTable {
-  final int? chatTimeId;  // チャットタイムID
-  final int? chatId;  // チャットID
-  final int? chatYear;  // 年
+  final int? chatTimeId; // チャットタイムID
+  final int? chatId; // チャットID
+  final int? chatYear; // 年
   final int? chatMonth; // 月
   final int? chatDay; // 日
   final int? chatHours; // 時
   final int? chatMinutes; // 分
   final int? chatSeconds; // 秒
-  final double? lessChatSeconds;  // 秒未満
+  final double? lessChatSeconds; // 秒未満
 
   RegisterChatTimeTable({
     this.chatTimeId,
@@ -33,7 +33,9 @@ class RegisterChatTimeTable {
     final List<Map<String, dynamic>> chatRows =
         await dbHelper.queryAllRows_chat_table();
     if (chatRows.isEmpty) return;
-    final int chatId = chatRows[0]['_chat_id'];
+
+    // ここでチャットIDを取得
+    final int? chatId = chatRows.first['_chat_id'];   
 
     final Map<String, dynamic> chatTimeRow = {
       DatabaseHelper.columnChatTimeId: chatTimeId,
