@@ -134,7 +134,7 @@ class DrawChatObjects {
       chatSeconds: chatSeconds,
       lessChatSeconds: lessChatSeconds,
     );
-    registerChatTimeTable.registerChatTimeTableFunc();
+    registerChatTimeTable.registerChatTimeTableFunc(isTodo);
 
     // トグルボタンがオンの時アクションを登録する
     if (isTodo) {
