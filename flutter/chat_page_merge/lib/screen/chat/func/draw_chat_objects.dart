@@ -124,8 +124,9 @@ class DrawChatObjects {
     final double lessChatSeconds = DateTime.now().microsecond.toDouble(); // 秒未満を取得
 
     // チャットタイムテーブルデバッグ用
-    RegisterChatTimeTable registerChatTimeTable = RegisterChatTimeTable(
-      chatId: 1,
+    if(_registerChatTable.chatId != null) {
+      RegisterChatTimeTable registerChatTimeTable = RegisterChatTimeTable(
+      chatId: _registerChatTable.chatId,
       chatYear: chatYear,
       chatMonth: chatMonth,
       chatDay: chatDay,
@@ -133,8 +134,10 @@ class DrawChatObjects {
       chatMinutes: chatMinutes,
       chatSeconds: chatSeconds,
       lessChatSeconds: lessChatSeconds,
-    );
-    registerChatTimeTable.registerChatTimeTableFunc(isTodo);
+      );
+      registerChatTimeTable.registerChatTimeTableFunc(isTodo);
+    }
+    
 
     // トグルボタンがオンの時アクションを登録する
     if (isTodo) {
