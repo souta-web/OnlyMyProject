@@ -93,13 +93,13 @@ class DrawChatObjects {
     // imageBytesリストから画像データをコピーして保持する
     final List<Uint8List> copiedImages = List.from(imageBytes ?? []);
     // チャットをデータベースに登録する
-    RegisterChatTable _registerChatTable = RegisterChatTable(
+    RegisterChatTable registerChatTable = RegisterChatTable(
       chatSender: 'true',
       chatMessage: chatText,
       chatTodo: isTodo.toString(),
       chatMessageId: 0,
     );
-    _registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
+    registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
 
     // 画像をメディアテーブルに保存
     if (imageBytes != null && imageBytes.isNotEmpty) {
@@ -122,21 +122,20 @@ class DrawChatObjects {
     final int chatMinutes = DateTime.now().minute;  // 分を取得
     final int chatSeconds = DateTime.now().second;  //　秒を取得
     final double lessChatSeconds = DateTime.now().microsecond.toDouble(); // 秒未満を取得
-
+    
     // チャットタイムテーブルデバッグ用
-    if(_registerChatTable.chatId != null) {
-      RegisterChatTimeTable registerChatTimeTable = RegisterChatTimeTable(
-      chatId: _registerChatTable.chatId,
-      chatYear: chatYear,
-      chatMonth: chatMonth,
-      chatDay: chatDay,
-      chatHours: chatHours,
-      chatMinutes: chatMinutes,
-      chatSeconds: chatSeconds,
-      lessChatSeconds: lessChatSeconds,
-      );
-      registerChatTimeTable.registerChatTimeTableFunc(isTodo);
-    }
+    RegisterChatTimeTable registerChatTimeTable = RegisterChatTimeTable(
+    chatId: registerChatTable.chatId,
+    chatYear: chatYear,
+    chatMonth: chatMonth,
+    chatDay: chatDay,
+    chatHours: chatHours,
+    chatMinutes: chatMinutes,
+    chatSeconds: chatSeconds,
+    lessChatSeconds: lessChatSeconds,
+    );
+    registerChatTimeTable.registerChatTimeTableFunc(isTodo);
+    
     
 
     // トグルボタンがオンの時アクションを登録する

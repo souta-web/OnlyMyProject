@@ -1,6 +1,5 @@
 import 'database_helper.dart';
 
-// チャットタイムテーブル登録汎用クラス
 class RegisterChatTimeTable {
   final int? chatTimeId; // チャットタイムID
   final int? chatId; // チャットID
@@ -30,22 +29,23 @@ class RegisterChatTimeTable {
     print('これからチャットタイムテーブルに登録');
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
 
-    late int setChatId;
-
     final List<Map<String, dynamic>> chatRow =
         await dbHelper.queryAllRows_chat_table();
-    
+    print('チャットテーブルから取得したデータ: $chatRow[$chatId]');
+
+    late int chatIdFromChatTable; // 初期値として 1 を設定
+
     if (chatRow.isNotEmpty) {
-      // データベースが存在する場合、SetChatIdとchatIdの値を同じにする
-      setChatId = chatRow.first['_chat_id'];
+      // チャットテーブルから最新のデータを取得
+      chatRow.sort((a, b) => b['_chat_id'].compareTo(a['_chat_id']));
+      chatIdFromChatTable = chatRow.last['_chat_id'];
     } else {
-      // データベースが存在しない場合、SetChatIdに新しい値を挿入する
-      setChatId = await dbHelper.insert_chat_table({'_chat_id': null}); // 適切な初期値を挿入する必要があります
+      chatIdFromChatTable = 1;
     }
 
     final Map<String, dynamic> chatTimeRow = {
       DatabaseHelper.columnChatTimeId: chatTimeId,
-      DatabaseHelper.columnSetChatId: setChatId,
+      DatabaseHelper.columnSetChatId: chatIdFromChatTable,
       DatabaseHelper.columnChatYear: chatYear,
       DatabaseHelper.columnChatMonth: chatMonth,
       DatabaseHelper.columnChatDay: chatDay,
@@ -56,6 +56,8 @@ class RegisterChatTimeTable {
     };
 
     await dbHelper.insert_chat_time_table(chatTimeRow);
+
+    print('チャットテーブルのデータ：$chatRow');
 
     // デバッグ用データ表示プログラム
     final List<Map<String, dynamic>> allRows =

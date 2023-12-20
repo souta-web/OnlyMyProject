@@ -15,8 +15,16 @@ class RestoreChatHistory {
         await dbHelper.queryAllRows_chat_table(); // データベースからチャット履歴を取得する
     final List<Map<String, dynamic>> actionHistory =
         await dbHelper.queryAllRows_action_table(); // データベースからアクションを取得する
+    final List<Map<String, dynamic>> tagHistory =
+        await dbHelper.queryAllRows_tag_table(); // データベースからタグを取得する
     final List<Map<String, dynamic>> mediaHistory =
         await dbHelper.queryAllRows_media_table(); // データベースから画像を取得する
+    final List<Map<String, dynamic>> tagSettingHistory =
+        await dbHelper.queryAllRows_tag_setting_table(); // データベースからタグ設定情報を取得する
+    final List<Map<String, dynamic>> actionTimeHistory = await dbHelper
+        .queryAllRows_action_time_table(); // データベースからアクションタイムを取得する
+    final List<Map<String, dynamic>> chatTimeHistory =
+        await dbHelper.queryAllRows_chat_time_table(); // データベースからチャットタイムを取得する
 
     DrawChatObjects drawChatObjects =
         DrawChatObjects(); // チャットメッセージをウィジェットに変換する
@@ -26,10 +34,14 @@ class RestoreChatHistory {
     late bool _isTodo;
     late String _chatText;
     late bool _isUser;
-    late String _mainTag;
+    late String _tagName;
     late String _startTime;
-    late bool _isActionFinished;
+    late bool _isActionState;
     late List<Uint8List>? _mediaList;
+    late int _chatHours;
+    late int _chatMinutes;
+    late int _actionHours;
+    late int _actionMinutes;
 
     // チャット履歴を処理してウィジェットを生成し、_messagesと_actionsに追加する
     for (var chat in chatHistory) {
@@ -46,20 +58,19 @@ class RestoreChatHistory {
           (action) => action['action_id'] != action['action_chat_id'],
           orElse: () => <String, dynamic>{}, // 空のマップを返す,
         );
-        _mainTag = actionData['action_main_tag'] ?? "null";
-        _isActionFinished = actionData['action_end'] == "true" ? true : false;
+        _tagName = actionData['action_main_tag'] ?? "null";
+        _isActionState = actionData['action_end'] == "true" ? true : false;
       }
 
       // メディアテーブルからデータを取得する
       // データの取得はmediaHistoryから行う
       _mediaList = [];
       for (int i = 0; i < _mediaList.length; i++) {
-        final Uint8List? media = mediaHistory[i+1]['media_0$i'];
+        final Uint8List? media = mediaHistory[i + 1]['media_0$i'];
         if (media != null) {
           _mediaList.add(media);
         }
       }
-
 
       // メディアテーブルからデータを取得し、media01～04までのデータを取得する
 
@@ -67,9 +78,9 @@ class RestoreChatHistory {
         isTodo: _isTodo,
         chatText: _chatText,
         isUser: _isUser,
-        mainTag: _mainTag,
+        mainTag: _tagName,
         startTime: drawTime,
-        isActionFinished: _isActionFinished,
+        isActionFinished: _isActionState,
         imageList: _mediaList,
       );
 
