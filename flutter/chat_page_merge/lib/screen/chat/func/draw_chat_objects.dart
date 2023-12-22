@@ -56,7 +56,7 @@ class DrawChatObjects {
       } else {
         // 画像を実体化して表示
         CreateImages createImages =
-            CreateImages(text: chatText, images: imageList);
+            CreateImages(text: chatText, images: imageList, time: startTime);
         return createImages;
       }
     } else {
@@ -107,7 +107,7 @@ class DrawChatObjects {
         RegisterMediaTable registerMediaTable = RegisterMediaTable(
           media: imageByte,
         );
-        print("メディアデータ:$imageBytes");
+        //print("メディアデータ:$imageBytes");
         registerMediaTable.registerMediaTableFunc();
       }
       // 前回の画像が保持されないようにクリアする
@@ -160,7 +160,7 @@ class DrawChatObjects {
 
       // アクションタイムテーブルデバッグ用
       RegisterActionTimeTable registerActionTimeTable = RegisterActionTimeTable(
-        actionId: null,
+        actionId: registerActionTable.actionId,
         actionJudgeTime: isTodo.toString(),
         actionYear: actionYear,
         actionMonth: actionMonth,

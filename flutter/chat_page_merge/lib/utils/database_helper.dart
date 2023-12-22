@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 
 class DatabaseHelper {
   // デバッグ時はDB名を変えてよい
-  static final _databaseName = "tempDatabase49.db"; // DB名
+  static final _databaseName = "tempDatabase72.db"; // DB名
   static final _databaseVersion = 1; // スキーマのバージョン指定
 
   static final chat_table = 'chat_table'; // チャット管理テーブル
@@ -128,7 +128,8 @@ class DatabaseHelper {
       //データベースを再生成するときは１行下のプログラム実行しないといけない
       //await db.execute('DROP TABLE IF EXISTS my_table');
       // チャットテーブルの作成
-      await db.execute('''
+      await db.execute(
+          '''
       CREATE TABLE $chat_table (
         $columnChatId INTEGER PRIMARY KEY,
         $columnChatSender TEXT NOT NULL,
@@ -139,7 +140,8 @@ class DatabaseHelper {
     ''');
 
       // アクションテーブルの作成
-      await db.execute('''
+      await db.execute(
+          '''
       CREATE TABLE $action_table (
         $columnActionId INTEGER PRIMARY KEY,
         $columnActionTitle TEXT,
@@ -151,7 +153,8 @@ class DatabaseHelper {
     ''');
 
       // タグテーブルの作成
-      await db.execute('''
+      await db.execute(
+          '''
       CREATE TABLE $tag_table (
         $columnTagId INTEGER PRIMARY KEY,
         $columnTagName TEXT,
@@ -161,7 +164,8 @@ class DatabaseHelper {
     ''');
 
       // メディアテーブルの作成
-      await db.execute('''
+      await db.execute(
+          '''
       CREATE TABLE $media_table (
         $columnMediaId INTEGER PRIMARY KEY,
         $columnMedia BLOB NOT NULL,
@@ -173,7 +177,8 @@ class DatabaseHelper {
     ''');
 
       // タグ設定テーブルの作成
-      await db.execute('''
+      await db.execute(
+          '''
       CREATE TABLE $tag_setting_table (
         $columnTagActionId INTEGER,
         $columnSetTagId INTEGER,
@@ -185,7 +190,8 @@ class DatabaseHelper {
   ''');
 
       // アクションタイムテーブルの作成
-      await db.execute('''
+      await db.execute(
+          '''
       CREATE TABLE $action_time_table (
         $columnActionTimeId INTEGER PRIMARY KEY,
         $columnSetActionId INTEGER NOT NULL,
@@ -202,7 +208,8 @@ class DatabaseHelper {
   ''');
 
       // チャットタイムテーブルの作成
-      await db.execute('''
+      await db.execute(
+          '''
       CREATE TABLE $chat_time_table (
         $columnChatTimeId INTEGER PRIMARY KEY,
         $columnSetChatId INTEGER NOT NULL,
@@ -454,9 +461,13 @@ class DatabaseHelper {
   //　更新処理
   Future<int> update_chat_time_table(Map<String, dynamic> row, int id) async {
     Database? db = await instance.database;
-    int id = row[columnChatTimeId];
+    if (row['$columnChatTimeId'] != null) {
+      await db!.update(chat_time_table, row,
+          where: '$columnChatTimeId = ?', whereArgs: [id]);
+    }
+
     return await db!.update(chat_time_table, row,
-        where: '$columnChatTimeId = ?', whereArgs: [id]);
+          where: '$columnChatTimeId = ?', whereArgs: [id]);
   }
 
   //　削除処理

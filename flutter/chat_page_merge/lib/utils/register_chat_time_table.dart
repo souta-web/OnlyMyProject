@@ -30,22 +30,34 @@ class RegisterChatTimeTable {
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
 
     final List<Map<String, dynamic>> chatRow =
-        await dbHelper.queryAllRows_chat_table();
-    print('チャットテーブルから取得したデータ: $chatRow[$chatId]');
+        (await dbHelper.queryAllRows_chat_table());
+    print('チャットテーブルから取得したデータ: $chatRow');
 
-    late int chatIdFromChatTable; // 初期値として 1 を設定
+    await insertChatTimeTable();
 
-    if (chatRow.isNotEmpty) {
-      // チャットテーブルから最新のデータを取得
-      chatRow.sort((a, b) => b['_chat_id'].compareTo(a['_chat_id']));
-      chatIdFromChatTable = chatRow.last['_chat_id'];
-    } else {
-      chatIdFromChatTable = 1;
-    }
+    print('チャットテーブルのデータ：$chatRow');
+
+    // デバッグ用データ表示プログラム
+    final List<Map<String, dynamic>> allRows =
+        await dbHelper.queryAllRows_chat_time_table();
+    print('チャットタイムテーブルの全てのデータを照会しました。');
+    allRows.forEach(print);
+  }
+
+  // 新しいchatIdでchat_time_tableにデータを挿入する関数
+  Future<void> insertChatTimeTable() async {
+    // データベースヘルパーのインスタンス生成
+    final DatabaseHelper dbHelper = DatabaseHelper.instance;
+
+    // チャットタイムテーブルのデータを照会するリスト
+    final List<Map<String, dynamic>> chatRow = await dbHelper.queryAllRows_chat_time_table();
+
+    // チャットタイムテーブルとチャットテーブルを紐づけるIDを定義
+    late int chatId = chatRow.isNotEmpty ? (chatRow.last['_chat_time_id'] ?? 0) + 1 : 1;
 
     final Map<String, dynamic> chatTimeRow = {
       DatabaseHelper.columnChatTimeId: chatTimeId,
-      DatabaseHelper.columnSetChatId: chatIdFromChatTable,
+      DatabaseHelper.columnSetChatId: chatId,
       DatabaseHelper.columnChatYear: chatYear,
       DatabaseHelper.columnChatMonth: chatMonth,
       DatabaseHelper.columnChatDay: chatDay,
@@ -56,13 +68,5 @@ class RegisterChatTimeTable {
     };
 
     await dbHelper.insert_chat_time_table(chatTimeRow);
-
-    print('チャットテーブルのデータ：$chatRow');
-
-    // デバッグ用データ表示プログラム
-    final List<Map<String, dynamic>> allRows =
-        await dbHelper.queryAllRows_chat_time_table();
-    print('チャットタイムテーブルの全てのデータを照会しました。');
-    allRows.forEach(print);
   }
 }
