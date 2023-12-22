@@ -45,15 +45,17 @@ class RegisterChatTimeTable {
   }
 
   // 新しいchatIdでchat_time_tableにデータを挿入する関数
-  Future<void> insertChatTimeTable() async {
+  Future<Map<String, dynamic>> insertChatTimeTable() async {
     // データベースヘルパーのインスタンス生成
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
 
     // チャットタイムテーブルのデータを照会するリスト
-    final List<Map<String, dynamic>> chatRow = await dbHelper.queryAllRows_chat_time_table();
+    final List<Map<String, dynamic>> chatRow =
+        await dbHelper.queryAllRows_chat_time_table();
 
     // チャットタイムテーブルとチャットテーブルを紐づけるIDを定義
-    late int chatId = chatRow.isNotEmpty ? (chatRow.last['_chat_time_id'] ?? 0) + 1 : 1;
+    late int chatId =
+        chatRow.isNotEmpty ? (chatRow.last['_chat_time_id'] ?? 0) + 1 : 1;
 
     final Map<String, dynamic> chatTimeRow = {
       DatabaseHelper.columnChatTimeId: chatTimeId,
@@ -68,5 +70,7 @@ class RegisterChatTimeTable {
     };
 
     await dbHelper.insert_chat_time_table(chatTimeRow);
+
+    return chatTimeRow;
   }
 }

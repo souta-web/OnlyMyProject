@@ -101,18 +101,7 @@ class DrawChatObjects {
     );
     registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
 
-    // 画像をメディアテーブルに保存
-    if (imageBytes != null && imageBytes.isNotEmpty) {
-      for (Uint8List imageByte in imageBytes) {
-        RegisterMediaTable registerMediaTable = RegisterMediaTable(
-          media: imageByte,
-        );
-        //print("メディアデータ:$imageBytes");
-        registerMediaTable.registerMediaTableFunc();
-      }
-      // 前回の画像が保持されないようにクリアする
-      imageBytes.clear();
-    }
+    
 
     // 時間を記録する変数たちを定義
     final int chatYear = DateTime.now().year; // 年を取得
@@ -136,11 +125,11 @@ class DrawChatObjects {
     );
     registerChatTimeTable.registerChatTimeTableFunc(isTodo);
     
-    
+    late RegisterActionTable registerActionTable = RegisterActionTable();
 
     // トグルボタンがオンの時アクションを登録する
     if (isTodo) {
-      RegisterActionTable registerActionTable = RegisterActionTable(
+      registerActionTable = RegisterActionTable(
         actionTitle: chatText,
         actionState: _actionState,
         actionNotes: "あいうえお",
@@ -176,6 +165,21 @@ class DrawChatObjects {
       //   mainTagFlag: 'false',
       // );
       // registerTagSettingTable.registerTagSettingTableFunc();
+    }
+
+    // 画像をメディアテーブルに保存
+    if (imageBytes != null && imageBytes.isNotEmpty) {
+      for (Uint8List imageByte in imageBytes) {
+        RegisterMediaTable registerMediaTable = RegisterMediaTable(
+          media: imageByte,
+          mediaChatId: registerChatTable.chatId,
+          linkActionId: registerActionTable.actionId,
+        );
+        //print("メディアデータ:$imageBytes");
+        registerMediaTable.registerMediaTableFunc();
+      }
+      // 前回の画像が保持されないようにクリアする
+      imageBytes.clear();
     }
 
     controller.clear(); //テキストフィールドのクリア

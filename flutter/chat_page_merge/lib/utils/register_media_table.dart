@@ -22,17 +22,25 @@ class RegisterMediaTable {
     final DatabaseHelper dbHelper =
         DatabaseHelper.instance; // DatabaseHelperのインスタンス生成
 
-    // チャットテーブルから有効なチャットIDを取得
-    final List<Map<String, dynamic>> chatRows =
-        await dbHelper.queryAllRows_chat_table();
-    if (chatRows.isEmpty) return;
-    final int mediaChatId = chatRows[0]['_chat_id'];
+    await insertMediaTable();
 
-    // アクションテーブルから有効なアクションID取得
-    final List<Map<String, dynamic>> actionRows =
-        await dbHelper.queryAllRows_action_table();
-    if (actionRows.isEmpty) return;
-    final int linkActionId = actionRows[0]['_action_id'];
+    // デバッグ用データ表示プログラム
+    final List<Map<String, dynamic>> allRows =
+        await dbHelper.queryAllRows_media_table();
+    print('全てのデータを照会しました。');
+    allRows.forEach(print);
+  }
+
+  Future<Map<String, dynamic>> insertMediaTable() async {
+    final DatabaseHelper dbHelper = DatabaseHelper.instance;
+
+    final List<Map<String, dynamic>> row =
+        await dbHelper.queryAllRows_media_table();
+
+    late int mediaChatId =
+        row.isNotEmpty ? (row.last['_media_chat_id'] ?? 0) + 1 : 1;
+    late int linkActionId =
+        row.isNotEmpty ? (row.last['_link_action_id'] ?? 0) + 1 : 1;
 
     final Map<String, dynamic> mediaRow = {
       DatabaseHelper.columnMediaId: mediaId,
@@ -41,12 +49,9 @@ class RegisterMediaTable {
       DatabaseHelper.columnLinkActionId: linkActionId,
     };
 
+    print('$mediaChatId');
+    print('$linkActionId');
     await dbHelper.insert_media_table(mediaRow); // メディアテーブル登録関数の実行
-
-    // デバッグ用データ表示プログラム
-    final List<Map<String, dynamic>> allRows =
-        await dbHelper.queryAllRows_media_table();
-    print('全てのデータを照会しました。');
-    allRows.forEach(print);
+    return mediaRow;
   }
 }

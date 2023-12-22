@@ -48,7 +48,7 @@ class RegisterActionTimeTable {
   }
 
   // 新しいactionIdでaction_time_tableにデータを挿入する関数
-  Future<void> insertActionTimeTable() async {
+  Future<Map<String, dynamic>> insertActionTimeTable() async {
     // databaseHelperのインスタンス生成
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
 
@@ -57,9 +57,8 @@ class RegisterActionTimeTable {
         await dbHelper.queryAllRows_action_time_table();
 
     // アクションタイムテーブルとアクションテーブルを紐づけるIDを定義
-    late int actionId = actionRow.isNotEmpty
-        ? (actionRow.last['_action_time_id'] ?? 0) + 1
-        : 1;
+    late int actionId =
+        actionRow.isNotEmpty ? (actionRow.last['_action_time_id'] ?? 0) + 1 : 1;
 
     final Map<String, dynamic> actionTimeRow = {
       DatabaseHelper.columnActionTimeId: actionTimeId,
@@ -75,5 +74,7 @@ class RegisterActionTimeTable {
     };
 
     await dbHelper.insert_action_time_table(actionTimeRow);
+
+    return actionTimeRow;
   }
 }
