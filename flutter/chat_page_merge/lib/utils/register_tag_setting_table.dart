@@ -17,39 +17,29 @@ class RegisterTagSettingTable {
     print('これからタグ設定テーブルに登録');
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
 
-    // アクションテーブルから有効なアクションIDを取得
-    final List<Map<String, dynamic>> actionRows =
-        await dbHelper.queryAllRows_action_table();
-    print('アクションテーブルから取得したデータ: $actionRows');
-    if (actionRows.isEmpty) {
-      print('アクションテーブルに有効な行がありません');
-      return;
-    }
-    final int actionId = actionRows.isNotEmpty ? actionRows[0]['_action_id'] : 0; // リストが空の時は0を代入する
-
-    // タグテーブルから有効なタグIDを取得
-    final List<Map<String, dynamic>> tagRows =
-        await dbHelper.queryAllRows_tag_table();
-    print('タグテーブルから取得したデータ: $tagRows');
-    if (tagRows.isEmpty) {
-      print('タグテーブルに有効な行がありません');
-      return;
-    }
-    final int tagId = tagRows.isNotEmpty ? tagRows[0]['_tag_id'] : 0; // リストが空の時は0を代入する
-    final Map<String, dynamic> tagSettingRow = {
-      DatabaseHelper.columnTagActionId: actionId,
-      DatabaseHelper.columnSetTagId: tagId,
-      DatabaseHelper.columnMainTagFlag: mainTagFlag,
-    };
-
-    final int insertRowId =
-        await dbHelper.insert_tag_setting_table(tagSettingRow);
-    print('挿入された行のID: $insertRowId');
+    await insertTagSettingTable(dbHelper);
 
     // デバッグ用データ表示プログラム
     final List<Map<String, dynamic>> allRows =
         await dbHelper.queryAllRows_tag_setting_table();
     print('全てのデータを照会しました。');
     allRows.forEach(print);
+  }
+
+  Future<Map<String, dynamic>> insertTagSettingTable(DatabaseHelper dbHelper) async {
+    final List<Map<String, dynamic>> row =
+        await dbHelper.queryAllRows_tag_setting_table();
+
+    late int actionId = row.isNotEmpty ? (row.last['_tag_action_id'] ?? 0) + 1 : 1;
+    late int tagId = row.isNotEmpty ? (row.last['_set_tag_id'] ?? 0) + 1 : 1;
+
+    final Map<String, dynamic> tagSettingRow = {
+      DatabaseHelper.columnTagActionId: actionId,
+      DatabaseHelper.columnSetTagId: tagId,
+      DatabaseHelper.columnMainTagFlag: mainTagFlag,
+    };
+    await dbHelper.insert_tag_setting_table(tagSettingRow);
+
+    return tagSettingRow;
   }
 }

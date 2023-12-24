@@ -36,7 +36,7 @@ class RegisterActionTimeTable {
         await dbHelper.queryAllRows_action_table();
     print('アクションテーブルから取得したデータ: $actionRows');
 
-    await insertActionTimeTable();
+    await insertActionTimeTable(dbHelper);
 
     print('アクションテーブルのデータ：$actionRows');
 
@@ -48,17 +48,13 @@ class RegisterActionTimeTable {
   }
 
   // 新しいactionIdでaction_time_tableにデータを挿入する関数
-  Future<Map<String, dynamic>> insertActionTimeTable() async {
-    // databaseHelperのインスタンス生成
-    final DatabaseHelper dbHelper = DatabaseHelper.instance;
-
+  Future<Map<String, dynamic>> insertActionTimeTable(DatabaseHelper dbHelper) async {
+    
     // アクションタイムテーブルのデータを照会するリスト
-    final List<Map<String, dynamic>> actionRow =
-        await dbHelper.queryAllRows_action_time_table();
+    final List<Map<String, dynamic>> actionRow = await dbHelper.queryAllRows_action_time_table();
 
     // アクションタイムテーブルとアクションテーブルを紐づけるIDを定義
-    late int actionId =
-        actionRow.isNotEmpty ? (actionRow.last['_action_time_id'] ?? 0) + 1 : 1;
+    late int actionId = actionRow.isNotEmpty ? (actionRow.last['_action_time_id'] ?? 0) + 1 : 1;
 
     final Map<String, dynamic> actionTimeRow = {
       DatabaseHelper.columnActionTimeId: actionTimeId,

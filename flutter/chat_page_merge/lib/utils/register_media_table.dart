@@ -22,7 +22,7 @@ class RegisterMediaTable {
     final DatabaseHelper dbHelper =
         DatabaseHelper.instance; // DatabaseHelperのインスタンス生成
 
-    await insertMediaTable();
+    await insertMediaTable(dbHelper);
 
     // デバッグ用データ表示プログラム
     final List<Map<String, dynamic>> allRows =
@@ -31,16 +31,12 @@ class RegisterMediaTable {
     allRows.forEach(print);
   }
 
-  Future<Map<String, dynamic>> insertMediaTable() async {
-    final DatabaseHelper dbHelper = DatabaseHelper.instance;
+  Future<Map<String, dynamic>> insertMediaTable(DatabaseHelper dbHelper) async {
 
-    final List<Map<String, dynamic>> row =
-        await dbHelper.queryAllRows_media_table();
+    final List<Map<String, dynamic>> row = await dbHelper.queryAllRows_media_table();
 
-    late int mediaChatId =
-        row.isNotEmpty ? (row.last['_media_chat_id'] ?? 0) + 1 : 1;
-    late int linkActionId =
-        row.isNotEmpty ? (row.last['_link_action_id'] ?? 0) + 1 : 1;
+    late int mediaChatId = row.isNotEmpty ? (row.last['_media_chat_id'] ?? 0) + 1 : 1;
+    late int linkActionId = row.isNotEmpty ? (row.last['_link_action_id'] ?? 0) + 1 : 1;
 
     final Map<String, dynamic> mediaRow = {
       DatabaseHelper.columnMediaId: mediaId,

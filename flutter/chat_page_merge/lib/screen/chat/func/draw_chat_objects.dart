@@ -7,8 +7,8 @@ import '/widget/create_images.dart';
 import '/utils/register_chat_table.dart';
 import '/utils/register_action_table.dart';
 import '/utils/register_media_table.dart';
-//import '/utils/register_tag_table.dart';
-//import '/utils/register_tag_setting_table.dart';
+import '/utils/register_tag_table.dart';
+import '/utils/register_tag_setting_table.dart';
 import '/utils/register_action_time_table.dart';
 import '/utils/register_chat_time_table.dart';
 import '/utils/text_formatter.dart';
@@ -50,13 +50,13 @@ class DrawChatObjects {
       if (imageList.isEmpty) {
         // チャットメッセージの表示
         ChatMessage message = ChatMessage(
-            text: chatText, isSentByUser: isUser, time: startTime); // 返答側のメッセージ
+            text: "$chatTextを開始", isSentByUser: isUser, time: startTime); // 返答側のメッセージ
 
         return message;
       } else {
         // 画像を実体化して表示
         CreateImages createImages =
-            CreateImages(text: chatText, images: imageList, time: startTime);
+            CreateImages(text: "$chatTextを開始", images: imageList, time: startTime);
         return createImages;
       }
     } else {
@@ -160,11 +160,21 @@ class DrawChatObjects {
         lessActionSeconds: lessActionSeconds,
       );
       registerActionTimeTable.registerActionTimeTableFunc();
+
+      RegisterTagTable registerTagTable = RegisterTagTable(
+      tagName: mainTag,
+      tagColor: 1,
+      tagIcon: 'デバッグ中',
+      );
+      registerTagTable.registerTagTableFunc();
       // // タグ設定テーブルデバッグ用
-      // RegisterTagSettingTable registerTagSettingTable = RegisterTagSettingTable(
-      //   mainTagFlag: 'false',
-      // );
-      // registerTagSettingTable.registerTagSettingTableFunc();
+      RegisterTagSettingTable registerTagSettingTable = RegisterTagSettingTable(
+        actionId: registerActionTable.actionId,
+        tagId: registerTagTable.tagId,
+        mainTagFlag: 'false',
+        
+      );
+      registerTagSettingTable.registerTagSettingTableFunc();
     }
 
     // 画像をメディアテーブルに保存
@@ -183,14 +193,6 @@ class DrawChatObjects {
     }
 
     controller.clear(); //テキストフィールドのクリア
-
-    // テスト用に各登録プログラムを記述
-    // RegisterTagTable registerTagTable = RegisterTagTable(
-    //   tagName: mainTag,
-    //   tagColor: 1,
-    //   tagIcon: 'デバッグ中',
-    // );
-    // registerTagTable.registerTagTableFunc();
 
     // 吹き出し及びアクションの表示
     // 吹き出しクラスの引数を受け取れるように変更
