@@ -21,11 +21,10 @@ class RegisterChatTable {
     print("これからチャットテーブルに登録");
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
 
-    // アクションテーブルから有効なアクションIDを取得
-    final List<Map<String, dynamic>> actionRows =
-        await dbHelper.queryAllRows_action_table();
+    final List<Map<String, dynamic>> chatRows =
+       await dbHelper.queryAllRows_chat_table();
 
-    print('アクションテーブルから取得したデータ： $actionRows');
+    late int chatMessageId = chatRows.isNotEmpty ? (chatRows.last['chat_message_id'] ?? 0) + 1 : 1;
 
     Map<String, dynamic> row = {
       DatabaseHelper.columnChatId: chatId,

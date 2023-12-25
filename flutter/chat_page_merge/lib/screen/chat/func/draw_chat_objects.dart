@@ -97,7 +97,6 @@ class DrawChatObjects {
       chatSender: 'true',
       chatMessage: chatText,
       chatTodo: isTodo.toString(),
-      chatMessageId: 0,
     );
     registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
 
@@ -134,7 +133,6 @@ class DrawChatObjects {
         actionState: _actionState,
         actionNotes: "あいうえお",
         actionScore: 5,
-        startChatId: null,
       );
       registerActionTable.registerActionTableFunc();
 
