@@ -23,10 +23,10 @@ class RegisterActionTable {
     print("これからアクションテーブルに登録");
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
 
-    // アクションタイムテーブルのデータを照会するリスト
+    // アクションテーブルのデータを照会するリスト
     final List<Map<String, dynamic>> actionRows = await dbHelper.queryAllRows_action_table();
 
-    // アクションタイムテーブルとアクションテーブルを紐づけるIDを定義
+    // 開始チャットIDを連番で登録できるように変数を定義
     late int startChatId = actionRows.isNotEmpty ? (actionRows.last['start_chat_id'] ?? 0) + 1 : 1;
 
     final Map<String, dynamic> actionRow = {
