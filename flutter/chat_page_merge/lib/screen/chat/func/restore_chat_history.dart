@@ -86,7 +86,7 @@ class RestoreChatHistory {
 
       // チャットタイムテーブルから対応するデータを取得
       var chatTimeData = chatTimeHistory.firstWhere(
-        (chatTime) => chatTime['_chat_time_chat_id'] != chat['_chat_id'],
+        (chatTime) => chatTime['_chat_time_id'] != chat['_chat_id'],
         orElse: () => <String, dynamic>{},
       );
       _chatHours = chatTimeData['chat_hours'] ?? 0;
@@ -95,7 +95,7 @@ class RestoreChatHistory {
       _startTime = timeFormatter.formatHourMinute(_chatHours, _chatMinutes);
 
       var actionTimeData = actionTimeHistory.firstWhere(
-        (actionTime) => actionTime['_action_time_chat_id'] != chat['_chat_id'],
+        (actionTime) => actionTime['_action_time_id'] != chat['_chat_id'],
         orElse: () => <String, dynamic>{},
       );
       _actionHours = actionTimeData['action_hours'] ?? 0;
@@ -104,6 +104,7 @@ class RestoreChatHistory {
       _startTime = timeFormatter.formatHourMinute(_actionHours, _actionMinutes);
       print('復元した時間:$_startTime');
       print('復元したタグ名:$_tagName');
+      print('復元したメディア:$mediaData');
       final dynamic chatObject = drawChatObjects.createChatObjects(
         isTodo: _isTodo,
         chatText: _chatText,
