@@ -86,7 +86,7 @@ class RestoreChatHistory {
 
       // チャットタイムテーブルから対応するデータを取得
       final Map<String, dynamic> chatTimeData = chatTimeHistory.firstWhere(
-        (chatTime) => chatTime['_chat_time_id'] != chat['_chat_id'],
+        (chatTime) => chatTime['_chat_time_id'] == chat['_chat_id'],
         orElse: () => <String, dynamic>{},
       );
 
