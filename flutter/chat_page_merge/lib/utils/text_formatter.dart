@@ -12,7 +12,7 @@ class TextFormatter {
     // 整形された時刻を結合
     String formattedTime = '$formattedHours:$formattedMinutes';
 
-    print("時間:$formattedTime");
+    //print("時間:$formattedTime");
 
     // 整形された時間を返す
     return formattedTime;

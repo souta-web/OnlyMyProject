@@ -50,13 +50,15 @@ class DrawChatObjects {
       if (imageList.isEmpty) {
         // チャットメッセージの表示
         ChatMessage message = ChatMessage(
-            text: "$chatTextを開始", isSentByUser: isUser, time: startTime); // 返答側のメッセージ
+            text: "$chatTextを開始",
+            isSentByUser: isUser,
+            time: startTime); // 返答側のメッセージ
 
         return message;
       } else {
         // 画像を実体化して表示
-        CreateImages createImages =
-            CreateImages(text: "$chatTextを開始", images: imageList, time: startTime);
+        CreateImages createImages = CreateImages(
+            text: "$chatTextを開始", images: imageList, time: startTime);
         return createImages;
       }
     } else {
@@ -76,13 +78,10 @@ class DrawChatObjects {
       bool isUser,
       List<Uint8List>? imageBytes) {
     String mainTag = '生活';
-    String sendTime = DateTime.now().toString(); //日付取得
     TextFormatter timeFormatter = TextFormatter();
-    late String drawTime =
-        timeFormatter.returnHourMinute(sendTime); //登録時間を表示用にする
-    // 送信時間を数値化してchat_action_idとaction_chat_idに登録
-    // late String chatActionLinkId =
-    //     timeFormatter.returnChatActionLinkId(sendTime);
+    late String drawTime;
+    //timeFormatter.returnHourMinute(sendTime); //登録時間を表示用にする
+
     String _actionState = 'false';
 
     if (chatText.isEmpty) {
@@ -100,32 +99,32 @@ class DrawChatObjects {
     );
     registerChatTable.registerChatTableFunc(); // 実際にデータベースに登録
 
-    
-
     // 時間を記録する変数たちを定義
     final int chatYear = DateTime.now().year; // 年を取得
     final int chatMonth = DateTime.now().month; // 月を取得
     final int chatDay = DateTime.now().day; // 日を取得
-    final int chatHours = DateTime.now().hour;  // 時を取得
-    final int chatMinutes = DateTime.now().minute;  // 分を取得
-    final int chatSeconds = DateTime.now().second;  //　秒を取得
-    final double lessChatSeconds = DateTime.now().microsecond.toDouble(); // 秒未満を取得
-    
+    final int chatHours = DateTime.now().hour; // 時を取得
+    final int chatMinutes = DateTime.now().minute; // 分を取得
+    final int chatSeconds = DateTime.now().second; //　秒を取得
+    final double lessChatSeconds =
+        DateTime.now().microsecond.toDouble(); // 秒未満を取得
+
     // チャットタイムテーブルデバッグ用
     RegisterChatTimeTable registerChatTimeTable = RegisterChatTimeTable(
-    chatId: registerChatTable.chatId,
-    chatYear: chatYear,
-    chatMonth: chatMonth,
-    chatDay: chatDay,
-    chatHours: chatHours,
-    chatMinutes: chatMinutes,
-    chatSeconds: chatSeconds,
-    lessChatSeconds: lessChatSeconds,
+      chatId: registerChatTable.chatId,
+      chatYear: chatYear,
+      chatMonth: chatMonth,
+      chatDay: chatDay,
+      chatHours: chatHours,
+      chatMinutes: chatMinutes,
+      chatSeconds: chatSeconds,
+      lessChatSeconds: lessChatSeconds,
     );
     registerChatTimeTable.registerChatTimeTableFunc(isTodo);
-    
-    late RegisterActionTable registerActionTable = RegisterActionTable();
 
+    late RegisterActionTable registerActionTable = RegisterActionTable();
+    drawTime = timeFormatter.formatHourMinute(chatHours, chatMinutes);
+    print("送信時間:$drawTime");
     // トグルボタンがオンの時アクションを登録する
     if (isTodo) {
       registerActionTable = RegisterActionTable(
@@ -140,9 +139,9 @@ class DrawChatObjects {
       final int actionYear = DateTime.now().year; // 年を取得
       final int actionMonth = DateTime.now().month; // 月を取得
       final int actionDay = DateTime.now().day; // 日を取得
-      final int actionHours = DateTime.now().hour;  // 時を取得
-      final int actionMinutes = DateTime.now().minute;  // 分を取得
-      final int actionSeconds = DateTime.now().second;  // 秒を取得
+      final int actionHours = DateTime.now().hour; // 時を取得
+      final int actionMinutes = DateTime.now().minute; // 分を取得
+      final int actionSeconds = DateTime.now().second; // 秒を取得
       final double lessActionSeconds = DateTime.now().microsecond.toDouble(); // 秒未満を取得
 
       // アクションタイムテーブルデバッグ用
@@ -158,11 +157,13 @@ class DrawChatObjects {
         lessActionSeconds: lessActionSeconds,
       );
       registerActionTimeTable.registerActionTimeTableFunc();
+      drawTime = timeFormatter.formatHourMinute(actionHours, actionMinutes);
+      print("アクション送信時間:$drawTime");
 
       RegisterTagTable registerTagTable = RegisterTagTable(
-      tagName: mainTag,
-      tagColor: 1,
-      tagIcon: 'デバッグ中',
+        tagName: mainTag,
+        tagColor: 1,
+        tagIcon: 'デバッグ中',
       );
       registerTagTable.registerTagTableFunc();
       // // タグ設定テーブルデバッグ用
@@ -170,7 +171,6 @@ class DrawChatObjects {
         actionId: registerActionTable.actionId,
         tagId: registerTagTable.tagId,
         mainTagFlag: 'false',
-        
       );
       registerTagSettingTable.registerTagSettingTableFunc();
     }

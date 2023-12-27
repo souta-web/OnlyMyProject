@@ -53,7 +53,7 @@ class RestoreChatHistory {
     late int _actionHours;
     late int _actionMinutes;
 
-    late String _startTime;
+    late String _drawTime;
 
     // チャット履歴を処理してウィジェットを生成し、_messagesと_actionsに追加する
     for (var chat in chatHistory) {
@@ -63,46 +63,49 @@ class RestoreChatHistory {
       _isUser = chat['chat_sender'] == "true" ? true : false;
 
       // 対応するデータをアクションテーブルから取得
-      var actionData = actionHistory.firstWhere(
+      final Map<String, dynamic> actionData = actionHistory.firstWhere(
         (action) => action['_action_id'] != chat['_chat_id'],
         orElse: () => <String, dynamic>{},
       );
       _isActionState = actionData['action_state'] == "true" ? true : false;
 
-      var tagData = tagHistory.firstWhere(
+      final Map<String, dynamic> tagData = tagHistory.firstWhere(
         (tag) => tag['_tag_id'] != chat['_chat_id'],
         orElse: () => <String, dynamic>{},
       );
       _tagName = tagData['tag_name'] ?? "null";
 
-      _startTime = "";
+      // _drawTime = "";
 
       // メディアテーブルから対応するデータを取得
-      var mediaData = mediaHistory.firstWhere(
+      final Map<String, dynamic> mediaData = mediaHistory.firstWhere(
         (media) => media['media_chat_id'] != chat['chat_id'],
         orElse: () => <String, dynamic>{},
       );
       _mediaList = mediaData['media'];
 
       // チャットタイムテーブルから対応するデータを取得
-      var chatTimeData = chatTimeHistory.firstWhere(
+      final Map<String, dynamic> chatTimeData = chatTimeHistory.firstWhere(
         (chatTime) => chatTime['_chat_time_id'] != chat['_chat_id'],
         orElse: () => <String, dynamic>{},
       );
+
       _chatHours = chatTimeData['chat_hours'] ?? 0;
       _chatMinutes = chatTimeData['chat_minutes'] ?? 0;
 
-      _startTime = timeFormatter.formatHourMinute(_chatHours, _chatMinutes);
+      late String _chatTime = timeFormatter.formatHourMinute(_chatHours, _chatMinutes);
 
-      var actionTimeData = actionTimeHistory.firstWhere(
+      final Map<String, dynamic> actionTimeData = actionTimeHistory.firstWhere(
         (actionTime) => actionTime['_action_time_id'] != chat['_chat_id'],
         orElse: () => <String, dynamic>{},
       );
       _actionHours = actionTimeData['action_hours'] ?? 0;
       _actionMinutes = actionTimeData['action_minutes'] ?? 0;
 
-      _startTime = timeFormatter.formatHourMinute(_actionHours, _actionMinutes);
-      print('復元した時間:$_startTime');
+      late String _actionTime = timeFormatter.formatHourMinute(_actionHours, _actionMinutes);
+
+      _drawTime = _isTodo ? _actionTime : _chatTime;
+      print('復元した時間:$_drawTime');
       print('復元したタグ名:$_tagName');
       print('復元したメディア:$mediaData');
       final dynamic chatObject = drawChatObjects.createChatObjects(
@@ -110,7 +113,7 @@ class RestoreChatHistory {
         chatText: _chatText,
         isUser: _isUser,
         mainTag: _tagName,
-        startTime: _startTime,
+        startTime: _drawTime,
         isActionFinished: _isActionState,
         imageList: _mediaList,
       );
