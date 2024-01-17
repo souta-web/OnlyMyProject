@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 
 class TimeLineActionsData extends ChangeNotifier {
+
+  @override
+  void dispose() {
+    TimeLineActionsData().dispose();
+    super.dispose();
+  }
+
   static final TimeLineActionsData _instance = TimeLineActionsData._internal();
 
   factory TimeLineActionsData() {
@@ -59,8 +66,6 @@ class TimeLineActionsData extends ChangeNotifier {
     [{"startTime": "19:00", "endTime": "19:30", "color": Colors.amber, "title": "夕飯"}],
     [{"startTime": "23:00", "endTime": "24:00", "color": Colors.green, "title": "睡眠計測"}],
   ];
-
-
 
   final Map<String, List<List<Map<String, dynamic>>>> schedulesByDate = {
     'y2023m12d01':y2023m12d01,
