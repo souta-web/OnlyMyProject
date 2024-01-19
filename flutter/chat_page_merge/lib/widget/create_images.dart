@@ -14,84 +14,77 @@ class CreateImages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.centerRight,
-      child: Stack(
-        alignment: Alignment.bottomLeft,
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width / 2,
-            margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        _createTimeWidget(time),
+        Flexible(
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0),
             padding: const EdgeInsets.all(10.0),
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 255, 149, 21),
+              color: Color.fromARGB(255, 255, 149, 21), // オレンジの背景色
               borderRadius: const BorderRadius.only(
                 topRight: Radius.circular(10),
                 topLeft: Radius.circular(10),
                 bottomLeft: Radius.circular(10),
               ),
             ),
+            
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
+              children: [
                 Text(
                   text,
                   style: TextStyle(fontSize: 16.0),
                 ),
-                SizedBox(height: 10.0),
-                if (images.length == 1)
-                  Image.memory(
-                    images[0],
-                    width: 150,
-                    height: 150,
-                    fit: BoxFit.cover,
-                  )
-                else
-                  Container(
-                    child: GridView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 10.0,
-                        mainAxisSpacing: 10.0,
-                      ),
-                      itemCount: images.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Image.memory(
-                          images[index],
-                          width: 150,
-                          height: 150,
-                          fit: BoxFit.cover,
-                        );
-                      },
-                    ),
-                  ),
+                const SizedBox(height: 5),
+                images.length == 1
+                ? _createSingleImage(images[0])
+                : _createImageGrid(images),
               ],
-            ),
+            )
           ),
-          Positioned(
-            left: -10,
-            bottom: 0,
-            child: _createTimeWidget(time),
-          ),
-        ],
+        ),
+        const SizedBox(width: 10),  // 右側の隙間
+      ],
+    );
+  }
+
+  Widget _createTimeWidget(String? _time) {
+    // null許容のString?型を、nullの場合にデフォルト値を表示するように修正
+    final timeToDisplay = _time ?? "No time provided";
+
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+      alignment: Alignment.bottomCenter,
+      child: Text(
+        timeToDisplay,
+        style: TextStyle(fontSize: 12.0, color: Colors.grey),
       ),
     );
   }
 
-  Widget _createTimeWidget(String? time) {
-    if (time != null) {
-      return Container(
-        margin: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 5.0),
-        alignment: Alignment.bottomCenter,
-        child: Text(
-          time,
-          style: TextStyle(fontSize: 12.0, color: Colors.grey),
+  Widget _createSingleImage(Uint8List image) {
+    return Container(
+      width: 100, // 画像が1枚の場合の幅
+      height: 100, // 画像が1枚の場合の高さ
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        image: DecorationImage(
+          image: MemoryImage(image),
+          fit: BoxFit.cover,
         ),
-      );
-    } else {
-      return const SizedBox(); // 空のウィジェットを返す
-    }
+      ),
+    );
+  }
+
+  Widget _createImageGrid(List<Uint8List> images) {
+    return Wrap(
+      spacing: 5.0, // 画像同士の横のスペース
+      runSpacing: 5.0, // 画像同士の縦のスペース
+      children: images.map((image) => _createSingleImage(image)).toList(),
+    );
   }
 }
