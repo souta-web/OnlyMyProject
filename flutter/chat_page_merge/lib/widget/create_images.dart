@@ -79,30 +79,11 @@ class CreateImages extends StatelessWidget {
     );
   }
 
-  Widget _createImageGrid(List<Uint8List> images) {
-    List<Widget> imageRows = [];
-
-    for (int i = 0; i < images.length; i += 2) {
-      if (i + 1 < images.length) {
-        // 1行に2つの画像を横に表示
-        imageRows.add(Container(
-          margin: const EdgeInsets.only(bottom: 5.0),
-          child: Row(
-            children: [
-              Expanded(child: _createSingleImage(images[i])),
-              SizedBox(width: 5.0), // 画像間のスペースを調整
-              Expanded(child: _createSingleImage(images[i + 1])),
-            ],
-          ),
-        ));
-      } else {
-        // 1つの画像だけが残っている場合、別々の行に表示
-        imageRows.add(_createSingleImage(images[i]));
-      }
-    }
-
-    return Column(
-      children: imageRows,
+   Widget _createImageGrid(List<Uint8List> images) {
+    return Wrap(
+      spacing: 5.0, // 画像同士の横のスペース
+      runSpacing: 5.0, // 画像同士の縦のスペース
+      children: images.map((image) => _createSingleImage(image)).toList(),
     );
   }
 }
