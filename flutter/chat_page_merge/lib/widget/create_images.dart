@@ -21,33 +21,32 @@ class CreateImages extends StatelessWidget {
         _createTimeWidget(time),
         Flexible(
           child: Container(
-            margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0),
-            padding: const EdgeInsets.all(10.0),
-            decoration: BoxDecoration(
-              color: Color.fromARGB(255, 255, 149, 21), // オレンジの背景色
-              borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(10),
-                topLeft: Radius.circular(10),
-                bottomLeft: Radius.circular(10),
-              ),
-            ),
-            
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  text,
-                  style: TextStyle(fontSize: 16.0),
+              margin:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0),
+              padding: const EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 255, 149, 21), // オレンジの背景色
+                borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(10),
+                  topLeft: Radius.circular(10),
+                  bottomLeft: Radius.circular(10),
                 ),
-                const SizedBox(height: 5),
-                images.length == 1
-                ? _createSingleImage(images[0])
-                : _createImageGrid(images),
-              ],
-            )
-          ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    text,
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+                  const SizedBox(height: 5),
+                  images.length == 1
+                      ? _createSingleImage(images[0])
+                      : _createImageGrid(images),
+                ],
+              )),
         ),
-        const SizedBox(width: 10),  // 右側の隙間
+        const SizedBox(width: 10), // 右側の隙間
       ],
     );
   }
@@ -81,10 +80,29 @@ class CreateImages extends StatelessWidget {
   }
 
   Widget _createImageGrid(List<Uint8List> images) {
-    return Wrap(
-      spacing: 5.0, // 画像同士の横のスペース
-      runSpacing: 5.0, // 画像同士の縦のスペース
-      children: images.map((image) => _createSingleImage(image)).toList(),
+    List<Widget> imageRows = [];
+
+    for (int i = 0; i < images.length; i += 2) {
+      if (i + 1 < images.length) {
+        // 1行に2つの画像を横に表示
+        imageRows.add(Container(
+          margin: const EdgeInsets.only(bottom: 5.0),
+          child: Row(
+            children: [
+              Expanded(child: _createSingleImage(images[i])),
+              SizedBox(width: 5.0), // 画像間のスペースを調整
+              Expanded(child: _createSingleImage(images[i + 1])),
+            ],
+          ),
+        ));
+      } else {
+        // 1つの画像だけが残っている場合、別々の行に表示
+        imageRows.add(_createSingleImage(images[i]));
+      }
+    }
+
+    return Column(
+      children: imageRows,
     );
   }
 }
