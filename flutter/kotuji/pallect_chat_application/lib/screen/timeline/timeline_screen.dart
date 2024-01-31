@@ -1,181 +1,97 @@
 import 'package:flutter/material.dart';
-
-//final themeModeProvider = StateProvider<ThemeMode>((ref) => ThemeMode.system);//system本体の初期設定に従う　あとからデータベースに保存した最後のデータになる？
+import 'widget/time_line_base.dart';
+import 'widget/time_line_topbar.dart';
+import 'widget/time_line_calender.dart';
+import './func/action_registration_base.dart';
 
 class TimelineScreenWidget extends StatefulWidget {
+
   @override
   _TimelineScreenWidgetState createState() => _TimelineScreenWidgetState();
-  
 }
 
 class _TimelineScreenWidgetState extends State<TimelineScreenWidget> {
-  bool showButtons = false;
-  int selectedNumber = 1;//デフォルト月です、あとから表示されたタイミングの時刻で変数作ります
-  //final themeMode = ref.watch(themeModeProvider.state);//アプリのモードを切り替えに関わる変数
-  
-  
-  
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
-        title: Text('タイムライン'),
-        //backgroundColor:ThemeMode==ThemeMode ? Colors.white:Colors.black,// AppBarの背景色を白に設定 //ThemeModeではなくthemeMode.stateにしたいんだけどなー
-        //foregroundColor:ThemeMode==ThemeMode ? Colors.black:Colors.white, // 文字の背景色を白に設定
+        title: Text('Timeline'),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
             icon: Icon(Icons.settings),
             onPressed: () {
               Navigator.pushNamed(context, '/config');
-              ///print(ThemeMode);
             },
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Stack(//要素を重ねる　あとのものが上にくる
-              alignment: Alignment.topCenter,
-                children: [
-                  Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.search),
-                            onPressed: () {
-                              print('Search button pressed!');
-                            },
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.add),
-                            onPressed: () {
-                              print('Add button pressed!');
-                            },
-                          ),
-                        ],
-                      ),
-                      //SizedBox(height: 10.0),
-                      // 0時から23時までの時間を表示する部分
-                      for (var i = 0; i < 24; i++)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                '$i:00', // 時刻を表示します
-                                textAlign: TextAlign.right,
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.all(10.0),
-                              color: Color.fromARGB(255, 104, 104, 104),
-                              width: 300.0,
-                              height: 2.0,
-                            ),
-                            SizedBox(height: 40.0),
-                            SizedBox(width: 30.0),
-                          ],
-                        ),
-                        // 0時から23時までの時間を表示する部分
-
-                      // 0時を表示する部分
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              '0:00', // 0時を表示します
-                              textAlign: TextAlign.right,
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.all(10.0),
-                            color: Color.fromARGB(255, 104, 104, 104),
-                            width: 300.0,
-                            height: 2.0,
-                          ),
-                          SizedBox(height: 40.0),
-                          SizedBox(width: 30.0),
-                        ],
-                      ),
-                    // 0時を表示する部分
-                    ],
-                  ),
-                  // ボタンを表示するか単一のボタンを表示するかの条件に基づいて、適切なウィジェットを返します
-                  
-                  showButtons ? buildGridButtons() : buildSingleButton(),
-                  
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
+      body:TimeLineBody(),
+      floatingActionButton: WidgetFloatingActionButton(),
     );
   }
+}
 
-  // ボタンを表示するためのウィジェット
-  Widget buildSingleButton() {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        //padding: EdgeInsets.all(1.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
-          side: BorderSide(color: Color.fromARGB(255, 255, 81, 0)),
-        ),
-        backgroundColor: Colors.white, // ボタンの背景色を白に変更
-        foregroundColor: Colors.black, // ボタンの文字の色を黒に変更
-      ),
-      child: Text('$selectedNumber月'), // 選択された月を表示します
-      onPressed: () {
-        setState(() {
-          showButtons = true;
-        });
+class TimeLineBody extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // constraintsはbodyのサイズを表すBoxConstraintsです。
+        final _bodyWidth = constraints.maxWidth; //bodyの横幅取得
+        final _bodyHeight = constraints.maxHeight; //bodyの縦幅を取得
+        final TimeLineActionsData timeLineActionsData = TimeLineActionsData();
+        //var instance = _TimeLineCalender();
+        DateTime _toDay = DateTime.now();// 現在の日付を初期値として設定;
+        //String formattedDate = setSchedule(_toDay);
+        //final _newData = [{"startTime": "0:00","endTime": "1:00" ,"color": Colors.amber,"title": "default"},
+                          //{"startTime": "1:00","endTime": "2:00" ,"color": Colors.amber,"title": "default"},];
+        final double _topBarHeight = _bodyHeight/8;
+        final double _weeekCalenderHeight = 72;//週のカレンダーサイズ
+        final double _calenderHeight = 340+56;//カレンダーサイズ 340未満だと警戒表示される
+        late double _timeLineHeight = _bodyHeight - _topBarHeight;
+        return Stack(
+          children:[ 
+            SingleChildScrollView(
+                child:Column(
+                  children: [
+                    SizedBox(height:_topBarHeight+(_topBarHeight-_weeekCalenderHeight)+10),//TimeLineTopBarと一週間表示分下に下げる（重なっている部分は省く）+00は調整用
+                    TimeLineBase(bodyWidth: _bodyWidth,bodyHeight: _timeLineHeight,timelineActionsData:timeLineActionsData),
+                  ],
+                )
+              ),
+            TimeLineTopBar(topBarWidth:_bodyWidth,topBarHeight:_topBarHeight,timelineActionsData:timeLineActionsData),
+            TimeLineCalender(calenderWidth:_bodyWidth,calenderHeight:_calenderHeight,weekHeight:_weeekCalenderHeight,timelineActionsData:timeLineActionsData),
+          ]
+        );
       },
     );
   }
+}
 
-  // グリッド形式のボタンを表示するためのウィジェット
-  Widget buildGridButtons() {
+//右下のボタン作成
+class WidgetFloatingActionButton extends StatefulWidget {
 
-    // アスペクト比を計算する
-    var size = MediaQuery.of(context).size;
-    final double itemHeight = size.width / 3;
-    final double itemWidth = size.width / 2;
+  @override
+  _WidgetFloatingActionButton createState() => _WidgetFloatingActionButton();
+}
 
-    return GridView.count(
-      childAspectRatio: (itemWidth / itemHeight), //←比を計算していれる。
-      shrinkWrap: true,
-      crossAxisCount: 3,
-      children: List.generate(12, (index) {//1-12月のボタンをつくる
-        final number = index + 1;
-        return ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            //padding: EdgeInsets.symmetric(vertical: 40, horizontal: 20), // 縦方向のパディングと横方向のパディングを設定します
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-              side: BorderSide(color: Color.fromARGB(255, 255, 81, 0)),
-            ),
-            backgroundColor: Colors.white, // ボタンの背景色を白に変更
-            foregroundColor: Colors.black, // ボタンの文字の色を黒に変更
-            //fixedSize: Size(10, 40), // ボタンの幅を狭めるために縦横固定サイズを設定します
-          ),
-          child: Text(number.toString()), // 数字を表示します
-          onPressed: () {
-            setState(() {
-              selectedNumber = number; // 選択された数字を更新します
-              showButtons = false;
-              print(selectedNumber);//動作確認用
-            });
-          },
-        );
-      }),
+class _WidgetFloatingActionButton extends State<WidgetFloatingActionButton> {
+
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        // ボタンが押されたときの処理を記述
+        setState(() {
+          print("tap");
+        });
+      },
+      child: Icon(Icons.add),
+      backgroundColor: Colors.blue, // FABの背景色を変更
     );
   }
 }
