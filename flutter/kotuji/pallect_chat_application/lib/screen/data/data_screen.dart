@@ -7,7 +7,7 @@ class DataScreenWidget extends StatelessWidget {
       appBar: AppBar(
         title: Text('Data'),
         automaticallyImplyLeading: false, // バックボタンを非表示にする
-        actions: [  
+        actions: [
           IconButton(
             icon: Icon(Icons.settings),
             onPressed: () {

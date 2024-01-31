@@ -1,6 +1,6 @@
 {
-    "name": "original_test_chat_application",
-    "short_name": "original_test_chat_application",
+    "name": "chat_page_merge",
+    "short_name": "chat_page_merge",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

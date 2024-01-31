@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "original_test_chat_application" "\0"
+            VALUE "FileDescription", "chat_page_merge" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "original_test_chat_application" "\0"
+            VALUE "InternalName", "chat_page_merge" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "original_test_chat_application.exe" "\0"
-            VALUE "ProductName", "original_test_chat_application" "\0"
+            VALUE "OriginalFilename", "chat_page_merge.exe" "\0"
+            VALUE "ProductName", "chat_page_merge" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

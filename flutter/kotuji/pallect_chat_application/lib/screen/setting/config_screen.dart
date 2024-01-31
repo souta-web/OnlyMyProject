@@ -30,10 +30,6 @@ class ConfigScreenWidget extends ConsumerWidget {
             value: themeMode.state == ThemeMode.dark,
             onChanged: (value) {
               themeMode.state = value ? ThemeMode.dark : ThemeMode.light;
-              print(themeMode.state);
-              print(ThemeMode.dark);
-              print(ThemeMode.light);
-              print(ThemeMode);
             },
           ),
         ]

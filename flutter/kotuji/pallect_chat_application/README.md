@@ -1,4 +1,4 @@
-# original_test_chat_application
+# chat_page_merge
 
 A new Flutter project.
 
