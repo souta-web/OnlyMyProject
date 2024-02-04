@@ -14,10 +14,10 @@ class ConvertMedia {
     final List<XFile?> pickedFiles = await picker.pickMultiImage();
 
     // 選択された画像の制限を4枚に設定
-    if (pickedFiles.length > 4) {
+    if (pickedFiles.length > 2) {
       // リストから5枚目以降の画像を削除する
-      pickedFiles.removeRange(4, pickedFiles.length);
-      print('選択できる画像は4枚です');
+      pickedFiles.removeRange(2, pickedFiles.length);
+      print('選択できる画像は2枚です');
     }
 
     // 選択された画像をバイナリーデータに変換する

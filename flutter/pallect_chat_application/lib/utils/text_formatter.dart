@@ -4,7 +4,7 @@ class TextFormatter {
   // 例12:00のように整形したい
   String formatHourMinute(int hours, int minutes) {
     // 時間が一桁の場合、2桁になるように0を追加
-    String formattedHours = hours < 10 ? '0$hours' : '$hours';
+    String formattedHours = hours < 10 ? '$hours' : '$hours';
 
     // 分が一桁の場合、2桁になるように0を追加
     String formattedMinutes = minutes < 10 ? '0$minutes' : '$minutes';
