@@ -4,6 +4,7 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
+// データベースを使うクラス
 class DatabaseHelper {
   // デバッグ時はDB名を変えてよい
   static final _databaseName = "PallectDatabase01.db"; // DB名

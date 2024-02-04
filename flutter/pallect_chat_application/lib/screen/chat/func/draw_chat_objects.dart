@@ -50,7 +50,7 @@ class DrawChatObjects {
       if (imageList.isEmpty) {
         // チャットメッセージの表示
         ChatMessage message = ChatMessage(
-            text: "$chatTextを開始",
+            text: chatText,
             isSentByUser: isUser,
             time: startTime); // 返答側のメッセージ
 
@@ -58,7 +58,7 @@ class DrawChatObjects {
       } else {
         // 画像を実体化して表示
         CreateImages createImages = CreateImages(
-            text: "$chatTextを開始", images: imageList, time: startTime);
+            text: chatText, images: imageList, time: startTime);
         return createImages;
       }
     } else {

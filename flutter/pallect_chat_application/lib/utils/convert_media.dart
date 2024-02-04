@@ -13,9 +13,9 @@ class ConvertMedia {
     // 画像を選択
     final List<XFile?> pickedFiles = await picker.pickMultiImage();
 
-    // 選択された画像の制限を4枚に設定
+    // 選択された画像の制限を2枚に設定
     if (pickedFiles.length > 2) {
-      // リストから5枚目以降の画像を削除する
+      // リストから3枚目以降の画像を削除する
       pickedFiles.removeRange(2, pickedFiles.length);
       print('選択できる画像は2枚です');
     }
