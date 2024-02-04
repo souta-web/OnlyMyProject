@@ -70,7 +70,7 @@ class _ChatScreenWidget extends State<ChatScreenWidget> {
   // チャット履歴を読み込むメソッド
   void _loadChatHistory() async {
     await _restoreChatHistory.fetchChatHistory();
-    final List<dynamic> chatMessages = _restoreChatHistory.getMessages();
+    final List<dynamic> chatMessages = await _restoreChatHistory.getMessages();
 
     setState(() {
       print('chatMessages: $chatMessages');

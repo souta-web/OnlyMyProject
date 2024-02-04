@@ -5,17 +5,21 @@ class CreateImages extends StatelessWidget {
   final String text;
   final List<Uint8List> images;
   final String? time;
+  final bool isSentByUser;
 
   CreateImages({
     required this.text,
     required this.images,
     this.time,
+    required this.isSentByUser,
   });
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: isSentByUser 
+        ? MainAxisAlignment.end
+        : MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         _createTimeWidget(time),
@@ -25,7 +29,9 @@ class CreateImages extends StatelessWidget {
                   const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0),
               padding: const EdgeInsets.all(10.0),
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 255, 149, 21), // オレンジの背景色
+                color: isSentByUser
+                ? Color.fromARGB(255, 255, 149, 21) // オレンジの背景色
+                : Color.fromARGB(255, 189, 187, 184),
                 borderRadius: const BorderRadius.only(
                   topRight: Radius.circular(10),
                   topLeft: Radius.circular(10),
@@ -79,7 +85,7 @@ class CreateImages extends StatelessWidget {
     );
   }
 
-   Widget _createImageGrid(List<Uint8List> images) {
+  Widget _createImageGrid(List<Uint8List> images) {
     return Wrap(
       spacing: 5.0, // 画像同士の横のスペース
       runSpacing: 5.0, // 画像同士の縦のスペース

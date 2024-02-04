@@ -43,7 +43,7 @@ class RestoreChatHistory {
     late bool _isActionState;
 
     // メディアテーブルからデータを取得する変数
-    late List<Uint8List>? _mediaList;
+    late Uint8List? _mediaList = null;
 
     // チャットタイムテーブルからデータを取得する変数
     late int _chatHours;
@@ -76,13 +76,17 @@ class RestoreChatHistory {
       _tagName = tagData['tag_name'] ?? "null";
 
       // _drawTime = "";
-
       // メディアテーブルから対応するデータを取得
       final Map<String, dynamic> mediaData = mediaHistory.firstWhere(
-        (media) => media['media_chat_id'] != chat['chat_id'],
+        (media) => media['_media_id'] != chat['_chat_id'],
         orElse: () => <String, dynamic>{},
       );
-      _mediaList = mediaData['media'];
+
+      if (mediaData.containsKey('media')) {
+        _mediaList = mediaData['media'] as Uint8List?;
+      } else {
+        _mediaList = null;
+      }
 
       // チャットタイムテーブルから対応するデータを取得
       final Map<String, dynamic> chatTimeData = chatTimeHistory.firstWhere(
@@ -93,7 +97,8 @@ class RestoreChatHistory {
       _chatHours = chatTimeData['chat_hours'] ?? 0;
       _chatMinutes = chatTimeData['chat_minutes'] ?? 0;
 
-      late String _chatTime = timeFormatter.formatHourMinute(_chatHours, _chatMinutes);
+      late String _chatTime =
+          timeFormatter.formatHourMinute(_chatHours, _chatMinutes);
 
       final Map<String, dynamic> actionTimeData = actionTimeHistory.firstWhere(
         (actionTime) => actionTime['_action_time_id'] != chat['_chat_id'],
@@ -102,12 +107,14 @@ class RestoreChatHistory {
       _actionHours = actionTimeData['action_hours'] ?? 0;
       _actionMinutes = actionTimeData['action_minutes'] ?? 0;
 
-      late String _actionTime = timeFormatter.formatHourMinute(_actionHours, _actionMinutes);
+      late String _actionTime =
+          timeFormatter.formatHourMinute(_actionHours, _actionMinutes);
 
       _drawTime = _isTodo ? _actionTime : _chatTime;
       print('復元した時間:$_drawTime');
       print('復元したタグ名:$_tagName');
       print('復元したメディア:$mediaData');
+
       final dynamic chatObject = drawChatObjects.createChatObjects(
         isTodo: _isTodo,
         chatText: _chatText,
@@ -115,15 +122,18 @@ class RestoreChatHistory {
         mainTag: _tagName,
         startTime: _drawTime,
         isActionFinished: _isActionState,
-        imageList: _mediaList,
+        imageList: _mediaList != null ? [_mediaList] : null,
       );
 
+      print('生成したChatOject: $chatObject');
       // ウィジェットが正常に生成された場合、リストに追加
       if (chatObject != null) {
-        if (_isTodo) {
+        // メディアが含まれている場合、チャットオブジェクトの型に応じて分岐
+        if (_mediaList != null) {
+          // 画像オブジェクトの場合
           _messages.add(chatObject);
         } else {
-          // チャットの場合、_messagesリストに追加
+          // チャットメッセージの場合
           _messages.add(chatObject);
         }
       }
@@ -132,7 +142,7 @@ class RestoreChatHistory {
 
   // _messagesリストを返す。これを呼び出すことで取得したチャット履歴の
   // ウィジェットが外部からアクセス可能になる
-  List<dynamic> getMessages() {
+  Future<List<dynamic>> getMessages() async {
     return _messages;
   }
 }

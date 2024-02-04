@@ -58,7 +58,7 @@ class DrawChatObjects {
       } else {
         // 画像を実体化して表示
         CreateImages createImages = CreateImages(
-            text: "$chatTextを開始", images: imageList, time: startTime);
+            text: "$chatTextを開始", images: imageList, time: startTime, isSentByUser: isUser);
         return createImages;
       }
     } else {
@@ -142,7 +142,8 @@ class DrawChatObjects {
       final int actionHours = DateTime.now().hour; // 時を取得
       final int actionMinutes = DateTime.now().minute; // 分を取得
       final int actionSeconds = DateTime.now().second; // 秒を取得
-      final double lessActionSeconds = DateTime.now().microsecond.toDouble(); // 秒未満を取得
+      final double lessActionSeconds =
+          DateTime.now().microsecond.toDouble(); // 秒未満を取得
 
       // アクションタイムテーブルデバッグ用
       RegisterActionTimeTable registerActionTimeTable = RegisterActionTimeTable(

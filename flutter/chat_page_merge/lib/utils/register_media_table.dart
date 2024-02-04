@@ -5,12 +5,14 @@ import 'dart:typed_data';
 class RegisterMediaTable {
   final int? mediaId; // メディアID
   final Uint8List? media; // メディアを管理
+  final String? isMedia;  // メディアの有無を示す
   final int? mediaChatId; // 添付メッセージID
   final int? linkActionId; // 関連アクションID
 
   RegisterMediaTable({
     this.mediaId,
     this.media,
+    this.isMedia,
     this.mediaChatId,
     this.linkActionId,
   });
@@ -32,11 +34,13 @@ class RegisterMediaTable {
   }
 
   Future<Map<String, dynamic>> insertMediaTable(DatabaseHelper dbHelper) async {
+    final List<Map<String, dynamic>> row =
+        await dbHelper.queryAllRows_media_table();
 
-    final List<Map<String, dynamic>> row = await dbHelper.queryAllRows_media_table();
-
-    late int mediaChatId = row.isNotEmpty ? (row.last['_media_chat_id'] ?? 0) + 1 : 1;
-    late int linkActionId = row.isNotEmpty ? (row.last['_link_action_id'] ?? 0) + 1 : 1;
+    late int mediaChatId =
+        row.isNotEmpty ? (row.last['_media_id'] ?? 0) + 1 : 1;
+    late int linkActionId =
+        row.isNotEmpty ? (row.last['_media_id'] ?? 0) + 1 : 1;
 
     final Map<String, dynamic> mediaRow = {
       DatabaseHelper.columnMediaId: mediaId,

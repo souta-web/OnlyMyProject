@@ -22,9 +22,10 @@ class RegisterChatTable {
     final DatabaseHelper dbHelper = DatabaseHelper.instance;
 
     final List<Map<String, dynamic>> chatRows =
-       await dbHelper.queryAllRows_chat_table();
+        await dbHelper.queryAllRows_chat_table();
 
-    late int chatMessageId = chatRows.isNotEmpty ? (chatRows.last['chat_message_id'] ?? 0) + 1 : 1;
+    late int chatMessageId =
+        chatRows.isNotEmpty ? (chatRows.last['chat_message_id'] ?? 0) + 1 : 1;
 
     Map<String, dynamic> row = {
       DatabaseHelper.columnChatId: chatId,
@@ -35,7 +36,7 @@ class RegisterChatTable {
     };
 
     await dbHelper.insert_chat_table(row);
-
+    print("chatId:$chatId");
     //↓デバッグ用のデータ表示プログラム
     final List<Map<String, dynamic>> allRows =
         await dbHelper.queryAllRows_chat_table();
